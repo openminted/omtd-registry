@@ -1,7 +1,11 @@
 package eu.openminted.registry.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.ServiceException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +22,10 @@ import eu.openminted.registry.core.service.ResourceService;
 @RestController
 public class UserController {
 
-
 	   @Autowired
 	   ResourceService resourceService;
+
+		private Logger logger = Logger.getLogger(UserController.class);
 	  
 	    @RequestMapping(value = "/user/login/{username}/{password}", method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getUser(@PathVariable("username") String username, @PathVariable("password") String password ) {  
@@ -47,34 +52,34 @@ public class UserController {
 	    public ResponseEntity<String> addUser(@RequestBody User user) {  
 	    	ResponseEntity<String> responseEntity = null;
 	    	responseEntity = new ResponseEntity<String>("{\"message\":\"User registered succesfully!\"}", HttpStatus.ACCEPTED);
-//	    	Resource resource = new Resource();
-//	    	String serialized = new String();
-//	    	serialized = eu.openminted.registry.core.controllers.Utils.objToJson(user);
-//	    	
-//	    	if(!serialized.equals("failed")){
-//	    		resource.setPayload(serialized);
-//	    	}else{
-//	    		responseEntity = new ResponseEntity<String>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
-//	    		return responseEntity;
-//	    	}
-//
-//	    	resource.setCreationDate(new Date());
-//	    	resource.setModificationDate(new Date());
-//	    	resource.setPayloadFormat("json");
-//	    	resource.setResourceType("user");
-//	    	resource.setVersion("not_set");
-//	    	resource.setId("wont be saved");
-//	    	resource.setPayloadUrl("not_set");
-//	    	
-//	    	try {
-//	    		
-//				resourceService.addResource(resource);
-//				responseEntity = new ResponseEntity<String>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
-//			} catch (ServiceException e) {
-//				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
-	    	
-	        return responseEntity;  
+	    	Resource resource = new Resource();
+	    	String serialized = new String();
+	    	serialized = eu.openminted.registry.core.controllers.Utils.objToJson(user);
+
+	    	if(!serialized.equals("failed")){
+	    		resource.setPayload(serialized);
+	    	}else{
+	    		responseEntity = new ResponseEntity<String>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+	    		return responseEntity;
+	    	}
+
+	    	resource.setCreationDate(new Date());
+	    	resource.setModificationDate(new Date());
+	    	resource.setPayloadFormat("json");
+	    	resource.setResourceType("user");
+	    	resource.setVersion("not_set");
+	    	resource.setId("wont be saved");
+	    	resource.setPayloadUrl("not_set");
+
+	    	try {
+				resourceService.addResource(resource);
+				responseEntity = new ResponseEntity<String>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
+			} catch (ServiceException e) {
+				logger.error("Error saving user", e);
+				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+			return responseEntity;
 	    }  
 	  
 //	    @RequestMapping(value = "/resources", method = RequestMethod.PUT, headers = "Accept=application/json")  
