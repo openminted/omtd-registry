@@ -3,6 +3,7 @@ package eu.openminted.registry.controllers;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,13 @@ import eu.openminted.registry.domain.Utils;
 @RestController
 public class UserController {
 
-
 	   @Autowired
 	   ResourceService resourceService;
-	   
+
 	   @Autowired
 	   SearchService searchService; 
+
+		private Logger logger = Logger.getLogger(UserController.class);
 	  
 	    @RequestMapping(value = "/user/login/{username}/{password}", method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getUser(@PathVariable("username") String username, @PathVariable("password") String password ) {  
@@ -117,15 +119,17 @@ public class UserController {
 	    	resource.setVersion("not_set");
 	    	resource.setId("wont be saved");
 	    	resource.setPayloadUrl("not_set");
-	    	
+
 	    	try {
 				resourceService.addResource(resource);
 				responseEntity = new ResponseEntity<String>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
 			} catch (ServiceException e) {
+
+				logger.error("Error saving user", e);
 				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(user), HttpStatus.ACCEPTED);
-	        return responseEntity;  
+
+			return responseEntity;
 	    }  
 	  
 	    @RequestMapping(value = "/user/edit", method = RequestMethod.POST, headers = "Accept=application/json")  
