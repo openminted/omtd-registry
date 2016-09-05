@@ -31,13 +31,11 @@ public class ProcessingResourceInfo {
     //required
     private MediaType mediaType;
     private List<Language> languages;
-    //TODO this should be made into an enum (use characterEncoding from ResourceCommon.xsd)
-    private List<String> characterEncodings;
+    private List<CharacterEncoding> characterEncodings;
     private List<DataFormat> dataFormats;
     private RelatedResource typeSystem;
     private RelatedResource tagSet;
-    //TODO this should be made into an enum (use annotationLevel from ResourceCommon.xsd)
-    private List<String> annotationLevels;
+    private List<AnnotationLevel> annotationLevels;
     private List<ModalityType> modalityTypes;
     private List<Identifier<ClassificationScheme>> domains;
     private List<Identifier<ClassificationScheme>> textGenres;
@@ -55,8 +53,8 @@ public class ProcessingResourceInfo {
     }
 
     public ProcessingResourceInfo(List<ResourceType> resourceTypes, MediaType mediaType, List<Language> languages,
-                                  List<String> characterEncodings, List<DataFormat> dataFormats, RelatedResource typeSystem,
-                                  RelatedResource tagSet, List<String> annotationLevels, List<ModalityType> modalityTypes,
+                                  List<CharacterEncoding> characterEncodings, List<DataFormat> dataFormats, RelatedResource typeSystem,
+                                  RelatedResource tagSet, List<AnnotationLevel> annotationLevels, List<ModalityType> modalityTypes,
                                   List<Identifier<ClassificationScheme>> domains, List<Identifier<ClassificationScheme>> textGenres,
                                   List<Identifier<ClassificationScheme>> textTypes, List<Identifier<ClassificationScheme>> registers,
                                   List<Identifier<ClassificationScheme>> subjects, List<String> keywords) {
@@ -101,11 +99,11 @@ public class ProcessingResourceInfo {
         this.languages = languages;
     }
 
-    public List<String> getCharacterEncodings() {
+    public List<CharacterEncoding> getCharacterEncodings() {
         return characterEncodings;
     }
 
-    public void setCharacterEncodings(List<String> characterEncodings) {
+    public void setCharacterEncodings(List<CharacterEncoding> characterEncodings) {
         this.characterEncodings = characterEncodings;
     }
 
@@ -133,11 +131,11 @@ public class ProcessingResourceInfo {
         this.tagSet = tagSet;
     }
 
-    public List<String> getAnnotationLevels() {
+    public List<AnnotationLevel> getAnnotationLevels() {
         return annotationLevels;
     }
 
-    public void setAnnotationLevels(List<String> annotationLevels) {
+    public void setAnnotationLevels(List<AnnotationLevel> annotationLevels) {
         this.annotationLevels = annotationLevels;
     }
 
