@@ -2,23 +2,26 @@ package eu.openminted.registry.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.openminted.registry.core.controllers.Utils;
 import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
-import eu.openminted.registry.core.domain.User;
+import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.core.service.ResourceTypeService;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 
 @RestController
 public class OccurenciesController {
@@ -26,25 +29,44 @@ public class OccurenciesController {
 
 	   @Autowired
 	   ResourceService resourceService;
+	   
+	   @Autowired
+	   ResourceTypeService resourceTypeService;
+	   
+	   @Autowired
+	   SearchService searchService;
 	  
 	    @RequestMapping(value = "/occurencies/{resourceType}/", method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType) {  
 	    	
 	    	ResponseEntity<String> responseEntity;
-	    	Map<String,Map<String,String>> overallValues = new HashMap<String,Map<String,String>>();
-	    	for(int y=0;y<2;y++){
-	    		Map<String,String> values = new HashMap<String,String>();
-	    		for(int i=0;i<5;i++){
-	    			values.put("testName"+i, "testValue"+i);
-		    	}
-	    		overallValues.put("testCategory"+y, values);
-	    	}
-	    	Occurencies occurencies = new Occurencies();
-	    	occurencies.setResourceType(resourceType);
-	    	occurencies.setValues(overallValues);
 	    	
-	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies),HttpStatus.ACCEPTED);
-
+	    	ResourceType resourceTypeClass = resourceTypeService.getResourceType(resourceType);
+	    	if(resourceTypeClass!=null){
+		    	Map<String,Map<String,String>> overallValues = new HashMap<String,Map<String,String>>();
+		    	for(int y=0;y<resourceTypeClass.getIndexFields().size();y++){
+		    		Map<String,String> values = new HashMap<String,String>();
+		    		Paging paging = null;
+		    		try {
+						paging = searchService.search(resourceType, "*", 0, 0, resourceTypeClass.getIndexFields().get(y).getName());
+					} catch (ServiceException e) {
+						responseEntity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+						return responseEntity;
+					}
+		    		for(int i=0;i<paging.getOccurencies().size();i++){
+		    			JSONObject json = new JSONObject(paging.getOccurencies().get(i).toString());
+		    			values.put(json.getString("value"), json.getInt("count")+"");
+			    	}
+		    		overallValues.put(resourceTypeClass.getIndexFields().get(y).getName(), values);
+		    	}
+		    	Occurencies occurencies = new Occurencies();
+		    	occurencies.setResourceType(resourceType);
+		    	occurencies.setValues(overallValues);
+		    	
+		    	responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies),HttpStatus.ACCEPTED);
+	    	}else{
+	    		responseEntity = new ResponseEntity<String>("{\"message\":\"resource type not found\"",HttpStatus.NO_CONTENT);
+	    	}
 	    	return responseEntity;
 	    } 
 	    
@@ -53,20 +75,35 @@ public class OccurenciesController {
 	    	
 	    	ResponseEntity<String> responseEntity;
 	    	ArrayList<Occurencies> occurencies = new ArrayList<Occurencies>();
-	    	for(int j=0;j<3;j++){
-		    	Map<String,Map<String,String>> overallValues = new HashMap<String,Map<String,String>>();
-		    	for(int y=0;y<2;y++){
-		    		Map<String,String> values = new HashMap<String,String>();
-		    		for(int i=0;i<5;i++){
-		    			values.put("testName"+i, "testValue"+i);
+	    	
+	    	List<ResourceType> resourceTypes= resourceTypeService.getAllResourceType();
+	    	if(resourceTypes!=null){
+		    	for(int j=0;j<resourceTypes.size();j++){
+			    	Map<String,Map<String,String>> overallValues = new HashMap<String,Map<String,String>>();
+			    	ResourceType resourceType = resourceTypes.get(j);
+			    	for(int y=0;y<resourceType.getIndexFields().size();y++){
+			    		Map<String,String> values = new HashMap<String,String>();
+			    		Paging paging = null;
+			    		try {
+							paging = searchService.search(resourceTypes.get(j).getName(), "*", 0, 0, resourceType.getIndexFields().get(y).getName());
+						} catch (ServiceException e) {
+							responseEntity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+							return responseEntity;
+						}
+			    		for(int i=0;i<paging.getOccurencies().size();i++){
+			    			JSONObject json = new JSONObject(paging.getOccurencies().get(i).toString());
+			    			values.put(json.getString("value"), json.getInt("count")+"");
+				    	}
+			    		overallValues.put(resourceType.getIndexFields().get(y).getName(), values);
 			    	}
-		    		overallValues.put("testCategory"+y, values);
+			    	Occurencies occurency = new Occurencies();
+			    	occurency.setResourceType(resourceTypes.get(j).getName());
+			    	occurency.setValues(overallValues);
+			    	occurencies.add(occurency);
 		    	}
-		    	Occurencies occurencie = new Occurencies();
-		    	occurencie.setResourceType("resource type "+j);
-		    	occurencie.setValues(overallValues);
-		    	occurencies.add(occurencie);
-	    	}	    	
+	    	}else{
+	    		responseEntity = new ResponseEntity<String>("{\"message\":\"No resource types available\"",HttpStatus.NO_CONTENT);
+	    	}
 	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies),HttpStatus.ACCEPTED);
 
 
