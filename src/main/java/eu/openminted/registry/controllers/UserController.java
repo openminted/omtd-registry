@@ -1,5 +1,6 @@
 package eu.openminted.registry.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
@@ -36,49 +41,50 @@ public class UserController {
 	    public ResponseEntity<String> getUser(@PathVariable("username") String username, @PathVariable("password") String password ) {  
 	    	Paging paging = null;
 	    	ResponseEntity<String> responseEntity;
-//	    	try {
-//				paging = searchService.search("user", "username any "+username, 0, 0, "");
-//			} catch (ServiceException e) {
-//				responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//				return responseEntity;
-//			}
-//	    	
-//	    	if(paging.getTotal()!=1){
-//	    		Resource resource = (Resource) paging.getResults().get(0);
-//	    		ObjectMapper objectMapper = new ObjectMapper();
-//	    		try {
-//					User user = objectMapper.readValue(resource.getPayload(), User.class);
-//					if(user.getPassword().equals(password)){
-//						responseEntity = new ResponseEntity<String>(Utils.objToJson(user),HttpStatus.ACCEPTED);
-//					}else{
-//						responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//					}
-//	    		} catch (JsonParseException e) {
-//					responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//				} catch (JsonMappingException e) {
-//					responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//				} catch (IOException e) {
-//					responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//				}
-//	    		
-//	    		return responseEntity;
-//	    	}else{
-//	    		responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
-//	    	}
+	    	try {
+				paging = searchService.search("user", "username any "+username, 0, 0, "");
+			} catch (ServiceException e) {
+				responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+				return responseEntity;
+			}
 	    	
-	    	User user = new User();
-	    	user.setAffiliation("Athena Research Center");
-	    	user.setId(15);
-	    	user.setUsername(username);
-	    	user.setEmail("jdiplas@gmail.com");
-	    	user.setJoin_date("20-07-2016");
-	    	user.setName("John");
-	    	user.setSurname("Diplas");
-	    	user.setPassword("********");
-	    	ArrayList<String> roles = new ArrayList<>();
-	    	roles.add("admin");
-	    	user.setRoles(roles);
-	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(user),HttpStatus.ACCEPTED);
+	    	if(paging.getTotal()==1){
+	    		Resource resource = (Resource) paging.getResults().get(0);
+	    		ObjectMapper objectMapper = new ObjectMapper();
+	    		try {
+					User user = objectMapper.readValue(resource.getPayload(), User.class);
+					if(user.getPassword().equals(password)){
+						user.setPassword("******");
+						responseEntity = new ResponseEntity<String>(Utils.objToJson(user),HttpStatus.ACCEPTED);
+					}else{
+						responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+					}
+	    		} catch (JsonParseException e) {
+					responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+				} catch (JsonMappingException e) {
+					responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+				} catch (IOException e) {
+					responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+				}
+	    		
+	    		return responseEntity;
+	    	}else{
+	    		responseEntity = new ResponseEntity<String>("Multiple entries +" + Utils.objToJson(paging), HttpStatus.FORBIDDEN);
+	    	}
+	    	
+//	    	User user = new User();
+//	    	user.setAffiliation("Athena Research Center");
+//	    	user.setId(15);
+//	    	user.setUsername(username);
+//	    	user.setEmail("jdiplas@gmail.com");
+//	    	user.setJoin_date("20-07-2016");
+//	    	user.setName("John");
+//	    	user.setSurname("Diplas");
+//	    	user.setPassword("********");
+//	    	ArrayList<String> roles = new ArrayList<>();
+//	    	roles.add("admin");
+//	    	user.setRoles(roles);
+//	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(user),HttpStatus.ACCEPTED);
 
 	    	return responseEntity;
 	    } 
