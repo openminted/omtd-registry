@@ -7,7 +7,7 @@ public class DataFormat {
 
     //required
     //TODO this should be made into an enum (use mimeType from ResourceCommon.xsd)
-    private String mimeType;
+    private MimeType mimeType;
     //TODO this should be made into an enum (use dataFormatSpecific from ResourceCommon.xsd)
     private String dataFormatSpecific;
     private String documentationURL;
@@ -15,21 +15,21 @@ public class DataFormat {
     public DataFormat() {
     }
 
-    public DataFormat(String mimeType) {
+    public DataFormat(MimeType mimeType) {
         this.mimeType = mimeType;
     }
 
-    public DataFormat(String mimeType, String dataFormatSpecific, String documentationURL) {
+    public DataFormat(MimeType mimeType, String dataFormatSpecific, String documentationURL) {
         this.mimeType = mimeType;
         this.dataFormatSpecific = dataFormatSpecific;
         this.documentationURL = documentationURL;
     }
 
-    public String getMimeType() {
+    public MimeType getMimeType() {
         return mimeType;
     }
 
-    public void setMimeType(String mimeType) {
+    public void setMimeType(MimeType mimeType) {
         this.mimeType = mimeType;
     }
 
