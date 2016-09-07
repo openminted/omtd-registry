@@ -42,7 +42,7 @@ public class UserController {
 	    	Paging paging = null;
 	    	ResponseEntity<String> responseEntity;
 	    	try {
-				paging = searchService.search("user", "username any "+username, 0, 0, "");
+				paging = searchService.search("user", "username any "+username, 0, 0, new String[0]);
 			} catch (ServiceException e) {
 				responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
 				return responseEntity;
@@ -95,7 +95,7 @@ public class UserController {
 
 	    	Paging paging = null;
 	    	try {
-				paging = searchService.search("user", "username any "+user.getUsername(), 0, 0, "");
+				paging = searchService.search("user", "username any "+user.getUsername(), 0, 0, new String[0]);
 			} catch (ServiceException e) {
 				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 				return responseEntity;
@@ -141,17 +141,35 @@ public class UserController {
 	    @RequestMapping(value = "/user/edit", method = RequestMethod.POST, headers = "Accept=application/json")  
 	    public ResponseEntity<String> updateUser(@RequestBody User user) {
 	    	ResponseEntity<String> responseEntity = null;
-//	    	Resource resourceFinal = null;
-//			try {
-//				resourceFinal = resourceService.updateResource(resource);
-//			} catch (ServiceException e) {
-//				responseEntity = new ResponseEntity<String>("{\"error\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
-//	    	
-//	    	
-//	    	if(resourceFinal==null){
-//	    		responseEntity = new ResponseEntity<String>(Utils.objToJson(resourceFinal), HttpStatus.NO_CONTENT);
-//	    	}
+	    	Resource resourceFinal = null;
+			Resource resource = new Resource();
+			Paging paging = null;
+			
+			try {
+				paging = searchService.search("user", "username any "+user.getUsername(), 0, 0, new String[0]);
+			} catch (ServiceException e1) {
+				return new ResponseEntity<String>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	    	
+			if(paging.getResults().size()==1){
+	    		resource = (Resource) paging.getResults().get(0);
+	    		resource = resourceService.getResource("user", resource.getId());
+	    		resource.setPayload(Utils.objToJson(user));
+			}else{
+	    		return new ResponseEntity<String>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
+	    	}
+			resourceFinal = resource;
+			try{
+				resourceService.deleteResource(resource.getId());
+				resourceFinal = resourceService.addResource(resourceFinal);
+			} catch (ServiceException e) {
+				responseEntity = new ResponseEntity<String>("{\"error\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+	    	
+	    	if(resourceFinal==null){
+	    		responseEntity = new ResponseEntity<String>(Utils.objToJson(resourceFinal), HttpStatus.NO_CONTENT);
+	    	}
 	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(user), HttpStatus.ACCEPTED);
 	        return   responseEntity;
 	    }  

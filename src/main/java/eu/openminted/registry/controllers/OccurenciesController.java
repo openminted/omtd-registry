@@ -48,7 +48,9 @@ public class OccurenciesController {
 		    		Map<String,String> values = new HashMap<String,String>();
 		    		Paging paging = null;
 		    		try {
-						paging = searchService.search(resourceType, "*", 0, 0, resourceTypeClass.getIndexFields().get(y).getName());
+		    			String[] value = new String[1];
+		    			value[1] =  resourceTypeClass.getIndexFields().get(y).getName();
+						paging = searchService.search(resourceType, "*", 0, 0, value);
 					} catch (ServiceException e) {
 						responseEntity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 						return responseEntity;
@@ -85,7 +87,9 @@ public class OccurenciesController {
 			    		Map<String,String> values = new HashMap<String,String>();
 			    		Paging paging = null;
 			    		try {
-							paging = searchService.search(resourceTypes.get(j).getName(), "*", 0, 0, resourceType.getIndexFields().get(y).getName());
+			    			String[] value = new String[1];
+			    			value[1] =  resourceType.getIndexFields().get(y).getName();
+							paging = searchService.search(resourceTypes.get(j).getName(), "*", 0, 0,value);
 						} catch (ServiceException e) {
 							responseEntity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 							return responseEntity;
