@@ -1,5 +1,7 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -31,6 +33,8 @@ public class RelatedRepository {
     }
 
     //one of the two
+    @XmlElementWrapper(name="repositoryNames")
+    @XmlElement(name="repositoryName")
     private List<String> repositoryNames;
     private List<Identifier<RepositoryIdentifierSchema>> repositoryIdentifiers;
 

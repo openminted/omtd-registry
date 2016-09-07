@@ -1,5 +1,7 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -28,6 +30,8 @@ public class RelatedPerson {
     }
 
     //one of the two
+    @XmlElementWrapper
+    @XmlElement(name="personName")
     private List<String> personNames;
     private List<Identifier<PersonIdentifierSchema>> personIdentifiers;
 

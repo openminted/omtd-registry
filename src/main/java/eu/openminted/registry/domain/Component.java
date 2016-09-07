@@ -1,19 +1,36 @@
 package eu.openminted.registry.domain;
 
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchema;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlRootElement(name = "componentMetadataRecord", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
 public class Component {
 
     //required
+    @XmlElement(name = "metadataHeaderInfo", required = true)
     private MetadataHeaderInfo metadataHeaderInfo;
+
     //required
+    @XmlPath("componentInfo/resourceType/text()")
     private final String resourceType = "component";
+
     //required
+//    @XmlElement(name = "identificationInfo", required = true)
+    @XmlPath("ms:componentInfo/ms:identificationInfo")
     private ResourceIdentificationInfo resourceIdentificationInfo;
     //required
+    @XmlPath("ms:componentInfo/ms:contactInfo")
     private ContactInfo contactInfo;
     private VersionInfo versionInfo;
     private List<ValidationInfo> validationInfos;
@@ -22,9 +39,13 @@ public class Component {
     private ResourceCreationInfo resourceCreationInfo;
     //required
     //TODO this should be made into an enum (use componentType)
+//    @XmlElementWrapper(name="componentTypes")
+    @XmlPath("componentInfo/componentTypes/componentType/text()")
     private List<String> componentTypes;
     //required
+    @XmlPath("ms:componentInfo/ms:distributionInfos/ms:componentDistributionInfo")
     private List<ComponentDistributionInfo> distributionInfos;
+    @XmlPath("ms:componentInfo/ms:inputContentResourceInfo")
     private ProcessingResourceInfo inputContentResourceInfo;
     private ProcessingResourceInfo outputResourceInfo;
     private ComponentDependencies componentDependencies;

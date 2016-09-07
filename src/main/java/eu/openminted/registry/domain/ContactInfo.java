@@ -1,16 +1,25 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ContactInfo {
 
     //one of the 2
+    @XmlElement(name="contactEmail")
     private String contactEmail;
+    @XmlElement(name="landingPage")
     private String landingPage;
 
+    @XmlElementWrapper(name = "contactPersons")
+    @XmlElement(name="contactPerson")
     private List<RelatedPerson> contactPersons;
     private List<RelatedGroup> contactGroups;
     private List<MailingListInfo> mailingLists;

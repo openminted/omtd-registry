@@ -21,6 +21,7 @@ public class AnnotationInfo {
     private DateCombinationType annotationDate;
     private SizeInfo sizePerAnnotation;
     private String interannotatorAgreement;
+    private String intraannotatorAgreement;
     private List<ActorInfo> annotators;
 
     public AnnotationInfo() {
@@ -30,11 +31,7 @@ public class AnnotationInfo {
         this.annotationLevel = annotationLevel;
     }
 
-    public AnnotationInfo(AnnotationLevel annotationLevel, boolean annotationStandoff, DataFormat dataFormat,
-                          RelatedResource typeSystem, RelatedResource tagSet, String theoreticModel,
-                          List<RelatedDocument> guidelinesDocumentedIn, ProcessMode annotationMode, String annotationModeDetails,
-                          List<RelatedResource> isAnnotatedBy, DateCombinationType annotationDate, SizeInfo sizePerAnnotation,
-                          String interannotatorAgreement, List<ActorInfo> annotators) {
+    public AnnotationInfo(AnnotationLevel annotationLevel, boolean annotationStandoff, DataFormat dataFormat, RelatedResource typeSystem, RelatedResource tagSet, String theoreticModel, List<RelatedDocument> guidelinesDocumentedIn, ProcessMode annotationMode, String annotationModeDetails, List<RelatedResource> isAnnotatedBy, DateCombinationType annotationDate, SizeInfo sizePerAnnotation, String interannotatorAgreement, String intraannotatorAgreement, List<ActorInfo> annotators) {
         this.annotationLevel = annotationLevel;
         this.annotationStandoff = annotationStandoff;
         this.dataFormat = dataFormat;
@@ -48,6 +45,7 @@ public class AnnotationInfo {
         this.annotationDate = annotationDate;
         this.sizePerAnnotation = sizePerAnnotation;
         this.interannotatorAgreement = interannotatorAgreement;
+        this.intraannotatorAgreement = intraannotatorAgreement;
         this.annotators = annotators;
     }
 
@@ -153,6 +151,14 @@ public class AnnotationInfo {
 
     public void setInterannotatorAgreement(String interannotatorAgreement) {
         this.interannotatorAgreement = interannotatorAgreement;
+    }
+
+    public String getIntraannotatorAgreement() {
+        return intraannotatorAgreement;
+    }
+
+    public void setIntraannotatorAgreement(String intraannotatorAgreement) {
+        this.intraannotatorAgreement = intraannotatorAgreement;
     }
 
     public List<ActorInfo> getAnnotators() {

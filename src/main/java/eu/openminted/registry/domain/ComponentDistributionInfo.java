@@ -1,13 +1,24 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
+
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.EXECUTABLE_CODE;
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.SOURCE_CODE;
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.WEB_SERVICE;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ComponentDistributionInfo {
 
+    @XmlJavaTypeAdapter(ComponentDistributionMediumAdapter.class)
     enum ComponentDistributionMedium {
 
         WEB_SERVICE("webService"),
@@ -65,31 +76,17 @@ public class ComponentDistributionInfo {
         }
     }
 
-    enum UserType {
-
-        ACADEMIC("academic"),
-        COMMERCIAL("commercial"),
-        MEMBERS_OF_GROUP("membersOfGroup");
-
-        private String value;
-
-        UserType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
-
     //required
+    @XmlElement(name="componentDistributionMedium")
     private ComponentDistributionMedium componentDistributionMedium;
+
     private List<String> downloadURLs;
     private List<String> accessURLs;
     private String mavenId;
     private WebServiceType webServiceType;
     private OperatingSystem operatingSystem;
     //required
+    @XmlElement(name="rightsInfo")
     private RightsInfo rightsInfo;
     private List<String> copyrightStatements;
     private List<String> attributionTexts;
@@ -238,5 +235,26 @@ public class ComponentDistributionInfo {
 
     public void setUserTypes(List<UserType> userTypes) {
         this.userTypes = userTypes;
+    }
+}
+
+class ComponentDistributionMediumAdapter extends XmlAdapter<String, ComponentDistributionInfo.ComponentDistributionMedium> {
+
+    @Override
+    public String marshal(ComponentDistributionInfo.ComponentDistributionMedium v) throws Exception {
+        return v.getValue();
+    }
+
+    @Override
+    public ComponentDistributionInfo.ComponentDistributionMedium unmarshal(String v) throws Exception {
+        if ("webService".equals(v)) {
+            return WEB_SERVICE;
+        } else if ("sourceCode".equals(v)) {
+            return SOURCE_CODE;
+        } else if ("executableCode".equals(v)) {
+            return EXECUTABLE_CODE;
+        }
+
+        return null;
     }
 }

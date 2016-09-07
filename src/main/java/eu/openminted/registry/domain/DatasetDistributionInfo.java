@@ -1,7 +1,5 @@
 package eu.openminted.registry.domain;
 
-import org.hibernate.usertype.UserType;
-
 import java.util.Date;
 import java.util.List;
 

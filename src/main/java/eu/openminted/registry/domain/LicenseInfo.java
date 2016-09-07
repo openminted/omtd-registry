@@ -1,14 +1,22 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Enumeration;
 import java.util.List;
+
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.EXECUTABLE_CODE;
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.SOURCE_CODE;
+import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.WEB_SERVICE;
 
 /**
  * Created by stefania on 9/5/16.
  */
 public class LicenseInfo {
 
+    @XmlJavaTypeAdapter(LicenceAdapter.class)
     enum License {
-
         CC_BY("CC-BY"),
         CC_BY_NC("CC-BY-NC"),
         CC_BY_NC_ND("CC-BY-NC-ND"),
@@ -50,12 +58,21 @@ public class LicenseInfo {
 
         private String value;
 
-        License(String value) {
+        private License(String value) {
             this.value = value;
         }
 
         public String getValue() {
             return value;
+        }
+
+        public static License forValue(String value) {
+            for (License l:License.values()) {
+                if (l.getValue().equals(value))
+                    return l;
+            }
+
+            return null;
         }
     }
 
@@ -114,6 +131,7 @@ public class LicenseInfo {
     }
 
     //required
+    @XmlElement(name="licence")
     private License license;
     private Version version;
     private List<String> nonStandardLicenceNames;
@@ -184,5 +202,18 @@ public class LicenseInfo {
 
     public void setConditionsOfUseList(List<ConditionsOfUse> conditionsOfUseList) {
         this.conditionsOfUseList = conditionsOfUseList;
+    }
+}
+
+class LicenceAdapter extends XmlAdapter<String, LicenseInfo.License> {
+
+    @Override
+    public String marshal(LicenseInfo.License v) throws Exception {
+        return v.getValue();
+    }
+
+    @Override
+    public LicenseInfo.License unmarshal(String v) throws Exception {
+        return LicenseInfo.License.forValue(v);
     }
 }

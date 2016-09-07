@@ -1,12 +1,24 @@
 package eu.openminted.registry.domain;
 
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAnyAttribute;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
 public class Identifier<T extends IdentifierSchema> {
 
+//    @XmlAttribute(name = "metadataIdentifierSchemeName")
     private T schema;
+//    @XmlValue
     private String id;
+//    @XmlAttribute(name = "schemeURI")
     private String url;
 
     public Identifier(T schema, String id, String url) {

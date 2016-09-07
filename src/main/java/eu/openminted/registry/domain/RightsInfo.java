@@ -1,5 +1,7 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -8,6 +10,8 @@ import java.util.List;
 public class RightsInfo {
 
     //either only RightsStatementInfo which will be required, or List<LicenseInfo> is required and RightsStatementInfo is optional
+    @XmlElementWrapper(name="licenceInfos")
+    @XmlElement(name="licenceInfo")
     private List<LicenseInfo> licenseInfos;
     private RightsStatementInfo rightsStatementInfo;
 

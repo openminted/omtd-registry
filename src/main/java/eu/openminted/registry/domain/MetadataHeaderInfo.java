@@ -1,14 +1,27 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MetadataHeaderInfo {
 
-    enum MetadataIdentifierSchema implements IdentifierSchema {
+    @XmlEnum
+    public enum MetadataIdentifierSchema implements IdentifierSchema {
 
         HDL("hdl"),
         PURL("purl"),
@@ -23,19 +36,29 @@ public class MetadataHeaderInfo {
         }
 
         @Override
+        @XmlValue
         public String getValue() {
             return value;
         }
     }
 
     //required
+    @XmlJavaTypeAdapter(value = ComponentIdentifierAdapter.class)
     private Identifier<MetadataIdentifierSchema> metadataRecordIdentifier;
     //required
+    @XmlElement(name="metadataCreationDate")
+    @XmlSchemaType(name="date")
     private Date metadataCreationDate;
-    private List<RelatedPerson> metedataCreators;
+    @XmlElementWrapper(name = "metadataCreators")
+    @XmlElement(name="metadataCreator")
+    private List<RelatedPerson> metadataCreators;
     private SourceOfMetadataRecord sourceOfMetadataRecord;
+    @XmlElementWrapper(name="metadataLanguages")
+    @XmlElement(name="metadataLanguage")
     private List<Language> languages;
     //required
+    @XmlSchemaType(name="date")
+    @XmlElement(name = "metadataLastDateUpdated")
     private Date metadataLastUpdated;
     private String revision;
 
@@ -47,7 +70,7 @@ public class MetadataHeaderInfo {
                               List<Language> languages, Date metadataLastUpdated, String revision) {
         this.metadataRecordIdentifier = metadataRecordIdentifier;
         this.metadataCreationDate = metadataCreationDate;
-        this.metedataCreators = metedataCreators;
+        this.metadataCreators = metedataCreators;
         this.sourceOfMetadataRecord = sourceOfMetadataRecord;
         this.languages = languages;
         this.metadataLastUpdated = metadataLastUpdated;
@@ -70,12 +93,12 @@ public class MetadataHeaderInfo {
         this.metadataCreationDate = metadataCreationDate;
     }
 
-    public List<RelatedPerson> getMetedataCreators() {
-        return metedataCreators;
+    public List<RelatedPerson> getMetadataCreators() {
+        return metadataCreators;
     }
 
-    public void setMetedataCreators(List<RelatedPerson> metedataCreators) {
-        this.metedataCreators = metedataCreators;
+    public void setMetadataCreators(List<RelatedPerson> metedataCreators) {
+        this.metadataCreators = metedataCreators;
     }
 
     public SourceOfMetadataRecord getSourceOfMetadataRecord() {
@@ -108,5 +131,37 @@ public class MetadataHeaderInfo {
 
     public void setRevision(String revision) {
         this.revision = revision;
+    }
+}
+
+class ComponentIdentifierAdapter extends XmlAdapter<ComponentIdentifierAdapter.SIdentifier, Identifier<MetadataHeaderInfo.MetadataIdentifierSchema>> {
+    @Override
+    public eu.openminted.registry.domain.Identifier<MetadataHeaderInfo.MetadataIdentifierSchema> unmarshal(SIdentifier v) throws Exception {
+        return new eu.openminted.registry.domain.Identifier<>(
+                MetadataHeaderInfo.MetadataIdentifierSchema.valueOf(v.schema.toUpperCase()),
+                v.id, v.url);
+    }
+
+    @Override
+    public SIdentifier marshal(eu.openminted.registry.domain.Identifier<MetadataHeaderInfo.MetadataIdentifierSchema> v) throws Exception {
+        return new SIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
+    }
+
+    public static class SIdentifier {
+        @XmlValue
+        private String id;
+        @XmlAttribute(name="metadataIdentifierSchemeName")
+        private String schema;
+        @XmlAttribute(name="schemeURI")
+        private String url;
+
+        public SIdentifier() {
+        }
+
+        public SIdentifier(String id, String schema, String url) {
+            this.id = id;
+            this.schema = schema;
+            this.url = url;
+        }
     }
 }
