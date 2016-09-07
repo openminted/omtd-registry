@@ -253,22 +253,22 @@ public class RequestController {
 	    	ResponseEntity<String> responseEntity;
 	    	
 	    	Component component = new Component();
-	    	component.setLocation("unknown");
-	    	component.setName("Example name");
-	    	component.setType("dev op");
-	    	component.setVersion(10);
+//	    	component.setLocation("unknown");
+//	    	component.setName("Example name");
+//	    	component.setType("dev op");
+//	    	component.setVersion(10);
 	    	
 	    	Corpus corpus = new Corpus();
-	    	corpus.setCountry("Greece");
-	    	corpus.setLocation("eu");
-	    	corpus.setName("Corpus A");
-	    	corpus.setNo_pub(15);
+//	    	corpus.setCountry("Greece");
+//	    	corpus.setLocation("eu");
+//	    	corpus.setName("Corpus A");
+//	    	corpus.setNo_pub(15);
 	    	
 	    	Language language = new Language();
-	    	language.setCountry("English");
-	    	language.setLocation("eu");
-	    	language.setName("Eng");
-	    	language.setUsage("Corpus");
+//	    	language.setCountry("English");
+//	    	language.setLocation("eu");
+//	    	language.setName("Eng");
+//	    	language.setUsage("Corpus");
 	    	
 	    	Result result1 = new Result();
 	    	Result result2 = new Result();
@@ -300,22 +300,22 @@ public class RequestController {
 	    	ResponseEntity<String> responseEntity;
 	    	
 	    	Component component = new Component();
-	    	component.setLocation("unknown");
-	    	component.setName("Example name");
-	    	component.setType("dev op");
-	    	component.setVersion(10);
+//	    	component.setLocation("unknown");
+//	    	component.setName("Example name");
+//	    	component.setType("dev op");
+//	    	component.setVersion(10);
 	    	
 	    	Corpus corpus = new Corpus();
-	    	corpus.setCountry("Greece");
-	    	corpus.setLocation("eu");
-	    	corpus.setName("Corpus A");
-	    	corpus.setNo_pub(15);
+//	    	corpus.setCountry("Greece");
+//	    	corpus.setLocation("eu");
+//	    	corpus.setName("Corpus A");
+//	    	corpus.setNo_pub(15);
 	    	
 	    	Language language = new Language();
-	    	language.setCountry("English");
-	    	language.setLocation("eu");
-	    	language.setName("Eng");
-	    	language.setUsage("Corpus");
+//	    	language.setCountry("English");
+//	    	language.setLocation("eu");
+//	    	language.setName("Eng");
+//	    	language.setUsage("Corpus");
 	    	
 	    	Result result1 = new Result();
 	    	Result result2 = new Result();
@@ -348,22 +348,22 @@ public class RequestController {
 	    	ResponseEntity<String> responseEntity;
 
 	    	Component component = new Component();
-	    	component.setLocation("unknown");
-	    	component.setName("Example name");
-	    	component.setType("dev op");
-	    	component.setVersion(10);
+//	    	component.setLocation("unknown");
+//	    	component.setName("Example name");
+//	    	component.setType("dev op");
+//	    	component.setVersion(10);
 	    	
 	    	Corpus corpus = new Corpus();
-	    	corpus.setCountry("Greece");
-	    	corpus.setLocation("eu");
-	    	corpus.setName("Corpus A");
-	    	corpus.setNo_pub(15);
+//	    	corpus.setCountry("Greece");
+//	    	corpus.setLocation("eu");
+//	    	corpus.setName("Corpus A");
+//	    	corpus.setNo_pub(15);
 	    	
 	    	Language language = new Language();
-	    	language.setCountry("English");
-	    	language.setLocation("eu");
-	    	language.setName("Eng");
-	    	language.setUsage("Corpus");
+//	    	language.setCountry("English");
+//	    	language.setLocation("eu");
+//	    	language.setName("Eng");
+//	    	language.setUsage("Corpus");
 	    	
 	    	Result result1 = new Result();
 	    	Result result2 = new Result();
@@ -396,22 +396,22 @@ public class RequestController {
 	    	ResponseEntity<String> responseEntity;
 	    	
 	    	Component component = new Component();
-	    	component.setLocation("unknown");
-	    	component.setName("Example name");
-	    	component.setType("dev op");
-	    	component.setVersion(10);
+//	    	component.setLocation("unknown");
+//	    	component.setName("Example name");
+//	    	component.setType("dev op");
+//	    	component.setVersion(10);
 	    	
 	    	Corpus corpus = new Corpus();
-	    	corpus.setCountry("Greece");
-	    	corpus.setLocation("eu");
-	    	corpus.setName("Corpus A");
-	    	corpus.setNo_pub(15);
+//	    	corpus.setCountry("Greece");
+//	    	corpus.setLocation("eu");
+//	    	corpus.setName("Corpus A");
+//	    	corpus.setNo_pub(15);
 	    	
 	    	Language language = new Language();
-	    	language.setCountry("English");
-	    	language.setLocation("eu");
-	    	language.setName("Eng");
-	    	language.setUsage("Corpus");
+//	    	language.setCountry("English");
+//	    	language.setLocation("eu");
+//	    	language.setName("Eng");
+//	    	language.setUsage("Corpus");
 	    	
 	    	Result result1 = new Result();
 	    	Result result2 = new Result();

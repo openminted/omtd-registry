@@ -1,24 +1,70 @@
 package eu.openminted.registry.domain;
 
-public class Language extends Common{
+/**
+ * Created by stefania on 9/5/16.
+ */
+public class Language {
 
-	public String country;
-	public String usage;
-	
-	public String getCountry() {
-		return country;
-	}
-	
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	
-	public String getUsage() {
-		return usage;
-	}
-	
-	public void setUsage(String usage) {
-		this.usage = usage;
-	}
+    //required
+    private String languageTag;
+    //required
+    //TODO this should be made into an enum (use languageIdType)
+    private String languageId;
+    //TODO this should be made into an enum (use scriptIdType)
+    private String scriptId;
+    //TODO this should be made into an enum (use regionIdType)
+    private String regionId;
+    //TODO this should be made into an enum (use variantIdType)
+    private String variantId;
 
+    public Language() {
+    }
+
+    public Language(String languageTag, String languageId, String scriptId, String regionId, String variantId) {
+        this.languageTag = languageTag;
+        this.languageId = languageId;
+        this.scriptId = scriptId;
+        this.regionId = regionId;
+        this.variantId = variantId;
+    }
+
+    public String getLanguageTag() {
+        return languageTag;
+    }
+
+    public void setLanguageTag(String languageTag) {
+        this.languageTag = languageTag;
+    }
+
+    public String getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(String languageId) {
+        this.languageId = languageId;
+    }
+
+    public String getScriptId() {
+        return scriptId;
+    }
+
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
+    }
+
+    public String getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(String regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(String variantId) {
+        this.variantId = variantId;
+    }
 }
