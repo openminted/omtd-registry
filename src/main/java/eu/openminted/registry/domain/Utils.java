@@ -33,6 +33,32 @@ public class Utils {
 		}
 	}
 	
+	public static String objToJson(Component component){
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			return mapper.writeValueAsString(component);
+		} catch (JsonProcessingException e) {
+//			logger.error("Error serializing object to json", e);
+			return e.getMessage();
+//			return null;
+		}
+	}
+	
+	public static String objToJson(Corpus corpus){
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			return mapper.writeValueAsString(corpus);
+		} catch (JsonProcessingException e) {
+//			logger.error("Error serializing object to json", e);
+			return e.getMessage();
+//			return null;
+		}
+	}
+	
 	public static String objToJson(Browsing browsing){
 
 		ObjectMapper mapper = new ObjectMapper();

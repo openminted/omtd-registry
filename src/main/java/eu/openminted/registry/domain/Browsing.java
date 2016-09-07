@@ -3,15 +3,17 @@ package eu.openminted.registry.domain;
 import java.util.List;
 import java.util.Map;
 
+import eu.openminted.registry.core.domain.Occurencies;
+
 public class Browsing {
 
 	int total;
 	 int from;
 	 int to;
 	 List<Result> results;
-	 List<?> occurencies;
+	 Occurencies occurencies;
 
-	 public Browsing(int total, int from, int to, List<Result> results, List<?> occurencies) {
+	 public Browsing(int total, int from, int to, List<Result> results, Occurencies occurencies) {
 		 this.total = total;
 		 this.from = from;
 		 this.to = to;
@@ -44,11 +46,11 @@ public class Browsing {
 		this.results = results;
 	}
 
-	public List<?> getOccurencies() {
+	public Occurencies getOccurencies() {
 		return occurencies;
 	}
 
-	public void setOccurencies(List<?> occurencies) {
+	public void setOccurencies(Occurencies occurencies) {
 		this.occurencies = occurencies;
 	}
 	

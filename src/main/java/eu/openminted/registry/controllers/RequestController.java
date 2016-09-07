@@ -2,6 +2,7 @@ package eu.openminted.registry.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Browsing;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
@@ -30,6 +34,9 @@ public class RequestController {
 
 	   @Autowired
 	   ResourceService resourceService;
+	   
+	   @Autowired 
+	   SearchService searchService;
 	  
 	    @RequestMapping(value = "/request/{resourceType}/", method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType) {  
@@ -85,6 +92,8 @@ public class RequestController {
 
 	    	return responseEntity;
 	    } 
+	    
+	    
 	    
 //	    @RequestMapping(value = "/request/{resourceType}/",params = {"from"} ,method = RequestMethod.GET, headers = "Accept=application/json")  
 //	    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType, @RequestParam(value = "from") int from) {  
@@ -437,6 +446,126 @@ public class RequestController {
 
 	    	return responseEntity;
 	    } 
+	    
+	    @RequestMapping(value = "/request/",params = {"q"} ,method = RequestMethod.GET, headers = "Accept=application/json")  
+	    public ResponseEntity<String> getResourceTypeByQuery(@RequestParam(value = "q") String query) {  
+   	
+	    	ResponseEntity<String> responseEntity;
+	    	
+	    	Component component = new Component();
+//	    	component.setLocation("unknown");
+//	    	component.setName("Example name");
+//	    	component.setType("dev op");
+//	    	component.setVersion(10);
+	    	
+	    	Corpus corpus = new Corpus();
+//	    	corpus.setCountry("Greece");
+//	    	corpus.setLocation("eu");
+//	    	corpus.setName("Corpus A");
+//	    	corpus.setNo_pub(15);
+	    	
+	    	Language language = new Language();
+//	    	language.setCountry("English");
+//	    	language.setLocation("eu");
+//	    	language.setName("Eng");
+//	    	language.setUsage("Corpus");
+	    	
+	    	Result result1 = new Result();
+	    	Result result2 = new Result();
+	    	Result result3 = new Result();
+	    	
+	    	result1.setType("component");
+	    	result1.setResult(component);
+	    	
+	    	result2.setType("corpus");
+	    	result2.setResult(corpus);
+	    	
+	    	result3.setType("language");
+	    	result3.setResult(language);
 
+	    	List<Result> results = new ArrayList<Result>();
+	 
+	    	results.add(result1);
+	    	results.add(result2);
+	    	results.add(result3);
+	    	
+	    	Browsing browsing = new Browsing(results.size(), 0, results.size(), results, null);
+	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(browsing),HttpStatus.ACCEPTED);
+
+	    	return responseEntity;
+	    } 
+
+	    @RequestMapping(value = "/request/",params = {"f"} ,method = RequestMethod.GET, headers = "Accept=application/json")  
+	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "f") String[] filters) {  
+   	
+	    	ResponseEntity<String> responseEntity;
+	    	
+	    	String[] facets = new String[9];
+	    	facets[0] = "resourceType";
+	    	facets[1] = "Language";
+	    	facets[2] = "mediaType";
+	    	facets[3] = "Rights";
+	    	facets[4] = "lingualityType";
+	    	facets[5] = "multilingualityType";
+	    	facets[6] = "Mimetype";
+	    	facets[7] = "domain";
+	    	facets[8] = "subject";
+	    	facets[8] = "dataFormatSpecific";
+	    	facets[8] = "subject";
+	    	facets[8] = "Licence";
+	    	facets[8] = "rightsStmtName";
+	    	Occurencies overall = new Occurencies();
+
+	    	try {
+	    		for(int j=0;j<4;j++){
+	    			String resourceTypeForSearch = "";
+	    			if(j==0){
+	    				resourceTypeForSearch = "components";
+	    			}else if(j==1){
+	    				resourceTypeForSearch = "corpora";
+	    			}else if(j==2){
+	    				resourceTypeForSearch = "lexical";
+	    			}else{
+	    				resourceTypeForSearch = "language";
+	    			}
+					Paging paging = searchService.search(resourceTypeForSearch, "*", 0, 0, facets);
+					for(int i=0;i<paging.getTotal();i++){
+						Result result = new Result();
+						result.setType(resourceTypeForSearch);
+						result.setResult(paging.getResults().get(i));
+					}
+					if(j==0){
+						overall = paging.getOccurencies();
+					}else{
+						Iterator it = paging.getOccurencies().getValues().entrySet().iterator();
+						while(it.hasNext()){
+							 Map.Entry pair = (Map.Entry)it.next();
+							 Map<String,Integer> subMap = paging.getOccurencies().getValues().get(pair.getKey());
+							 Iterator it2 = subMap.entrySet().iterator();
+							 while(it2.hasNext()){
+								 Map.Entry pair2 = (Map.Entry) it2.next();
+								 Map<String,Integer> subMap2 = overall.getValues().get(pair.getKey());
+								 if(subMap2.containsKey(pair2.getKey())){
+									 subMap2.replace(pair2.getKey()+"", subMap2.get(pair2.getKey()) + subMap.get(pair2.getKey()));
+								 }else{
+									 subMap2.put(pair2.getKey()+"", subMap.get(pair2.getKey()));
+								 }
+								 overall.getValues().replace(pair.getKey()+"",subMap2);
+							 }
+						}
+					}
+	    		}
+			} catch (ServiceException e) {
+				new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	    	
+	    	List<Result> results = new ArrayList<Result>();
+	    	
+	    	
+	    	Browsing browsing = new Browsing(results.size(), 0, results.size(), results, overall );
+	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(browsing),HttpStatus.ACCEPTED);
+
+	    	return responseEntity;
+	    } 
 	    
 }
