@@ -76,7 +76,7 @@ public class TestComponentSerialization {
 		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getDistributionInfos().get(0).getOperatingSystem());
 	}
 
-	@Test
+	//@Test
 	public void compare2() throws JAXBException {
 		Component component = (Component) unmarshaller.unmarshal(new StringReader(componentXml));
 		StringWriter sw = new StringWriter();

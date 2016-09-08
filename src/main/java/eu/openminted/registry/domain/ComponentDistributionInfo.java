@@ -278,7 +278,7 @@ class OperatingSystemAdapter extends XmlAdapter<String, ComponentDistributionInf
 
     @Override
     public String marshal(ComponentDistributionInfo.OperatingSystem v) throws Exception {
-        return v.getValue();
+        return v!=null?v.getValue():null;
     }
 
     @Override
