@@ -517,10 +517,10 @@ public class RequestController {
 	    	Occurencies overall = new Occurencies();
 
 	    	try {
-	    		for(int j=0;j<4;j++){
+	    		for(int j=0;j<1;j++){
 	    			String resourceTypeForSearch = "";
 	    			if(j==0){
-	    				resourceTypeForSearch = "components";
+	    				resourceTypeForSearch = "component";
 	    			}else if(j==1){
 	    				resourceTypeForSearch = "corpora";
 	    			}else if(j==2){
@@ -528,7 +528,7 @@ public class RequestController {
 	    			}else{
 	    				resourceTypeForSearch = "language";
 	    			}
-					Paging paging = searchService.search(resourceTypeForSearch, "*", 0, 0, facets);
+					Paging paging = searchService.search(resourceTypeForSearch, "*", 0, 0, filters);
 					for(int i=0;i<paging.getTotal();i++){
 						Result result = new Result();
 						result.setType(resourceTypeForSearch);
