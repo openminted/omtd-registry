@@ -55,7 +55,7 @@ public class TestComponentSerialization {
 	}
 
 	@Test
-	public void compare() throws JAXBException {
+	public void compare1() throws JAXBException {
 		Component component = createComponent();
 
 		StringWriter sw = new StringWriter();
@@ -73,6 +73,17 @@ public class TestComponentSerialization {
 		Component component = (Component) unmarshaller.unmarshal(new StringReader(componentXml));
 
 		Assert.assertEquals("ms776482", component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId());
+		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getDistributionInfos().get(0).getOperatingSystem());
+	}
+
+	@Test
+	public void compare2() throws JAXBException {
+		Component component = (Component) unmarshaller.unmarshal(new StringReader(componentXml));
+		StringWriter sw = new StringWriter();
+
+		marshaller.marshal(component, sw);
+
+		Assert.assertEquals(componentXml, sw.toString());
 	}
 
 	@Test

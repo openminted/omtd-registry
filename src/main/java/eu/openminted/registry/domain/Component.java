@@ -32,14 +32,16 @@ public class Component {
     //required
     @XmlPath("ms:componentInfo/ms:contactInfo")
     private ContactInfo contactInfo;
+    @XmlPath("ms:componentInfo/ms:versionInfo")
     private VersionInfo versionInfo;
+    @XmlElementWrapper(name="validationInfos", required = true)
+    @XmlElement(name="validationInfo")
     private List<ValidationInfo> validationInfos;
     private UsageInfo usageInfo;
     private ResourceDocumentationInfo resourceDocumentationInfo;
     private ResourceCreationInfo resourceCreationInfo;
     //required
     //TODO this should be made into an enum (use componentType)
-//    @XmlElementWrapper(name="componentTypes")
     @XmlPath("componentInfo/componentTypes/componentType/text()")
     private List<String> componentTypes;
     //required

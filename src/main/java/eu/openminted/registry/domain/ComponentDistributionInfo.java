@@ -3,6 +3,7 @@ package eu.openminted.registry.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
@@ -74,16 +75,30 @@ public class ComponentDistributionInfo {
         public String getValue() {
             return value;
         }
+
+        public static OperatingSystem forValue(String value) {
+            for (OperatingSystem os: OperatingSystem.values()) {
+                if (os.getValue().equals(value))
+                    return os;
+            }
+
+            return null;
+        }
     }
 
     //required
     @XmlElement(name="componentDistributionMedium")
     private ComponentDistributionMedium componentDistributionMedium;
 
+    @XmlElementWrapper(name="downloadURLs")
+    @XmlElement(name="downloadURL")
     private List<String> downloadURLs;
+    @XmlElementWrapper(name="accessURLs")
+    @XmlElement(name="accessURL")
     private List<String> accessURLs;
     private String mavenId;
     private WebServiceType webServiceType;
+    @XmlJavaTypeAdapter(OperatingSystemAdapter.class)
     private OperatingSystem operatingSystem;
     //required
     @XmlElement(name="rightsInfo")
@@ -256,5 +271,18 @@ class ComponentDistributionMediumAdapter extends XmlAdapter<String, ComponentDis
         }
 
         return null;
+    }
+}
+
+class OperatingSystemAdapter extends XmlAdapter<String, ComponentDistributionInfo.OperatingSystem> {
+
+    @Override
+    public String marshal(ComponentDistributionInfo.OperatingSystem v) throws Exception {
+        return v.getValue();
+    }
+
+    @Override
+    public ComponentDistributionInfo.OperatingSystem unmarshal(String v) throws Exception {
+        return ComponentDistributionInfo.OperatingSystem.forValue(v);
     }
 }

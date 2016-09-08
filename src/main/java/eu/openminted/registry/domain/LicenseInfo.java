@@ -137,6 +137,7 @@ public class LicenseInfo {
     private List<String> nonStandardLicenceNames;
     private String nonStandardLicenceTermsURL;
     private List<String> nonStandaradLicenceTermsTexts;
+    @XmlElement(name="conditionsOfUse")
     private List<ConditionsOfUse> conditionsOfUseList;
 
     public LicenseInfo() {
