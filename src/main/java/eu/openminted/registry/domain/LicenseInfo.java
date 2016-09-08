@@ -94,6 +94,7 @@ public class LicenseInfo {
         }
     }
 
+    @XmlJavaTypeAdapter(ConditionsOfUseAdapter.class)
     enum ConditionsOfUse {
 
         ATTRIBUTION("attribution"),
@@ -127,6 +128,15 @@ public class LicenseInfo {
 
         public String getValue() {
             return value;
+        }
+
+        public static ConditionsOfUse forValue(String value) {
+            for (ConditionsOfUse l:ConditionsOfUse.values()) {
+                if (l.getValue().equals(value))
+                    return l;
+            }
+
+            return null;
         }
     }
 
@@ -216,5 +226,18 @@ class LicenceAdapter extends XmlAdapter<String, LicenseInfo.License> {
     @Override
     public LicenseInfo.License unmarshal(String v) throws Exception {
         return LicenseInfo.License.forValue(v);
+    }
+}
+
+class ConditionsOfUseAdapter extends XmlAdapter<String, LicenseInfo.ConditionsOfUse> {
+
+    @Override
+    public String marshal(LicenseInfo.ConditionsOfUse v) throws Exception {
+        return v.getValue();
+    }
+
+    @Override
+    public LicenseInfo.ConditionsOfUse unmarshal(String v) throws Exception {
+        return LicenseInfo.ConditionsOfUse.forValue(v);
     }
 }

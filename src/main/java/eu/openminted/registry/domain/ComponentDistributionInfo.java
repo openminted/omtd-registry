@@ -104,12 +104,18 @@ public class ComponentDistributionInfo {
     @XmlElement(name="rightsInfo")
     private RightsInfo rightsInfo;
     private List<String> copyrightStatements;
+    @XmlElementWrapper(name="attributionTexts")
+    @XmlElement(name="attributionText")
     private List<String> attributionTexts;
+    @XmlElementWrapper(name="rightsHolders")
+    @XmlElement(name="rightsHolder")
     private List<ActorInfo> rightsHolders;
+    @XmlElementWrapper(name="userTypes")
+    @XmlElement(name="userType")
+    private List<UserType> userTypes;
     private Date availabilityStartDate;
     private Date availabilityEndDate;
     private String fee;
-    private List<UserType> userTypes;
 
     public ComponentDistributionInfo() {
     }

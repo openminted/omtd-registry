@@ -34,7 +34,7 @@ public class Component {
     private ContactInfo contactInfo;
     @XmlPath("ms:componentInfo/ms:versionInfo")
     private VersionInfo versionInfo;
-    @XmlElementWrapper(name="validationInfos", required = true)
+    @XmlElementWrapper(name="validationInfos")
     @XmlElement(name="validationInfo")
     private List<ValidationInfo> validationInfos;
     private UsageInfo usageInfo;
@@ -49,6 +49,7 @@ public class Component {
     private List<ComponentDistributionInfo> distributionInfos;
     @XmlPath("ms:componentInfo/ms:inputContentResourceInfo")
     private ProcessingResourceInfo inputContentResourceInfo;
+    @XmlPath("ms:componentInfo/ms:outputResourceInfo")
     private ProcessingResourceInfo outputResourceInfo;
     private ComponentDependencies componentDependencies;
     private ComponentCreationInfo componentCreationInfo;

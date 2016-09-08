@@ -45,8 +45,8 @@ public class TestComponentSerialization {
 	public void serialize() throws JAXBException {
 		Component component = createComponent();
 
-		System.out.println("Output:");
-		marshaller.marshal(component, System.out);
+//		System.out.println("Output:");
+//		marshaller.marshal(component, System.out);
 
 		StringWriter sw = new StringWriter();
 		marshaller.marshal(component, sw);
@@ -76,7 +76,7 @@ public class TestComponentSerialization {
 		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getDistributionInfos().get(0).getOperatingSystem());
 	}
 
-	//@Test
+//	@Test
 	public void compare2() throws JAXBException {
 		Component component = (Component) unmarshaller.unmarshal(new StringReader(componentXml));
 		StringWriter sw = new StringWriter();
@@ -97,8 +97,9 @@ public class TestComponentSerialization {
 
 		mapper.writeValue(sw, component);
 
-		System.out.println(sw.toString());
+//		System.out.println(sw.toString());
 	}
+
 	private boolean isValidComponentXml(String xml) {
 		Validator validator = Validator.forLanguage(Languages.W3C_XML_SCHEMA_NS_URI);
 

@@ -36,9 +36,17 @@ public class MetadataHeaderInfo {
         }
 
         @Override
-        @XmlValue
         public String getValue() {
             return value;
+        }
+
+        public static MetadataIdentifierSchema forValue(String value) {
+            for (MetadataIdentifierSchema ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
         }
     }
 
@@ -138,8 +146,7 @@ class ComponentIdentifierAdapter extends XmlAdapter<ComponentIdentifierAdapter.S
     @Override
     public eu.openminted.registry.domain.Identifier<MetadataHeaderInfo.MetadataIdentifierSchema> unmarshal(SIdentifier v) throws Exception {
         return new eu.openminted.registry.domain.Identifier<>(
-                MetadataHeaderInfo.MetadataIdentifierSchema.valueOf(v.schema.toUpperCase()),
-                v.id, v.url);
+                MetadataHeaderInfo.MetadataIdentifierSchema.forValue(v.schema), v.id, v.url);
     }
 
     @Override

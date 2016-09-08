@@ -2,6 +2,10 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -10,6 +14,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProcessingResourceInfo {
 
+    @XmlJavaTypeAdapter(ResourceTypeAdapter.class)
     enum ResourceType {
 
         CORPUS("corpus"),
@@ -27,18 +32,42 @@ public class ProcessingResourceInfo {
         public String getValue() {
             return value;
         }
+
+        public static ResourceType forValue(String value) {
+            for (ResourceType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required ??
+    @XmlElementWrapper(name="resourceTypes")
+    @XmlElement(name="resourceType")
     private List<ResourceType> resourceTypes;
     //required
+    @XmlElement(name="mediaType")
     private MediaType mediaType;
+    @XmlElementWrapper(name="languages")
+    @XmlElement(name="language")
     private List<Language> languages;
+    @XmlElementWrapper(name="characterEncodings")
+    @XmlElement(name="characterEncoding")
     private List<CharacterEncoding> characterEncodings;
+    @XmlElementWrapper(name="dataFormats")
+    @XmlElement(name="dataFormat")
     private List<DataFormat> dataFormats;
+    @XmlElement(name="typeSystem")
     private RelatedResource typeSystem;
+    @XmlElement(name="tagSet")
     private RelatedResource tagSet;
+    @XmlElementWrapper(name="annotationLevels")
+    @XmlElement(name="annotationLevel")
     private List<AnnotationLevel> annotationLevels;
+    @XmlElementWrapper(name="modalityTypes")
+    @XmlElement(name="modalityType")
     private List<ModalityType> modalityTypes;
     private List<Identifier<ClassificationScheme>> domains;
     private List<Identifier<ClassificationScheme>> textGenres;
@@ -198,3 +227,17 @@ public class ProcessingResourceInfo {
         this.keywords = keywords;
     }
 }
+
+class ResourceTypeAdapter extends XmlAdapter<String, ProcessingResourceInfo.ResourceType> {
+
+    @Override
+    public String marshal(ProcessingResourceInfo.ResourceType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ProcessingResourceInfo.ResourceType unmarshal(String v) throws Exception {
+        return ProcessingResourceInfo.ResourceType.forValue(v);
+    }
+}
+

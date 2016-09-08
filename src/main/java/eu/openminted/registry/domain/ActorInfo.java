@@ -1,12 +1,19 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ActorInfo {
 
     //one of the 2
+    @XmlElement(name="relatedPerson")
     private RelatedPerson relatedPerson;
+    @XmlElement(name="relatedOrganization")
     private RelatedOrganization relatedOrganization;
 
     public ActorInfo() {

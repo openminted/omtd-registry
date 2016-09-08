@@ -38,4 +38,13 @@ public enum ResourceIdentifierSchema implements IdentifierSchema {
     public String getValue() {
         return value;
     }
+
+    public static ResourceIdentifierSchema forValue(String value) {
+        for (ResourceIdentifierSchema ut: values()) {
+            if (ut.getValue().equals(value))
+                return ut;
+        }
+
+        return null;
+    }
 }

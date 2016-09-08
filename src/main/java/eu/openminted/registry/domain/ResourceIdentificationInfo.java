@@ -77,34 +77,3 @@ public class ResourceIdentificationInfo {
     }
 }
 
-class ResourceIdentifierAdapter extends XmlAdapter<ResourceIdentifierAdapter.ResIdentifier, Identifier<ResourceIdentifierSchema>> {
-    @Override
-    public eu.openminted.registry.domain.Identifier<ResourceIdentifierSchema> unmarshal(ResIdentifier v) throws Exception {
-        return new eu.openminted.registry.domain.Identifier<>(
-                ResourceIdentifierSchema.valueOf(v.schema.toUpperCase()),
-                v.id, v.url);
-    }
-
-    @Override
-    public ResIdentifier marshal(eu.openminted.registry.domain.Identifier<ResourceIdentifierSchema> v) throws Exception {
-        return new ResIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
-    }
-
-    public static class ResIdentifier {
-        @XmlValue
-        private String id;
-        @XmlAttribute(name="resourceIdentifierSchemeName")
-        private String schema;
-        @XmlAttribute(name="schemeURI")
-        private String url;
-
-        public ResIdentifier() {
-        }
-
-        public ResIdentifier(String id, String schema, String url) {
-            this.id = id;
-            this.schema = schema;
-            this.url = url;
-        }
-    }
-}
