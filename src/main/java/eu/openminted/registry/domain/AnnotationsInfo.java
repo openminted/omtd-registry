@@ -13,11 +13,9 @@ public class AnnotationsInfo extends CorpusSubTypeSpecificInfo {
     private AnnotationInfo annotationInfo;
 
     public AnnotationsInfo() {
-        super("annotations");
     }
 
     public AnnotationsInfo(RelatedResource rawCorpus, AnnotationInfo annotationInfo) {
-        super("annotations");
         this.rawCorpus = rawCorpus;
         this.annotationInfo = annotationInfo;
     }

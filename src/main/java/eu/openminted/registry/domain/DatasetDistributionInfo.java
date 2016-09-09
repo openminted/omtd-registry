@@ -1,13 +1,21 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DatasetDistributionInfo {
 
+    @XmlJavaTypeAdapter(DistributionMediumAdapter.class)
     enum DistributionMedium {
 
         WEB_EXECUTABLE("webExecutable"),
@@ -29,11 +37,26 @@ public class DatasetDistributionInfo {
         public String getValue() {
             return value;
         }
+
+        public static DistributionMedium forValue(String value) {
+            for (DistributionMedium ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
+    @XmlElementWrapper(name = "distributionMediums")
+    @XmlElement(name = "distributionMedium")
     private List<DistributionMedium> distributionMediums;
+    @XmlElementWrapper(name = "downloadURLs")
+    @XmlElement(name = "downloadURL")
     private List<String> downloadURLs;
+    @XmlElementWrapper(name = "accessURLs")
+    @XmlElement(name = "accessURL")
     private List<String> accessURLs;
     private List<TextFormatInfo> textFormats;
     private List<CharacterEncodingInfo> characterEncodings;
@@ -187,5 +210,19 @@ public class DatasetDistributionInfo {
 
     public void setUserTypes(List<UserType> userTypes) {
         this.userTypes = userTypes;
+    }
+}
+
+
+class DistributionMediumAdapter extends XmlAdapter<String, DatasetDistributionInfo.DistributionMedium> {
+
+    @Override
+    public String marshal(DatasetDistributionInfo.DistributionMedium v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public DatasetDistributionInfo.DistributionMedium unmarshal(String v) throws Exception {
+        return DatasetDistributionInfo.DistributionMedium.forValue(v);
     }
 }

@@ -1,10 +1,14 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
 public class SizeInfo {
 
+    @XmlJavaTypeAdapter(SizeUnitAdapter.class)
     enum SizeUnit {
 
         TERMS("terms"),
@@ -67,6 +71,15 @@ public class SizeInfo {
         public String getValue() {
             return value;
         }
+
+        public static SizeUnit forValue(String value) {
+            for (SizeUnit ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
@@ -96,5 +109,18 @@ public class SizeInfo {
 
     public void setSizeUnit(SizeUnit sizeUnit) {
         this.sizeUnit = sizeUnit;
+    }
+}
+
+class SizeUnitAdapter extends XmlAdapter<String, SizeInfo.SizeUnit> {
+
+    @Override
+    public String marshal(SizeInfo.SizeUnit v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public SizeInfo.SizeUnit unmarshal(String v) throws Exception {
+        return SizeInfo.SizeUnit.forValue(v);
     }
 }

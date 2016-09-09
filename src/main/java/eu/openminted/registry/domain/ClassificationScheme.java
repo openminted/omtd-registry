@@ -27,4 +27,13 @@ public enum ClassificationScheme implements IdentifierSchema {
     public String getValue() {
         return value;
     }
+
+    public static ClassificationScheme forValue(String value) {
+        for (ClassificationScheme ut: values()) {
+            if (ut.getValue().equals(value))
+                return ut;
+        }
+
+        return null;
+    }
 }

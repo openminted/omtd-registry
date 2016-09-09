@@ -1,11 +1,20 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DomainInfo {
 
     //required
+    @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> domain;
     private SizeInfo sizePerDomain;
 
@@ -35,5 +44,36 @@ public class DomainInfo {
 
     public void setSizePerDomain(SizeInfo sizePerDomain) {
         this.sizePerDomain = sizePerDomain;
+    }
+}
+
+class ClassificationSchemeIdentifierAdapter extends XmlAdapter<ClassificationSchemeIdentifierAdapter.ClassificationSchemeIdentifier, Identifier<ClassificationScheme>> {
+    @Override
+    public eu.openminted.registry.domain.Identifier<ClassificationScheme> unmarshal(ClassificationSchemeIdentifier v) throws Exception {
+        return new eu.openminted.registry.domain.Identifier<>(
+                ClassificationScheme.forValue(v.schema), v.id, v.url);
+    }
+
+    @Override
+    public ClassificationSchemeIdentifier marshal(eu.openminted.registry.domain.Identifier<ClassificationScheme> v) throws Exception {
+        return new ClassificationSchemeIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
+    }
+
+    public static class ClassificationSchemeIdentifier {
+        @XmlValue
+        private String id;
+        @XmlAttribute(name="classificationSchemeName")
+        private String schema;
+        @XmlAttribute(name="schemeURI")
+        private String url;
+
+        public ClassificationSchemeIdentifier() {
+        }
+
+        public ClassificationSchemeIdentifier(String id, String schema, String url) {
+            this.id = id;
+            this.schema = schema;
+            this.url = url;
+        }
     }
 }

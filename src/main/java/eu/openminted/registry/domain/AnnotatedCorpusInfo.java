@@ -1,23 +1,29 @@
 package eu.openminted.registry.domain;
 
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
-public class AnnotatedCorpusInfo extends CorpusSubTypeSpecificInfo {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AnnotatedCorpusInfo {
 
+    // required
+    private final String corpusSubtype = "annotatedCorpus";
     //required
+    @XmlPath("ms:corpusMediaParts/ms:corpusTextParts/ms:corpusTextPartInfo")
     private List<CorpusTextPartInfo> corpusTextParts;
     //required
     private List<AnnotationInfo> annotations;
 
     public AnnotatedCorpusInfo() {
-        super("annotatedCorpus");
     }
 
     public AnnotatedCorpusInfo(List<CorpusTextPartInfo> corpusTextParts, List<AnnotationInfo> annotations) {
-        super("annotatedCorpus");
         this.corpusTextParts = corpusTextParts;
         this.annotations = annotations;
     }
@@ -36,5 +42,9 @@ public class AnnotatedCorpusInfo extends CorpusSubTypeSpecificInfo {
 
     public void setAnnotations(List<AnnotationInfo> annotations) {
         this.annotations = annotations;
+    }
+
+    public String getCorpusSubtype() {
+        return corpusSubtype;
     }
 }

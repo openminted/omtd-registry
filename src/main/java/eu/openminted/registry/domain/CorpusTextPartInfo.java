@@ -1,10 +1,15 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CorpusTextPartInfo {
 
     //required
@@ -12,15 +17,33 @@ public class CorpusTextPartInfo {
     //required
     private LingualityInfo lingualityInfo;
     //required
+    @XmlElementWrapper(name="languages")
+    @XmlElement(name="languageInfo")
     private List<LanguageInfo> languages;
+    @XmlElementWrapper(name = "modalities")
+    @XmlElement(name="modalityInfo")
     private List<ModalityInfo> modalities;
     //required
+    @XmlElementWrapper(name = "sizes")
+    @XmlElement(name="sizeInfo")
     private List<SizeInfo> sizes;
+    @XmlElementWrapper(name="textFormats")
+    @XmlElement(name = "textFormatInfo")
     private List<TextFormatInfo> textFormats;
+    @XmlElementWrapper(name="characterEncodings")
+    @XmlElement(name = "characterEncodingInfo")
     private List<CharacterEncodingInfo> characterEncodings;
+    @XmlElementWrapper(name="domains")
+    @XmlElement(name = "domainInfo")
     private List<DomainInfo> domains;
+    @XmlElementWrapper(name="textClassifications")
+    @XmlElement(name = "textClassificationInfo")
     private List<TextClassificationInfo> textClassifications;
+    @XmlElementWrapper(name="timeClassifications")
+    @XmlElement(name = "timeCoverageInfo")
     private List<TimeCoverageInfo> timeClassifications;
+    @XmlElementWrapper(name="geographicClassifications")
+    @XmlElement(name="GeographicCoverageInfo")
     private List<GeographicCoverageInfo> geographicClassifications;
     private CreationInfo creationInfo;
 

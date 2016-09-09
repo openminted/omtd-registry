@@ -1,28 +1,43 @@
 package eu.openminted.registry.domain;
 
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlRootElement(name = "corpusMetadataRecord", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
 public class Corpus {
 
     //required
+    @XmlElement(name = "metadataHeaderInfo", required = true)
     private MetadataHeaderInfo metadataHeaderInfo;
     //required
+    @XmlPath("corpusInfo/resourceType/text()")
     private final String resourceType = "corpus";
     //required
+    @XmlPath("ms:corpusInfo/ms:identificationInfo")
     private ResourceIdentificationInfo resourceIdentificationInfo;
     //required
+    @XmlPath("ms:corpusInfo/ms:contactInfo")
     private ContactInfo contactInfo;
+    @XmlPath("ms:corpusInfo/ms:versionInfo")
     private VersionInfo versionInfo;
+    @XmlElementWrapper(name="validationInfos")
+    @XmlElement(name="validationInfo")
     private List<ValidationInfo> validationInfos;
     private UsageInfo usageInfo;
     private ResourceDocumentationInfo resourceDocumentationInfo;
     private ResourceCreationInfo resourceCreationInfo;
     //required
+    @XmlPath("ms:corpusInfo/ms:distributionInfos/ms:datasetDistributionInfo")
     private List<DatasetDistributionInfo> distributionInfos;
     //required (either RawCorpusInfo, AnnotatedCorpusInfo, or AnnotationsInfo)
+    @XmlPath("ms:corpusInfo/ms:corpusSubtypeSpecificInfo")
     private CorpusSubTypeSpecificInfo corpusSubTypeSpecificInfo;
 
     public Corpus() {

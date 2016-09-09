@@ -1,10 +1,17 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LingualityInfo {
 
+    @XmlJavaTypeAdapter(LingualityTypeAdapter.class)
     enum LingualityType {
 
         MONOLINGUAL("monolingual"),
@@ -20,8 +27,18 @@ public class LingualityInfo {
         public String getValue() {
             return value;
         }
+
+        public static LingualityType forValue(String value) {
+            for (LingualityType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+    @XmlJavaTypeAdapter(ModalityTypeAdapter.class)
     enum MultiLingualityType {
 
         PARALLEL("parallel"),
@@ -38,6 +55,15 @@ public class LingualityInfo {
 
         public String getValue() {
             return value;
+        }
+
+        public static MultiLingualityType forValue(String value) {
+            for (MultiLingualityType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
         }
     }
 
@@ -81,5 +107,31 @@ public class LingualityInfo {
 
     public void setMultilingualityTypeDetails(String multilingualityTypeDetails) {
         this.multilingualityTypeDetails = multilingualityTypeDetails;
+    }
+}
+
+class LingualityTypeAdapter extends XmlAdapter<String, LingualityInfo.LingualityType> {
+
+    @Override
+    public String marshal(LingualityInfo.LingualityType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public LingualityInfo.LingualityType unmarshal(String v) throws Exception {
+        return LingualityInfo.LingualityType.forValue(v);
+    }
+}
+
+class MultiLingualityTypeAdapter extends XmlAdapter<String, LingualityInfo.MultiLingualityType> {
+
+    @Override
+    public String marshal(LingualityInfo.MultiLingualityType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public LingualityInfo.MultiLingualityType unmarshal(String v) throws Exception {
+        return LingualityInfo.MultiLingualityType.forValue(v);
     }
 }

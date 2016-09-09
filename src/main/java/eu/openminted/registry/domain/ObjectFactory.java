@@ -17,31 +17,13 @@ public class ObjectFactory {
 		return new Component();
 	}
 
-	public MetadataHeaderInfo createMetadataHeaderInfo() {
-		return new MetadataHeaderInfo();
-	}
-
-	public ResourceIdentificationInfo createResourceIdentificationInfo() {
-		return new ResourceIdentificationInfo();
-	}
-
-	public Identifier<MetadataHeaderInfo.MetadataIdentifierSchema> createIdentifier() {
-		return new Identifier<>();
-	}
-
-	public IdentifierSchema createIdentifierSchema() {
-		System.out.println("creadasdasdsa ");
-		return createInstance(IdentifierSchema.class);
+	public Corpus createCorpus() {
+		return new Corpus();
 	}
 
 	private <T> T createInstance(Class<T> anInterface) {
 		return (T) Proxy.newProxyInstance(anInterface.getClassLoader(), new Class[] {anInterface}, new InterfaceInvocationHandler());
 	}
-
-	public ContactInfo createContactInfo() {
-		return new ContactInfo();
-	}
-
 
 	private static class InterfaceInvocationHandler implements InvocationHandler {
 

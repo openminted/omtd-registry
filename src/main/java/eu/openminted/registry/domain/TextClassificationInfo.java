@@ -1,5 +1,8 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -7,10 +10,16 @@ import java.util.List;
  */
 public class TextClassificationInfo {
 
+    @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> textGenre;
+    @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> textType;
+    @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> register;
+    @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> subject;
+    @XmlElementWrapper(name="keywords")
+    @XmlElement(name="keyword")
     private List<String> keywords;
     private SizeInfo sizePerTextClassification;
 

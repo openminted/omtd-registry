@@ -1,5 +1,11 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -7,6 +13,7 @@ import java.util.List;
  */
 public class RelatedDocument {
 
+    @XmlJavaTypeAdapter(PublicationIdentifierSchemaAdapter.class)
     enum PublicationIdentifierSchema implements IdentifierSchema {
 
         DOI("doi"),
@@ -41,10 +48,21 @@ public class RelatedDocument {
         public String getValue() {
             return value;
         }
+
+        public static PublicationIdentifierSchema forValue(String value) {
+            for (PublicationIdentifierSchema ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //one of the 2
     private String documentUnstructured;
+    @XmlElementWrapper(name = "publicationIdentifiers")
+    @XmlElement(name = "publicationIdentifier")
     private List<Identifier<PublicationIdentifierSchema>> publicationIdentifiers;
 
     public RelatedDocument() {
@@ -72,5 +90,36 @@ public class RelatedDocument {
 
     public void setPublicationIdentifiers(List<Identifier<PublicationIdentifierSchema>> publicationIdentifiers) {
         this.publicationIdentifiers = publicationIdentifiers;
+    }
+}
+
+class PublicationIdentifierSchemaAdapter extends XmlAdapter<PublicationIdentifierSchemaAdapter.SIdentifier, Identifier<RelatedDocument.PublicationIdentifierSchema>> {
+    @Override
+    public eu.openminted.registry.domain.Identifier<RelatedDocument.PublicationIdentifierSchema> unmarshal(SIdentifier v) throws Exception {
+        return new eu.openminted.registry.domain.Identifier<>(
+                RelatedDocument.PublicationIdentifierSchema.forValue(v.schema), v.id, v.url);
+    }
+
+    @Override
+    public SIdentifier marshal(eu.openminted.registry.domain.Identifier<RelatedDocument.PublicationIdentifierSchema> v) throws Exception {
+        return new SIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
+    }
+
+    public static class SIdentifier {
+        @XmlValue
+        private String id;
+        @XmlAttribute(name = "publicationIdentifierSchemeName")
+        private String schema;
+        @XmlAttribute(name = "schemeURI")
+        private String url;
+
+        public SIdentifier() {
+        }
+
+        public SIdentifier(String id, String schema, String url) {
+            this.id = id;
+            this.schema = schema;
+            this.url = url;
+        }
     }
 }

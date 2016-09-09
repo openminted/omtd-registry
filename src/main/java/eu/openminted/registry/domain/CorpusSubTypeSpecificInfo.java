@@ -1,24 +1,43 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CorpusSubTypeSpecificInfo {
 
-    private String corpusSubtype;
+    // one of three
+    private AnnotatedCorpusInfo annotatedCorpusInfo;
+    private RawCorpusInfo rawCorpusInfo;
+    private AnnotationInfo annotationInfo;
 
     public CorpusSubTypeSpecificInfo() {
     }
 
-    public CorpusSubTypeSpecificInfo(String corpusSubtype) {
-        this.corpusSubtype = corpusSubtype;
+    public AnnotatedCorpusInfo getAnnotatedCorpusInfo() {
+        return annotatedCorpusInfo;
     }
 
-    public String getCorpusSubtype() {
-        return corpusSubtype;
+    public void setAnnotatedCorpusInfo(AnnotatedCorpusInfo annotatedCorpusInfo) {
+        this.annotatedCorpusInfo = annotatedCorpusInfo;
     }
 
-    public void setCorpusSubtype(String corpusSubtype) {
-        this.corpusSubtype = corpusSubtype;
+    public RawCorpusInfo getRawCorpusInfo() {
+        return rawCorpusInfo;
+    }
+
+    public void setRawCorpusInfo(RawCorpusInfo rawCorpusInfo) {
+        this.rawCorpusInfo = rawCorpusInfo;
+    }
+
+    public AnnotationInfo getAnnotationInfo() {
+        return annotationInfo;
+    }
+
+    public void setAnnotationInfo(AnnotationInfo annotationInfo) {
+        this.annotationInfo = annotationInfo;
     }
 }

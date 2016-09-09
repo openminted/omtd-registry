@@ -120,7 +120,7 @@ public class TestComponentSerialization {
 
 		Component component = of.createComponent();
 
-		component.setMetadataHeaderInfo(of.createMetadataHeaderInfo());
+		component.setMetadataHeaderInfo(new MetadataHeaderInfo());
 
 		component.getMetadataHeaderInfo().setMetadataCreationDate(new Date());
 
@@ -139,12 +139,12 @@ public class TestComponentSerialization {
 
 		component.getMetadataHeaderInfo().setMetadataLastUpdated(new Date());
 
-		component.getMetadataHeaderInfo().setMetadataRecordIdentifier(of.createIdentifier());
+		component.getMetadataHeaderInfo().setMetadataRecordIdentifier(new Identifier<>());
 		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setId("id");
 		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setSchema(MetadataHeaderInfo.MetadataIdentifierSchema.URL);
 		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
 
-		component.setResourceIdentificationInfo(of.createResourceIdentificationInfo());
+		component.setResourceIdentificationInfo(new ResourceIdentificationInfo());
 		component.getResourceIdentificationInfo().setResourceNames(Arrays.asList("ILSP Feature-based multi-tiered POS Tagger"));
 		component.getResourceIdentificationInfo().setDescriptions(Arrays.asList("FBT part-of-speech tagger for Greek texts."));
 		component.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList("ilsp_fbt"));
