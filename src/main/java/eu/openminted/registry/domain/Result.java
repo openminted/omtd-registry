@@ -1,9 +1,11 @@
 package eu.openminted.registry.domain;
 
+import java.util.List;
+
 public class Result {
 
 	private String type;
-	private Object result;
+	private List<?> result;
 	
 	public String getType() {
 		return type;
@@ -11,10 +13,10 @@ public class Result {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Object getResult() {
+	public List<?> getResult() {
 		return result;
 	}
-	public void setResult(Object result) {
+	public void setResult(List<?> result) {
 		this.result = result;
 	}
 	

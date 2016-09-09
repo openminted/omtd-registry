@@ -283,14 +283,14 @@ public class RequestController {
 	    	Result result2 = new Result();
 	    	Result result3 = new Result();
 	    	
-	    	result1.setType("component");
-	    	result1.setResult(component);
-	    	
-	    	result2.setType("corpus");
-	    	result2.setResult(corpus);
-	    	
-	    	result3.setType("language");
-	    	result3.setResult(language);
+//	    	result1.setType("component");
+//	    	result1.setResult(component);
+//	    	
+//	    	result2.setType("corpus");
+//	    	result2.setResult(corpus);
+//	    	
+//	    	result3.setType("language");
+//	    	result3.setResult(language);
 
 	    	List<Result> results = new ArrayList<Result>();
 	 
@@ -326,24 +326,24 @@ public class RequestController {
 //	    	language.setName("Eng");
 //	    	language.setUsage("Corpus");
 	    	
-	    	Result result1 = new Result();
-	    	Result result2 = new Result();
-	    	Result result3 = new Result();
-	    	
-	    	result1.setType("component");
-	    	result1.setResult(component);
-	    	
-	    	result2.setType("corpus");
-	    	result2.setResult(corpus);
-	    	
-	    	result3.setType("language");
-	    	result3.setResult(language);
+//	    	Result result1 = new Result();
+//	    	Result result2 = new Result();
+//	    	Result result3 = new Result();
+//	    	
+//	    	result1.setType("component");
+//	    	result1.setResult(component);
+//	    	
+//	    	result2.setType("corpus");
+//	    	result2.setResult(corpus);
+//	    	
+//	    	result3.setType("language");
+//	    	result3.setResult(language);
 
 	    	List<Result> results = new ArrayList<Result>();
 	 
-	    	results.add(result1);
-	    	results.add(result2);
-	    	results.add(result3);
+//	    	results.add(result1);
+//	    	results.add(result2);
+//	    	results.add(result3);
 	    	
 	    	Browsing browsing = new Browsing(results.size(), from, results.size(), results, null);
 	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(browsing),HttpStatus.ACCEPTED);
@@ -378,14 +378,14 @@ public class RequestController {
 	    	Result result2 = new Result();
 	    	Result result3 = new Result();
 	    	
-	    	result1.setType("component");
-	    	result1.setResult(component);
-	    	
-	    	result2.setType("corpus");
-	    	result2.setResult(corpus);
-	    	
-	    	result3.setType("language");
-	    	result3.setResult(language);
+//	    	result1.setType("component");
+//	    	result1.setResult(component);
+//	    	
+//	    	result2.setType("corpus");
+//	    	result2.setResult(corpus);
+//	    	
+//	    	result3.setType("language");
+//	    	result3.setResult(language);
 
 	    	List<Result> results = new ArrayList<Result>();
 	 
@@ -426,14 +426,14 @@ public class RequestController {
 	    	Result result2 = new Result();
 	    	Result result3 = new Result();
 	    	
-	    	result1.setType("component");
-	    	result1.setResult(component);
-	    	
-	    	result2.setType("corpus");
-	    	result2.setResult(corpus);
-	    	
-	    	result3.setType("language");
-	    	result3.setResult(language);
+//	    	result1.setType("component");
+//	    	result1.setResult(component);
+//	    	
+//	    	result2.setType("corpus");
+//	    	result2.setResult(corpus);
+//	    	
+//	    	result3.setType("language");
+//	    	result3.setResult(language);
 
 	    	List<Result> results = new ArrayList<Result>();
 	 
@@ -474,14 +474,14 @@ public class RequestController {
 	    	Result result2 = new Result();
 	    	Result result3 = new Result();
 	    	
-	    	result1.setType("component");
-	    	result1.setResult(component);
-	    	
-	    	result2.setType("corpus");
-	    	result2.setResult(corpus);
-	    	
-	    	result3.setType("language");
-	    	result3.setResult(language);
+//	    	result1.setType("component");
+//	    	result1.setResult(component);
+//	    	
+//	    	result2.setType("corpus");
+//	    	result2.setResult(corpus);
+//	    	
+//	    	result3.setType("language");
+//	    	result3.setResult(language);
 
 	    	List<Result> results = new ArrayList<Result>();
 	 
@@ -495,25 +495,91 @@ public class RequestController {
 	    	return responseEntity;
 	    } 
 
-	    @RequestMapping(value = "/request/",params = {"f"} ,method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "f") String[] filters) {  
+	    @RequestMapping(value = "/request/",params = {"keyword","resourceType","language","mediaType","rights","mimeType","dataFormatSpecific","license"} ,method = RequestMethod.GET, headers = "Accept=application/json")  
+	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "resourceType") String[] resourceType, @RequestParam(value = "language") String[] language, @RequestParam(value = "mediaType") String[] mediaType, @RequestParam(value = "rights") String[] rights, @RequestParam(value = "mimeType") String[] mimeType, @RequestParam(value = "dataFormatSpecific") String[] dataFormatSpecific, @RequestParam(value = "license") String[] license  ) {  
    	
 	    	ResponseEntity<String> responseEntity;
 	    	
+	    	String cqlQuery = keyword;
+	    	for(int i=0;i<resourceType.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=resourceType.length-1){
+	    			cqlQuery = cqlQuery.concat("resourceType any "+ resourceType[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("resourceType any "+ resourceType[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<language.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=language.length-1){
+	    			cqlQuery = cqlQuery.concat("language any "+ language[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("language any "+ language[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<mediaType.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=mediaType.length-1){
+	    			cqlQuery = cqlQuery.concat("mediaType any "+ mediaType[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("mediaType any "+ mediaType[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<rights.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=rights.length-1){
+	    			cqlQuery = cqlQuery.concat("rights any "+ rights[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("rights any "+ rights[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<mimeType.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=mimeType.length-1){
+	    			cqlQuery = cqlQuery.concat("mimeType any "+ mimeType[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("mimeType any "+ mimeType[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<dataFormatSpecific.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=dataFormatSpecific.length-1){
+	    			cqlQuery = cqlQuery.concat("dataFormatSpecific any "+ dataFormatSpecific[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("dataFormatSpecific any "+ dataFormatSpecific[i] + ")");
+	    		}
+	    	}
+	    	for(int i=0;i<license.length;i++){
+	    		if(i==0){
+	    			cqlQuery = cqlQuery.concat(" AND (");
+	    		}
+	    		if(i!=license.length-1){
+	    			cqlQuery = cqlQuery.concat("license any "+ license[i] + " OR ");
+	    		}else{
+	    			cqlQuery = cqlQuery.concat("license any "+ license[i] + ")");
+	    		}
+	    	}
 	    	String[] facets = new String[9];
-	    	facets[0] = "resourceType";
-	    	facets[1] = "Language";
-	    	facets[2] = "mediaType";
-	    	facets[3] = "Rights";
-	    	facets[4] = "lingualityType";
-	    	facets[5] = "multilingualityType";
-	    	facets[6] = "Mimetype";
-	    	facets[7] = "domain";
-	    	facets[8] = "subject";
-	    	facets[8] = "dataFormatSpecific";
-	    	facets[8] = "subject";
-	    	facets[8] = "Licence";
-	    	facets[8] = "rightsStmtName";
+//	    	facets[0] = "resourceType";
+	    	
+	    	facets[0] = "Language";
+	    	facets[1] = "mediaType";
+	    	facets[2] = "Rights";
+	    	facets[3] = "Mimetype";
+	    	facets[4] = "dataFormatSpecific";
+	    	facets[5] = "License";
 	    	Occurencies overall = new Occurencies();
 
 	    	try {
@@ -528,12 +594,16 @@ public class RequestController {
 	    			}else{
 	    				resourceTypeForSearch = "language";
 	    			}
-					Paging paging = searchService.search(resourceTypeForSearch, "*", 0, 0, filters);
-					for(int i=0;i<paging.getTotal();i++){
-						Result result = new Result();
-						result.setType(resourceTypeForSearch);
-						result.setResult(paging.getResults().get(i));
-					}
+					Paging paging = searchService.search(resourceTypeForSearch, cqlQuery, 0, 0, facets);
+//					for(int i=0;i<paging.getTotal();i++){
+//						Result result = new Result();
+//						result.setType(resourceTypeForSearch);
+//						result.setResult(paging.getResults().get(i));
+//					}
+					Result result = new Result();
+					result.setType(resourceTypeForSearch);
+					result.setResult(paging.getResults());
+					
 					if(j==0){
 						overall = paging.getOccurencies();
 					}else{
