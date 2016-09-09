@@ -10,15 +10,15 @@ public class Browsing {
 	int total;
 	 int from;
 	 int to;
-	 List<Result> results;
-	 Occurencies occurencies;
+	 Result results;
+	 List<Facet> facets;
 
-	 public Browsing(int total, int from, int to, List<Result> results, Occurencies occurencies) {
+	 public Browsing(int total, int from, int to, Result results, List<Facet> facets) {
 		 this.total = total;
 		 this.from = from;
 		 this.to = to;
 		 this.results = results;
-		 this.occurencies = occurencies;
+		 this.facets = facets;
 	 }
 	 
 	 public int getTotal() {
@@ -39,19 +39,19 @@ public class Browsing {
 	public void setTo(int to) {
 		this.to = to;
 	}
-	public List<Result> getResults() {
+	public Result getResults() {
 		return results;
 	}
-	public void setResults(List<Result> results) {
+	public void setResults(Result results) {
 		this.results = results;
 	}
 
-	public Occurencies getOccurencies() {
-		return occurencies;
+	public List<Facet> getFacets() {
+		return facets;
 	}
 
-	public void setOccurencies(Occurencies occurencies) {
-		this.occurencies = occurencies;
+	public void setFacets(List<Facet> facets) {
+		this.facets = facets;
 	}
 	
 	

@@ -1,10 +1,17 @@
 package eu.openminted.registry.domain;
 
+import java.io.StringReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +26,32 @@ public class Utils {
 	
 	private static Logger logger = Logger.getLogger(Utils.class);
 
+	public static Component serializeComponent(Resource resource){
+		Component component = new Component();
+		try {
+		       	JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class);
+		       	Unmarshaller unmarshaller = jc.createUnmarshaller();
+	
+		       	component = (Component) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
+		 } catch (JAXBException je) {
+		    	component = null;
+		 }
+		return component;
+	}
+	
+	public static Corpus serializeCorpus(Resource resource){
+		Corpus corpus = new Corpus();
+		try {
+		       	JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class);
+		       	Unmarshaller unmarshaller = jc.createUnmarshaller();
+	
+		       	corpus = (Corpus) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
+		 } catch (JAXBException je) {
+		    	corpus = null;
+		 }
+		return corpus;
+	}
+	
 	
 	public static String objToJson(Paging paging){
 

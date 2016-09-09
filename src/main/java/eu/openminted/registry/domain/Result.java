@@ -4,23 +4,20 @@ import java.util.List;
 
 public class Result {
 
-	private String type;
-	private List<?> result;
+	private List<Corpus> corpora;
+	private List<Component> components;
 	
-	public String getType() {
-		return type;
+	public List<Corpus> getCorpora() {
+		return corpora;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setCorpora(List<Corpus> corpora) {
+		this.corpora = corpora;
 	}
-	public List<?> getResult() {
-		return result;
+	public List<Component> getComponents() {
+		return components;
 	}
-	public void setResult(List<?> result) {
-		this.result = result;
+	public void setComponents(List<Component> components) {
+		this.components = components;
 	}
-	
-	
-	
 	
 }
