@@ -609,7 +609,7 @@ public class RequestController {
 					
 					if(j==0){
 						ArrayList<Component> components = new ArrayList<Component>();
-						for(int i=0;i<10;i++){
+						for(int i=0;i<10 && i < paging.getResults().size();i++){
 							Resource resource = (Resource) paging.getResults().get(i);
 							components.add(Utils.serializeComponent(resource));
 						}
