@@ -35,6 +35,18 @@ import eu.openminted.registry.domain.Value;
 @RestController
 public class RequestController {
 
+	private static Map<String, String> labels = new HashMap<>();
+	private static String[] facets = new String[] {"language", "mediatype", "rights", "mimetype", "dataformatspecific", "license", "resourcetype"};
+
+	static {
+		labels.put("language", "Language");
+		labels.put("mediatype", "Media Type");
+		labels.put("rights", "Rights");
+		labels.put("mimetype", "Mime Type");
+		labels.put("dataformatspecific", "Data format specific");
+		labels.put("license", "License");
+		labels.put("resourcetype", "Resource Type");
+	}
 
 	   @Autowired
 	   ResourceService resourceService;
@@ -500,7 +512,7 @@ public class RequestController {
 //	    } 
 
 	    @RequestMapping(value = "/request/"/*,params = {"keyword","resourceType","language","mediaType","rights","mimeType","dataFormatSpecific","license"}*/ ,method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "keyword" , required=false ,defaultValue = "") String keyword, @RequestParam(value = "resourceType", required=false ,defaultValue = "") String[] resourceType, @RequestParam(value = "language", required=false ,defaultValue = "") String[] language, @RequestParam(value = "mediaType", required=false ,defaultValue = "") String[] mediaType, @RequestParam(value = "rights", required=false ,defaultValue = "") String[] rights, @RequestParam(value = "mimeType", required=false ,defaultValue = "") String[] mimeType, @RequestParam(value = "dataFormatSpecific", required=false ,defaultValue = "") String[] dataFormatSpecific, @RequestParam(value = "license", required=false ,defaultValue = "") String[] license,@RequestParam(value = "from" , required=false ,defaultValue = "0") int from,@RequestParam(value = "to" , required=false ,defaultValue = "0") int to  ) {  
+	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "keyword" , required=false ,defaultValue = "") String keyword, @RequestParam(value = "resourceType", required=false ,defaultValue = "") String[] resourceType, @RequestParam(value = "language", required=false ,defaultValue = "") String[] language, @RequestParam(value = "mediaType", required=false ,defaultValue = "") String[] mediaType, @RequestParam(value = "rights", required=false ,defaultValue = "") String[] rights, @RequestParam(value = "mimeType", required=false ,defaultValue = "") String[] mimeType, @RequestParam(value = "dataFormatSpecific", required=false ,defaultValue = "") String[] dataFormatSpecific, @RequestParam(value = "license", required=false ,defaultValue = "") String[] license,@RequestParam(value = "from" , required=false ,defaultValue = "0") int from,@RequestParam(value = "to" , required=false ,defaultValue = "9") int to  ) {
    	
 	    	ResponseEntity<String> responseEntity;
 	    	Result result = new Result();
@@ -582,15 +594,7 @@ public class RequestController {
 	    			cqlQuery = cqlQuery.concat("license any "+ license[i] + ")");
 	    		}
 	    	}
-	    	String[] facets = new String[6];
-//	    	facets[0] = "resourceType";
-	    	
-	    	facets[0] = "language";
-	    	facets[1] = "mediatype";
-	    	facets[2] = "rights";
-	    	facets[3] = "mimetype";
-	    	facets[4] = "dataformatspecific";
-	    	facets[5] = "license";
+
 	    	Occurencies overall = new Occurencies();
 
 	    	try {
@@ -628,54 +632,59 @@ public class RequestController {
 					if(j==0){
 						overall = paging.getOccurencies();
 					}else{
-						Iterator it = paging.getOccurencies().getValues().entrySet().iterator();
-						while(it.hasNext()){
-							 Map.Entry pair = (Map.Entry)it.next();
-							 Map<String,Integer> subMap = paging.getOccurencies().getValues().get(pair.getKey());
-							 Iterator it2 = subMap.entrySet().iterator();
-							 while(it2.hasNext()){
-								 Map.Entry pair2 = (Map.Entry) it2.next();
-								 Map<String,Integer> subMap2 = overall.getValues().get(pair.getKey());
-								 if(subMap2.containsKey(pair2.getKey())){
-									 subMap2.replace(pair2.getKey()+"", subMap2.get(pair2.getKey()) + subMap.get(pair2.getKey()));
-								 }else{
-									 subMap2.put(pair2.getKey()+"", subMap.get(pair2.getKey()));
-								 }
-								 overall.getValues().replace(pair.getKey()+"",subMap2);
-							 }
+
+						for (Map.Entry<String, Map<String, Integer>> pair : paging.getOccurencies().getValues().entrySet()) {
+							Map<String, Integer> subMap = pair.getValue(); // paging.getOccurencies().getValues().get(pair.getKey());
+
+							for (Map.Entry<String, Integer> stringIntegerEntry : subMap.entrySet()) {
+								Map.Entry pair2 = (Map.Entry) stringIntegerEntry;
+								Map<String, Integer> subMap2 = overall.getValues().get(pair.getKey());
+
+								if (subMap2.containsKey(pair2.getKey())) {
+									subMap2.replace(pair2.getKey() + "", subMap2.get(pair2.getKey()) + subMap.get(pair2.getKey()));
+								} else {
+									subMap2.put(pair2.getKey() + "", subMap.get(pair2.getKey()));
+								}
+								overall.getValues().replace(pair.getKey() + "", subMap2);
+							}
 						}
 					}
 	    		}
 			} catch (ServiceException e) {
-				new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 	    	
 	    	List<Facet> facetsCollection = new ArrayList<Facet>();
-	    	Iterator it = overall.getValues().entrySet().iterator();
-	    	while(it.hasNext()){
-	    		 Facet singleFacet = new Facet();
-	    		 Map.Entry pair = (Map.Entry)it.next();
-	    		 singleFacet.setField(pair.getKey()+"");
-	    		 singleFacet.setLabel(pair.getKey()+"");
-	    		 List<Value> values = new ArrayList<Value>();
-	    		 Map<String,Integer> subMap = overall.getValues().get(pair.getKey());
-	    		 Iterator it2 = subMap.entrySet().iterator();
-				 while(it2.hasNext()){
-					 Map.Entry pair2 = (Map.Entry) it2.next();
-					 Value value = new Value();
-					 value.setValue(pair2.getKey()+"");
-					 value.setCount(Integer.parseInt(pair2.getValue()+""));
-					 values.add(value);
-				 }
-				 Collections.sort(values);
-	    		 singleFacet.setValues(values);
-	    		 facetsCollection.add(singleFacet);
-	    	}
-	    	
-	    	Browsing browsing = new Browsing(totalNumber, from, from+10, result, facetsCollection );
-	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(browsing),HttpStatus.ACCEPTED);
 
-	    	return responseEntity;
-	    } 
+			for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
+				Facet singleFacet = new Facet();
+
+				singleFacet.setField(pair.getKey() + "");
+				singleFacet.setLabel(labels.get(pair.getKey()));
+
+				List<Value> values = new ArrayList<Value>();
+				Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
+
+				for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
+					Value value = new Value();
+
+					value.setValue(pair2.getKey() + "");
+					value.setCount(Integer.parseInt(pair2.getValue() + ""));
+
+					values.add(value);
+				}
+
+				Collections.sort(values);
+				Collections.reverse(values);
+				singleFacet.setValues(values);
+
+				if (singleFacet.getValues().size() > 0)
+					facetsCollection.add(singleFacet);
+			}
+	    	
+	    	Browsing browsing = new Browsing(totalNumber, from, from + result.getComponents().size() + result.getCorpora().size() - 1, result, facetsCollection );
+
+	    	return new ResponseEntity<>(Utils.objToJson(browsing),HttpStatus.OK);
+	    }
 	    
 }
