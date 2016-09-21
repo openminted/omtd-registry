@@ -656,30 +656,32 @@ public class RequestController {
 	    	
 	    	List<Facet> facetsCollection = new ArrayList<Facet>();
 
-			for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
-				Facet singleFacet = new Facet();
+			if (overall != null && overall.getValues() != null) {
+				for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
+					Facet singleFacet = new Facet();
 
-				singleFacet.setField(pair.getKey() + "");
-				singleFacet.setLabel(labels.get(pair.getKey()));
+					singleFacet.setField(pair.getKey() + "");
+					singleFacet.setLabel(labels.get(pair.getKey()));
 
-				List<Value> values = new ArrayList<Value>();
-				Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
+					List<Value> values = new ArrayList<Value>();
+					Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
 
-				for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
-					Value value = new Value();
+					for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
+						Value value = new Value();
 
-					value.setValue(pair2.getKey() + "");
-					value.setCount(Integer.parseInt(pair2.getValue() + ""));
+						value.setValue(pair2.getKey() + "");
+						value.setCount(Integer.parseInt(pair2.getValue() + ""));
 
-					values.add(value);
+						values.add(value);
+					}
+
+					Collections.sort(values);
+					Collections.reverse(values);
+					singleFacet.setValues(values);
+
+					if (singleFacet.getValues().size() > 0)
+						facetsCollection.add(singleFacet);
 				}
-
-				Collections.sort(values);
-				Collections.reverse(values);
-				singleFacet.setValues(values);
-
-				if (singleFacet.getValues().size() > 0)
-					facetsCollection.add(singleFacet);
 			}
 	    	
 	    	Browsing browsing = new Browsing(totalNumber, from, from + result.getComponents().size() + result.getCorpora().size() - 1, result, facetsCollection );
