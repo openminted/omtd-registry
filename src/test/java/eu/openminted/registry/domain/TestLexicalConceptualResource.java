@@ -148,25 +148,6 @@ public class TestLexicalConceptualResource {
 		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().setSchema(MetadataHeaderInfo.MetadataIdentifierSchema.URL);
 		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
 
-		LexicalConceptualResource.setResourceIdentificationInfo(new ResourceIdentificationInfo());
-		LexicalConceptualResource.getResourceIdentificationInfo().setResourceNames(Arrays.asList("ILSP Feature-based multi-tiered POS Tagger"));
-		LexicalConceptualResource.getResourceIdentificationInfo().setDescriptions(Arrays.asList("FBT part-of-speech tagger for Greek texts."));
-		LexicalConceptualResource.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList("ilsp_fbt"));
-		LexicalConceptualResource.getResourceIdentificationInfo().setResourceIdentifiers(Arrays.asList(new Identifier<ResourceIdentifierSchema>(ResourceIdentifierSchema.HDL, "http://hdl.grnet.gr/11500/ATHENA-0000-0000-23E8-3", null)));
-
-		LexicalConceptualResource.setContactInfo(new ContactInfo());
-		LexicalConceptualResource.getContactInfo().setContactEmail("prokopis@ilsp.gr");
-		LexicalConceptualResource.getContactInfo().setContactPersons(Arrays.asList(new RelatedPerson()));
-		LexicalConceptualResource.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList("Prokopidis, Prokopis"));
-
-		
-
-		
-		LexicalConceptualResource.setDistributionInfos(Arrays.asList(new DatasetDistributionInfo()));
-		LexicalConceptualResource.getDistributionInfos().get(0).setRightsInfo(new RightsInfo());
-		LexicalConceptualResource.getDistributionInfos().get(0).getRightsInfo().setLicenseInfos(Arrays.asList(new LicenseInfo()));
-		LexicalConceptualResource.getDistributionInfos().get(0).getRightsInfo().getLicenseInfos().get(0).setLicense(LicenseInfo.License.APACHE_LICENSE_2_0);
-
 		return LexicalConceptualResource;
 	}
 

@@ -2,12 +2,22 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RelatedGroup {
 
+	@XmlElementWrapper(name = "groupNames")
+    @XmlElement(name="groupName")
     private List<String> groupNames;
+	
+	@XmlElement(name="relatedOrganization")
     private RelatedOrganization relatedOrganization;
 
     public RelatedGroup() {

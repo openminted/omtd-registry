@@ -60,6 +60,7 @@ public class MetadataHeaderInfo {
     @XmlElementWrapper(name = "metadataCreators")
     @XmlElement(name="metadataCreator")
     private List<RelatedPerson> metadataCreators;
+    
     private SourceOfMetadataRecord sourceOfMetadataRecord;
     @XmlElementWrapper(name="metadataLanguages")
     @XmlElement(name="metadataLanguage")

@@ -2,9 +2,15 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RelatedOrganization {
 
     enum OrganizationIdentifierSchema implements IdentifierSchema {
@@ -26,7 +32,12 @@ public class RelatedOrganization {
     }
 
     //one of the two
+    @XmlElementWrapper(name = "organizationNames")
+    @XmlElement(name="organizationName")
     private List<String> organizationNames;
+    
+    @XmlElementWrapper(name = "organizationIdentifiers")
+    @XmlElement(name="organizationIdentifier")
     private List<Identifier<OrganizationIdentifierSchema>> organizationIdentifiers;
 
     public RelatedOrganization() {

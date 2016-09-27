@@ -58,13 +58,24 @@ public class DatasetDistributionInfo {
     @XmlElementWrapper(name = "accessURLs")
     @XmlElement(name = "accessURL")
     private List<String> accessURLs;
+  
+    @XmlElementWrapper(name = "textFormats")
+    @XmlElement(name = "textFormatInfo")
     private List<TextFormatInfo> textFormats;
+    @XmlElementWrapper(name = "characterEncodings")
+    @XmlElement(name = "characterEncodingInfo")
     private List<CharacterEncodingInfo> characterEncodings;
+    
+    @XmlElementWrapper(name = "sizes")
+    @XmlElement(name = "sizeInfo")
     private List<SizeInfo> sizes;
     //required
     private RightsInfo rightsInfo;
     private List<String> copyrightStatements;
     private List<String> attributionTexts;
+    
+    @XmlElementWrapper(name = "rightsHolders")
+    @XmlElement(name = "rightsHolder")
     private List<ActorInfo> rightsHolders;
     private Date availabilityStartDate;
     private Date availabilityEndDate;

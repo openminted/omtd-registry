@@ -76,6 +76,7 @@ public class LicenseInfo {
         }
     }
 
+    @XmlJavaTypeAdapter(VersionAdapter.class)
     enum Version {
 
         ONE("1.0.0"),
@@ -91,6 +92,15 @@ public class LicenseInfo {
 
         public String getValue() {
             return value;
+        }
+        
+        public static Version forValue(String value) {
+            for (Version l:Version.values()) {
+                if (l.getValue().equals(value))
+                    return l;
+            }
+
+            return null;
         }
     }
 
@@ -143,6 +153,7 @@ public class LicenseInfo {
     //required
     @XmlElement(name="licence")
     private License license;
+    @XmlElement(name = "version")
     private Version version;
     private List<String> nonStandardLicenceNames;
     private String nonStandardLicenceTermsURL;
@@ -226,6 +237,19 @@ class LicenceAdapter extends XmlAdapter<String, LicenseInfo.License> {
     @Override
     public LicenseInfo.License unmarshal(String v) throws Exception {
         return LicenseInfo.License.forValue(v);
+    }
+}
+
+class VersionAdapter extends XmlAdapter<String, LicenseInfo.Version> {
+
+    @Override
+    public String marshal(LicenseInfo.Version v) throws Exception {
+        return v.getValue();
+    }
+
+    @Override
+    public LicenseInfo.Version unmarshal(String v) throws Exception {
+        return LicenseInfo.Version.forValue(v);
     }
 }
 

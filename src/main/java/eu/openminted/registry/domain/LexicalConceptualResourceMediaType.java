@@ -2,39 +2,55 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = { "mediaType", "lingualityInfo", "languages",
+		"metalanguages", "modalities", "sizes", "domains",
+		"timeClassifications", "geographicClassifications", "creationInfo" })
 public class LexicalConceptualResourceMediaType {
-	
-	final private MediaType mediaType = MediaType.TEXT;
-	
-	private List<LingualityInfo> linguilityInfo;
-	
-	private List<LanguageInfo> metaLanguages;
-	
+
+	private MediaType mediaType;
+
+	private List<LingualityInfo> lingualityInfo;
+
+	@XmlElementWrapper(name = "languages")
+	@XmlElement(name = "languageInfo")
+	private List<LanguageInfo> languages;
+
+	// TODO THIS IS META
+	private List<LanguageInfo> metalanguages;
+
 	private List<ModalityInfo> modalities;
-	
+
+	@XmlElementWrapper(name = "sizes")
+	@XmlElement(name = "sizeInfo")
 	private List<SizeInfo> sizes;
-	
+
 	private List<DomainInfo> domains;
-	
+
 	private List<TimeCoverageInfo> timeClassifications;
-	
+
 	private List<GeographicCoverageInfo> geographicClassifications;
-	
+
 	private CreationInfo creationInfo;
-	
+
 	public LexicalConceptualResourceMediaType() {
 	}
 
-	public LexicalConceptualResourceMediaType(
-			List<LingualityInfo> linguilityInfo,
-			List<LanguageInfo> metaLanguages, List<ModalityInfo> modalities,
+	public LexicalConceptualResourceMediaType(MediaType mediaType,
+			List<LingualityInfo> lingualityInfo, List<LanguageInfo> languages,
+			List<LanguageInfo> metalanguages, List<ModalityInfo> modalities,
 			List<SizeInfo> sizes, List<DomainInfo> domains,
 			List<TimeCoverageInfo> timeClassifications,
 			List<GeographicCoverageInfo> geographicClassifications,
 			CreationInfo creationInfo) {
 		super();
-		this.linguilityInfo = linguilityInfo;
-		this.metaLanguages = metaLanguages;
+		this.mediaType = mediaType;
+		this.lingualityInfo = lingualityInfo;
+		this.languages = languages;
+		this.metalanguages = metalanguages;
 		this.modalities = modalities;
 		this.sizes = sizes;
 		this.domains = domains;
@@ -43,20 +59,20 @@ public class LexicalConceptualResourceMediaType {
 		this.creationInfo = creationInfo;
 	}
 
-	public List<LingualityInfo> getLinguilityInfo() {
-		return linguilityInfo;
+	public List<LingualityInfo> getLingualityInfo() {
+		return lingualityInfo;
 	}
 
-	public void setLinguilityInfo(List<LingualityInfo> linguilityInfo) {
-		this.linguilityInfo = linguilityInfo;
+	public void setLingualityInfo(List<LingualityInfo> linguilityInfo) {
+		this.lingualityInfo = linguilityInfo;
 	}
 
-	public List<LanguageInfo> getMetaLanguages() {
-		return metaLanguages;
+	public List<LanguageInfo> getLanguages() {
+		return languages;
 	}
 
-	public void setMetaLanguages(List<LanguageInfo> metaLanguages) {
-		this.metaLanguages = metaLanguages;
+	public void setLanguages(List<LanguageInfo> languages) {
+		this.languages = languages;
 	}
 
 	public List<ModalityInfo> getModalities() {
@@ -87,7 +103,8 @@ public class LexicalConceptualResourceMediaType {
 		return timeClassifications;
 	}
 
-	public void setTimeClassifications(List<TimeCoverageInfo> timeClassifications) {
+	public void setTimeClassifications(
+			List<TimeCoverageInfo> timeClassifications) {
 		this.timeClassifications = timeClassifications;
 	}
 
@@ -108,8 +125,19 @@ public class LexicalConceptualResourceMediaType {
 		this.creationInfo = creationInfo;
 	}
 
+	public List<LanguageInfo> getMetalanguages() {
+		return metalanguages;
+	}
+
+	public void setMetalanguages(List<LanguageInfo> metalanguages) {
+		this.metalanguages = metalanguages;
+	}
+
 	public MediaType getMediaType() {
 		return mediaType;
 	}
-	
+
+	public void setMediaType(MediaType mediaType) {
+		this.mediaType = mediaType;
+	}
 }

@@ -2,25 +2,37 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * 
  * @author Steve
  *
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LexicalConceptualResourceEncodingInfo {
 	
+	//@XmlElement(name="ms:encodingLevel")
 	private List<EncodingLevel> encodingLevel;
 	
+	//@XmlElement(name="ms:linguisticInformation")
 	private List<LinguisticInformation> linguisticInformation;
 	
+	//@XmlElement(name="ms:conformanceToStandardsBestPractices")
 	private List<ConformanceToStandardsBestPractices> conformanceToStandardsBestPractices;
 	
+	//@XmlElement(name="ms:theoreticModel")
 	private List<String> theoreticModel;
 	
+	//@XmlElement(name="ms:externelRef")
 	private List<String> externelRef;
 	
+	//@XmlElement(name="ms:extratextualInformation")
 	private List<ExtratextualInformation> extratextualInformation;
 	
+	//@XmlElement(name="ms:extraTextualInformationUnit")
 	private List<ExtraTextualInformationUnit> extraTextualInformationUnit;
 
 	

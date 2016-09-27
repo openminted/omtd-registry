@@ -10,36 +10,55 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlJavaTypeAdapter(LinguisticInformationAdapter.class)
 public enum LinguisticInformation {
 
-	ACCENTUATION("accentuation"), LEMMA("lemma"), LEMMA_MULTIWORDUNITS(
-			"lemma-multiwordunits"), LEMMA_VARIANTS("lemma-variants"), LEMMA_ABBREVIATIONS(
-			"lemma-abbreviations"), LEMMA_COMPOUNDS("lemma-compounds"), LEMMA_CLITICFORMS(
-			"lemma-cliticforms"), PARTOFSPEECH("partofspeech"), MORPHO_FEATURES(
-			"morpho-features"), MORPHO_CASE("morpho-case"), MORPHO_GENDER(
-			"morpho-gender"), MORPHO_NUMBER("morpho-number"), MORPHO_DEGREE(
-			"morpho-degree"), MORPHO_IRREGULARFORMS("morpho-irregularforms"), MORPHO_MOOD(
-			"morpho-mood"), MORPHO_TENSE("morpho-tense"), MORPHO_PERSON(
-			"morpho-person"), MORPHO_ASPECT("morpho-aspect"), MORPHO_VOICE(
-			"morpho-voice"), MORPHO_AUXILIARY("morpho-auxiliary"), MORPHO_INFLECTION(
-			"morpho-inflection"), MORPHO_REFLEXIVITY("morpho-reflexivity"), SYNTAX_SUBCATFRAME(
-			"syntax-subcatframe"), SEMANTICS_TRAITS("semantics-traits"), SEMANTICS_SEMANTICCLASS(
-			"semantics-semanticclass"), SEMANTICS_CROSSREFERENCES(
-			"semantics-crossreferences"), SEMANTICS_RELATIONS(
-			"semantics-relations"), SEMANTICS_RELATIONS_HYPONYMS(
-			"semantics-relations-hyponyms"), SEMANTICS_RELATIONS_HYPERONYMS(
-			"semantics-relations-hyperonyms"), SEMANTICS_RELATIONS_SYNONYMS(
-			"semantics-relations-synonyms"), SEMANTICS_RELATIONS_ANTONYMS(
-			"semantics-relations-antonyms"), SEMANTICS_RELATIONS_TROPONYMS(
-			"semantics-relations-troponyms"), SEMANTICS_RELATIONS_MERONYMS(
-			"semantics-relations-meronyms"), USAGE_FREQUENCY("usage-frequency"), USAGE_REGISTER(
-			"usage-register"), USAGE_COLLOCATIONS("usage-collocations"), USAGE_EXAMPLES(
-			"usage-examples"), USAGE_NOTES("usage-notes"), DEFINITION_GLOSS(
-			"definition/gloss"), TRANSLATIONEQUIVALENT("translationequivalent"), PHONETICS_TRANSCRIPTION(
-			"phonetics-transcription"), SEMANTICS_DOMAIN("semantics-domain"), SEMANTICS_EVENTTYPE(
-			"semantics-eventtype"), SEMANTICS_SEMANTICROLES(
-			"semantics-semanticroles"), STATISTICALPROPERTIES(
-			"statisticalproperties"), MORPHO_DERIVATION("morpho-derivation"), SEMANTICS_QUALIASTRUCTURE(
-			"semantics-qualiastructure"), SYNTACTICOSEMANTICLINKS(
-			"syntacticosemanticlinks"), OTHER("other");
+	ACCENTUATION("accentuation"),
+	LEMMA("lemma"),
+	LEMMA_MULTIWORDUNITS("lemma-MultiWordUnits"),
+	LEMMA_VARIANTS("lemma-Variants"),
+	LEMMA_ABBREVIATIONS("lemma-Abbreviations"),
+	LEMMA_COMPOUNDS("lemma-Compounds"),
+	LEMMA_CLITICFORMS("lemma-CliticForms"),
+	PARTOFSPEECH("partOfSpeech"),
+	MORPHO_FEATURES("morpho-Features"),
+	MORPHO_CASE("morpho-Case"),
+	MORPHO_GENDER("morpho-Gender"),
+	MORPHO_NUMBER("morpho-Number"),
+	MORPHO_DEGREE("morpho-Degree"),
+	MORPHO_IRREGULARFORMS("morpho-IrregularForms"),
+	MORPHO_MOOD("morpho-Mood"),
+	MORPHO_TENSE("morpho-Tense"),
+	MORPHO_PERSON("morpho-Person"),
+	MORPHO_ASPECT("morpho-Aspect"),
+	MORPHO_VOICE("morpho-Voice"),
+	MORPHO_AUXILIARY("morpho-Auxiliary"),
+	MORPHO_INFLECTION("morpho-Inflection"),
+	MORPHO_REFLEXIVITY("morpho-Reflexivity"),
+	SYNTAX_SUBCATFRAME("syntax-SubcatFrame"),
+	SEMANTICS_TRAITS("semantics-Traits"),
+	SEMANTICS_SEMANTICCLASS("semantics-SemanticClass"),
+	SEMANTICS_CROSSREFERENCES("semantics-CrossReferences"),
+	SEMANTICS_RELATIONS("semantics-Relations"),
+	SEMANTICS_RELATIONS_HYPONYMS("semantics-Relations-Hyponyms"),
+	SEMANTICS_RELATIONS_HYPERONYMS("semantics-Relations-Hyperonyms"),
+	SEMANTICS_RELATIONS_SYNONYMS("semantics-Relations-Synonyms"),
+	SEMANTICS_RELATIONS_ANTONYMS("semantics-Relations-Antonyms"),
+	SEMANTICS_RELATIONS_TROPONYMS("semantics-Relations-Troponyms"),
+	SEMANTICS_RELATIONS_MERONYMS("semantics-Relations-Meronyms"),
+	USAGE_FREQUENCY("usage-Frequency"),
+	USAGE_REGISTER("usage-Register"),
+	USAGE_COLLOCATIONS("usage-Collocations"),
+	USAGE_EXAMPLES("usage-Examples"),
+	USAGE_NOTES("usage-Notes"),
+	DEFINITIONGLOSS("definition/gloss"),
+	TRANSLATIONEQUIVALENT("translationEquivalent"),
+	PHONETICS_TRANSCRIPTION("phonetics-Transcription"),
+	SEMANTICS_DOMAIN("semantics-Domain"),
+	SEMANTICS_EVENTTYPE("semantics-EventType"),
+	SEMANTICS_SEMANTICROLES("semantics-SemanticRoles"),
+	STATISTICALPROPERTIES("statisticalProperties"),
+	MORPHO_DERIVATION("morpho-Derivation"),
+	SEMANTICS_QUALIASTRUCTURE("semantics-QualiaStructure"),
+	SYNTACTICOSEMANTICLINKS("syntacticoSemanticLinks"),
+	OTHER("other");
 
 	private String value;
 
