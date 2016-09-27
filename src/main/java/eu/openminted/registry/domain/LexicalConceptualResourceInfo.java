@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-@XmlType(propOrder = { "identificationInfo", "contactInfo",
+@XmlType(propOrder = { "resourceType","identificationInfo", "contactInfo",
 		"versionInfo", "validationInfos", "usageInfo",
 		"resourceDocumentationInfo", "resourceCreationInfo",
 		"distributionInfos", "lexicalConceptualResourceType",
@@ -16,7 +16,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 public class LexicalConceptualResourceInfo {
 
 	// required
-	private final String resourceType = "lexicalConceptualResource";
+	private String resourceType;
 
 	// required
 	// @XmlElement(name = "identificationInfo", required = true)
@@ -166,16 +166,20 @@ public class LexicalConceptualResourceInfo {
 		this.lexicalConceptualResourceMediaType = lexicalConceptualResourceMediaType;
 	}
 
-	public String getResourceType() {
-		return resourceType;
-	}
-
 	public ResourceIdentificationInfo getIdentificationInfo() {
 		return identificationInfo;
 	}
 
 	public void setIdentificationInfo(ResourceIdentificationInfo identificationInfo) {
 		this.identificationInfo = identificationInfo;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
 
 }

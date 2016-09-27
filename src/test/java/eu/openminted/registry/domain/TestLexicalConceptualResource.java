@@ -91,7 +91,7 @@ public class TestLexicalConceptualResource {
 	}
 
 	@Test
-	public void testJson() throws IOException {
+	public void testJson() throws IOException, JAXBException {
 		LexicalConceptualResource LexicalConceptualResource = createLexicalConceptualResource();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -119,35 +119,8 @@ public class TestLexicalConceptualResource {
 		return result.isValid();
 	}
 
-	private LexicalConceptualResource createLexicalConceptualResource() {
-		ObjectFactory of = new ObjectFactory();
-
-		LexicalConceptualResource LexicalConceptualResource = of.createLexicalConceptualResource();
-
-		LexicalConceptualResource.setMetadataHeaderInfo(new MetadataHeaderInfo());
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setMetadataCreationDate(new Date());
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setMetadataCreators(new ArrayList<>());
-		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataCreators().add(new RelatedPerson());
-		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList("Smith, John"));
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setRevision("1.23");
-		LexicalConceptualResource.getMetadataHeaderInfo().setLanguages(new ArrayList<>());
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setSourceOfMetadataRecord(new SourceOfMetadataRecord());
-		LexicalConceptualResource.getMetadataHeaderInfo().getSourceOfMetadataRecord().setCollectedFrom(new RelatedRepository());
-		LexicalConceptualResource.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList("clarin:el"));
-		LexicalConceptualResource.getMetadataHeaderInfo().getSourceOfMetadataRecord().setSourceMetadataLink("https://inventory.clarin.gr/resources/browse/ilsp-feature-based-multi-tiered-pos-tagger/9ff47a0e5af111e5a2e0aa3fc8d33ad8f8736d2c68654a37b471475f9f913baa/");
-
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setMetadataLastUpdated(new Date());
-
-		LexicalConceptualResource.getMetadataHeaderInfo().setMetadataRecordIdentifier(new Identifier<>());
-		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().setId("id");
-		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().setSchema(MetadataHeaderInfo.MetadataIdentifierSchema.URL);
-		LexicalConceptualResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
-
+	private LexicalConceptualResource createLexicalConceptualResource() throws JAXBException {
+		LexicalConceptualResource LexicalConceptualResource = (LexicalConceptualResource) unmarshaller.unmarshal(new StringReader(LexicalConceptualResourceXml));
 		return LexicalConceptualResource;
 	}
 
