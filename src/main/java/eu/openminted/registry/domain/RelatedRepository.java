@@ -35,17 +35,17 @@ public class RelatedRepository {
     //one of the two
     @XmlElementWrapper(name="repositoryNames")
     @XmlElement(name="repositoryName")
-    private List<String> repositoryNames;
+    private List<LangAttributeField> repositoryNames;
     private List<Identifier<RepositoryIdentifierSchema>> repositoryIdentifiers;
 
     public RelatedRepository() {
     }
 
-    public List<String> getRepositoryNames() {
+    public List<LangAttributeField> getRepositoryNames() {
         return repositoryNames;
     }
 
-    public void setRepositoryNames(List<String> repositoryNames) {
+    public void setRepositoryNames(List<LangAttributeField> repositoryNames) {
         this.repositoryNames = repositoryNames;
     }
 

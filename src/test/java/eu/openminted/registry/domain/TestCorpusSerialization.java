@@ -2,6 +2,7 @@ package eu.openminted.registry.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -125,14 +127,14 @@ public class TestCorpusSerialization {
 
 		corpus.getMetadataHeaderInfo().setMetadataCreators(new ArrayList<>());
 		corpus.getMetadataHeaderInfo().getMetadataCreators().add(new RelatedPerson());
-		corpus.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList("Smith, John"));
+		corpus.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Smith, John")));
 
 		corpus.getMetadataHeaderInfo().setRevision("1.23");
 		corpus.getMetadataHeaderInfo().setLanguages(new ArrayList<>());
 
 		corpus.getMetadataHeaderInfo().setSourceOfMetadataRecord(new SourceOfMetadataRecord());
 		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().setCollectedFrom(new RelatedRepository());
-		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList("clarin:el"));
+		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList(new LangAttributeField("en-us","clarin:el")));
 		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().setSourceMetadataLink("https://inventory.clarin.gr/resources/browse/ilsp-feature-based-multi-tiered-pos-tagger/9ff47a0e5af111e5a2e0aa3fc8d33ad8f8736d2c68654a37b471475f9f913baa/");
 
 
@@ -144,15 +146,15 @@ public class TestCorpusSerialization {
 		corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
 
 		corpus.setResourceIdentificationInfo(new ResourceIdentificationInfo());
-		corpus.getResourceIdentificationInfo().setResourceNames(Arrays.asList("ILSP Feature-based multi-tiered POS Tagger"));
-		corpus.getResourceIdentificationInfo().setDescriptions(Arrays.asList("FBT part-of-speech tagger for Greek texts."));
-		corpus.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList("ilsp_fbt"));
+		corpus.getResourceIdentificationInfo().setResourceNames(Arrays.asList(new LangAttributeField("en-us","ILSP Feature-based multi-tiered POS Tagger")));
+		corpus.getResourceIdentificationInfo().setDescriptions(Arrays.asList(new LangAttributeField("en-us","FBT part-of-speech tagger for Greek texts.")));
+		corpus.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList(new LangAttributeField("en-us","ilsp_fbt")));
 		corpus.getResourceIdentificationInfo().setResourceIdentifiers(Arrays.asList(new Identifier<ResourceIdentifierSchema>(ResourceIdentifierSchema.HDL, "http://hdl.grnet.gr/11500/ATHENA-0000-0000-23E8-3", null)));
 
 		corpus.setContactInfo(new ContactInfo());
 		corpus.getContactInfo().setContactEmail("prokopis@ilsp.gr");
 		corpus.getContactInfo().setContactPersons(Arrays.asList(new RelatedPerson()));
-		corpus.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList("Prokopidis, Prokopis"));
+		corpus.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Prokopidis, Prokopis")));
 
 		corpus.setDistributionInfos(Arrays.asList(new DatasetDistributionInfo()));
 		corpus.getDistributionInfos().get(0).setDistributionMediums(Arrays.asList(DatasetDistributionInfo.DistributionMedium.ACCESSIBLE_THROUGH_INTERFACE));

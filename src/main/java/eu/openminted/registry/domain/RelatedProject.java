@@ -16,7 +16,7 @@ public class RelatedProject {
     //one of the two
 	@XmlElementWrapper(name = "projectNames")
     @XmlElement(name="projectName")
-    private List<String> projectNames;
+    private List<LangAttributeField> projectNames;
 	
 	@XmlElementWrapper(name = "projectIdentifiers")
     @XmlElement(name="projectIdentifier")
@@ -25,11 +25,11 @@ public class RelatedProject {
     public RelatedProject() {
     }
 
-    public List<String> getProjectNames() {
+    public List<LangAttributeField> getProjectNames() {
         return projectNames;
     }
 
-    public void setProjectNames(List<String> projectNames) {
+    public void setProjectNames(List<LangAttributeField> projectNames) {
         this.projectNames = projectNames;
     }
 

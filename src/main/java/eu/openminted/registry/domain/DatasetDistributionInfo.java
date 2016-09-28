@@ -15,225 +15,235 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DatasetDistributionInfo {
 
-    @XmlJavaTypeAdapter(DistributionMediumAdapter.class)
-    enum DistributionMedium {
+	@XmlJavaTypeAdapter(DistributionMediumAdapter.class)
+	enum DistributionMedium {
 
-        WEB_EXECUTABLE("webExecutable"),
-        PAPER_COPY("paperCopy"),
-        HARD_DISK("hardDisk"),
-        BLU_RAY("bluRay"),
-        DVD_R("DVD-R"),
-        CD_ROM("CD-ROM"),
-        DOWNLOADABLE("downloadable"),
-        ACCESSIBLE_THROUGH_INTERFACE("accessibleThroughInterface"),
-        OTHER("other");
+		WEB_EXECUTABLE("webExecutable"), PAPER_COPY("paperCopy"), HARD_DISK(
+				"hardDisk"), BLU_RAY("bluRay"), DVD_R("DVD-R"), CD_ROM("CD-ROM"), DOWNLOADABLE(
+				"downloadable"), ACCESSIBLE_THROUGH_INTERFACE(
+				"accessibleThroughInterface"), OTHER("other");
 
-        private String value;
+		private String value;
 
-        DistributionMedium(String value) {
-            this.value = value;
-        }
+		DistributionMedium(String value) {
+			this.value = value;
+		}
 
-        public String getValue() {
-            return value;
-        }
+		public String getValue() {
+			return value;
+		}
 
-        public static DistributionMedium forValue(String value) {
-            for (DistributionMedium ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
+		public static DistributionMedium forValue(String value) {
+			for (DistributionMedium ut : values()) {
+				if (ut.getValue().equals(value))
+					return ut;
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    //required
-    @XmlElementWrapper(name = "distributionMediums")
-    @XmlElement(name = "distributionMedium")
-    private List<DistributionMedium> distributionMediums;
-    @XmlElementWrapper(name = "downloadURLs")
-    @XmlElement(name = "downloadURL")
-    private List<String> downloadURLs;
-    @XmlElementWrapper(name = "accessURLs")
-    @XmlElement(name = "accessURL")
-    private List<String> accessURLs;
-  
-    @XmlElementWrapper(name = "textFormats")
-    @XmlElement(name = "textFormatInfo")
-    private List<TextFormatInfo> textFormats;
-    @XmlElementWrapper(name = "characterEncodings")
-    @XmlElement(name = "characterEncodingInfo")
-    private List<CharacterEncodingInfo> characterEncodings;
-    
-    @XmlElementWrapper(name = "sizes")
-    @XmlElement(name = "sizeInfo")
-    private List<SizeInfo> sizes;
-    //required
-    private RightsInfo rightsInfo;
-    private List<String> copyrightStatements;
-    private List<String> attributionTexts;
-    
-    @XmlElementWrapper(name = "rightsHolders")
-    @XmlElement(name = "rightsHolder")
-    private List<ActorInfo> rightsHolders;
-    private Date availabilityStartDate;
-    private Date availabilityEndDate;
-    private String fee;
-    private List<UserType> userTypes;
+	// required
+	@XmlElementWrapper(name = "distributionMediums")
+	@XmlElement(name = "distributionMedium")
+	private List<DistributionMedium> distributionMediums;
+	
+	@XmlElementWrapper(name = "downloadURLs")
+	@XmlElement(name = "downloadURL")
+	private List<String> downloadURLs;
+	
+	@XmlElementWrapper(name = "accessURLs")
+	@XmlElement(name = "accessURL")
+	private List<String> accessURLs;
 
-    public DatasetDistributionInfo() {
-    }
+	@XmlElementWrapper(name = "textFormats")
+	@XmlElement(name = "textFormatInfo")
+	private List<TextFormatInfo> textFormats;
 
-    public DatasetDistributionInfo(List<DistributionMedium> distributionMediums, RightsInfo rightsInfo) {
-        this.distributionMediums = distributionMediums;
-        this.rightsInfo = rightsInfo;
-    }
+	@XmlElementWrapper(name = "characterEncodings")
+	@XmlElement(name = "characterEncodingInfo")
+	private List<CharacterEncodingInfo> characterEncodings;
 
-    public DatasetDistributionInfo(List<DistributionMedium> distributionMediums, List<String> downloadURLs, List<String> accessURLs,
-                                   List<TextFormatInfo> textFormats, List<CharacterEncodingInfo> characterEncodings, List<SizeInfo> sizes,
-                                   RightsInfo rightsInfo, List<String> copyrightStatements, List<String> attributionTexts,
-                                   List<ActorInfo> rightsHolders, Date availabilityStartDate, Date availabilityEndDate,
-                                   String fee, List<UserType> userTypes) {
-        this.distributionMediums = distributionMediums;
-        this.downloadURLs = downloadURLs;
-        this.accessURLs = accessURLs;
-        this.textFormats = textFormats;
-        this.characterEncodings = characterEncodings;
-        this.sizes = sizes;
-        this.rightsInfo = rightsInfo;
-        this.copyrightStatements = copyrightStatements;
-        this.attributionTexts = attributionTexts;
-        this.rightsHolders = rightsHolders;
-        this.availabilityStartDate = availabilityStartDate;
-        this.availabilityEndDate = availabilityEndDate;
-        this.fee = fee;
-        this.userTypes = userTypes;
-    }
+	@XmlElementWrapper(name = "sizes")
+	@XmlElement(name = "sizeInfo")
+	private List<SizeInfo> sizes;
+	// required
+	private RightsInfo rightsInfo;
+	private List<String> copyrightStatements;
+	private List<String> attributionTexts;
 
-    public List<DistributionMedium> getDistributionMediums() {
-        return distributionMediums;
-    }
+	@XmlElementWrapper(name = "rightsHolders")
+	@XmlElement(name = "rightsHolder")
+	private List<ActorInfo> rightsHolders;
+	private Date availabilityStartDate;
+	private Date availabilityEndDate;
+	private String fee;
+	
+	@XmlElementWrapper(name = "userTypes")
+	@XmlElement(name = "userType")
+	private List<UserType> userTypes;
 
-    public void setDistributionMediums(List<DistributionMedium> distributionMediums) {
-        this.distributionMediums = distributionMediums;
-    }
+	public DatasetDistributionInfo() {
+	}
 
-    public List<String> getDownloadURLs() {
-        return downloadURLs;
-    }
+	public DatasetDistributionInfo(
+			List<DistributionMedium> distributionMediums, RightsInfo rightsInfo) {
+		this.distributionMediums = distributionMediums;
+		this.rightsInfo = rightsInfo;
+	}
 
-    public void setDownloadURLs(List<String> downloadURLs) {
-        this.downloadURLs = downloadURLs;
-    }
+	public DatasetDistributionInfo(
+			List<DistributionMedium> distributionMediums,
+			List<String> downloadURLs, List<String> accessURLs,
+			List<TextFormatInfo> textFormats,
+			List<CharacterEncodingInfo> characterEncodings,
+			List<SizeInfo> sizes, RightsInfo rightsInfo,
+			List<String> copyrightStatements, List<String> attributionTexts,
+			List<ActorInfo> rightsHolders, Date availabilityStartDate,
+			Date availabilityEndDate, String fee, List<UserType> userTypes) {
+		this.distributionMediums = distributionMediums;
+		this.downloadURLs = downloadURLs;
+		this.accessURLs = accessURLs;
+		this.textFormats = textFormats;
+		this.characterEncodings = characterEncodings;
+		this.sizes = sizes;
+		this.rightsInfo = rightsInfo;
+		this.copyrightStatements = copyrightStatements;
+		this.attributionTexts = attributionTexts;
+		this.rightsHolders = rightsHolders;
+		this.availabilityStartDate = availabilityStartDate;
+		this.availabilityEndDate = availabilityEndDate;
+		this.fee = fee;
+		this.userTypes = userTypes;
+	}
 
-    public List<String> getAccessURLs() {
-        return accessURLs;
-    }
+	public List<DistributionMedium> getDistributionMediums() {
+		return distributionMediums;
+	}
 
-    public void setAccessURLs(List<String> accessURLs) {
-        this.accessURLs = accessURLs;
-    }
+	public void setDistributionMediums(
+			List<DistributionMedium> distributionMediums) {
+		this.distributionMediums = distributionMediums;
+	}
 
-    public List<TextFormatInfo> getTextFormats() {
-        return textFormats;
-    }
+	public List<String> getDownloadURLs() {
+		return downloadURLs;
+	}
 
-    public void setTextFormats(List<TextFormatInfo> textFormats) {
-        this.textFormats = textFormats;
-    }
+	public void setDownloadURLs(List<String> downloadURLs) {
+		this.downloadURLs = downloadURLs;
+	}
 
-    public List<CharacterEncodingInfo> getCharacterEncodings() {
-        return characterEncodings;
-    }
+	public List<String> getAccessURLs() {
+		return accessURLs;
+	}
 
-    public void setCharacterEncodings(List<CharacterEncodingInfo> characterEncodings) {
-        this.characterEncodings = characterEncodings;
-    }
+	public void setAccessURLs(List<String> accessURLs) {
+		this.accessURLs = accessURLs;
+	}
 
-    public List<SizeInfo> getSizes() {
-        return sizes;
-    }
+	public List<TextFormatInfo> getTextFormats() {
+		return textFormats;
+	}
 
-    public void setSizes(List<SizeInfo> sizes) {
-        this.sizes = sizes;
-    }
+	public void setTextFormats(List<TextFormatInfo> textFormats) {
+		this.textFormats = textFormats;
+	}
 
-    public RightsInfo getRightsInfo() {
-        return rightsInfo;
-    }
+	public List<CharacterEncodingInfo> getCharacterEncodings() {
+		return characterEncodings;
+	}
 
-    public void setRightsInfo(RightsInfo rightsInfo) {
-        this.rightsInfo = rightsInfo;
-    }
+	public void setCharacterEncodings(
+			List<CharacterEncodingInfo> characterEncodings) {
+		this.characterEncodings = characterEncodings;
+	}
 
-    public List<String> getCopyrightStatements() {
-        return copyrightStatements;
-    }
+	public List<SizeInfo> getSizes() {
+		return sizes;
+	}
 
-    public void setCopyrightStatements(List<String> copyrightStatements) {
-        this.copyrightStatements = copyrightStatements;
-    }
+	public void setSizes(List<SizeInfo> sizes) {
+		this.sizes = sizes;
+	}
 
-    public List<String> getAttributionTexts() {
-        return attributionTexts;
-    }
+	public RightsInfo getRightsInfo() {
+		return rightsInfo;
+	}
 
-    public void setAttributionTexts(List<String> attributionTexts) {
-        this.attributionTexts = attributionTexts;
-    }
+	public void setRightsInfo(RightsInfo rightsInfo) {
+		this.rightsInfo = rightsInfo;
+	}
 
-    public List<ActorInfo> getRightsHolders() {
-        return rightsHolders;
-    }
+	public List<String> getCopyrightStatements() {
+		return copyrightStatements;
+	}
 
-    public void setRightsHolders(List<ActorInfo> rightsHolders) {
-        this.rightsHolders = rightsHolders;
-    }
+	public void setCopyrightStatements(List<String> copyrightStatements) {
+		this.copyrightStatements = copyrightStatements;
+	}
 
-    public Date getAvailabilityStartDate() {
-        return availabilityStartDate;
-    }
+	public List<String> getAttributionTexts() {
+		return attributionTexts;
+	}
 
-    public void setAvailabilityStartDate(Date availabilityStartDate) {
-        this.availabilityStartDate = availabilityStartDate;
-    }
+	public void setAttributionTexts(List<String> attributionTexts) {
+		this.attributionTexts = attributionTexts;
+	}
 
-    public Date getAvailabilityEndDate() {
-        return availabilityEndDate;
-    }
+	public List<ActorInfo> getRightsHolders() {
+		return rightsHolders;
+	}
 
-    public void setAvailabilityEndDate(Date availabilityEndDate) {
-        this.availabilityEndDate = availabilityEndDate;
-    }
+	public void setRightsHolders(List<ActorInfo> rightsHolders) {
+		this.rightsHolders = rightsHolders;
+	}
 
-    public String getFee() {
-        return fee;
-    }
+	public Date getAvailabilityStartDate() {
+		return availabilityStartDate;
+	}
 
-    public void setFee(String fee) {
-        this.fee = fee;
-    }
+	public void setAvailabilityStartDate(Date availabilityStartDate) {
+		this.availabilityStartDate = availabilityStartDate;
+	}
 
-    public List<UserType> getUserTypes() {
-        return userTypes;
-    }
+	public Date getAvailabilityEndDate() {
+		return availabilityEndDate;
+	}
 
-    public void setUserTypes(List<UserType> userTypes) {
-        this.userTypes = userTypes;
-    }
+	public void setAvailabilityEndDate(Date availabilityEndDate) {
+		this.availabilityEndDate = availabilityEndDate;
+	}
+
+	public String getFee() {
+		return fee;
+	}
+
+	public void setFee(String fee) {
+		this.fee = fee;
+	}
+
+	public List<UserType> getUserTypes() {
+		return userTypes;
+	}
+
+	public void setUserTypes(List<UserType> userTypes) {
+		this.userTypes = userTypes;
+	}
 }
 
+class DistributionMediumAdapter extends
+		XmlAdapter<String, DatasetDistributionInfo.DistributionMedium> {
 
-class DistributionMediumAdapter extends XmlAdapter<String, DatasetDistributionInfo.DistributionMedium> {
+	@Override
+	public String marshal(DatasetDistributionInfo.DistributionMedium v)
+			throws Exception {
+		return v != null ? v.getValue() : null;
+	}
 
-    @Override
-    public String marshal(DatasetDistributionInfo.DistributionMedium v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public DatasetDistributionInfo.DistributionMedium unmarshal(String v) throws Exception {
-        return DatasetDistributionInfo.DistributionMedium.forValue(v);
-    }
+	@Override
+	public DatasetDistributionInfo.DistributionMedium unmarshal(String v)
+			throws Exception {
+		return DatasetDistributionInfo.DistributionMedium.forValue(v);
+	}
 }

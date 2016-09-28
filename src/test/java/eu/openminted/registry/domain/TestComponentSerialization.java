@@ -2,6 +2,7 @@ package eu.openminted.registry.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -45,8 +47,8 @@ public class TestComponentSerialization {
 	public void serialize() throws JAXBException {
 		Component component = createComponent();
 
-//		System.out.println("Output:");
-//		marshaller.marshal(component, System.out);
+		System.out.println("Output:");
+		marshaller.marshal(component, System.out);
 
 		StringWriter sw = new StringWriter();
 		marshaller.marshal(component, sw);
@@ -126,14 +128,14 @@ public class TestComponentSerialization {
 
 		component.getMetadataHeaderInfo().setMetadataCreators(new ArrayList<>());
 		component.getMetadataHeaderInfo().getMetadataCreators().add(new RelatedPerson());
-		component.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList("Smith, John"));
+		component.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Smith, John")));
 
 		component.getMetadataHeaderInfo().setRevision("1.23");
 		component.getMetadataHeaderInfo().setLanguages(new ArrayList<>());
 
 		component.getMetadataHeaderInfo().setSourceOfMetadataRecord(new SourceOfMetadataRecord());
 		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().setCollectedFrom(new RelatedRepository());
-		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList("clarin:el"));
+		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList(new LangAttributeField("en-us","clarin:el")));
 		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().setSourceMetadataLink("https://inventory.clarin.gr/resources/browse/ilsp-feature-based-multi-tiered-pos-tagger/9ff47a0e5af111e5a2e0aa3fc8d33ad8f8736d2c68654a37b471475f9f913baa/");
 
 
@@ -145,15 +147,15 @@ public class TestComponentSerialization {
 		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
 
 		component.setResourceIdentificationInfo(new ResourceIdentificationInfo());
-		component.getResourceIdentificationInfo().setResourceNames(Arrays.asList("ILSP Feature-based multi-tiered POS Tagger"));
-		component.getResourceIdentificationInfo().setDescriptions(Arrays.asList("FBT part-of-speech tagger for Greek texts."));
-		component.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList("ilsp_fbt"));
+		component.getResourceIdentificationInfo().setResourceNames(Arrays.asList(new LangAttributeField("en-us","ILSP Feature-based multi-tiered POS Tagger")));
+		component.getResourceIdentificationInfo().setDescriptions(Arrays.asList(new LangAttributeField("en-us","FBT part-of-speech tagger for Greek texts.")));
+		component.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList(new LangAttributeField("en-us","ilsp_fbt")));
 		component.getResourceIdentificationInfo().setResourceIdentifiers(Arrays.asList(new Identifier<ResourceIdentifierSchema>(ResourceIdentifierSchema.HDL, "http://hdl.grnet.gr/11500/ATHENA-0000-0000-23E8-3", null)));
 
 		component.setContactInfo(new ContactInfo());
 		component.getContactInfo().setContactEmail("prokopis@ilsp.gr");
 		component.getContactInfo().setContactPersons(Arrays.asList(new RelatedPerson()));
-		component.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList("Prokopidis, Prokopis"));
+		component.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Prokopidis, Prokopis")));
 
 		component.setComponentTypes(new ArrayList<>());
 		component.getComponentTypes().add("morphologicalTagger");

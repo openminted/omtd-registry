@@ -34,7 +34,7 @@ public class RelatedOrganization {
     //one of the two
     @XmlElementWrapper(name = "organizationNames")
     @XmlElement(name="organizationName")
-    private List<String> organizationNames;
+    private List<LangAttributeField> organizationNames;
     
     @XmlElementWrapper(name = "organizationIdentifiers")
     @XmlElement(name="organizationIdentifier")
@@ -43,11 +43,11 @@ public class RelatedOrganization {
     public RelatedOrganization() {
     }
 
-    public List<String> getOrganizationNames() {
+    public List<LangAttributeField> getOrganizationNames() {
         return organizationNames;
     }
 
-    public void setOrganizationNames(List<String> organizationNames) {
+    public void setOrganizationNames(List<LangAttributeField> organizationNames) {
         this.organizationNames = organizationNames;
     }
 

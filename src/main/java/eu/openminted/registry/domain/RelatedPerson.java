@@ -32,17 +32,17 @@ public class RelatedPerson {
     //one of the two
     @XmlElementWrapper
     @XmlElement(name="personName")
-    private List<String> personNames;
+    private List<LangAttributeField> personNames;
     private List<Identifier<PersonIdentifierSchema>> personIdentifiers;
 
     public RelatedPerson() {
     }
 
-    public List<String> getPersonNames() {
+    public List<LangAttributeField> getPersonNames() {
         return personNames;
     }
 
-    public void setPersonNames(List<String> personNames) {
+    public void setPersonNames(List<LangAttributeField> personNames) {
         this.personNames = personNames;
     }
 

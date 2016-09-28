@@ -15,7 +15,7 @@ public class RelatedGroup {
 
 	@XmlElementWrapper(name = "groupNames")
     @XmlElement(name="groupName")
-    private List<String> groupNames;
+    private List<LangAttributeField> groupNames;
 	
 	@XmlElement(name="relatedOrganization")
     private RelatedOrganization relatedOrganization;
@@ -23,16 +23,16 @@ public class RelatedGroup {
     public RelatedGroup() {
     }
 
-    public RelatedGroup(List<String> groupNames, RelatedOrganization relatedOrganization) {
+    public RelatedGroup(List<LangAttributeField> groupNames, RelatedOrganization relatedOrganization) {
         this.groupNames = groupNames;
         this.relatedOrganization = relatedOrganization;
     }
 
-    public List<String> getGroupNames() {
+    public List<LangAttributeField> getGroupNames() {
         return groupNames;
     }
 
-    public void setGroupNames(List<String> groupNames) {
+    public void setGroupNames(List<LangAttributeField> groupNames) {
         this.groupNames = groupNames;
     }
 
