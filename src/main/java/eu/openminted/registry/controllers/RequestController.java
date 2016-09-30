@@ -615,14 +615,14 @@ public class RequestController {
 						ArrayList<Component> components = new ArrayList<Component>();
 						for(int i=0;i<10 && i < paging.getResults().size();i++){
 							Resource resource = (Resource) paging.getResults().get(i);
-							components.add(Utils.serializeComponent(resource));
+							components.add(Utils.serialize(resource,Component.class));
 						}
 						result.setComponents(components);
 					}else if(j==1){
 						ArrayList<Corpus> corpora = new ArrayList<Corpus>();
 						for(int i=0;i<paging.getTotal();i++){
 							Resource resource = (Resource) paging.getResults().get(i);
-							corpora.add(Utils.serializeCorpus(resource));
+							corpora.add(Utils.serialize(resource, Corpus.class));
 						}
 						result.setCorpora(corpora);
 					}
