@@ -2,14 +2,23 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 /**
  * Created by stefania on 9/5/16.
  */
 public class CreationInfo {
 
+    @XmlElementWrapper(name = "originalSources")
+    @XmlElement(name = "hasOriginalSource")
     private List<RelatedResource> originalSources;
+    
     private ProcessMode creationMode;
     private String creationModeDetails;
+    
+    @XmlElementWrapper(name = "creationSwComponents")
+    @XmlElement(name = "isCreatedBy")
     private List<RelatedResource> creationSwComponents;
 
     public CreationInfo() {

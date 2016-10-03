@@ -1,10 +1,21 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+
+@XmlType(name = "languageVarietyInfoType", propOrder = {
+	    "languageVarietyType",
+	    "languageVarietyName",
+	    "sizePerLanguageVariety"
+	})
 public class LanguageVarietyInfo {
 
+	@XmlJavaTypeAdapter(LanguageVarietyTypeAdapter.class)
     enum LanguageVarietyType {
 
         DIALECT("dialect"),
@@ -19,6 +30,15 @@ public class LanguageVarietyInfo {
 
         public String getValue() {
             return value;
+        }
+        
+        public static LanguageVarietyType forValue(String value) {
+            for (LanguageVarietyType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
         }
     }
 
@@ -64,5 +84,19 @@ public class LanguageVarietyInfo {
 
     public void setSizePerLanguageVariety(SizeInfo sizePerLanguageVariety) {
         this.sizePerLanguageVariety = sizePerLanguageVariety;
+    }
+}
+
+
+class LanguageVarietyTypeAdapter extends XmlAdapter<String, LanguageVarietyInfo.LanguageVarietyType> {
+
+    @Override
+    public String marshal(LanguageVarietyInfo.LanguageVarietyType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public LanguageVarietyInfo.LanguageVarietyType unmarshal(String v) throws Exception {
+        return LanguageVarietyInfo.LanguageVarietyType.forValue(v);
     }
 }

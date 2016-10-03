@@ -24,6 +24,10 @@ public class ObjectFactory {
 	public Corpus createCorpus() {
 		return new Corpus();
 	}
+	
+	public LanguageDescription create() {
+		return new LanguageDescription();
+	}
 
 	private <T> T createInstance(Class<T> anInterface) {
 		return (T) Proxy.newProxyInstance(anInterface.getClassLoader(), new Class[] {anInterface}, new InterfaceInvocationHandler());

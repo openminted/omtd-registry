@@ -15,6 +15,7 @@ public class RelatedResource {
     @XmlElementWrapper(name = "resourceIdentifiers")
     @XmlElement(name="resourceIdentifier")
     private List<Identifier<ResourceIdentifierSchema>> resourceIdentifiers;
+    
     @XmlElementWrapper(name="resourceNames")
     @XmlElement(name="resourceName")
     private List<LangAttributeField> resourceNames;

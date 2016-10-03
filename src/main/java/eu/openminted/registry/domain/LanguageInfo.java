@@ -2,14 +2,26 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlType(name = "languageInfo", propOrder = {
+	    "language",
+	    "sizePerLanguage",
+	    "languageVarieties"
+	})
 public class LanguageInfo {
 
     //required
     private Language language;
     private SizeInfo sizePerLanguage;
+    
+    @XmlElementWrapper(name = "languageVarieties")
+    @XmlElement(name = "languageVarietyInfo")
     private List<LanguageVarietyInfo> languageVarieties;
 
     public LanguageInfo() {

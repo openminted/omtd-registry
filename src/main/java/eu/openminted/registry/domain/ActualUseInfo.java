@@ -2,11 +2,27 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+
+@XmlType(name = "actualUseInfo", propOrder = {
+	    "actualUse",
+	    "useNlpApplications",
+	    "usageReports",
+	    "derivedResources",
+	    "usageProjects",
+	    "actualUseDetails"
+	})
 public class ActualUseInfo {
 
+	@XmlJavaTypeAdapter(ActualUseAdapter.class)
     enum ActualUse {
 
         HUMAN_USE("humanUse"),
@@ -21,15 +37,37 @@ public class ActualUseInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ActualUse forValue(String value) {
+            for (ActualUse ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
     private ActualUse actualUse;
     //TODO this should be made into an enum (use useNLPSpecific)
+    
+    @XmlElementWrapper(name = "useNlpApplication")
+    @XmlElement(name = "useNLPSpecific")
     private List<String> useNlpApplications;
+    
+    @XmlElementWrapper(name = "usageReports")
+    @XmlElement(name = "usageReport")
     private List<RelatedDocument> usageReports;
+    
+    @XmlElementWrapper(name = "derivedResources")
+    @XmlElement(name = "derivedResource")
     private List<RelatedResource> derivedResources;
+    
+    @XmlElementWrapper(name = "usageProjects")
+    @XmlElement(name = "usageProject")
     private List<RelatedProject> usageProjects;
+    
     private String actualUseDetails;
 
     public ActualUseInfo() {
@@ -95,5 +133,18 @@ public class ActualUseInfo {
 
     public void setActualUseDetails(String actualUseDetails) {
         this.actualUseDetails = actualUseDetails;
+    }
+}
+
+class ActualUseAdapter extends XmlAdapter<String, ActualUseInfo.ActualUse> {
+
+    @Override
+    public String marshal(ActualUseInfo.ActualUse v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ActualUseInfo.ActualUse unmarshal(String v) throws Exception {
+        return ActualUseInfo.ActualUse.forValue(v);
     }
 }

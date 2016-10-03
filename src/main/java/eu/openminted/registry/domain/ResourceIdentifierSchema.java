@@ -27,7 +27,7 @@ public enum ResourceIdentifierSchema implements IdentifierSchema {
     PMC("pmc"),
     PMID("pmid"),
     OTHER("other");
-
+    
     private String value;
 
     ResourceIdentifierSchema(String value) {

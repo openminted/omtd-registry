@@ -2,6 +2,7 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 /**
@@ -11,7 +12,9 @@ import java.util.List;
 public class ModalityInfo {
 
     //required
+	@XmlElement(name = "modalityType")
     private List<ModalityType> modalityTypes;
+    
     private String modalityTypeDetails;
     private SizeInfo sizePerModality;
 

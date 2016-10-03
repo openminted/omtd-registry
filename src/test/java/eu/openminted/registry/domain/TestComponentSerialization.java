@@ -1,8 +1,5 @@
 package eu.openminted.registry.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,12 +15,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by antleb on 9/6/16.
@@ -44,38 +37,16 @@ public class TestComponentSerialization {
 	}
 
 	@Test
-	public void serialize() throws JAXBException {
-		Component component = createComponent();
-
-		System.out.println("Output:");
-		marshaller.marshal(component, System.out);
-
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(component, sw);
-
-		Assert.assertEquals(true, isValidComponentXml(sw.toString()));
-	}
-
-	@Test
-	public void compare1() throws JAXBException {
-		Component component = createComponent();
-
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(component, sw);
-
-		Component c2 = (Component) unmarshaller.unmarshal(new StringReader(sw.toString()));
-		StringWriter sw2 = new StringWriter();
-		marshaller.marshal(c2, sw2);
-
-		Assert.assertEquals(sw.toString(), sw2.toString());
-	}
-
-	@Test
 	public void testUnmarshal() throws JAXBException {
 		Component component = (Component) unmarshaller.unmarshal(new StringReader(componentXml));
-
+		StringWriter sw = new StringWriter();
+		System.out.println(componentXml);
+		System.out.println("MARSHALED");
+		marshaller.marshal(component, sw);
+		
 		Assert.assertEquals("ms776482", component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId());
 		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getDistributionInfos().get(0).getOperatingSystem());
+		Assert.assertTrue(isValidComponentXml(sw.toString()));
 	}
 
 //	@Test
@@ -86,20 +57,6 @@ public class TestComponentSerialization {
 		marshaller.marshal(component, sw);
 
 		Assert.assertEquals(componentXml, sw.toString());
-	}
-
-	@Test
-	public void testJson() throws IOException {
-		Component component = createComponent();
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-		StringWriter sw = new StringWriter();
-
-		mapper.writeValue(sw, component);
-
-//		System.out.println(sw.toString());
 	}
 
 	private boolean isValidComponentXml(String xml) {
@@ -115,58 +72,6 @@ public class TestComponentSerialization {
 		}
 
 		return result.isValid();
-	}
-
-	private Component createComponent() {
-		ObjectFactory of = new ObjectFactory();
-
-		Component component = of.createComponent();
-
-		component.setMetadataHeaderInfo(new MetadataHeaderInfo());
-
-		component.getMetadataHeaderInfo().setMetadataCreationDate(new Date());
-
-		component.getMetadataHeaderInfo().setMetadataCreators(new ArrayList<>());
-		component.getMetadataHeaderInfo().getMetadataCreators().add(new RelatedPerson());
-		component.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Smith, John")));
-
-		component.getMetadataHeaderInfo().setRevision("1.23");
-		component.getMetadataHeaderInfo().setLanguages(new ArrayList<>());
-
-		component.getMetadataHeaderInfo().setSourceOfMetadataRecord(new SourceOfMetadataRecord());
-		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().setCollectedFrom(new RelatedRepository());
-		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList(new LangAttributeField("en-us","clarin:el")));
-		component.getMetadataHeaderInfo().getSourceOfMetadataRecord().setSourceMetadataLink("https://inventory.clarin.gr/resources/browse/ilsp-feature-based-multi-tiered-pos-tagger/9ff47a0e5af111e5a2e0aa3fc8d33ad8f8736d2c68654a37b471475f9f913baa/");
-
-
-		component.getMetadataHeaderInfo().setMetadataLastUpdated(new Date());
-
-		component.getMetadataHeaderInfo().setMetadataRecordIdentifier(new Identifier<>());
-		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setId("id");
-		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setSchema(MetadataHeaderInfo.MetadataIdentifierSchema.URL);
-		component.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
-
-		component.setResourceIdentificationInfo(new ResourceIdentificationInfo());
-		component.getResourceIdentificationInfo().setResourceNames(Arrays.asList(new LangAttributeField("en-us","ILSP Feature-based multi-tiered POS Tagger")));
-		component.getResourceIdentificationInfo().setDescriptions(Arrays.asList(new LangAttributeField("en-us","FBT part-of-speech tagger for Greek texts.")));
-		component.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList(new LangAttributeField("en-us","ilsp_fbt")));
-		component.getResourceIdentificationInfo().setResourceIdentifiers(Arrays.asList(new Identifier<ResourceIdentifierSchema>(ResourceIdentifierSchema.HDL, "http://hdl.grnet.gr/11500/ATHENA-0000-0000-23E8-3", null)));
-
-		component.setContactInfo(new ContactInfo());
-		component.getContactInfo().setContactEmail("prokopis@ilsp.gr");
-		component.getContactInfo().setContactPersons(Arrays.asList(new RelatedPerson()));
-		component.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList(new LangAttributeField("en-us","Prokopidis, Prokopis")));
-
-		component.setComponentTypes(new ArrayList<>());
-		component.getComponentTypes().add("morphologicalTagger");
-
-		component.setDistributionInfos(Arrays.asList(new ComponentDistributionInfo()));
-		component.getDistributionInfos().get(0).setComponentDistributionMedium(ComponentDistributionInfo.ComponentDistributionMedium.WEB_SERVICE);
-		component.getDistributionInfos().get(0).setRightsInfo(new RightsInfo());
-		component.getDistributionInfos().get(0).getRightsInfo().setLicenseInfos(Arrays.asList(new LicenseInfo()));
-		component.getDistributionInfos().get(0).getRightsInfo().getLicenseInfos().get(0).setLicense(LicenseInfo.License.APACHE_LICENSE_2_0);
-
-		return component;
 	}
 
 	private static String componentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
