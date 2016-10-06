@@ -1,9 +1,12 @@
 package eu.openminted.registry.controllers;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,31 +30,66 @@ public class CorpusController {
 	   SearchService searchService;
 	  
 	    @RequestMapping(value = "/request/corpus/{id}", method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType, @PathVariable("id") String id) {  
+	    public ResponseEntity<String> getCorpus(@PathVariable("id") String id) {  
 	    	
 	    	ResponseEntity<String> responseEntity;
 	    	Paging paging = null;
 	    	
 	    	try {
-				paging = searchService.search("corpus", "omtdId any "+id, 0, 0, new String[0]);
+				paging = searchService.search("corpora", "omtdid any "+id, 0, 0, new String[0]);
 			} catch (ServiceException e) {
 				return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 	    	
 	    	Corpus corpus = new Corpus();
 	    	
-	    	if(paging.getResults().size()==1){//resource found
+	    	if(paging.getResults().size()!=0){//resource found
 	    		
 	    		Resource resource = (Resource) paging.getResults().get(0);
-//	    		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//	    		////////////SERIALIZE IT//////////////////
-//	    		^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	    		
+	    		corpus = Utils.serializeCorpus((Resource) paging.getResults().get(0));
+			       if(corpus == null){
+			    	   return new ResponseEntity<String>("Error serializing corpus",HttpStatus.INTERNAL_SERVER_ERROR);
+			       }
 	    	}else{//resource not found
 	    		return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
 	    	}
 	    	
 	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(corpus),HttpStatus.ACCEPTED);
+
+	    	return responseEntity;
+	    } 
+	    
+	    @RequestMapping(value = "/request/corpus/", method = RequestMethod.POST, headers = "Accept=application/json")  
+	    public ResponseEntity<String> addCorpus(@RequestBody Corpus corpus) {  
+	    	
+	    	ResponseEntity<String> responseEntity;
+	    	Paging paging = null;
+	    	
+	    	Resource resource = new Resource();
+	    	
+	    	String serialized = new String();
+	    	serialized = Utils.unserializeCorpus(corpus);
+	    	
+	    	if(!serialized.equals("failed")){
+	    		resource.setPayload(serialized);
+	    	}else{
+	    		responseEntity = new ResponseEntity<String>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+	    		return responseEntity;
+	    	}
+	    	
+	    	resource.setCreationDate(new Date());
+	    	resource.setModificationDate(new Date());
+	    	resource.setPayloadFormat("xml");
+	    	resource.setResourceType("corpora");
+	    	resource.setVersion("not_set");
+	    	resource.setId("wont be saved");
+	    
+	    	try {
+				resourceService.addResource(resource);
+				responseEntity = new ResponseEntity<String>("", HttpStatus.ACCEPTED);
+			} catch (ServiceException e) {
+				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 
 	    	return responseEntity;
 	    } 
