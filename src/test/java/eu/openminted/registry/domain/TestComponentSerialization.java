@@ -45,7 +45,7 @@ public class TestComponentSerialization {
 		marshaller.marshal(component, sw);
 		
 		Assert.assertEquals("ms776482", component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId());
-		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getComponentInfo().getDistributionInfos().get(0).getOperatingSystem());
+		Assert.assertEquals(ComponentDistributionInfo.OperatingSystem.OS_INDEPENDENT, component.getComponentInfo().getDistributionInfos().get(0).getOperatingSystem().get(0));
 		Assert.assertTrue(isValidComponentXml(sw.toString()));
 	}
 
