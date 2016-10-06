@@ -72,19 +72,7 @@ public class UserController {
 	    		responseEntity = new ResponseEntity<String>("Multiple entries +" + Utils.objToJson(paging), HttpStatus.FORBIDDEN);
 	    	}
 	    	
-//	    	User user = new User();
-//	    	user.setAffiliation("Athena Research Center");
-//	    	user.setId(15);
-//	    	user.setUsername(username);
-//	    	user.setEmail("jdiplas@gmail.com");
-//	    	user.setJoin_date("20-07-2016");
-//	    	user.setName("John");
-//	    	user.setSurname("Diplas");
-//	    	user.setPassword("********");
-//	    	ArrayList<String> roles = new ArrayList<>();
-//	    	roles.add("admin");
-//	    	user.setRoles(roles);
-//	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(user),HttpStatus.ACCEPTED);
+
 
 	    	return responseEntity;
 	    } 
