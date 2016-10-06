@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2642406</metadataRecordIdentifier>
+    <metadataCreationDate>2015-02-20</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Bartis Imre</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2015-02-20</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="fi">Connexorin englannin jäsennin</resourceName>
+        <resourceName lang="en">Connexor Machinese Syntax for English</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="fi">Työkalu on saatavilla Kielipankin sovelluspalvelimella (taito-shell.csc.fi).
+
+en-fdg ohjelma on englanninkielisen tekstin (morfologinen ja) syntaktinen jäsennysohjelma, joka jäsentää tekstiä virkkeittäin Lucien Tesnierin klassillisen dependenssisyntaksin periaatteiden tapaan. Työkalu on käytettävissä Kielipankin sovelluspalvelimella (taito-shell.csc.fi). Ohjeet Taito-palvelimen käyttöön: https://kitwiki.csc.fi/twiki/bin/view/FinCLARIN/KielipankkiOhjeetSovelluspalvelinKirjautuminen.</description>
+        <description lang="en">The tool is available in Kielipankki - the Language Bank of Finland on the Taito server at CSC - Center for Scientific Computing (taito-shell.csc.fi).
+
+en-fdg analyzes English text according to a functional depencency grammar. The output is either in text format or a proprietary XML format. The Connexor parsers are available on Taito-shell (user guide: https://research.csc.fi/taito-shell-user-guide) and accessible to Language Bank users (members of the group kieli).
+
+
+
+Version
+
+Connexor FDG 3.9
+
+Copyright
+
+Machinese Syntax
+Connexor FDG3 3.9 for English                www.connexor.com
+(c) Connexor oy, 1997-2006               support@connexor.com
+Usage
+
+Input:
+
+Note that fi-fdg expects latin1 as input encoding, so you need to convert from and to Taito-shell's utf8 encoding, if your text contains for example umlauts. See "fi-fdg" for an example.
+
+[c305]&gt; echo "This is a test." | en-fdg
+
+Output:
+
+&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+&lt;!DOCTYPE analysis SYSTEM "http://www.connexor.com/dtds/4.0/fdg3.dtd"&gt;
+&lt;analysis&gt;&lt;sentence id="w1"&gt;
+&lt;token id="w2"&gt; &lt;text&gt;This&lt;/text&gt;       &lt;lemma&gt;this&lt;/lemma&gt;     &lt;depend head="w3"&gt;subj:&lt;/depend&gt;        &lt;tags&gt;&lt;syntax&gt;@SUBJ %NH&lt;/syntax&gt; &lt;morpho&gt;PRON DEM SG&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w3"&gt; &lt;text&gt;is&lt;/text&gt; &lt;lemma&gt;be&lt;/lemma&gt;       &lt;depend head="w1"&gt;main:&lt;/depend&gt;        &lt;tags&gt;&lt;syntax&gt;@+FMAINV %VA&lt;/syntax&gt; &lt;morpho&gt;V PRES SG3&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w4"&gt; &lt;text&gt;a&lt;/text&gt;  &lt;lemma&gt;a&lt;/lemma&gt;        &lt;depend head="w5"&gt;det:&lt;/depend&gt; &lt;tags&gt;&lt;syntax&gt;@DN&amp;gt; %&amp;gt;N&lt;/syntax&gt; &lt;morpho&gt;DET SG&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w5"&gt; &lt;text&gt;test&lt;/text&gt;       &lt;lemma&gt;test&lt;/lemma&gt;     &lt;depend head="w3"&gt;comp:&lt;/depend&gt;        &lt;tags&gt;&lt;syntax&gt;@PCOMPL-S %NH&lt;/syntax&gt; &lt;morpho&gt;N NOM SG&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w6"&gt; &lt;text&gt;.&lt;/text&gt;  &lt;lemma&gt;.&lt;/lemma&gt;&lt;/token&gt;
+&lt;/sentence&gt;
+&lt;/analysis&gt;
+
+Help, Manuals and Documentation
+
+en-fdg is included in the module kieli which is loaded as a default for all language research users. The module can be loaded manually with the command
+
+module load kieli
+
+help commands:
+
+fi-fdg --help
+
+further information:
+
+usage: fi-fdg [-flags] files
+ -h             -- print this page
+ -v             -- print version
+ -k --keep-sgml -- let markup codes and comments pass through the parser
+ --xml          -- print output as XML (only in FDG; default)
+ --text         -- print output as text
+ --dtd          -- print XML output with the DTD (only in FDG)
+ --tagset       -- output starts with the tag descriptions (in XML; only in FDG)
+ --tagset-dtd   -- with the DTD for the tag descriptions (only in FDG)
+ --custom=file  -- apply a custom lexicon
+ --port=number  -- start the server mode and listen to the given port
+ --message      -- each message is analysed separately
+</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">en-fdg</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2642406</identifier>
+        <identifier resourceIdentifierSchemeName="other">http://urn.fi/urn:nbn:fi:lb-2015022003</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">The Language Bank of Finland User support at CSC - IT Center for Science Ltd.</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <usageInfo>
+      <foreseenUseInfos>
+        <foreseenUseInfo>
+          <foreseenUse>nlpApplications</foreseenUse>
+          <useNlpApplications>
+            <useNLPSpecific>shallowParsing</useNLPSpecific>
+          </useNlpApplications>
+        </foreseenUseInfo>
+      </foreseenUseInfos>
+      <actualUseInfos>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>shallowParsing</useNLPSpecific>
+          </useNlpApplications>
+        </actualUseInfo>
+      </actualUseInfos>
+    </usageInfo>
+    <componentTypes>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>CLARIN_RES</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedOrganization>
+              <organizationNames>
+                <organizationName lang="en">Connexor Oy</organizationName>
+              </organizationNames>
+            </relatedOrganization>
+          </rightsHolder>
+        </rightsHolders>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes>
+        <resourceType>corpus</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <languages>
+        <language>
+          <languageTag>en</languageTag>
+          <languageId>en</languageId>
+        </language>
+      </languages>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </inputContentResourceInfo>
+    <outputResourceInfo>
+      <resourceTypes/>
+      <mediaType>text</mediaType>
+      <languages>
+        <language>
+          <languageTag>en</languageTag>
+          <languageId>en</languageId>
+        </language>
+      </languages>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </outputResourceInfo>
+  </componentInfo>
+</componentMetadataRecord>

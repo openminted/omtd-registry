@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<corpusMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Corpus.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1906137</metadataRecordIdentifier>
+    <metadataCreationDate>2012-06-30</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Pęzik Piotr</personName>
+        </personNames>
+      </metadataCreator>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Dróżdż Łukasz</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2012-06-30</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <corpusInfo>
+    <resourceType>corpus</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">OSW Polish-English parallel corpus (CC-BY-NC)</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">A subset of the PELCRA Polish parallel corpora licensed under the CC-BY-NC license. This resource contains 757 Polish-English texts from the Centre for Eastern Studies (OSW) website. The texts are sentence-aligned with the mAligna aligner using the Church &amp; Gale algorithm. The texts are provided as TEI P5-compliant XML files with custom PELCRA extensions and in the XLIFF format.</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">PELCRA-PAR-4</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1906137</identifier>
+        <identifier resourceIdentifierSchemeName="other">509</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Dróżdż Łukasz</personName>
+          </personNames>
+        </contactPerson>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Pęzik Piotr</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>1.0</version>
+      <revision>compilation of the corpus</revision>
+    </versionInfo>
+    <validationInfos>
+      <validationInfo>
+        <validated>true</validated>
+        <validationType>formal</validationType>
+        <validationMode>automatic</validationMode>
+        <validationModeDetails>Validation of the XML structure in accordance with the TEI P5 and XLIFF schemas with custom PELCRA extensions.</validationModeDetails>
+        <validationExtent>full</validationExtent>
+        <sizePerValidation>
+          <size>1432000</size>
+          <sizeUnit>words</sizeUnit>
+        </sizePerValidation>
+      </validationInfo>
+    </validationInfos>
+    <resourceDocumentationInfo/>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="und">Pęzik</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="und">Dróżdż</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+        <resourceCreator>
+          <relatedOrganization>
+            <organizationNames>
+              <organizationName lang="und">University of Łódź</organizationName>
+            </organizationNames>
+          </relatedOrganization>
+        </resourceCreator>
+      </resourceCreators>
+      <fundingProjects>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="und">Central and South-East European Resources</projectName>
+          </projectNames>
+        </fundingProject>
+      </fundingProjects>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <downloadURLs>
+          <downloadURL>http://pelcra.pl/res/parallel/pelcra-par-4</downloadURL>
+        </downloadURLs>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>CC-BY-NC</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+              <conditionsOfUse>attribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts>
+          <attributionText lang="und">Pęzik P., Ogrodniczuk M., Przepiórkowski A (2011). Parallel and spoken corpora in an open repository of Polish language resources. Human Language Technologies as a Challenge for Computer Science and Linguistics. LTC Poznań 2011.</attributionText>
+        </attributionTexts>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedOrganization>
+              <organizationNames>
+                <organizationName lang="und">Ośrodek Studiów Wschodnich</organizationName>
+              </organizationNames>
+            </relatedOrganization>
+          </rightsHolder>
+        </rightsHolders>
+        <availabilityStartDate>2012-06-30</availabilityStartDate>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <corpusSubtypeSpecificInfo>
+      <annotatedCorpusInfo>
+        <corpusSubtype>annotatedCorpus</corpusSubtype>
+        <corpusMediaParts>
+          <corpusTextParts>
+            <corpusTextPartInfo>
+              <mediaType>text</mediaType>
+              <lingualityInfo>
+                <lingualityType>bilingual</lingualityType>
+                <multilingualityType>parallel</multilingualityType>
+                <multilingualityTypeDetails>The texts were aligned on a sentence level using the statistical aligner Maligna (http://align.sourceforge.net).</multilingualityTypeDetails>
+              </lingualityInfo>
+              <languages>
+                <languageInfo>
+                  <language>
+                    <languageTag>en</languageTag>
+                    <languageId>en</languageId>
+                    <scriptId>Latn</scriptId>
+                  </language>
+                  <sizePerLanguage>
+                    <size>796000</size>
+                    <sizeUnit>words</sizeUnit>
+                  </sizePerLanguage>
+                  <languageVarieties/>
+                </languageInfo>
+                <languageInfo>
+                  <language>
+                    <languageTag>pl</languageTag>
+                    <languageId>pl</languageId>
+                    <scriptId>Latn</scriptId>
+                  </language>
+                  <sizePerLanguage>
+                    <size>635000</size>
+                    <sizeUnit>words</sizeUnit>
+                  </sizePerLanguage>
+                  <languageVarieties/>
+                </languageInfo>
+              </languages>
+              <modalities>
+                <modalityInfo>
+                  <modalityType>writtenLanguage</modalityType>
+                  <sizePerModality>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerModality>
+                </modalityInfo>
+              </modalities>
+              <sizes>
+                <sizeInfo>
+                  <size>757</size>
+                  <sizeUnit>texts</sizeUnit>
+                </sizeInfo>
+                <sizeInfo>
+                  <size>1432000</size>
+                  <sizeUnit>words</sizeUnit>
+                </sizeInfo>
+              </sizes>
+              <textFormats>
+                <textFormatInfo>
+                  <mimeType>text/xml</mimeType>
+                  <sizePerTextFormat>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerTextFormat>
+                </textFormatInfo>
+              </textFormats>
+              <characterEncodings>
+                <characterEncodingInfo>
+                  <characterEncoding>UTF-8</characterEncoding>
+                  <sizePerCharacterEncoding>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerCharacterEncoding>
+                </characterEncodingInfo>
+              </characterEncodings>
+              <domains>
+                <domainInfo>
+                  <domain classificationSchemeName="other">science</domain>
+                  <sizePerDomain>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerDomain>
+                </domainInfo>
+              </domains>
+              <textClassifications/>
+              <timeClassifications>
+                <timeCoverageInfo>
+                  <timeCoverage>2003-2012</timeCoverage>
+                  <sizePerTimeCoverage>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerTimeCoverage>
+                </timeCoverageInfo>
+              </timeClassifications>
+              <geographicClassifications>
+                <geographicCoverageInfo>
+                  <geographicCoverage>Europe, Asia</geographicCoverage>
+                  <sizePerGeographicCoverage>
+                    <size>757</size>
+                    <sizeUnit>texts</sizeUnit>
+                  </sizePerGeographicCoverage>
+                </geographicCoverageInfo>
+              </geographicClassifications>
+              <creationInfo>
+                <creationMode>mixed</creationMode>
+                <creationModeDetails>The texts were acquired using a custom-built web crawler. Semi-automatic scripts were used to pipeline text cleanup, segmentation, alignment and import/export procedures.</creationModeDetails>
+              </creationInfo>
+            </corpusTextPartInfo>
+          </corpusTextParts>
+          <annotations>
+            <annotationInfo>
+              <annotationLevel>segmentation</annotationLevel>
+              <annotationStandoff>false</annotationStandoff>
+              <annotationMode>automatic</annotationMode>
+              <sizePerAnnotation>
+                <size>757</size>
+                <sizeUnit>texts</sizeUnit>
+              </sizePerAnnotation>
+              <annotators>
+                <annotator>
+                  <relatedPerson>
+                    <personNames>
+                      <personName lang="und">Pęzik</personName>
+                    </personNames>
+                  </relatedPerson>
+                </annotator>
+                <annotator>
+                  <relatedPerson>
+                    <personNames>
+                      <personName lang="und">Dróżdż</personName>
+                    </personNames>
+                  </relatedPerson>
+                </annotator>
+              </annotators>
+            </annotationInfo>
+            <annotationInfo>
+              <annotationLevel>alignment</annotationLevel>
+              <theoreticModel>Church &amp; Gale algorithm (Gale, William A.; Church, Kenneth W. (1993), "A Program for Aligning Sentences in Bilingual Corpora", Computational Linguistics 19 (1): 75–102)</theoreticModel>
+              <annotationMode>automatic</annotationMode>
+              <sizePerAnnotation>
+                <size>757</size>
+                <sizeUnit>texts</sizeUnit>
+              </sizePerAnnotation>
+              <annotators>
+                <annotator>
+                  <relatedPerson>
+                    <personNames>
+                      <personName lang="und">Pęzik</personName>
+                    </personNames>
+                  </relatedPerson>
+                </annotator>
+                <annotator>
+                  <relatedPerson>
+                    <personNames>
+                      <personName lang="und">Dróżdż</personName>
+                    </personNames>
+                  </relatedPerson>
+                </annotator>
+              </annotators>
+            </annotationInfo>
+          </annotations>
+        </corpusMediaParts>
+      </annotatedCorpusInfo>
+    </corpusSubtypeSpecificInfo>
+  </corpusInfo>
+</corpusMetadataRecord>

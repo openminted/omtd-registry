@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2638776</metadataRecordIdentifier>
+    <metadataCreationDate>2013-02-05</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Ahlberg Malin</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-02-05</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="swe">Svenskt ordnät</resourceName>
+        <resourceName lang="eng">The Swedish Wordnet</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="swe"> Svenskt OrdNät är ett betydelsebaserat svenskt lexikon på dator som kan kopplas till ett antal parallella lexikon för andra språk.</description>
+        <description lang="eng">The Swedish Wordnet</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="swe">Svenskt ordnät</resourceShortName>
+        <resourceShortName lang="eng">The Swedish Wordnet</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2638776</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Viberg Åke</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <componentTypes>
+      <componentType>lexiconViewer</componentType>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <downloadURLs>
+          <downloadURL>http://www2.lingfil.uu.se/swordnet_test/</downloadURL>
+        </downloadURLs>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>nonStandardLicenceTerms</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders/>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes/>
+      <mediaType>text</mediaType>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes/>
+    </inputContentResourceInfo>
+  </componentInfo>
+</componentMetadataRecord>

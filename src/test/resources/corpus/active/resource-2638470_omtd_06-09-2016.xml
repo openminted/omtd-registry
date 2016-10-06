@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<corpusMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Corpus.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2638470</metadataRecordIdentifier>
+    <metadataCreationDate>2013-02-05</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Ahlberg Malin</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-02-05</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <corpusInfo>
+    <resourceType>corpus</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="swe">Den Svenska Trädbanken</resourceName>
+        <resourceName lang="eng">Swedish Treebank</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="swe">En syntaktisk analyserad korpus av svensk text</description>
+        <description lang="eng">A syntactically annotated corpus of Swedish</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="swe">Den Svenska TrÃ¤dbanken</resourceShortName>
+        <resourceShortName lang="eng">Swedish Treebank</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2638470</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Nivre Joakim</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <downloadURLs>
+          <downloadURL>http://stp.lingfil.uu.se/~nivre/swedish_treebank/</downloadURL>
+        </downloadURLs>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>nonStandardLicenceTerms</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <corpusSubtypeSpecificInfo>
+      <annotatedCorpusInfo>
+        <corpusSubtype>annotatedCorpus</corpusSubtype>
+        <corpusMediaParts>
+          <corpusTextParts>
+            <corpusTextPartInfo>
+              <mediaType>text</mediaType>
+              <lingualityInfo>
+                <lingualityType>monolingual</lingualityType>
+              </lingualityInfo>
+              <languages>
+                <languageInfo>
+                  <language>
+                    <languageTag>sv</languageTag>
+                    <languageId>sv</languageId>
+                    <scriptId>Latn</scriptId>
+                  </language>
+                  <languageVarieties/>
+                </languageInfo>
+              </languages>
+              <modalities/>
+              <sizes>
+                <sizeInfo>
+                  <size>22</size>
+                  <sizeUnit>kb</sizeUnit>
+                </sizeInfo>
+              </sizes>
+              <textFormats/>
+              <characterEncodings/>
+              <domains/>
+              <textClassifications/>
+              <timeClassifications/>
+              <geographicClassifications/>
+            </corpusTextPartInfo>
+          </corpusTextParts>
+          <annotations>
+            <annotationInfo>
+              <annotationLevel>syntacticAnnotation-dependencyTrees</annotationLevel>
+              <annotators/>
+            </annotationInfo>
+          </annotations>
+        </corpusMediaParts>
+      </annotatedCorpusInfo>
+    </corpusSubtypeSpecificInfo>
+  </corpusInfo>
+</corpusMetadataRecord>

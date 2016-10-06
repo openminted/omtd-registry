@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2642290</metadataRecordIdentifier>
+    <metadataCreationDate>2015-02-20</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Bartis Imre</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2015-02-20</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="fi">Connexorin ruotsin jäsennin</resourceName>
+        <resourceName lang="en">Connexor Machinese Syntax for Swedish</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="fi">Työkaly on saatavilla Kielipankin sovelluspalvelimella (taito-shell.csc.fi).
+
+Ohjelma sv-fdg on ruotsinkielisen tekstin (morfologinen ja) syntaktinen jäsennysohjelma, joka jäsentää tekstiä virkkeittäin Lucien Tesnierin klassillisen dependenssisyntaksin periaatteiden tapaan. Työkalu on käytettävissä Kielipankin sovelluspalvelimella (taito-shell.csc.fi). Ohjeet Taito-palvelimen käyttöön: https://kitwiki.csc.fi/twiki/bin/view/FinCLARIN/KielipankkiOhjeetSovelluspalvelinKirjautuminen.</description>
+        <description lang="en">The tool is available in Kielipankki - the Language Bank of Finland on the Taito server at CSC - Center for Scientific Computing (taito-shell.csc.fi).
+
+sv-fdg analyses Swedish text according to a functional dependency grammar. The output is either in text format or a proprietary XML format. The Connexor parsers are available on Taito-shell (user guide: https://research.csc.fi/taito-shell-user-guide) and accessible to Language Bank users (members of the group kieli).
+
+ersion
+
+Connexor FDG 3.8
+
+Copyright
+
+Machinese Syntax
+Connexor FDG3 3.8 for Swedish              www.connexor.com
+(c) Conexor oy, 1997-2002              support@connexor.com
+Usage
+
+Example 1
+
+Input
+
+Note that sv-fdg expects latin1 as input encoding, so we need to convert from and to Taito-shell's utf8 encoding. 
+
+[c305]$ echo "Jag har en hund. Hunden är min." | iconv -f utf8 -t latin1 | sv-fdg --text | iconv -f latin1 -t utf8
+
+Output
+
+1       Jag     jag     subj&gt;2  @NH PRON Pers SG NOM
+2       har     ha      main&gt;0  @MAIN V ACT IND PRES
+3       en      en      det&gt;4   @PREMOD DET Art Indef UTR SG NOM
+4       hund    hund    obj&gt;2   @NH N Indef UTR SG NOM
+5       .       .
+6       &lt;s&gt;     &lt;s&gt;
+1       Hunden  hund    subj&gt;2  @NH N Def UTR SG NOM
+2       är      vara            @MAIN V ACT IND PRES
+3       min     min     comp&gt;2  @NH N Indef UTR SG NOM
+4       .       .
+5       &lt;s&gt;     &lt;s&gt;
+
+Example 2
+
+Input
+
+[hippu1.csc.fi]$ echo "Jag har en hund. Hunden är min." | sv-fdg
+
+Output
+
+&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+&lt;!DOCTYPE analysis SYSTEM "http://www.connexor.com/dtds/4.0/fdg3.dtd"&gt;
+&lt;analysis&gt;&lt;sentence id="w1"&gt;
+&lt;token id="w2"&gt; &lt;text&gt;Jag&lt;/text&gt;        &lt;lemma&gt;jag&lt;/lemma&gt;      &lt;depend head="w3"&gt;subj&lt;/depend&gt; &lt;tags&gt;&lt;syntax&gt;@NH&lt;/syntax&gt; &lt;morpho&gt;PRON Pers SG NOM&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w3"&gt; &lt;text&gt;har&lt;/text&gt;        &lt;lemma&gt;ha&lt;/lemma&gt;       &lt;depend head="w1"&gt;main&lt;/depend&gt; &lt;tags&gt;&lt;syntax&gt;@MAIN&lt;/syntax&gt; &lt;morpho&gt;V ACT IND PRES&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w4"&gt; &lt;text&gt;en&lt;/text&gt; &lt;lemma&gt;en&lt;/lemma&gt;       &lt;depend head="w5"&gt;det&lt;/depend&gt;  &lt;tags&gt;&lt;syntax&gt;@PREMOD&lt;/syntax&gt; &lt;morpho&gt;DET Art Indef UTR SG NOM&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w5"&gt; &lt;text&gt;hund&lt;/text&gt;       &lt;lemma&gt;hund&lt;/lemma&gt;     &lt;depend head="w3"&gt;obj&lt;/depend&gt;  &lt;tags&gt;&lt;syntax&gt;@NH&lt;/syntax&gt; &lt;morpho&gt;N Indef UTR SG NOM&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w6"&gt; &lt;text&gt;.&lt;/text&gt;  &lt;lemma&gt;.&lt;/lemma&gt;        &lt;/token&gt;
+&lt;/sentence&gt;
+&lt;sentence id="w7"&gt;
+&lt;token id="w8"&gt; &lt;text&gt;Hunden&lt;/text&gt;     &lt;lemma&gt;hund&lt;/lemma&gt;     &lt;depend head="w9"&gt;subj&lt;/depend&gt; &lt;tags&gt;&lt;syntax&gt;@NH&lt;/syntax&gt; &lt;morpho&gt;N Def UTR SG NOM&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w9"&gt; &lt;text&gt;är&lt;/text&gt; &lt;lemma&gt;vara&lt;/lemma&gt;             &lt;tags&gt;&lt;syntax&gt;@MAIN&lt;/syntax&gt; &lt;morpho&gt;V ACT IND PRES&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w10"&gt;        &lt;text&gt;min&lt;/text&gt;        &lt;lemma&gt;min&lt;/lemma&gt;      &lt;depend head="w9"&gt;comp&lt;/depend&gt; &lt;tags&gt;&lt;syntax&gt;@NH&lt;/syntax&gt; &lt;morpho&gt;N Indef UTR SG NOM&lt;/morpho&gt;&lt;/tags&gt;&lt;/token&gt;
+&lt;token id="w11"&gt; &lt;text&gt;.&lt;/text&gt;  &lt;lemma&gt;.&lt;/lemma&gt;        &lt;/token&gt;
+&lt;/sentence&gt;
+&lt;/analysis&gt;
+
+Help, Manuals and Documentation
+
+sv-fdg s included in the module kieli which is loaded as a default for all language research users. The module can be loaded manually with the command module load kieli.
+
+help commands
+
+sv-fdg --help
+
+Further information
+
+usage: sv-fdg [-flags] files
+ -h             -- print this page
+ -v             -- print version
+ -k --keep-sgml -- let markup codes and comments pass through the parser
+ --xml          -- print output as XML (only in FDG; default)
+ --text         -- print output as text
+ --dtd          -- print XML output with the DTD (only in FDG)
+ --tagset       -- output starts with the tag descriptions (in XML; only in FDG)
+ --tagset-dtd   -- with the DTD for the tag descriptions (only in FDG)
+ --custom=file  -- apply a custom lexicon
+ --port=number  -- start the server mode and listen to the given port
+ --message      -- each message is analysed separately
+</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">sv-fdg</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2642290</identifier>
+        <identifier resourceIdentifierSchemeName="other">http://urn.fi/urn:nbn:fi:lb-2015022002</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">The Language Bank of Finland User support at CSC - IT Center for Science Ltd.</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <usageInfo>
+      <foreseenUseInfos>
+        <foreseenUseInfo>
+          <foreseenUse>nlpApplications</foreseenUse>
+          <useNlpApplications>
+            <useNLPSpecific>shallowParsing</useNLPSpecific>
+          </useNlpApplications>
+        </foreseenUseInfo>
+      </foreseenUseInfos>
+      <actualUseInfos>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>shallowParsing</useNLPSpecific>
+          </useNlpApplications>
+        </actualUseInfo>
+      </actualUseInfos>
+    </usageInfo>
+    <componentTypes>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>CLARIN_RES</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedOrganization>
+              <organizationNames>
+                <organizationName lang="en">Connexor Oy</organizationName>
+              </organizationNames>
+            </relatedOrganization>
+          </rightsHolder>
+        </rightsHolders>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes>
+        <resourceType>corpus</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <languages>
+        <language>
+          <languageTag>sv</languageTag>
+          <languageId>sv</languageId>
+        </language>
+      </languages>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </inputContentResourceInfo>
+    <outputResourceInfo>
+      <resourceTypes/>
+      <mediaType>text</mediaType>
+      <languages>
+        <language>
+          <languageTag>en</languageTag>
+          <languageId>en</languageId>
+        </language>
+        <language>
+          <languageTag>sv</languageTag>
+          <languageId>sv</languageId>
+        </language>
+      </languages>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </outputResourceInfo>
+  </componentInfo>
+</componentMetadataRecord>

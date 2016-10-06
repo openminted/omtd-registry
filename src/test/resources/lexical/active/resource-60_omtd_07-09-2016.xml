@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lcrMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-LexicalConceptualResource.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms60</metadataRecordIdentifier>
+    <metadataCreationDate>2011-12-31</metadataCreationDate>
+    <metadataLastDateUpdated>2011-12-31</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <lexicalConceptualResourceInfo>
+    <resourceType>lexicalConceptualResource</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">SIMPLE-OWL</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">SIMPLE-OWL is a Generative Lexicon (GL) based Ontology . It has been automatically built and enriched by means of a bottom-up procedure that extracts semantic information (relationships, features, predicates and quantifier restrictions) from the SIMPLE lexicon. It is a formalised, reasoning-capable, and semantically rich ontology, suitable for Natural Language Processing semantic tasks. </description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">60</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="it">Monachini Monica</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <downloadURLs>
+          <downloadURL>http://langtech1.ilc.cnr.it:8152/fedora/objects/cnr.langres:20/datastreams/DC/content</downloadURL>
+          <downloadURL>http://langtech1.ilc.cnr.it:8152/fedora/objects/cnr.langres:20/datastreams/ZIP/content</downloadURL>
+        </downloadURLs>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>proprietary</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <lexicalConceptualResourceType>other</lexicalConceptualResourceType>
+    <lexicalConceptualResourceMediaType>
+      <lexicalConceptualResourceTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>it</languageTag>
+              <languageId>it</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>0</size>
+            <sizeUnit>entries</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </lexicalConceptualResourceTextInfo>
+    </lexicalConceptualResourceMediaType>
+  </lexicalConceptualResourceInfo>
+</lcrMetadataRecord>

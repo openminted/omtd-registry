@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<corpusMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Corpus.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms48226</metadataRecordIdentifier>
+    <metadataCreationDate>2011-06-08</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Labropoulou Penny</personName>
+        </personNames>
+      </metadataCreator>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Gavrilidou Maria</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2014-03-19</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <corpusInfo>
+    <resourceType>corpus</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="el">Ελληνικός Θησαυρός της Ελληνικής Γλώσσας</resourceName>
+        <resourceName lang="en">Hellenic National Corpus</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="el">Σώμα γενικής γλώσσας της ΝΕ, συνολικού μεγέθους 47 εκατ. λέξεων, το οποίο συνεχώς εμπλουτίζεται με νέα κείμενα. Τα κείμενα που περιλαμβάνονται στον ΕΘΕΓ έχουν επιλεγεί ως αντιπροσωπευτικά της σύγχρονης ελληνικής γλώσσας και χρονολογούνται, στην πλειονότητά τους, από το 1990 και μετά. Αποφεύγονται τα κείμενα με διαλεκτικές ή άλλες ιδιαιτερότητες και προτιμώνται κείμενα με υψηλή αναγνωσιμότητα (εφημερίδες μεγάλης κυκλοφορίας, βιβλία με υψηλές πωλήσεις κτλ). Με στόχο την αντιπροσώπευση διαφορετικών επιπέδων λόγου, επιλέχθηκαν κείμενα από πολλές πηγές, που καλύπτουν ποικίλα κειμενικά είδη με ποικίλη θεματολογία. Τα κείμενα έχουν παραχωρηθεί στο ΙΕΛ με απώτερο σκοπό τη χρήση τους για ερευνητικούς σκοπούς.</description>
+        <description lang="en">The HNC currently contains about 47.000.000 words, and is constantly being updated. It consists of samples of written language exclusively. Texts in the HNC represent modern Greek language use - most of them having been written after 1990. Texts written in highly idiomatic language have been excluded. Most texts have been selected based on their high readability (high circulation newspapers, best-selling books etc.). Texts from several media, belonging to different genres and dealing with various topics have been selected. These texts have been given to ILSP for this purpose by copyright owners and are available for research purposes only.</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="el">ΕΘΕΓ</resourceShortName>
+        <resourceShortName lang="en">HNC</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">48226</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Gavrilidou Maria</personName>
+          </personNames>
+        </contactPerson>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Glaros Nikos</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>3.0</version>
+    </versionInfo>
+    <validationInfos>
+      <validationInfo>
+        <validated>true</validated>
+        <validationType>content</validationType>
+        <validationMode>manual</validationMode>
+        <validationModeDetails>The classification of the documents has been manually validated</validationModeDetails>
+        <validationExtent>full</validationExtent>
+      </validationInfo>
+    </validationInfos>
+    <usageInfo>
+      <foreseenUseInfos>
+        <foreseenUseInfo>
+          <foreseenUse>nlpApplications</foreseenUse>
+          <useNlpApplications/>
+        </foreseenUseInfo>
+        <foreseenUseInfo>
+          <foreseenUse>humanUse</foreseenUse>
+          <useNlpApplications/>
+        </foreseenUseInfo>
+      </foreseenUseInfos>
+      <actualUseInfos>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications/>
+        </actualUseInfo>
+        <actualUseInfo>
+          <actualUse>humanUse</actualUse>
+          <useNlpApplications/>
+          <actualUseDetails>Used as educational material for the teaching of Greek language</actualUseDetails>
+        </actualUseInfo>
+      </actualUseInfos>
+    </usageInfo>
+    <resourceDocumentationInfo/>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedOrganization>
+            <organizationNames>
+              <organizationName lang="en">Institute for Language and Speech Processing / Athena R.C.</organizationName>
+            </organizationNames>
+          </relatedOrganization>
+        </resourceCreator>
+      </resourceCreators>
+      <fundingProjects>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="en">DIALOGOS</projectName>
+          </projectNames>
+        </fundingProject>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="en">PAROLE</projectName>
+          </projectNames>
+        </fundingProject>
+      </fundingProjects>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>accessibleThroughInterface</distributionMedium>
+          <distributionMedium>webExecutable</distributionMedium>
+        </distributionMediums>
+        <accessURLs>
+          <accessURL>http://hnc.ilsp.gr/</accessURL>
+        </accessURLs>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>proprietary</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+              <conditionsOfUse>attribution</conditionsOfUse>
+              <conditionsOfUse>noRedistribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts>
+          <attributionText lang="en">Hellenic National Corpus by Athena R.C./ILSP used under Proprietary licence </attributionText>
+        </attributionTexts>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <corpusSubtypeSpecificInfo>
+      <annotatedCorpusInfo>
+        <corpusSubtype>annotatedCorpus</corpusSubtype>
+        <corpusMediaParts>
+          <corpusTextParts>
+            <corpusTextPartInfo>
+              <mediaType>text</mediaType>
+              <lingualityInfo>
+                <lingualityType>monolingual</lingualityType>
+              </lingualityInfo>
+              <languages>
+                <languageInfo>
+                  <language>
+                    <languageTag>el</languageTag>
+                    <languageId>el</languageId>
+                  </language>
+                  <languageVarieties/>
+                </languageInfo>
+              </languages>
+              <modalities>
+                <modalityInfo>
+                  <modalityType>writtenLanguage</modalityType>
+                </modalityInfo>
+              </modalities>
+              <sizes>
+                <sizeInfo>
+                  <size>47000000</size>
+                  <sizeUnit>words</sizeUnit>
+                </sizeInfo>
+              </sizes>
+              <textFormats>
+                <textFormatInfo>
+                  <mimeType>text/plain</mimeType>
+                </textFormatInfo>
+              </textFormats>
+              <characterEncodings/>
+              <domains>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">leisure</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">geography</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">science</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">business</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">history</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">society</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">humanities</domain>
+                </domainInfo>
+                <domainInfo>
+                  <domain classificationSchemeName="PAROLE_topicClassification">health</domain>
+                </domainInfo>
+              </domains>
+              <textClassifications>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="other">non-fiction</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">feature</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">advertising</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">official</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">private</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">fiction</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">information</textGenre>
+                </textClassificationInfo>
+                <textClassificationInfo>
+                  <textGenre classificationSchemeName="PAROLE_genreClassification">discussion</textGenre>
+                </textClassificationInfo>
+              </textClassifications>
+              <timeClassifications>
+                <timeCoverageInfo>
+                  <timeCoverage>after 1990</timeCoverage>
+                </timeCoverageInfo>
+              </timeClassifications>
+              <geographicClassifications/>
+              <creationInfo>
+                <creationMode>mixed</creationMode>
+                <creationModeDetails>Various methods have been used depending on the source: scanning &amp; OCRing of various texts, conversion from typesetting material, web crawling etc.</creationModeDetails>
+              </creationInfo>
+            </corpusTextPartInfo>
+          </corpusTextParts>
+          <annotations>
+            <annotationInfo>
+              <annotationLevel>segmentation</annotationLevel>
+              <annotationStandoff>false</annotationStandoff>
+              <annotationMode>automatic</annotationMode>
+              <annotators/>
+            </annotationInfo>
+            <annotationInfo>
+              <annotationLevel>structuralAnnotation</annotationLevel>
+              <annotationStandoff>false</annotationStandoff>
+              <annotationMode>interactive</annotationMode>
+              <annotators/>
+            </annotationInfo>
+          </annotations>
+        </corpusMediaParts>
+      </annotatedCorpusInfo>
+    </corpusSubtypeSpecificInfo>
+  </corpusInfo>
+</corpusMetadataRecord>
