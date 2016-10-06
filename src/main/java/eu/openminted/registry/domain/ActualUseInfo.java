@@ -52,7 +52,7 @@ public class ActualUseInfo {
     private ActualUse actualUse;
     //TODO this should be made into an enum (use useNLPSpecific)
     
-    @XmlElementWrapper(name = "useNlpApplication")
+    @XmlElementWrapper(name = "useNlpApplications")
     @XmlElement(name = "useNLPSpecific")
     private List<String> useNlpApplications;
     

@@ -20,3 +20,6 @@ hs_err_pid*
 .project
 .classpath
 bin/
+
+#test inactive folder
+inactive/

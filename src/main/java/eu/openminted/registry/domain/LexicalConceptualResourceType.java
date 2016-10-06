@@ -6,18 +6,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlJavaTypeAdapter(LexicalConceptualResourceTypeAdapter.class)
 public enum LexicalConceptualResourceType {
 	
-	WORDLIST("wordlist"),
-	COMPUTATIONALLEXICON("computationallexicon"),
+	WORDLIST("wordList"),
+	COMPUTATIONALLEXICON("computationalLexicon"),
 	ONTOLOGY("ontology"),
 	WORDNET("wordnet"),
 	THESAURUS("thesaurus"),
 	FRAMENET("framenet"),
-	TERMINOLOGICALRESOURCE("terminologicalresource"),
-	MACHINEREADABLEDICTIONARY("machinereadabledictionary"),
+	TERMINOLOGICALRESOURCE("terminologicalResource"),
+	MACHINEREADABLEDICTIONARY("machineReadableDictionary"),
 	LEXICON("lexicon"),
 	TYPESYSTEM("typesystem"),
 	TAGSET("tagset"),
-	MAPPINGOFRESOURCES("mappingofresources"),
+	MAPPINGOFRESOURCES("mappingOfResources"),
 	OTHER("other");
 	
 	private String value;

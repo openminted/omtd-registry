@@ -3,7 +3,6 @@ package eu.openminted.registry.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +25,7 @@ import eu.openminted.registry.domain.Browsing;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.Facet;
-import eu.openminted.registry.domain.Language;
 import eu.openminted.registry.domain.Result;
-import eu.openminted.registry.domain.User;
 import eu.openminted.registry.domain.Utils;
 import eu.openminted.registry.domain.Value;
 

@@ -4,19 +4,42 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "annotationInfoType", propOrder = {
+    "annotationLevel",
+    "annotationStandoff",
+    "dataFormat",
+    "typeSystem",
+    "tagSet",
+    "theoreticModel",
+    "guidelinesDocumentedIn",
+    "annotationMode",
+    "annotationModeDetails",
+    "isAnnotatedBy",
+    "annotationDate",
+    "sizePerAnnotation",
+    "interannotatorAgreement",
+    "intraannotatorAgreement",
+    "annotators"
+})
 public class AnnotationInfo {
 
     //required
     private AnnotationLevel annotationLevel;
-    private boolean annotationStandoff;
+    private Boolean annotationStandoff;
     private DataFormat dataFormat;
+    
+    @XmlElement(name = "typesystem")
     private RelatedResource typeSystem;
+    
+    @XmlElement(name = "tagset")
     private RelatedResource tagSet;
     private String theoreticModel;
     private List<RelatedDocument> guidelinesDocumentedIn;
@@ -38,7 +61,7 @@ public class AnnotationInfo {
         this.annotationLevel = annotationLevel;
     }
 
-    public AnnotationInfo(AnnotationLevel annotationLevel, boolean annotationStandoff, DataFormat dataFormat, RelatedResource typeSystem, RelatedResource tagSet, String theoreticModel, List<RelatedDocument> guidelinesDocumentedIn, ProcessMode annotationMode, String annotationModeDetails, List<RelatedResource> isAnnotatedBy, DateCombinationType annotationDate, SizeInfo sizePerAnnotation, String interannotatorAgreement, String intraannotatorAgreement, List<ActorInfo> annotators) {
+    public AnnotationInfo(AnnotationLevel annotationLevel, Boolean annotationStandoff, DataFormat dataFormat, RelatedResource typeSystem, RelatedResource tagSet, String theoreticModel, List<RelatedDocument> guidelinesDocumentedIn, ProcessMode annotationMode, String annotationModeDetails, List<RelatedResource> isAnnotatedBy, DateCombinationType annotationDate, SizeInfo sizePerAnnotation, String interannotatorAgreement, String intraannotatorAgreement, List<ActorInfo> annotators) {
         this.annotationLevel = annotationLevel;
         this.annotationStandoff = annotationStandoff;
         this.dataFormat = dataFormat;
@@ -64,11 +87,11 @@ public class AnnotationInfo {
         this.annotationLevel = annotationLevel;
     }
 
-    public boolean isAnnotationStandoff() {
+    public Boolean isAnnotationStandoff() {
         return annotationStandoff;
     }
 
-    public void setAnnotationStandoff(boolean annotationStandoff) {
+    public void setAnnotationStandoff(Boolean annotationStandoff) {
         this.annotationStandoff = annotationStandoff;
     }
 

@@ -49,14 +49,13 @@ public class DomainInfo {
 
 class ClassificationSchemeIdentifierAdapter extends XmlAdapter<ClassificationSchemeIdentifierAdapter.ClassificationSchemeIdentifier, Identifier<ClassificationScheme>> {
     @Override
-    public eu.openminted.registry.domain.Identifier<ClassificationScheme> unmarshal(ClassificationSchemeIdentifier v) throws Exception {
-        return new eu.openminted.registry.domain.Identifier<>(
-                ClassificationScheme.forValue(v.schema), v.id, v.url);
+    public Identifier<ClassificationScheme> unmarshal(ClassificationSchemeIdentifier v) throws Exception {
+        return new Identifier<>(ClassificationScheme.forValue(v.schema), v.id, v.url);
     }
 
     @Override
-    public ClassificationSchemeIdentifier marshal(eu.openminted.registry.domain.Identifier<ClassificationScheme> v) throws Exception {
-        return new ClassificationSchemeIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
+    public ClassificationSchemeIdentifier marshal(Identifier<ClassificationScheme> v) throws Exception {
+        return (v==null) ? null : new ClassificationSchemeIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
     }
 
     public static class ClassificationSchemeIdentifier {

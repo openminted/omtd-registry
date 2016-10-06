@@ -12,12 +12,16 @@ public class TextClassificationInfo {
 
     @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> textGenre;
+    
     @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> textType;
+    
     @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> register;
+    
     @XmlJavaTypeAdapter(ClassificationSchemeIdentifierAdapter.class)
     private Identifier<ClassificationScheme> subject;
+    
     @XmlElementWrapper(name="keywords")
     @XmlElement(name="keyword")
     private List<String> keywords;

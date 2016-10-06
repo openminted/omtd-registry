@@ -19,20 +19,29 @@ public class LexicalConceptualResourceMediaType {
 	@XmlElement(name = "languageInfo")
 	private List<LanguageInfo> languages;
 
-	// TODO THIS IS META
+	@XmlElementWrapper(name = "metalanguages")
+    @XmlElement(name = "metalanguageInfo")
 	private List<LanguageInfo> metalanguages;
 
+	@XmlElementWrapper(name = "modalities")
+    @XmlElement(name = "modalityInfo")
 	private List<ModalityInfo> modalities;
 
-	@XmlElementWrapper(name = "sizes")
-	@XmlElement(name = "sizeInfo")
-	private List<SizeInfo> sizes;
-
-	private List<DomainInfo> domains;
-
-	private List<TimeCoverageInfo> timeClassifications;
-
-	private List<GeographicCoverageInfo> geographicClassifications;
+    @XmlElementWrapper(name = "sizes")
+    @XmlElement(name = "sizeInfo",required = true)
+    protected List<SizeInfo> sizes;
+    
+    @XmlElementWrapper(name = "domains")
+    @XmlElement(name = "domainInfo")
+    protected List<DomainInfo> domains;
+    
+    @XmlElementWrapper(name = "timeClassifications")
+    @XmlElement(name = "timeCoverageInfo")
+    protected List<TimeCoverageInfo> timeClassifications;
+    
+    @XmlElementWrapper(name = "geographicClassifications")
+    @XmlElement(name = "geographicCoverageInfo")
+    protected List<GeographicCoverageInfo> geographicClassifications;
 
 	private CreationInfo creationInfo;
 

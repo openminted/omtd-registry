@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * 
@@ -27,7 +26,7 @@ public class LexicalConceptualResourceEncodingInfo {
 	private List<String> theoreticModel;
 	
 	//@XmlElement(name="ms:externelRef")
-	private List<String> externelRef;
+	private List<String> externalRef;
 	
 	//@XmlElement(name="ms:extratextualInformation")
 	private List<ExtratextualInformation> extratextualInformation;
@@ -54,7 +53,7 @@ public class LexicalConceptualResourceEncodingInfo {
 		this.linguisticInformation = linguisticInformation;
 		this.conformanceToStandardsBestPractices = conformanceToStandardsBestPractices;
 		this.theoreticModel = theoreticModel;
-		this.externelRef = externelRef;
+		this.externalRef = externelRef;
 		this.extratextualInformation = extratextualInformation;
 		this.extraTextualInformationUnit = extraTextualInformationUnit;
 	}
@@ -93,12 +92,12 @@ public class LexicalConceptualResourceEncodingInfo {
 		this.theoreticModel = theoreticModel;
 	}
 
-	public List<String> getExternelRef() {
-		return externelRef;
+	public List<String> getExternalRef() {
+		return externalRef;
 	}
 
-	public void setExternelRef(List<String> externelRef) {
-		this.externelRef = externelRef;
+	public void setExternalRef(List<String> externelRef) {
+		this.externalRef = externelRef;
 	}
 
 	public List<ExtratextualInformation> getExtratextualInformation() {

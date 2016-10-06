@@ -4,15 +4,33 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "datasetDistributionInfo", propOrder = {
+    "distributionMediums",
+    "downloadURLs",
+    "accessURLs",
+    "textFormats",
+    "characterEncodings",
+    "sizes",
+    "rightsInfo",
+    "copyrightStatements",
+    "attributionTexts",
+    "rightsHolders",
+    "availabilityStartDate",
+    "availabilityEndDate",
+    "fee",
+    "userTypes"
+})
 public class DatasetDistributionInfo {
 
 	@XmlJavaTypeAdapter(DistributionMediumAdapter.class)
@@ -69,14 +87,22 @@ public class DatasetDistributionInfo {
 	private List<SizeInfo> sizes;
 	// required
 	private RightsInfo rightsInfo;
-	private List<String> copyrightStatements;
-	private List<String> attributionTexts;
+	
+	@XmlElementWrapper(name = "copyrightStatements")
+	@XmlElement(name = "copyrightStatement")
+	private List<LangAttributeField> copyrightStatements;
+	
+	@XmlElementWrapper(name = "attributionTexts")
+	@XmlElement(name = "attributionText")
+	private List<LangAttributeField> attributionTexts;
 
 	@XmlElementWrapper(name = "rightsHolders")
 	@XmlElement(name = "rightsHolder")
 	private List<ActorInfo> rightsHolders;
-	private Date availabilityStartDate;
-	private Date availabilityEndDate;
+	
+	private XMLGregorianCalendar availabilityStartDate;
+	
+	private XMLGregorianCalendar availabilityEndDate;
 	private String fee;
 	
 	@XmlElementWrapper(name = "userTypes")
@@ -98,9 +124,9 @@ public class DatasetDistributionInfo {
 			List<TextFormatInfo> textFormats,
 			List<CharacterEncodingInfo> characterEncodings,
 			List<SizeInfo> sizes, RightsInfo rightsInfo,
-			List<String> copyrightStatements, List<String> attributionTexts,
-			List<ActorInfo> rightsHolders, Date availabilityStartDate,
-			Date availabilityEndDate, String fee, List<UserType> userTypes) {
+			List<LangAttributeField> copyrightStatements, List<LangAttributeField> attributionTexts,
+			List<ActorInfo> rightsHolders, XMLGregorianCalendar availabilityStartDate,
+			XMLGregorianCalendar availabilityEndDate, String fee, List<UserType> userTypes) {
 		this.distributionMediums = distributionMediums;
 		this.downloadURLs = downloadURLs;
 		this.accessURLs = accessURLs;
@@ -175,19 +201,19 @@ public class DatasetDistributionInfo {
 		this.rightsInfo = rightsInfo;
 	}
 
-	public List<String> getCopyrightStatements() {
+	public List<LangAttributeField> getCopyrightStatements() {
 		return copyrightStatements;
 	}
 
-	public void setCopyrightStatements(List<String> copyrightStatements) {
+	public void setCopyrightStatements(List<LangAttributeField> copyrightStatements) {
 		this.copyrightStatements = copyrightStatements;
 	}
 
-	public List<String> getAttributionTexts() {
+	public List<LangAttributeField> getAttributionTexts() {
 		return attributionTexts;
 	}
 
-	public void setAttributionTexts(List<String> attributionTexts) {
+	public void setAttributionTexts(List<LangAttributeField> attributionTexts) {
 		this.attributionTexts = attributionTexts;
 	}
 
@@ -199,19 +225,19 @@ public class DatasetDistributionInfo {
 		this.rightsHolders = rightsHolders;
 	}
 
-	public Date getAvailabilityStartDate() {
+	public XMLGregorianCalendar getAvailabilityStartDate() {
 		return availabilityStartDate;
 	}
 
-	public void setAvailabilityStartDate(Date availabilityStartDate) {
+	public void setAvailabilityStartDate(XMLGregorianCalendar availabilityStartDate) {
 		this.availabilityStartDate = availabilityStartDate;
 	}
 
-	public Date getAvailabilityEndDate() {
+	public XMLGregorianCalendar getAvailabilityEndDate() {
 		return availabilityEndDate;
 	}
 
-	public void setAvailabilityEndDate(Date availabilityEndDate) {
+	public void setAvailabilityEndDate(XMLGregorianCalendar availabilityEndDate) {
 		this.availabilityEndDate = availabilityEndDate;
 	}
 

@@ -1,7 +1,5 @@
 package eu.openminted.registry.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -11,13 +9,22 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "metadataHeaderInfo", propOrder = {
+	    "metadataRecordIdentifier",
+	    "metadataCreationDate",
+	    "metadataCreators",
+	    "sourceOfMetadataRecord",
+	    "languages",
+	    "metadataLastUpdated",
+	    "revision"
+	})
 public class MetadataHeaderInfo {
 
     @XmlEnum
@@ -57,6 +64,7 @@ public class MetadataHeaderInfo {
     @XmlElement(name="metadataCreationDate")
     @XmlSchemaType(name="date")
     private Date metadataCreationDate;
+    
     @XmlElementWrapper(name = "metadataCreators")
     @XmlElement(name="metadataCreator")
     private List<RelatedPerson> metadataCreators;

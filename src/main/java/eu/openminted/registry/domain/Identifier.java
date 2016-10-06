@@ -1,7 +1,5 @@
 package eu.openminted.registry.domain;
 
-import javax.xml.bind.annotation.XmlAttribute;
-
 /**
  * Created by stefania on 9/5/16.
  */

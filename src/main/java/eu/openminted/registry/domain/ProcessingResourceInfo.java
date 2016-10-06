@@ -4,14 +4,33 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.util.List;
 
 /**
  * Created by stefania on 9/5/16.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "processingResourceInfoType", propOrder = {
+    "resourceTypes",
+    "mediaType",
+    "languages",
+    "characterEncodings",
+    "dataFormats",
+    "typeSystem",
+    "tagSet",
+    "annotationLevels",
+    "modalityTypes",
+    "domains",
+    "textGenres",
+    "textTypes",
+    "registers",
+    "subjects",
+    "keywords"
+})
 public class ProcessingResourceInfo {
 
     @XmlJavaTypeAdapter(ResourceTypeAdapter.class)
@@ -59,9 +78,9 @@ public class ProcessingResourceInfo {
     @XmlElementWrapper(name="dataFormats")
     @XmlElement(name="dataFormat")
     private List<DataFormat> dataFormats;
-    @XmlElement(name="typeSystem")
+    @XmlElement(name="typesystem")
     private RelatedResource typeSystem;
-    @XmlElement(name="tagSet")
+    @XmlElement(name="tagset")
     private RelatedResource tagSet;
     @XmlElementWrapper(name="annotationLevels")
     @XmlElement(name="annotationLevel")

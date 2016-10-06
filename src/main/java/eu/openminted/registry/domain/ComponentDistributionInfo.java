@@ -4,9 +4,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import java.util.List;
 
 import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.EXECUTABLE_CODE;
@@ -17,6 +19,22 @@ import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentD
  * Created by stefania on 9/5/16.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "componentDistributionInfoType", propOrder = {
+	    "componentDistributionMedium",
+	    "downloadURLs",
+	    "accessURLs",
+	    "mavenId",
+	    "webServiceType",
+	    "operatingSystem",
+	    "rightsInfo",
+	    "copyrightStatements",
+	    "attributionTexts",
+	    "rightsHolders",
+	    "availabilityStartDate",
+	    "availabilityEndDate",
+	    "fee",
+	    "userTypes"
+	})
 public class ComponentDistributionInfo {
 
     @XmlJavaTypeAdapter(ComponentDistributionMediumAdapter.class)
@@ -37,6 +55,7 @@ public class ComponentDistributionInfo {
         }
     }
 
+    @XmlJavaTypeAdapter(WebServiceTypeAdapter.class)
     enum WebServiceType {
 
         SOAP("SOAP"),
@@ -52,8 +71,17 @@ public class ComponentDistributionInfo {
         public String getValue() {
             return value;
         }
-    }
+        
+        public static WebServiceType forValue(String value) {
+            for (WebServiceType os: WebServiceType.values()) {
+                if (os.getValue().equals(value))
+                    return os;
+            }
 
+            return null;
+        }
+    }
+    @XmlJavaTypeAdapter(OperatingSystemAdapter.class)
     enum OperatingSystem {
 
         OS_INDEPENDENT("os-independent"),
@@ -98,23 +126,27 @@ public class ComponentDistributionInfo {
     private List<String> accessURLs;
     private String mavenId;
     private WebServiceType webServiceType;
-    @XmlJavaTypeAdapter(OperatingSystemAdapter.class)
-    private OperatingSystem operatingSystem;
+    
+    private List<OperatingSystem> operatingSystem;
     //required
     @XmlElement(name="rightsInfo")
     private RightsInfo rightsInfo;
-    private List<String> copyrightStatements;
+    
+    @XmlElementWrapper(name="copyrightStatements")
+    @XmlElement(name="copyrightStatement")
+    private List<LangAttributeField> copyrightStatements;
+    
     @XmlElementWrapper(name="attributionTexts")
     @XmlElement(name="attributionText")
-    private List<String> attributionTexts;
+    private List<LangAttributeField> attributionTexts;
     @XmlElementWrapper(name="rightsHolders")
     @XmlElement(name="rightsHolder")
     private List<ActorInfo> rightsHolders;
     @XmlElementWrapper(name="userTypes")
     @XmlElement(name="userType")
     private List<UserType> userTypes;
-    private Date availabilityStartDate;
-    private Date availabilityEndDate;
+    private XMLGregorianCalendar availabilityStartDate;
+    private XMLGregorianCalendar availabilityEndDate;
     private String fee;
 
     public ComponentDistributionInfo() {
@@ -127,9 +159,9 @@ public class ComponentDistributionInfo {
 
     public ComponentDistributionInfo(ComponentDistributionMedium componentDistributionMedium, List<String> downloadURLs,
                                      List<String> accessURLs, String mavenId, WebServiceType webServiceType,
-                                     OperatingSystem operatingSystem, RightsInfo rightsInfo, List<String> copyrightStatements,
-                                     List<String> attributionTexts, List<ActorInfo> rightsHolders, Date availabilityStartDate,
-                                     Date availabilityEndDate, String fee, List<UserType> userTypes) {
+                                     List<OperatingSystem> operatingSystem, RightsInfo rightsInfo, List<LangAttributeField> copyrightStatements,
+                                     List<LangAttributeField> attributionTexts, List<ActorInfo> rightsHolders, XMLGregorianCalendar availabilityStartDate,
+                                     XMLGregorianCalendar availabilityEndDate, String fee, List<UserType> userTypes) {
         this.componentDistributionMedium = componentDistributionMedium;
         this.downloadURLs = downloadURLs;
         this.accessURLs = accessURLs;
@@ -186,11 +218,11 @@ public class ComponentDistributionInfo {
         this.webServiceType = webServiceType;
     }
 
-    public OperatingSystem getOperatingSystem() {
+    public List<OperatingSystem> getOperatingSystem() {
         return operatingSystem;
     }
 
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
+    public void setOperatingSystem(List<OperatingSystem> operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 
@@ -202,19 +234,19 @@ public class ComponentDistributionInfo {
         this.rightsInfo = rightsInfo;
     }
 
-    public List<String> getCopyrightStatements() {
+    public List<LangAttributeField> getCopyrightStatements() {
         return copyrightStatements;
     }
 
-    public void setCopyrightStatements(List<String> copyrightStatements) {
+    public void setCopyrightStatements(List<LangAttributeField> copyrightStatements) {
         this.copyrightStatements = copyrightStatements;
     }
 
-    public List<String> getAttributionTexts() {
+    public List<LangAttributeField> getAttributionTexts() {
         return attributionTexts;
     }
 
-    public void setAttributionTexts(List<String> attributionTexts) {
+    public void setAttributionTexts(List<LangAttributeField> attributionTexts) {
         this.attributionTexts = attributionTexts;
     }
 
@@ -226,19 +258,19 @@ public class ComponentDistributionInfo {
         this.rightsHolders = rightsHolders;
     }
 
-    public Date getAvailabilityStartDate() {
+    public XMLGregorianCalendar getAvailabilityStartDate() {
         return availabilityStartDate;
     }
 
-    public void setAvailabilityStartDate(Date availabilityStartDate) {
+    public void setAvailabilityStartDate(XMLGregorianCalendar availabilityStartDate) {
         this.availabilityStartDate = availabilityStartDate;
     }
 
-    public Date getAvailabilityEndDate() {
+    public XMLGregorianCalendar getAvailabilityEndDate() {
         return availabilityEndDate;
     }
 
-    public void setAvailabilityEndDate(Date availabilityEndDate) {
+    public void setAvailabilityEndDate(XMLGregorianCalendar availabilityEndDate) {
         this.availabilityEndDate = availabilityEndDate;
     }
 
@@ -290,5 +322,18 @@ class OperatingSystemAdapter extends XmlAdapter<String, ComponentDistributionInf
     @Override
     public ComponentDistributionInfo.OperatingSystem unmarshal(String v) throws Exception {
         return ComponentDistributionInfo.OperatingSystem.forValue(v);
+    }
+}
+
+class WebServiceTypeAdapter extends XmlAdapter<String, ComponentDistributionInfo.WebServiceType> {
+
+    @Override
+    public String marshal(ComponentDistributionInfo.WebServiceType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ComponentDistributionInfo.WebServiceType unmarshal(String v) throws Exception {
+        return ComponentDistributionInfo.WebServiceType.forValue(v);
     }
 }

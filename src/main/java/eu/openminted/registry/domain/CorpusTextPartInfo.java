@@ -33,17 +33,21 @@ public class CorpusTextPartInfo {
     @XmlElementWrapper(name="characterEncodings")
     @XmlElement(name = "characterEncodingInfo")
     private List<CharacterEncodingInfo> characterEncodings;
+    
     @XmlElementWrapper(name="domains")
     @XmlElement(name = "domainInfo")
     private List<DomainInfo> domains;
+    
     @XmlElementWrapper(name="textClassifications")
     @XmlElement(name = "textClassificationInfo")
     private List<TextClassificationInfo> textClassifications;
+    
     @XmlElementWrapper(name="timeClassifications")
     @XmlElement(name = "timeCoverageInfo")
     private List<TimeCoverageInfo> timeClassifications;
+    
     @XmlElementWrapper(name="geographicClassifications")
-    @XmlElement(name="GeographicCoverageInfo")
+    @XmlElement(name="geographicCoverageInfo")
     private List<GeographicCoverageInfo> geographicClassifications;
     private CreationInfo creationInfo;
 

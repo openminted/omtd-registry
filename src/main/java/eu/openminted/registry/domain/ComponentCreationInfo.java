@@ -2,11 +2,27 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "componentCreationInfoType", propOrder = {
+    "framework",
+    "implementationLanguages",
+    "formalisms",
+    "hasOriginalSources",
+    "creationDetails"
+})
 public class ComponentCreationInfo {
 
+	@XmlJavaTypeAdapter(ComponentCreationInfo.FrameworkAdapter.class)
     enum Framework {
 
         UIMA("UIMA"),
@@ -22,12 +38,26 @@ public class ComponentCreationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ComponentCreationInfo.Framework forValue(String value) {
+            for (ComponentCreationInfo.Framework ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
     private Framework framework;
+    @XmlElement(name = "implementationLanguage")
     private List<String> implementationLanguages;
+    
+    @XmlElement(name = "formalism")
     private List<String> formalisms;
+    
+    @XmlElement(name = "hasOriginalSource")
     private List<Identifier<ResourceIdentifierSchema>> hasOriginalSources;
     private String creationDetails;
 
@@ -85,5 +115,18 @@ public class ComponentCreationInfo {
 
     public void setCreationDetails(String creationDetails) {
         this.creationDetails = creationDetails;
+    }
+    
+    static class FrameworkAdapter extends XmlAdapter<String, ComponentCreationInfo.Framework> {
+
+        @Override
+        public String marshal(ComponentCreationInfo.Framework v) throws Exception {
+            return v!=null?v.getValue():null;
+        }
+
+        @Override
+        public ComponentCreationInfo.Framework unmarshal(String v) throws Exception {
+            return ComponentCreationInfo.Framework.forValue(v);
+        }
     }
 }

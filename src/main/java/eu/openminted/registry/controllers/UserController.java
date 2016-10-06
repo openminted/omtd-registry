@@ -1,7 +1,6 @@
 package eu.openminted.registry.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.log4j.Logger;

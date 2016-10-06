@@ -1,9 +1,6 @@
 package eu.openminted.registry.domain;
 
 import java.util.List;
-import java.util.Map;
-
-import eu.openminted.registry.core.domain.Occurencies;
 
 public class Browsing {
 

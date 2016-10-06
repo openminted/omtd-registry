@@ -11,9 +11,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlJavaTypeAdapter(ExtraTextualInformationUnitAdapter.class)
 public enum ExtraTextualInformationUnit {
 	
-	IMAGES("images"),
-	VIDEOS("videos"),
-	SOUND_RECORDINGS("soundRecordings"),
+	WORD("word"),
+	LEMMA("lemma"),
+	SEMANTICS("semantics"),
+	EXAMPLE("example"),
+	SYNTAX("syntax"),
+	LEXICALUNIT("lexicalUnit"),
 	OTHER("other");
 	
 	private String value;

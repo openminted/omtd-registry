@@ -30,7 +30,7 @@ public class RelatedPerson {
     }
 
     //one of the two
-    @XmlElementWrapper
+    @XmlElementWrapper(name = "personNames")
     @XmlElement(name="personName")
     private List<LangAttributeField> personNames;
     private List<Identifier<PersonIdentifierSchema>> personIdentifiers;
