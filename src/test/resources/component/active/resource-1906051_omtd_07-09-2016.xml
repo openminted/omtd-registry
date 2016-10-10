@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1906051</metadataRecordIdentifier>
+    <metadataCreationDate>2012-07-25</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Woliński Marcin</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2012-07-25</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="und">Morfeusz Polimorf</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="und">Morfeusz Polimorf is a variant of the
+		Morfeusz morphological analyser based on Polimorf
+		inflectional dictionary of Polish.  Consult the
+		description of Polimorf dictionary for the number of
+		forms and lexemes recognised by the analyser. Morfeusz
+		has the form of a monolythic shared library, which
+		makes it easy to build into client programs with no
+		need for configuration, reading external dictionaries,
+		etc.  The dictionary gets compiled to the form of a
+		minimal deterministic finite state automaton, which
+		provides for quick execution and small library
+		size. Morfeusz has been succesfuly used in several
+		projects both on Windows and on Linux.
+		 </description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="und">Morfeusz</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1906051</identifier>
+        <identifier resourceIdentifierSchemeName="other">413</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Woliński Marcin</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>20120730</version>
+    </versionInfo>
+    <validationInfos/>
+    <usageInfo>
+      <foreseenUseInfos>
+        <foreseenUseInfo>
+          <foreseenUse>nlpApplications</foreseenUse>
+          <useNlpApplications>
+            <useNLPSpecific>morphologicalAnalysis</useNLPSpecific>
+          </useNlpApplications>
+        </foreseenUseInfo>
+      </foreseenUseInfos>
+      <actualUseInfos>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>morphologicalAnalysis</useNLPSpecific>
+          </useNlpApplications>
+          <usageReports>
+            <usageReport>
+              <documentUnstructured>Used for automated morphological analysis of the IPI PAN Corpus.</documentUnstructured>
+            </usageReport>
+          </usageReports>
+          <actualUseDetails>Morphological analysis of the entire IPI PAN Corpus.</actualUseDetails>
+        </actualUseInfo>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>morphologicalAnalysis</useNLPSpecific>
+          </useNlpApplications>
+          <usageReports>
+            <usageReport>
+              <documentUnstructured>Used for automated morphological analysis of the National Corpus of Polish.</documentUnstructured>
+            </usageReport>
+          </usageReports>
+          <actualUseDetails>Morphological analysis of the entire National Corpus of Polish.</actualUseDetails>
+        </actualUseInfo>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>morphologicalAnalysis</useNLPSpecific>
+          </useNlpApplications>
+          <usageReports>
+            <usageReport>
+              <documentUnstructured>Ogrodniczuk M., Przepiórkowski A. Polish Language Processing Chains for Multilingual Information Systems. G. Bouma et al. (ed.): NLDB 2012, LNCS 7337, pp. 152–157. Springer, Heidelberg.</documentUnstructured>
+            </usageReport>
+          </usageReports>
+          <actualUseDetails>Morphological analysis of the National Corpus of Polish. Tool trained on the manually annotated million-word subcorpus has been used to annotate the entire NKJP corpus.</actualUseDetails>
+        </actualUseInfo>
+        <actualUseInfo>
+          <actualUse>nlpApplications</actualUse>
+          <useNlpApplications>
+            <useNLPSpecific>morphologicalAnalysis</useNLPSpecific>
+          </useNlpApplications>
+          <usageReports>
+            <usageReport>
+              <documentUnstructured>Ogrodniczuk M., Kopeć M. Rule-based coreference resolution module for Polish. In Proceedings of the 8th Discourse Anaphora and Anaphor Resolution Colloquium (DAARC 2011), pp. 191–200. Faro, Portugal.</documentUnstructured>
+            </usageReport>
+          </usageReports>
+          <actualUseDetails>Morphological analysis for the Polish coreference resolution module.</actualUseDetails>
+        </actualUseInfo>
+      </actualUseInfos>
+    </usageInfo>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="und">Woliński</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+      </resourceCreators>
+    </resourceCreationInfo>
+    <componentTypes>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <downloadURLs>
+          <downloadURL>http://sgjp.pl/morfeusz/dopobrania.html</downloadURL>
+        </downloadURLs>
+        <operatingSystem>linux</operatingSystem>
+        <operatingSystem>mac-OS</operatingSystem>
+        <operatingSystem>windows</operatingSystem>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>FreeBSD</licence>
+              <conditionsOfUse>attribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedPerson>
+              <personNames>
+                <personName lang="und">Woliński</personName>
+              </personNames>
+            </relatedPerson>
+          </rightsHolder>
+        </rightsHolders>
+        <fee>free of charge</fee>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes>
+        <resourceType>lexicalConceptualResource</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <dataFormats>
+        <dataFormat>
+          <mimeType>text/plain</mimeType>
+        </dataFormat>
+      </dataFormats>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </inputContentResourceInfo>
+    <outputResourceInfo>
+      <resourceTypes>
+        <resourceType>lexicalConceptualResource</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <dataFormats/>
+      <annotationLevels>
+        <annotationLevel>lemmatization</annotationLevel>
+        <annotationLevel>morphosyntacticAnnotation-bPosTagging</annotationLevel>
+        <annotationLevel>morphosyntacticAnnotation-posTagging</annotationLevel>
+        <annotationLevel>segmentation</annotationLevel>
+      </annotationLevels>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </outputResourceInfo>
+    <componentCreationInfo>
+      <framework>other</framework>
+      <implementationLanguage>C++</implementationLanguage>
+      <formalism>FSA</formalism>
+    </componentCreationInfo>
+  </componentInfo>
+</componentMetadataRecord>

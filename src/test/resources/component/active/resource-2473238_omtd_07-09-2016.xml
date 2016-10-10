@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2473238</metadataRecordIdentifier>
+    <metadataCreationDate>2012-11-23</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="pt">Simões Gonçalo</personName>
+        </personNames>
+      </metadataCreator>
+      <metadataCreator>
+        <personNames>
+          <personName lang="pt">Lageira Rui</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2012-11-26</metadataLastDateUpdated>
+    <revision>v1</revision>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">U-Compare E-txt2DB: Giving structure to unstructured data</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">Etxt2DB is a framework for specifying and executing Entity Recognition (ER) programs. These programs accept as input a text containing potentially interesting entities to be extracted and produce the input text annotated with the recognized entities. 
+
+The Etxt2DB functioning mode involves two distinct phases. First, the training phase consists in creating a model based on a given ER technique and one or more resources that guide the creation of the classification model. Examples of these resources are dictionaries for rule-based ER techniques or training data for statistical learning techniques (e.g., Conditional Random Fields). Second, in the execution phase, a classification model previously created receives as input plain text and produces annotations corresponding to the recognized entities.
+
+The Etxt2DB framework consists of a software layer, built on top of Minorthird and Lingpipe, offering a command-like specification language. Existing Machine Learning Java APIs (such as Minorthird and Lingpipe) provide implementations of Entity Recognition techniques. Some developers of ER applications do not want to get involved in the implementation details of the techniques used. Instead, they are willing to focus on: the choice of the technique to be used; the resources used in the process (e.g., dictionaries); a good set of features that help the ER program to take adequate decisions. The objective of the Etxt2DB specification language is to turn the development and tuning of ER programs easier for developers that are mainly concerned with these topics.
+
+In the context of the METANET project, the goal was to build a component-generator tool that encapsulates Etxt2DB. In the training phase, this  tool accepts a training data set as input and produces a classification model and a U-Compare component that is able to interpret that model. In the execution phase, the component produced is loaded into the U-Compare platform and then is ready to be used for recognizing entities from text.</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">U-Compare E-txt2DB</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2473238</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="pt">Simões Gonçalo</personName>
+          </personNames>
+        </contactPerson>
+        <contactPerson>
+          <personNames>
+            <personName lang="pt">Lageira Rui</personName>
+          </personNames>
+        </contactPerson>
+        <contactPerson>
+          <personNames>
+            <personName lang="pt">Galhardas Helena</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="pt">Simões</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+      </resourceCreators>
+    </resourceCreationInfo>
+    <componentTypes>
+      <componentType>namedEntityRecognizer</componentType>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <downloadURLs>
+          <downloadURL>https://www.l2f.inesc-id.pt/~thomas/metashare/e-txt2db.zip</downloadURL>
+        </downloadURLs>
+        <operatingSystem>os-independent</operatingSystem>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>GPL</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders/>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes>
+        <resourceType>lexicalConceptualResource</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <characterEncodings>
+        <characterEncoding>UTF-8</characterEncoding>
+      </characterEncodings>
+      <dataFormats>
+        <dataFormat>
+          <mimeType>text/plain</mimeType>
+        </dataFormat>
+      </dataFormats>
+      <annotationLevels/>
+      <modalityTypes>
+        <modalityType>writtenLanguage</modalityType>
+      </modalityTypes>
+    </inputContentResourceInfo>
+    <outputResourceInfo>
+      <resourceTypes>
+        <resourceType>lexicalConceptualResource</resourceType>
+      </resourceTypes>
+      <mediaType>text</mediaType>
+      <languages>
+        <language>
+          <languageTag>en</languageTag>
+          <languageId>en</languageId>
+        </language>
+      </languages>
+      <characterEncodings>
+        <characterEncoding>UTF-8</characterEncoding>
+      </characterEncodings>
+      <dataFormats/>
+      <annotationLevels>
+        <annotationLevel>semanticAnnotation-namedEntities</annotationLevel>
+      </annotationLevels>
+      <modalityTypes/>
+    </outputResourceInfo>
+    <componentCreationInfo>
+      <framework>other</framework>
+      <implementationLanguage>Java Programming Language</implementationLanguage>
+    </componentCreationInfo>
+    <componentEvaluationInfo>
+      <evaluated>true</evaluated>
+      <evaluationLevels>
+        <evaluationLevel>usage</evaluationLevel>
+      </evaluationLevels>
+      <evaluationTypes/>
+      <evaluationCriteria/>
+      <evaluationMeasures/>
+      <evaluators>
+        <evaluator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="pt">Simões</personName>
+            </personNames>
+          </relatedPerson>
+        </evaluator>
+        <evaluator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="pt">Lageira</personName>
+            </personNames>
+          </relatedPerson>
+        </evaluator>
+        <evaluator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="pt">Galhardas</personName>
+            </personNames>
+          </relatedPerson>
+        </evaluator>
+      </evaluators>
+    </componentEvaluationInfo>
+  </componentInfo>
+</componentMetadataRecord>

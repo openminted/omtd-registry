@@ -16,9 +16,17 @@ public class ObjectFactory {
 	public Component createComponent() {
 		return new Component();
 	}
+	
+	public LexicalConceptualResource createLexicalConceptualResource() {
+		return new LexicalConceptualResource();
+	}
 
 	public Corpus createCorpus() {
 		return new Corpus();
+	}
+	
+	public LanguageDescription create() {
+		return new LanguageDescription();
 	}
 
 	private <T> T createInstance(Class<T> anInterface) {

@@ -2,11 +2,32 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * Created by stefania on 9/5/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "componentEvaluationInfoType", propOrder = {
+    "evaluated",
+    "evaluationLevels",
+    "evaluationTypes",
+    "evaluationCriteria",
+    "evaluationMeasures",
+    "evaluationReports",
+    "evaluationSwComponents",
+    "evaluationDetails",
+    "evaluators"
+})
 public class ComponentEvaluationInfo {
 
+	@XmlJavaTypeAdapter(EvaluationLevelAdapter.class)
     enum EvaluationLevel {
 
         TECHNOLOGICAL("technological"),
@@ -23,8 +44,18 @@ public class ComponentEvaluationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ComponentEvaluationInfo.EvaluationLevel forValue(String value) {
+            for (ComponentEvaluationInfo.EvaluationLevel ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+	@XmlJavaTypeAdapter(EvaluationTypeAdapter.class)
     enum EvaluationType {
 
         GLASS_BOX("glassBox"),
@@ -39,8 +70,18 @@ public class ComponentEvaluationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ComponentEvaluationInfo.EvaluationType forValue(String value) {
+            for (ComponentEvaluationInfo.EvaluationType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+	@XmlJavaTypeAdapter(EvaluationCriterionAdapter.class)
     enum EvaluationCriterion {
 
         EXTRINSIC("extrinsic"),
@@ -55,8 +96,18 @@ public class ComponentEvaluationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ComponentEvaluationInfo.EvaluationCriterion forValue(String value) {
+            for (ComponentEvaluationInfo.EvaluationCriterion ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+	@XmlJavaTypeAdapter(EvaluationMeasureAdapter.class)
     enum EvaluationMeasure {
 
         HUMAN("human"),
@@ -71,17 +122,47 @@ public class ComponentEvaluationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ComponentEvaluationInfo.EvaluationMeasure forValue(String value) {
+            for (ComponentEvaluationInfo.EvaluationMeasure ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
-    private boolean evaluated;
+    private Boolean evaluated;
+    @XmlElementWrapper(name="evaluationLevels")
+    @XmlElement(name="evaluationLevel")
     private List<EvaluationLevel> evaluationLevels;
+    
+    @XmlElementWrapper(name="evaluationTypes")
+    @XmlElement(name="evaluationType")
     private List<EvaluationType> evaluationTypes;
+    
+    @XmlElementWrapper(name="evaluationCriteria")
+    @XmlElement(name="evaluationCriterion")
     private List<EvaluationCriterion> evaluationCriteria;
+    
+    @XmlElementWrapper(name="evaluationMeasures")
+    @XmlElement(name="evaluationMeasure")
     private List<EvaluationMeasure> evaluationMeasures;
+    
+    @XmlElementWrapper(name="evaluationReports")
+    @XmlElement(name="hasEvaluationReport")
     private List<RelatedDocument> evaluationReports;
+    
+    @XmlElementWrapper(name="evaluationSwComponents")
+    @XmlElement(name="isEvaluatedBy")
     private List<RelatedResource> evaluationSwComponents;
+    
     private String evaluationDetails;
+    
+    @XmlElementWrapper(name="evaluators")
+    @XmlElement(name="evaluator")
     private List<ActorInfo> evaluators;
 
     public ComponentEvaluationInfo() {
@@ -91,7 +172,7 @@ public class ComponentEvaluationInfo {
         this.evaluated = evaluated;
     }
 
-    public ComponentEvaluationInfo(boolean evaluated, List<EvaluationLevel> evaluationLevels, List<EvaluationType> evaluationTypes,
+    public ComponentEvaluationInfo(Boolean evaluated, List<EvaluationLevel> evaluationLevels, List<EvaluationType> evaluationTypes,
                                    List<EvaluationCriterion> evaluationCriteria, List<EvaluationMeasure> evaluationMeasures,
                                    List<RelatedDocument> evaluationReports, List<RelatedResource> evaluationSwComponents,
                                    String evaluationDetails, List<ActorInfo> evaluators) {
@@ -106,11 +187,11 @@ public class ComponentEvaluationInfo {
         this.evaluators = evaluators;
     }
 
-    public boolean isEvaluated() {
+    public Boolean isEvaluated() {
         return evaluated;
     }
 
-    public void setEvaluated(boolean evaluated) {
+    public void setEvaluated(Boolean evaluated) {
         this.evaluated = evaluated;
     }
 
@@ -176,5 +257,57 @@ public class ComponentEvaluationInfo {
 
     public void setEvaluators(List<ActorInfo> evaluators) {
         this.evaluators = evaluators;
+    }
+    
+    static class EvaluationLevelAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationLevel> {
+
+        @Override
+        public String marshal(ComponentEvaluationInfo.EvaluationLevel v) throws Exception {
+            return v!=null?v.getValue():null;
+        }
+
+        @Override
+        public ComponentEvaluationInfo.EvaluationLevel unmarshal(String v) throws Exception {
+            return ComponentEvaluationInfo.EvaluationLevel.forValue(v);
+        }
+    }
+    
+    static class EvaluationTypeAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationType> {
+
+        @Override
+        public String marshal(ComponentEvaluationInfo.EvaluationType v) throws Exception {
+            return v!=null?v.getValue():null;
+        }
+
+        @Override
+        public ComponentEvaluationInfo.EvaluationType unmarshal(String v) throws Exception {
+            return ComponentEvaluationInfo.EvaluationType.forValue(v);
+        }
+    }
+    
+    static class EvaluationCriterionAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationCriterion> {
+
+        @Override
+        public String marshal(ComponentEvaluationInfo.EvaluationCriterion v) throws Exception {
+            return v!=null?v.getValue():null;
+        }
+
+        @Override
+        public ComponentEvaluationInfo.EvaluationCriterion unmarshal(String v) throws Exception {
+            return ComponentEvaluationInfo.EvaluationCriterion.forValue(v);
+        }
+    }
+    
+    static class EvaluationMeasureAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationMeasure> {
+
+        @Override
+        public String marshal(ComponentEvaluationInfo.EvaluationMeasure v) throws Exception {
+            return v!=null?v.getValue():null;
+        }
+
+        @Override
+        public ComponentEvaluationInfo.EvaluationMeasure unmarshal(String v) throws Exception {
+            return ComponentEvaluationInfo.EvaluationMeasure.forValue(v);
+        }
     }
 }

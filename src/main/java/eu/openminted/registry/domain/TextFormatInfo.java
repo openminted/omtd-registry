@@ -14,7 +14,7 @@ public class TextFormatInfo {
     @XmlElement(name="mimeType")
     private MimeType mimeType;
     //required
-    @XmlElement(name="sizeInfo")
+    @XmlElement(name="sizePerTextFormat")
     private SizeInfo sizeInfo;
 
     public TextFormatInfo() {

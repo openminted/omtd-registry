@@ -21,7 +21,13 @@ public class ContactInfo {
     @XmlElementWrapper(name = "contactPersons")
     @XmlElement(name="contactPerson")
     private List<RelatedPerson> contactPersons;
+    
+    @XmlElementWrapper(name = "contactGroups")
+    @XmlElement(name="contactGroup")
     private List<RelatedGroup> contactGroups;
+    
+    @XmlElementWrapper(name = "mailingLists")
+    @XmlElement(name="mailingList")
     private List<MailingListInfo> mailingLists;
 
     public ContactInfo() {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lcrMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-LexicalConceptualResource.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms65</metadataRecordIdentifier>
+    <metadataCreationDate>2011-12-31</metadataCreationDate>
+    <metadataLastDateUpdated>2011-12-31</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <lexicalConceptualResourceInfo>
+    <resourceType>lexicalConceptualResource</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">MINELex</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">MINELex (Multilingual, Interoperable Named Entity Lexicon) contains Named Entities (NEs) for English (974,567), Italian (125,806) and Spanish (137,583) connected to general domain lexicons (English WordNet, WordNet and the Italian SIMPLE-CLIPS) and two ontologies (SUMO and SIMPLE), in a format compliant with the ISO Lexical Markup Framework (LMF). Automatically built, it has been applied to validate questions regarding NEs in a state-of-the-art Question Answering system providing a 28% increment in accuracy.</description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">65</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="it">Monachini Monica</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>DVD-R</distributionMedium>
+        </distributionMediums>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>proprietary</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <lexicalConceptualResourceType>other</lexicalConceptualResourceType>
+    <lexicalConceptualResourceMediaType>
+      <lexicalConceptualResourceTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>it</languageTag>
+              <languageId>it</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>0</size>
+            <sizeUnit>entries</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </lexicalConceptualResourceTextInfo>
+    </lexicalConceptualResourceMediaType>
+  </lexicalConceptualResourceInfo>
+</lcrMetadataRecord>

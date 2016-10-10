@@ -1,7 +1,6 @@
 package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
@@ -16,9 +15,10 @@ public class RelatedResource {
     @XmlElementWrapper(name = "resourceIdentifiers")
     @XmlElement(name="resourceIdentifier")
     private List<Identifier<ResourceIdentifierSchema>> resourceIdentifiers;
+    
     @XmlElementWrapper(name="resourceNames")
     @XmlElement(name="resourceName")
-    private List<String> resourceNames;
+    private List<LangAttributeField> resourceNames;
 
     public RelatedResource() {
     }
@@ -31,11 +31,11 @@ public class RelatedResource {
         this.resourceIdentifiers = resourceIdentifiers;
     }
 
-    public List<String> getResourceNames() {
+    public List<LangAttributeField> getResourceNames() {
         return resourceNames;
     }
 
-    public void setResourceNames(List<String> resourceNames) {
+    public void setResourceNames(List<LangAttributeField> resourceNames) {
         this.resourceNames = resourceNames;
     }
 }

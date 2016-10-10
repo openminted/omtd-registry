@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lcrMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-LexicalConceptualResource.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2642381</metadataRecordIdentifier>
+    <metadataCreationDate>2013-01-07</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Bick</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-01-07</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <lexicalConceptualResourceInfo>
+    <resourceType>lexicalConceptualResource</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">Danish-German online dictionary</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">Dictionary style extracts from the transfer system of an Danish-German MT system.
+
+The resource can be obtained through a proprietary license, contact: Eckhard Bick, eckhard.bick@mail.dk.</description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2642381</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Bick Eckhard</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>accessibleThroughInterface</distributionMedium>
+        </distributionMediums>
+        <accessURLs>
+          <accessURL>http://gramtrans.com</accessURL>
+        </accessURLs>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>proprietary</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+              <conditionsOfUse>commercialUse</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <fee>free for moderate non-commercial use</fee>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <lexicalConceptualResourceType>lexicon</lexicalConceptualResourceType>
+    <lexicalConceptualResourceMediaType>
+      <lexicalConceptualResourceTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>bilingual</lingualityType>
+          <multilingualityType>other</multilingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>da</languageTag>
+              <languageId>da</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>73,000</size>
+            <sizeUnit>entries</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </lexicalConceptualResourceTextInfo>
+    </lexicalConceptualResourceMediaType>
+  </lexicalConceptualResourceInfo>
+</lcrMetadataRecord>

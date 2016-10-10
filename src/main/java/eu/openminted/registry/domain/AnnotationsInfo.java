@@ -1,7 +1,5 @@
 package eu.openminted.registry.domain;
 
-import java.util.List;
-
 /**
  * Created by stefania on 9/5/16.
  */

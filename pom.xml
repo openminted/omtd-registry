@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>eu.openminted</groupId>
-  <artifactId>omtd-registry</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>eu.openminted</groupId>
+	<artifactId>omtd-registry</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.2.1.RELEASE</spring.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
@@ -67,6 +68,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.googlecode.junit-toolbox</groupId>
+			<artifactId>junit-toolbox</artifactId>
+			<version>2.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.xmlunit</groupId>
 			<artifactId>xmlunit-core</artifactId>
 			<version>2.2.1</version>
@@ -84,62 +91,78 @@
 			<id>omtd-snapshots</id>
 			<layout>default</layout>
 			<url>https://repo.openminted.eu/content/repositories/snapshots/</url>
-			<releases><enabled>false</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
 	<build>
-		<!--<pluginManagement>-->
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.19.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.4</version>
-					<configuration>
-						<warName>omtd-registry</warName>
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>cz.habarta.typescript-generator</groupId>
-					<artifactId>typescript-generator-maven-plugin</artifactId>
-					<version>1.10.220</version>
-					<executions>
-						<execution>
-							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-							<configuration>
-								<jsonLibrary>jackson2</jsonLibrary>
-								<classes>
-									<class>eu.openminted.registry.domain.Component</class>
-									<class>eu.openminted.registry.domain.Corpus</class>
-									<!--<classPatterns>eu.openminted.registry.domain.**</classPatterns>-->
-								</classes>
-								<outputFile>target/sample.d.ts</outputFile>
-								<outputKind>module</outputKind>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		<!--</pluginManagement>-->
+		<!--<pluginManagement> -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<argLine>-Dfile.encoding=UTF-8</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<warName>omtd-registry</warName>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>1.10.220</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jsonLibrary>jackson2</jsonLibrary>
+							<classes>
+								<class>eu.openminted.registry.domain.Component</class>
+								<class>eu.openminted.registry.domain.Corpus</class>
+								<class>eu.openminted.registry.domain.LanguageDescription</class>
+								<class>eu.openminted.registry.domain.Model</class>
+								<class>eu.openminted.registry.domain.LexicalConceptualResource</class>
+								<!--<classPatterns>eu.openminted.registry.domain.**</classPatterns> -->
+							</classes>
+							<outputFile>target/sample.d.ts</outputFile>
+							<outputKind>module</outputKind>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--<plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jaxb2-maven-plugin</artifactId> 
+				<version>2.3</version> <executions> <execution> <id>xjc-schema1</id> <goals> 
+				<goal>xjc</goal> </goals> <configuration> <extension>true</extension> <useDependenciesAsEpisodes>true</useDependenciesAsEpisodes> 
+				<sources> <source>src/main/xsd</source> </sources> <xjbSources> <xjbSource>src/main/xjb/bindings.xjb</xjbSource> 
+				</xjbSources> Package name of the generated sources. <packageName>${project.groupId}.registry</packageName> 
+				</configuration> </execution> </executions> </plugin> -->
+		</plugins>
+		<!--</pluginManagement> -->
 		<finalName>omtd-registry</finalName>
 	</build>
 </project>

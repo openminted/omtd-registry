@@ -1,7 +1,6 @@
 package eu.openminted.registry.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class User {
 

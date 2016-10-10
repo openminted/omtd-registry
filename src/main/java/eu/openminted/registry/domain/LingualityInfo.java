@@ -2,6 +2,7 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -38,7 +39,7 @@ public class LingualityInfo {
         }
     }
 
-    @XmlJavaTypeAdapter(ModalityTypeAdapter.class)
+    @XmlJavaTypeAdapter(MultiLingualityTypeAdapter.class)
     enum MultiLingualityType {
 
         PARALLEL("parallel"),
@@ -69,6 +70,8 @@ public class LingualityInfo {
 
     //required
     private LingualityType lingualityType;
+    
+    @XmlElement(name = "multilingualityType")
     private MultiLingualityType multiLingualityType;
     private String multilingualityTypeDetails;
 

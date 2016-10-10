@@ -14,3 +14,12 @@ hs_err_pid*
 
 *.iml
 .idea
+
+#eclipse ignore files
+.settings/
+.project
+.classpath
+bin/
+
+#test inactive folder
+inactive/

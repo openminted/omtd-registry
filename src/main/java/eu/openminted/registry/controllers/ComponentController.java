@@ -45,8 +45,10 @@ public class ComponentController {
 	        
 	        Component component;
 	        
-	        if(paging.getResults().size()!=0){//resource found
-		       component = Utils.serializeComponent((Resource) paging.getResults().get(0));
+
+	        if(paging.getResults().size()==1){//resource found
+		       component = Utils.serialize((Resource) paging.getResults().get(0),Component.class);
+
 		       if(component == null){
 		    	   return new ResponseEntity<String>("Error serializing component",HttpStatus.INTERNAL_SERVER_ERROR);
 		       }

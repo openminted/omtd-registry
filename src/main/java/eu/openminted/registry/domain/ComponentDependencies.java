@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class ComponentDependencies {
 
+	//TODO Adapter
     enum RequiresHardware {
 
         GRAPHIC_CARD("graphicCard"),

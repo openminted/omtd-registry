@@ -1,8 +1,15 @@
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Created by stefania on 9/5/16.
  */
+
+@XmlType(name = "timeCoverageInfo", propOrder = {
+	    "timeCoverage",
+	    "sizePerTimeCoverage",
+	})
 public class TimeCoverageInfo {
 
     //required

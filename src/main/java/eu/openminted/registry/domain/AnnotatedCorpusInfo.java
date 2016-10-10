@@ -4,6 +4,9 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 import java.util.List;
 
 /**
@@ -16,8 +19,13 @@ public class AnnotatedCorpusInfo {
     private final String corpusSubtype = "annotatedCorpus";
     //required
     @XmlPath("ms:corpusMediaParts/ms:corpusTextParts/ms:corpusTextPartInfo")
+    //@XmlElementWrapper(name = "corpusMediaParts/corpusTextParts")
+    //@XmlElement(name = "corpusTextPartInfo")
     private List<CorpusTextPartInfo> corpusTextParts;
     //required
+    @XmlPath("ms:corpusMediaParts/ms:annotations/ms:annotationInfo")
+    //@XmlElementWrapper(name = "corpusMediaParts/annotations")
+    //@XmlElement(name = "annotationInfo")
     private List<AnnotationInfo> annotations;
 
     public AnnotatedCorpusInfo() {

@@ -2,6 +2,11 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.util.List;
 
 /**
@@ -10,6 +15,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ValidationInfo {
 
+	@XmlJavaTypeAdapter(ValidationTypeAdapter.class)
     enum ValidationType {
 
         FORMAL("formal"),
@@ -24,8 +30,18 @@ public class ValidationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ValidationType forValue(String value) {
+            for (ValidationType ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+	@XmlJavaTypeAdapter(ValidationModeAdapter.class)
     enum ValidationMode {
 
         MANUAL("manual"),
@@ -42,8 +58,18 @@ public class ValidationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ValidationMode forValue(String value) {
+            for (ValidationMode ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
+	@XmlJavaTypeAdapter(ValidationExtentAdapter.class)
     enum ValidationExtent {
 
         FORMAL("full"),
@@ -58,6 +84,15 @@ public class ValidationInfo {
         public String getValue() {
             return value;
         }
+        
+        public static ValidationExtent forValue(String value) {
+            for (ValidationExtent ut: values()) {
+                if (ut.getValue().equals(value))
+                    return ut;
+            }
+
+            return null;
+        }
     }
 
     //required
@@ -68,8 +103,17 @@ public class ValidationInfo {
     private ValidationExtent validationExtent;
     private String validationExtentDetails;
     private SizeInfo sizePerValidation;
+    
+    @XmlElementWrapper(name = "validationReports")
+    @XmlElement(name = "hasValidationReport")
     private List<RelatedDocument> validationReports;
+    
+    @XmlElementWrapper(name = "validationSwComponents")
+    @XmlElement(name = "isValidatedBy")
     private List<RelatedResource> validationSwComponents;
+    
+    @XmlElementWrapper(name = "validators")
+    @XmlElement(name = "validator")
     private List<ActorInfo> validators;
 
     public ValidationInfo() {
@@ -173,5 +217,44 @@ public class ValidationInfo {
 
     public void setValidators(List<ActorInfo> validators) {
         this.validators = validators;
+    }
+}
+
+class ValidationTypeAdapter extends XmlAdapter<String, ValidationInfo.ValidationType> {
+
+    @Override
+    public String marshal(ValidationInfo.ValidationType v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ValidationInfo.ValidationType unmarshal(String v) throws Exception {
+        return ValidationInfo.ValidationType.forValue(v);
+    }
+}
+
+class ValidationModeAdapter extends XmlAdapter<String, ValidationInfo.ValidationMode> {
+
+    @Override
+    public String marshal(ValidationInfo.ValidationMode v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ValidationInfo.ValidationMode unmarshal(String v) throws Exception {
+        return ValidationInfo.ValidationMode.forValue(v);
+    }
+}
+
+class ValidationExtentAdapter extends XmlAdapter<String, ValidationInfo.ValidationExtent> {
+
+    @Override
+    public String marshal(ValidationInfo.ValidationExtent v) throws Exception {
+        return v!=null?v.getValue():null;
+    }
+
+    @Override
+    public ValidationInfo.ValidationExtent unmarshal(String v) throws Exception {
+        return ValidationInfo.ValidationExtent.forValue(v);
     }
 }

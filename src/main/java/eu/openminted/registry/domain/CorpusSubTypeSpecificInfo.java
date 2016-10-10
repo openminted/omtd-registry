@@ -2,6 +2,7 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Created by stefania on 9/5/16.
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class CorpusSubTypeSpecificInfo {
 
     // one of three
+	//@XmlElement(name = "annotatedCorpusInfo")
     private AnnotatedCorpusInfo annotatedCorpusInfo;
     private RawCorpusInfo rawCorpusInfo;
     private AnnotationInfo annotationInfo;

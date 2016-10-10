@@ -1,7 +1,5 @@
 package eu.openminted.registry.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +14,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
+
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by antleb on 9/6/16.
@@ -39,19 +34,6 @@ public class TestCorpusSerialization {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 		unmarshaller = jc.createUnmarshaller();
-	}
-
-//	@Test
-	public void serialize() throws JAXBException {
-		Corpus corpus = createCorpus();
-
-		System.out.println("Output:");
-		marshaller.marshal(corpus, System.out);
-
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(corpus, sw);
-
-		Assert.assertEquals(true, isValidCorpusXml(sw.toString()));
 	}
 
 	@Test
@@ -86,20 +68,6 @@ public class TestCorpusSerialization {
 		Assert.assertEquals(corpusXml, sw.toString());
 	}
 
-	@Test
-	public void testJson() throws IOException {
-		Corpus corpus = createCorpus();
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-		StringWriter sw = new StringWriter();
-
-		mapper.writeValue(sw, corpus);
-
-//		System.out.println(sw.toString());
-	}
-
 	private boolean isValidCorpusXml(String xml) {
 		Validator validator = Validator.forLanguage(Languages.W3C_XML_SCHEMA_NS_URI);
 
@@ -113,65 +81,6 @@ public class TestCorpusSerialization {
 		}
 
 		return result.isValid();
-	}
-
-	private Corpus createCorpus() {
-		ObjectFactory of = new ObjectFactory();
-		Corpus corpus = of.createCorpus();
-
-		corpus.setMetadataHeaderInfo(new MetadataHeaderInfo());
-
-		corpus.getMetadataHeaderInfo().setMetadataCreationDate(new Date());
-
-		corpus.getMetadataHeaderInfo().setMetadataCreators(new ArrayList<>());
-		corpus.getMetadataHeaderInfo().getMetadataCreators().add(new RelatedPerson());
-		corpus.getMetadataHeaderInfo().getMetadataCreators().get(0).setPersonNames(Arrays.asList("Smith, John"));
-
-		corpus.getMetadataHeaderInfo().setRevision("1.23");
-		corpus.getMetadataHeaderInfo().setLanguages(new ArrayList<>());
-
-		corpus.getMetadataHeaderInfo().setSourceOfMetadataRecord(new SourceOfMetadataRecord());
-		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().setCollectedFrom(new RelatedRepository());
-		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().getCollectedFrom().setRepositoryNames(Arrays.asList("clarin:el"));
-		corpus.getMetadataHeaderInfo().getSourceOfMetadataRecord().setSourceMetadataLink("https://inventory.clarin.gr/resources/browse/ilsp-feature-based-multi-tiered-pos-tagger/9ff47a0e5af111e5a2e0aa3fc8d33ad8f8736d2c68654a37b471475f9f913baa/");
-
-
-		corpus.getMetadataHeaderInfo().setMetadataLastUpdated(new Date());
-
-		corpus.getMetadataHeaderInfo().setMetadataRecordIdentifier(new Identifier<>());
-		corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().setId("id");
-		corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().setSchema(MetadataHeaderInfo.MetadataIdentifierSchema.URL);
-		corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().setUrl("http://www.foo.gr");
-
-		corpus.setResourceIdentificationInfo(new ResourceIdentificationInfo());
-		corpus.getResourceIdentificationInfo().setResourceNames(Arrays.asList("ILSP Feature-based multi-tiered POS Tagger"));
-		corpus.getResourceIdentificationInfo().setDescriptions(Arrays.asList("FBT part-of-speech tagger for Greek texts."));
-		corpus.getResourceIdentificationInfo().setResourceShortNames(Arrays.asList("ilsp_fbt"));
-		corpus.getResourceIdentificationInfo().setResourceIdentifiers(Arrays.asList(new Identifier<ResourceIdentifierSchema>(ResourceIdentifierSchema.HDL, "http://hdl.grnet.gr/11500/ATHENA-0000-0000-23E8-3", null)));
-
-		corpus.setContactInfo(new ContactInfo());
-		corpus.getContactInfo().setContactEmail("prokopis@ilsp.gr");
-		corpus.getContactInfo().setContactPersons(Arrays.asList(new RelatedPerson()));
-		corpus.getContactInfo().getContactPersons().get(0).setPersonNames(Arrays.asList("Prokopidis, Prokopis"));
-
-		corpus.setDistributionInfos(Arrays.asList(new DatasetDistributionInfo()));
-		corpus.getDistributionInfos().get(0).setDistributionMediums(Arrays.asList(DatasetDistributionInfo.DistributionMedium.ACCESSIBLE_THROUGH_INTERFACE));
-		corpus.getDistributionInfos().get(0).setRightsInfo(new RightsInfo());
-		corpus.getDistributionInfos().get(0).getRightsInfo().setLicenseInfos(Arrays.asList(new LicenseInfo()));
-		corpus.getDistributionInfos().get(0).getRightsInfo().getLicenseInfos().get(0).setLicense(LicenseInfo.License.APACHE_LICENSE_2_0);
-
-
-		corpus.setCorpusSubTypeSpecificInfo(new CorpusSubTypeSpecificInfo());
-		corpus.getCorpusSubTypeSpecificInfo().setAnnotatedCorpusInfo(new AnnotatedCorpusInfo());
-
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().setAnnotations(new ArrayList<>());
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().getAnnotations().add(new AnnotationInfo());
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().getAnnotations().get(0).setAnnotationLevel(new AnnotationLevel("ee"));
-
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().setCorpusTextParts(new ArrayList<>());
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().getCorpusTextParts().add(new CorpusTextPartInfo());
-		corpus.getCorpusSubTypeSpecificInfo().getAnnotatedCorpusInfo().getCorpusTextParts().get(0).setCreationInfo(new CreationInfo());
-		return corpus;
 	}
 
 	private static String corpusXml =

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema http://omtd.net16.net/schemas/OMTD-SHAREv1XSD/OMTD-SHARE-Component.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2638740</metadataRecordIdentifier>
+    <metadataCreationDate>2013-01-24</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="und">Ahlberg Malin</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-03-14</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <componentInfo>
+    <resourceType>component</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="swe">Lingua-Align</resourceName>
+        <resourceName lang="eng">Lingua-Align</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="swe">Verktyg för automatisk länkning av syntaktiska träd och för ordlänkning</description>
+        <description lang="eng">A toolbox for automatic syntactic tree alignment and for word alignment</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="swe">Lingua-Align</resourceShortName>
+        <resourceShortName lang="eng">Lingua-Align</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2638740</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="und">Tiedemann Jörg</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <componentTypes>
+      <componentType>converter</componentType>
+      <componentType>aligner</componentType>
+      <componentType>aligner</componentType>
+      <componentType>other</componentType>
+    </componentTypes>
+    <distributionInfos>
+      <componentDistributionInfo>
+        <componentDistributionMedium>executableCode</componentDistributionMedium>
+        <downloadURLs>
+          <downloadURL>https://bitbucket.org/tiedemann/lingua-align</downloadURL>
+        </downloadURLs>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>GPL</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders/>
+        <userTypes/>
+      </componentDistributionInfo>
+    </distributionInfos>
+    <inputContentResourceInfo>
+      <resourceTypes/>
+      <mediaType>text</mediaType>
+      <dataFormats/>
+      <annotationLevels/>
+      <modalityTypes/>
+    </inputContentResourceInfo>
+  </componentInfo>
+</componentMetadataRecord>

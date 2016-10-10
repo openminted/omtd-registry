@@ -5,45 +5,45 @@ package eu.openminted.registry.domain;
  */
 public class DateType {
 
-    private int day;
-    private int month;
+    private Integer day;
+    private Integer month;
     //required
-    private int year;
+    private Integer year;
 
     public DateType() {
     }
 
-    public DateType(int year) {
+    public DateType(Integer year) {
         this.year = year;
     }
 
-    public DateType(int day, int month, int year) {
+    public DateType(Integer day, Integer month, Integer year) {
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 }

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.util.List;
 
 /**
@@ -13,7 +14,6 @@ import java.util.List;
  */
 public class RelatedDocument {
 
-    @XmlJavaTypeAdapter(PublicationIdentifierSchemaAdapter.class)
     enum PublicationIdentifierSchema implements IdentifierSchema {
 
         DOI("doi"),
@@ -63,6 +63,7 @@ public class RelatedDocument {
     private String documentUnstructured;
     @XmlElementWrapper(name = "publicationIdentifiers")
     @XmlElement(name = "publicationIdentifier")
+    @XmlJavaTypeAdapter(PublicationIdentifierSchemaAdapter.class)
     private List<Identifier<PublicationIdentifierSchema>> publicationIdentifiers;
 
     public RelatedDocument() {
@@ -93,19 +94,18 @@ public class RelatedDocument {
     }
 }
 
-class PublicationIdentifierSchemaAdapter extends XmlAdapter<PublicationIdentifierSchemaAdapter.SIdentifier, Identifier<RelatedDocument.PublicationIdentifierSchema>> {
+class PublicationIdentifierSchemaAdapter extends XmlAdapter<PublicationIdentifierSchemaAdapter.SIPdentifier, Identifier<RelatedDocument.PublicationIdentifierSchema>> {
     @Override
-    public eu.openminted.registry.domain.Identifier<RelatedDocument.PublicationIdentifierSchema> unmarshal(SIdentifier v) throws Exception {
-        return new eu.openminted.registry.domain.Identifier<>(
-                RelatedDocument.PublicationIdentifierSchema.forValue(v.schema), v.id, v.url);
+    public Identifier<RelatedDocument.PublicationIdentifierSchema> unmarshal(SIPdentifier v) throws Exception {
+        return new Identifier<>(RelatedDocument.PublicationIdentifierSchema.forValue(v.schema), v.id, v.url);
     }
 
     @Override
-    public SIdentifier marshal(eu.openminted.registry.domain.Identifier<RelatedDocument.PublicationIdentifierSchema> v) throws Exception {
-        return new SIdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
+    public SIPdentifier marshal(eu.openminted.registry.domain.Identifier<RelatedDocument.PublicationIdentifierSchema> v) throws Exception {
+        return new SIPdentifier(v.getId(), v.getSchema().getValue(), v.getUrl());
     }
 
-    public static class SIdentifier {
+    public static class SIPdentifier {
         @XmlValue
         private String id;
         @XmlAttribute(name = "publicationIdentifierSchemeName")
@@ -113,10 +113,10 @@ class PublicationIdentifierSchemaAdapter extends XmlAdapter<PublicationIdentifie
         @XmlAttribute(name = "schemeURI")
         private String url;
 
-        public SIdentifier() {
+        public SIPdentifier() {
         }
 
-        public SIdentifier(String id, String schema, String url) {
+        public SIPdentifier(String id, String schema, String url) {
             this.id = id;
             this.schema = schema;
             this.url = url;

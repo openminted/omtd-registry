@@ -3,7 +3,6 @@ package eu.openminted.registry.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +25,7 @@ import eu.openminted.registry.domain.Browsing;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.Facet;
-import eu.openminted.registry.domain.Language;
 import eu.openminted.registry.domain.Result;
-import eu.openminted.registry.domain.User;
 import eu.openminted.registry.domain.Utils;
 import eu.openminted.registry.domain.Value;
 import eu.openminted.registry.services.RequestService;
@@ -58,9 +55,10 @@ public class RequestController {
 
 	    @RequestMapping(value = "/request/"/*,params = {"keyword","resourceType","language","mediaType","rights","mimeType","dataFormatSpecific","license"}*/ ,method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "keyword" , required=false ,defaultValue = "") String keyword, @RequestParam(value = "resourceType", required=false ,defaultValue = "") String[] resourceType, @RequestParam(value = "language", required=false ,defaultValue = "") String[] language, @RequestParam(value = "mediaType", required=false ,defaultValue = "") String[] mediaType, @RequestParam(value = "rights", required=false ,defaultValue = "") String[] rights, @RequestParam(value = "mimeType", required=false ,defaultValue = "") String[] mimeType, @RequestParam(value = "dataFormatSpecific", required=false ,defaultValue = "") String[] dataFormatSpecific, @RequestParam(value = "license", required=false ,defaultValue = "") String[] license,@RequestParam(value = "from" , required=false ,defaultValue = "0") int from,@RequestParam(value = "to" , required=false ,defaultValue = "-1") int to  ) {
-   	
+
 	    	return requestService.getResponseByFilters(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, from, to);
-	    	
+	   
 	    }
+	    
 	    
 }
