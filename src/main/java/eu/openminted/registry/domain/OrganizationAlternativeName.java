@@ -39,7 +39,7 @@ public class OrganizationAlternativeName
 {
 
     @XmlAttribute(name = "nameType", required = true)
-    protected NameTypeEnum2 nameType;
+    protected NameTypeEnum nameType;
 
     /**
      * Gets the value of the nameType property.
@@ -49,7 +49,7 @@ public class OrganizationAlternativeName
      *     {@link NameTypeEnum2 }
      *     
      */
-    public NameTypeEnum2 getNameType() {
+    public NameTypeEnum getNameType() {
         return nameType;
     }
 
@@ -61,7 +61,7 @@ public class OrganizationAlternativeName
      *     {@link NameTypeEnum2 }
      *     
      */
-    public void setNameType(NameTypeEnum2 value) {
+    public void setNameType(NameTypeEnum value) {
         this.nameType = value;
     }
 

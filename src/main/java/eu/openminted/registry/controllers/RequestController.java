@@ -28,7 +28,6 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.Facet;
 import eu.openminted.registry.domain.Language;
 import eu.openminted.registry.domain.Result;
-import eu.openminted.registry.domain.User;
 import eu.openminted.registry.domain.Utils;
 import eu.openminted.registry.domain.Value;
 import eu.openminted.registry.services.RequestService;

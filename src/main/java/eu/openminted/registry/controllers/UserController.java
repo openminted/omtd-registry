@@ -22,8 +22,8 @@ import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain2.User;
-import eu.openminted.registry.domain2.Utils;
+import eu.openminted.registry.domain.User;
+import eu.openminted.registry.domain.Utils;
 
 @RestController
 public class UserController {

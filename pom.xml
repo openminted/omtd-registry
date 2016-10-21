@@ -228,14 +228,9 @@
 						</goals>
 						<configuration>
 							<jsonLibrary>jackson2</jsonLibrary>
-							<classes>
-								<class>eu.openminted.registry.domain.Component</class>
-								<class>eu.openminted.registry.domain.Corpus</class>
-								<class>eu.openminted.registry.domain.LanguageDescription</class>
-								<class>eu.openminted.registry.domain.Model</class>
-								<class>eu.openminted.registry.domain.Lexical</class>
-								<!--<classPatterns>eu.openminted.registry.domain.**</classPatterns>-->
-							</classes>
+							<classPatterns>
+								<pattern>eu.openminted.registry.domain.*</pattern>
+							</classPatterns>
 							<outputFile>target/sample.d.ts</outputFile>
 							<outputKind>module</outputKind>
 						</configuration>

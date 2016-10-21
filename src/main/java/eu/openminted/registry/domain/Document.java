@@ -3,8 +3,6 @@ package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -30,40 +28,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "publicationOrAnnotatedPublication"
+    "publication","annotatedPublication"
 })
 public class Document {
+//
+//    @XmlElements({
+//        @XmlElement(name = "publication", type = DocumentInfo.class),
+//        @XmlElement(name = "annotatedPublication", type = AnnotatedDocumentInfo.class)
+//    })
+//    protected Object publicationOrAnnotatedPublication;
 
-    @XmlElements({
-        @XmlElement(name = "publication", type = DocumentInfo.class),
-        @XmlElement(name = "annotatedPublication", type = AnnotatedDocumentInfo.class)
-    })
-    protected Object publicationOrAnnotatedPublication;
+	protected DocumentInfo publication;
+	
+	protected AnnotatedDocumentInfo annotatedPublication;
 
-    /**
-     * Gets the value of the publicationOrAnnotatedPublication property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DocumentInfo }
-     *     {@link AnnotatedDocumentInfo }
-     *     
-     */
-    public Object getPublicationOrAnnotatedPublication() {
-        return publicationOrAnnotatedPublication;
-    }
+	public DocumentInfo getPublication() {
+		return publication;
+	}
 
-    /**
-     * Sets the value of the publicationOrAnnotatedPublication property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DocumentInfo }
-     *     {@link AnnotatedDocumentInfo }
-     *     
-     */
-    public void setPublicationOrAnnotatedPublication(Object value) {
-        this.publicationOrAnnotatedPublication = value;
-    }
+	public void setPublication(DocumentInfo publication) {
+		this.publication = publication;
+	}
+
+	public AnnotatedDocumentInfo getAnnotatedPublication() {
+		return annotatedPublication;
+	}
+
+	public void setAnnotatedPublication(AnnotatedDocumentInfo annotatedPublication) {
+		this.annotatedPublication = annotatedPublication;
+	}
+	
+	
 
 }
