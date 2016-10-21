@@ -31,24 +31,33 @@ def parse(filename, namespace, types) :
 				if types[nodeName]['desc'] is None :
 					if doc[0].text != None :
 						types[nodeName]['desc'] = doc[0].text
-						print '[+] ' + nodeName + ' found duplicate definition with Description (Replacing...) '
+						print('[+] ' + nodeName + ' found duplicate definition with Description (Replacing...) ')
 					else:
-						print '[-] ' + nodeName + ' found duplicate definition with no Description (Ignoring...)'
+						print ('[-] ' + nodeName + ' found duplicate definition with no Description (Ignoring...)')
 				else:
-					print '[-] ' + nodeName + ' found duplicate definition (Keeping first and ignoring rest...) '
+					print ('[-] ' + nodeName + ' found duplicate definition (Keeping first and ignoring rest...) ')
 				#print '\t' + str(doc[0].text)
 				#print '\t' + str(types[nodeName]['desc'])
 			types[nodeName] = thisDesLabel
 	return types
 
-if __name__ == "__main__" :
-	namespace = {'xs' : "http://www.w3.org/2001/XMLSchema" , 'ms' : "http://www.meta-share.org/OMTD-SHARE_XMLSchema"}
+def parse_files(directory):
 	finalDoc = {}
+	namespace = {'xs' : "http://www.w3.org/2001/XMLSchema" , 'ms' : "http://www.meta-share.org/OMTD-SHARE_XMLSchema"}
+	for file in os.listdir(directory):
+		filename,extension = os.path.splitext(file)
+		if extension == ".xsd" :
+			parse(file,namespace,finalDoc)
+	return finalDoc
+
+
+if __name__ == "__main__" :
+
 	for arg in sys.argv :
 		if arg == '-v' :
 			verbose = True
 		elif arg != sys.argv[0] :
-			parse(arg,namespace,finalDoc)
+			finalDoc = parse_files(arg)
 	with open('descriptions.json','w') as f:
 		f.write(json.dumps(finalDoc))
 		f.close()
