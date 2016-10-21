@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
-	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
+	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd" />
 	<xs:complexType name="projectInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -13,7 +11,7 @@
 			<xs:element name="projectNames">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="projectName" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="projectName">
 							<xs:annotation>
 								<xs:documentation>The full name of a project related to the resource</xs:documentation>
 								<xs:appinfo>
@@ -25,22 +23,22 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="500"/>
+										<xs:maxLength value="500" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang5">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="projectShortNames" minOccurs="0">
+			<xs:element minOccurs="0" name="projectShortNames">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="projectShortName" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="projectShortName">
 							<xs:annotation>
 								<xs:documentation>A short name, abbreviation or acronym of a project related to the resource</xs:documentation>
 								<xs:appinfo>
@@ -51,13 +49,13 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="500"/>
+										<xs:maxLength value="500" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang4">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
@@ -66,7 +64,7 @@
 			<xs:element name="projectIdentifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="projectIdentifier" type="ms:projectIdentifierType" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="projectIdentifier" type="ms:projectIdentifierType">
 							<xs:annotation>
 								<xs:documentation>A unique identifier for research projects</xs:documentation>
 							</xs:annotation>
@@ -74,10 +72,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="webpages" minOccurs="0">
+			<xs:element minOccurs="0" name="webpages">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="webpage" type="ms:httpURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="webpage" type="ms:httpURI">
 							<xs:annotation>
 								<xs:documentation>A URL used as webpage of a project</xs:documentation>
 								<xs:appinfo>
@@ -89,10 +87,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="fundingTypes" minOccurs="0">
+			<xs:element minOccurs="0" name="fundingTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="fundingType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingType">
 							<xs:annotation>
 								<xs:documentation>Specifies the type of funding of the project</xs:documentation>
 								<xs:appinfo>
@@ -101,8 +99,8 @@
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="fundingTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="30" />
 									<xs:enumeration value="other">
 										<xs:annotation>
 											<xs:documentation>When none of the above is applicable</xs:documentation>
@@ -110,7 +108,7 @@
 									</xs:enumeration>
 									<xs:enumeration value="ownFunds">
 										<xs:annotation>
-											<xs:documentation>Funding from the resource creators’s own sources</xs:documentation>
+											<xs:documentation>Funding from the resource creators&#8217;s own sources</xs:documentation>
 										</xs:annotation>
 									</xs:enumeration>
 									<xs:enumeration value="nationalFunds">
@@ -129,11 +127,11 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="funders" minOccurs="0">
+			<xs:element minOccurs="0" name="funders">
 				<xs:complexType>
 					<xs:sequence>
-						<!-- CHECK where can we say something about the nature of the funder? -->
-						<xs:element name="funder" type="ms:relatedOrganizationType" minOccurs="0" maxOccurs="unbounded">
+						
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="funder" type="ms:relatedOrganizationType">
 							<xs:annotation>
 								<xs:documentation>Funder of the project (e.g. EC for European Commission); preferred format is the registration through fundref</xs:documentation>
 								<xs:appinfo>
@@ -146,7 +144,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="fundingProgramme" type="xs:string" minOccurs="0">
+			<xs:element minOccurs="0" name="fundingProgramme" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>A specific programme (e.g. FP7, H2020)</xs:documentation>
 					<xs:appinfo>
@@ -156,7 +154,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="jurisdiction" type="xs:string" minOccurs="0">
+			<xs:element minOccurs="0" name="jurisdiction" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Authority granted to a formally consittute legal body (e.g. EU for European Union)</xs:documentation>
 					<xs:appinfo>
@@ -166,10 +164,10 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="fundingCountries" minOccurs="0">
+			<xs:element minOccurs="0" name="fundingCountries">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="fundingCountry" type="ms:regionIdType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingCountry" type="ms:regionIdType">
 							<xs:annotation>
 								<xs:documentation>The name of the funding country, in case of national funding as mentioned in ISO3166</xs:documentation>
 								<xs:appinfo>
@@ -182,7 +180,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="projectDates" type="ms:dateCombinationType" minOccurs="0">
+			<xs:element minOccurs="0" name="projectDates" type="ms:dateCombinationType">
 				<xs:annotation>
 					<xs:documentation>The duration dates the project</xs:documentation>
 					<xs:appinfo>

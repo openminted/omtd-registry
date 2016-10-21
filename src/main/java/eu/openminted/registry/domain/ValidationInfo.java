@@ -1,209 +1,310 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 
-import java.util.List;
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for validationInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="validationInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="validated" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="validationType" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="20"/&gt;
+ *               &lt;enumeration value="formal"/&gt;
+ *               &lt;enumeration value="content"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="validationMode" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}processMode" minOccurs="0"/&gt;
+ *         &lt;element name="validationModeDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="validationExtent" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="20"/&gt;
+ *               &lt;enumeration value="full"/&gt;
+ *               &lt;enumeration value="partial"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="validationExtentDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="sizePerValidation" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}sizeInfoType" minOccurs="0"/&gt;
+ *         &lt;element name="validationReports" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="hasValidationReport" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedDocumentInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="validationSwComponents" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="isValidatedBy" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedResourceType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="validators" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="validator" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}actorInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "validationInfoType", propOrder = {
+    "validated",
+    "validationType",
+    "validationMode",
+    "validationModeDetails",
+    "validationExtent",
+    "validationExtentDetails",
+    "sizePerValidation",
+    "validationReports",
+    "validationSwComponents",
+    "validators"
+})
 public class ValidationInfo {
 
-	@XmlJavaTypeAdapter(ValidationTypeAdapter.class)
-    enum ValidationType {
+    protected boolean validated;
+    protected ValidationTypeEnum validationType;
+    @XmlSchemaType(name = "string")
+    protected ProcessMode validationMode;
+    protected String validationModeDetails;
+    protected ValidationExtentEnum validationExtent;
+    protected String validationExtentDetails;
+    protected SizeInfo sizePerValidation;
+    @XmlElementWrapper
+    @XmlElement(name = "hasValidationReport", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedDocumentInfo> validationReports;
+    @XmlElementWrapper
+    @XmlElement(name = "isValidatedBy", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedResource> validationSwComponents;
+    @XmlElementWrapper
+    @XmlElement(name = "validator", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<ActorInfo> validators;
 
-        FORMAL("formal"),
-        CONTENT("content");
-
-        private String value;
-
-        ValidationType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ValidationType forValue(String value) {
-            for (ValidationType ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-	@XmlJavaTypeAdapter(ValidationModeAdapter.class)
-    enum ValidationMode {
-
-        MANUAL("manual"),
-        AUTOMATIC("automatic"),
-        MIXED("mixed"),
-        INTERACTIVE("interactive");
-
-        private String value;
-
-        ValidationMode(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ValidationMode forValue(String value) {
-            for (ValidationMode ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-	@XmlJavaTypeAdapter(ValidationExtentAdapter.class)
-    enum ValidationExtent {
-
-        FORMAL("full"),
-        CONTENT("partial");
-
-        private String value;
-
-        ValidationExtent(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ValidationExtent forValue(String value) {
-            for (ValidationExtent ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    private boolean validated;
-    private ValidationType validationType;
-    private ValidationMode validationMode;
-    private String validationModeDetails;
-    private ValidationExtent validationExtent;
-    private String validationExtentDetails;
-    private SizeInfo sizePerValidation;
-    
-    @XmlElementWrapper(name = "validationReports")
-    @XmlElement(name = "hasValidationReport")
-    private List<RelatedDocument> validationReports;
-    
-    @XmlElementWrapper(name = "validationSwComponents")
-    @XmlElement(name = "isValidatedBy")
-    private List<RelatedResource> validationSwComponents;
-    
-    @XmlElementWrapper(name = "validators")
-    @XmlElement(name = "validator")
-    private List<ActorInfo> validators;
-
-    public ValidationInfo() {
-    }
-
-    public ValidationInfo(boolean validated) {
-        this.validated = validated;
-    }
-
-    public ValidationInfo(boolean validated, ValidationType validationType, ValidationMode validationMode,
-                          String validationModeDetails, ValidationExtent validationExtent, String validationExtentDetails,
-                          SizeInfo sizePerValidation, List<RelatedDocument> validationReports,
-                          List<RelatedResource> validationSwComponents, List<ActorInfo> validators) {
-        this.validated = validated;
-        this.validationType = validationType;
-        this.validationMode = validationMode;
-        this.validationModeDetails = validationModeDetails;
-        this.validationExtent = validationExtent;
-        this.validationExtentDetails = validationExtentDetails;
-        this.sizePerValidation = sizePerValidation;
-        this.validationReports = validationReports;
-        this.validationSwComponents = validationSwComponents;
-        this.validators = validators;
-    }
-
+    /**
+     * Gets the value of the validated property.
+     * 
+     */
     public boolean isValidated() {
         return validated;
     }
 
-    public void setValidated(boolean validated) {
-        this.validated = validated;
+    /**
+     * Sets the value of the validated property.
+     * 
+     */
+    public void setValidated(boolean value) {
+        this.validated = value;
     }
 
-    public ValidationType getValidationType() {
+    /**
+     * Gets the value of the validationType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ValidationTypeEnum }
+     *     
+     */
+    public ValidationTypeEnum getValidationType() {
         return validationType;
     }
 
-    public void setValidationType(ValidationType validationType) {
-        this.validationType = validationType;
+    /**
+     * Sets the value of the validationType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ValidationTypeEnum }
+     *     
+     */
+    public void setValidationType(ValidationTypeEnum value) {
+        this.validationType = value;
     }
 
-    public ValidationMode getValidationMode() {
+    /**
+     * Gets the value of the validationMode property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ProcessMode }
+     *     
+     */
+    public ProcessMode getValidationMode() {
         return validationMode;
     }
 
-    public void setValidationMode(ValidationMode validationMode) {
-        this.validationMode = validationMode;
+    /**
+     * Sets the value of the validationMode property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ProcessMode }
+     *     
+     */
+    public void setValidationMode(ProcessMode value) {
+        this.validationMode = value;
     }
 
+    /**
+     * Gets the value of the validationModeDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
     public String getValidationModeDetails() {
         return validationModeDetails;
     }
 
-    public void setValidationModeDetails(String validationModeDetails) {
-        this.validationModeDetails = validationModeDetails;
+    /**
+     * Sets the value of the validationModeDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setValidationModeDetails(String value) {
+        this.validationModeDetails = value;
     }
 
-    public ValidationExtent getValidationExtent() {
+    /**
+     * Gets the value of the validationExtent property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ValidationExtentEnum }
+     *     
+     */
+    public ValidationExtentEnum getValidationExtent() {
         return validationExtent;
     }
 
-    public void setValidationExtent(ValidationExtent validationExtent) {
-        this.validationExtent = validationExtent;
+    /**
+     * Sets the value of the validationExtent property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ValidationExtentEnum }
+     *     
+     */
+    public void setValidationExtent(ValidationExtentEnum value) {
+        this.validationExtent = value;
     }
 
+    /**
+     * Gets the value of the validationExtentDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
     public String getValidationExtentDetails() {
         return validationExtentDetails;
     }
 
-    public void setValidationExtentDetails(String validationExtentDetails) {
-        this.validationExtentDetails = validationExtentDetails;
+    /**
+     * Sets the value of the validationExtentDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setValidationExtentDetails(String value) {
+        this.validationExtentDetails = value;
     }
 
+    /**
+     * Gets the value of the sizePerValidation property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link SizeInfo }
+     *     
+     */
     public SizeInfo getSizePerValidation() {
         return sizePerValidation;
     }
 
-    public void setSizePerValidation(SizeInfo sizePerValidation) {
-        this.sizePerValidation = sizePerValidation;
+    /**
+     * Sets the value of the sizePerValidation property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link SizeInfo }
+     *     
+     */
+    public void setSizePerValidation(SizeInfo value) {
+        this.sizePerValidation = value;
     }
 
-    public List<RelatedDocument> getValidationReports() {
+    public List<RelatedDocumentInfo> getValidationReports() {
+        if (validationReports == null) {
+            validationReports = new ArrayList<RelatedDocumentInfo>();
+        }
         return validationReports;
     }
 
-    public void setValidationReports(List<RelatedDocument> validationReports) {
+    public void setValidationReports(List<RelatedDocumentInfo> validationReports) {
         this.validationReports = validationReports;
     }
 
     public List<RelatedResource> getValidationSwComponents() {
+        if (validationSwComponents == null) {
+            validationSwComponents = new ArrayList<RelatedResource>();
+        }
         return validationSwComponents;
     }
 
@@ -212,49 +313,14 @@ public class ValidationInfo {
     }
 
     public List<ActorInfo> getValidators() {
+        if (validators == null) {
+            validators = new ArrayList<ActorInfo>();
+        }
         return validators;
     }
 
     public void setValidators(List<ActorInfo> validators) {
         this.validators = validators;
     }
-}
 
-class ValidationTypeAdapter extends XmlAdapter<String, ValidationInfo.ValidationType> {
-
-    @Override
-    public String marshal(ValidationInfo.ValidationType v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ValidationInfo.ValidationType unmarshal(String v) throws Exception {
-        return ValidationInfo.ValidationType.forValue(v);
-    }
-}
-
-class ValidationModeAdapter extends XmlAdapter<String, ValidationInfo.ValidationMode> {
-
-    @Override
-    public String marshal(ValidationInfo.ValidationMode v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ValidationInfo.ValidationMode unmarshal(String v) throws Exception {
-        return ValidationInfo.ValidationMode.forValue(v);
-    }
-}
-
-class ValidationExtentAdapter extends XmlAdapter<String, ValidationInfo.ValidationExtent> {
-
-    @Override
-    public String marshal(ValidationInfo.ValidationExtent v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ValidationInfo.ValidationExtent unmarshal(String v) throws Exception {
-        return ValidationInfo.ValidationExtent.forValue(v);
-    }
 }

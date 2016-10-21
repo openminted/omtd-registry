@@ -1,192 +1,368 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import java.util.List;
-
-import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.EXECUTABLE_CODE;
-import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.SOURCE_CODE;
-import static eu.openminted.registry.domain.ComponentDistributionInfo.ComponentDistributionMedium.WEB_SERVICE;
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for componentDistributionInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="componentDistributionInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="componentDistributionMedium"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="webService"/&gt;
+ *               &lt;enumeration value="sourceCode"/&gt;
+ *               &lt;enumeration value="executableCode"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="downloadURLs" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}downloadURL" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="accessURLs" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}accessURL" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="mavenID" type="{http://www.w3.org/2001/XMLSchema}anyType" minOccurs="0"/&gt;
+ *         &lt;element name="webServiceType" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="SOAP"/&gt;
+ *               &lt;enumeration value="REST"/&gt;
+ *               &lt;enumeration value="other"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="operatingSystem" maxOccurs="unbounded" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="50"/&gt;
+ *               &lt;enumeration value="os-independent"/&gt;
+ *               &lt;enumeration value="windows"/&gt;
+ *               &lt;enumeration value="linux"/&gt;
+ *               &lt;enumeration value="unix"/&gt;
+ *               &lt;enumeration value="mac-OS"/&gt;
+ *               &lt;enumeration value="googleChromeOS"/&gt;
+ *               &lt;enumeration value="iOS"/&gt;
+ *               &lt;enumeration value="android"/&gt;
+ *               &lt;enumeration value="other"/&gt;
+ *               &lt;enumeration value=""/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}rightsInfo"/&gt;
+ *         &lt;element name="copyrightStatements" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}copyrightStatement" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="attributionTexts" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}attributionText" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="rightsHolders" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}rightsHolder" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}availabilityStartDate" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}availabilityEndDate" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}fee" minOccurs="0"/&gt;
+ *         &lt;element name="userTypes" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}userType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "componentDistributionInfoType", propOrder = {
-	    "componentDistributionMedium",
-	    "downloadURLs",
-	    "accessURLs",
-	    "mavenId",
-	    "webServiceType",
-	    "operatingSystem",
-	    "rightsInfo",
-	    "copyrightStatements",
-	    "attributionTexts",
-	    "rightsHolders",
-	    "availabilityStartDate",
-	    "availabilityEndDate",
-	    "fee",
-	    "userTypes"
-	})
+    "componentDistributionMedium",
+    "downloadURLs",
+    "accessURLs",
+    "mavenID",
+    "webServiceType",
+    "operatingSystem",
+    "rightsInfo",
+    "copyrightStatements",
+    "attributionTexts",
+    "rightsHolders",
+    "availabilityStartDate",
+    "availabilityEndDate",
+    "fee",
+    "userTypes"
+})
 public class ComponentDistributionInfo {
 
-    @XmlJavaTypeAdapter(ComponentDistributionMediumAdapter.class)
-    enum ComponentDistributionMedium {
+    @XmlElement(required = true)
+    protected ComponentDistributionMediumEnum componentDistributionMedium;
+    @XmlElementWrapper
+    @XmlElement(name = "downloadURL", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<String> downloadURLs;
+    @XmlElementWrapper
+    @XmlElement(name = "accessURL", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<String> accessURLs;
+    protected Object mavenID;
+    protected WebServiceTypeEnum webServiceType;
+    protected List<OperatingSystemEnum> operatingSystem;
 
-        WEB_SERVICE("webService"),
-        SOURCE_CODE("sourceCode"),
-        EXECUTABLE_CODE("executableCode");
+    protected RightsInfo rightsInfo;
+    @XmlElementWrapper
+    @XmlElement(name = "copyrightStatement", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<CopyrightStatement> copyrightStatements;
+    @XmlElementWrapper
+    @XmlElement(name = "attributionText", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<AttributionText> attributionTexts;
+    @XmlElementWrapper
+    @XmlElement(name = "rightsHolder", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<ActorInfo> rightsHolders;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar availabilityStartDate;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar availabilityEndDate;
+    protected String fee;
+    @XmlElementWrapper
+    @XmlElement(name = "userType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<UserTypeEnum> userTypes;
 
-        private String value;
-
-        ComponentDistributionMedium(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
-
-    @XmlJavaTypeAdapter(WebServiceTypeAdapter.class)
-    enum WebServiceType {
-
-        SOAP("SOAP"),
-        REST("REST"),
-        OTHER("other");
-
-        private String value;
-
-        WebServiceType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static WebServiceType forValue(String value) {
-            for (WebServiceType os: WebServiceType.values()) {
-                if (os.getValue().equals(value))
-                    return os;
-            }
-
-            return null;
-        }
-    }
-    @XmlJavaTypeAdapter(OperatingSystemAdapter.class)
-    enum OperatingSystem {
-
-        OS_INDEPENDENT("os-independent"),
-        WINDOWS("windows"),
-        LINUX("linux"),
-        UNIX("unix"),
-        MAC_OS("mac-OS"),
-        GOOGLE_CHROME_OS("googleChromeOS"),
-        IOS("iOS"),
-        ANDROID("android"),
-        OTHER("other");
-
-        private String value;
-
-        OperatingSystem(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static OperatingSystem forValue(String value) {
-            for (OperatingSystem os: OperatingSystem.values()) {
-                if (os.getValue().equals(value))
-                    return os;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    @XmlElement(name="componentDistributionMedium")
-    private ComponentDistributionMedium componentDistributionMedium;
-
-    @XmlElementWrapper(name="downloadURLs")
-    @XmlElement(name="downloadURL")
-    private List<String> downloadURLs;
-    @XmlElementWrapper(name="accessURLs")
-    @XmlElement(name="accessURL")
-    private List<String> accessURLs;
-    private String mavenId;
-    private WebServiceType webServiceType;
-    
-    private List<OperatingSystem> operatingSystem;
-    //required
-    @XmlElement(name="rightsInfo")
-    private RightsInfo rightsInfo;
-    
-    @XmlElementWrapper(name="copyrightStatements")
-    @XmlElement(name="copyrightStatement")
-    private List<LangAttributeField> copyrightStatements;
-    
-    @XmlElementWrapper(name="attributionTexts")
-    @XmlElement(name="attributionText")
-    private List<LangAttributeField> attributionTexts;
-    @XmlElementWrapper(name="rightsHolders")
-    @XmlElement(name="rightsHolder")
-    private List<ActorInfo> rightsHolders;
-    @XmlElementWrapper(name="userTypes")
-    @XmlElement(name="userType")
-    private List<UserType> userTypes;
-    private XMLGregorianCalendar availabilityStartDate;
-    private XMLGregorianCalendar availabilityEndDate;
-    private String fee;
-
-    public ComponentDistributionInfo() {
-    }
-
-    public ComponentDistributionInfo(ComponentDistributionMedium componentDistributionMedium, RightsInfo rightsInfo) {
-        this.componentDistributionMedium = componentDistributionMedium;
-        this.rightsInfo = rightsInfo;
-    }
-
-    public ComponentDistributionInfo(ComponentDistributionMedium componentDistributionMedium, List<String> downloadURLs,
-                                     List<String> accessURLs, String mavenId, WebServiceType webServiceType,
-                                     List<OperatingSystem> operatingSystem, RightsInfo rightsInfo, List<LangAttributeField> copyrightStatements,
-                                     List<LangAttributeField> attributionTexts, List<ActorInfo> rightsHolders, XMLGregorianCalendar availabilityStartDate,
-                                     XMLGregorianCalendar availabilityEndDate, String fee, List<UserType> userTypes) {
-        this.componentDistributionMedium = componentDistributionMedium;
-        this.downloadURLs = downloadURLs;
-        this.accessURLs = accessURLs;
-        this.mavenId = mavenId;
-        this.webServiceType = webServiceType;
-        this.operatingSystem = operatingSystem;
-        this.rightsInfo = rightsInfo;
-        this.copyrightStatements = copyrightStatements;
-        this.attributionTexts = attributionTexts;
-        this.rightsHolders = rightsHolders;
-        this.availabilityStartDate = availabilityStartDate;
-        this.availabilityEndDate = availabilityEndDate;
-        this.fee = fee;
-        this.userTypes = userTypes;
-    }
-
-    public ComponentDistributionMedium getComponentDistributionMedium() {
+    /**
+     * Gets the value of the componentDistributionMedium property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ComponentDistributionMediumEnum }
+     *     
+     */
+    public ComponentDistributionMediumEnum getComponentDistributionMedium() {
         return componentDistributionMedium;
     }
 
-    public void setComponentDistributionMedium(ComponentDistributionMedium componentDistributionMedium) {
-        this.componentDistributionMedium = componentDistributionMedium;
+    /**
+     * Sets the value of the componentDistributionMedium property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ComponentDistributionMediumEnum }
+     *     
+     */
+    public void setComponentDistributionMedium(ComponentDistributionMediumEnum value) {
+        this.componentDistributionMedium = value;
+    }
+
+    /**
+     * Gets the value of the mavenID property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Object }
+     *     
+     */
+    public Object getMavenID() {
+        return mavenID;
+    }
+
+    /**
+     * Sets the value of the mavenID property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Object }
+     *     
+     */
+    public void setMavenID(Object value) {
+        this.mavenID = value;
+    }
+
+    /**
+     * Gets the value of the webServiceType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link WebServiceTypeEnum }
+     *     
+     */
+    public WebServiceTypeEnum getWebServiceType() {
+        return webServiceType;
+    }
+
+    /**
+     * Sets the value of the webServiceType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link WebServiceTypeEnum }
+     *     
+     */
+    public void setWebServiceType(WebServiceTypeEnum value) {
+        this.webServiceType = value;
+    }
+
+    /**
+     * Gets the value of the operatingSystem property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the operatingSystem property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getOperatingSystem().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link OperatingSystemEnum }
+     * 
+     * 
+     */
+    public List<OperatingSystemEnum> getOperatingSystem() {
+        if (operatingSystem == null) {
+            operatingSystem = new ArrayList<OperatingSystemEnum>();
+        }
+        return this.operatingSystem;
+    }
+
+    /**
+     * Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getAvailabilityStartDate() {
+        return availabilityStartDate;
+    }
+
+    /**
+     * Sets the value of the availabilityStartDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setAvailabilityStartDate(XMLGregorianCalendar value) {
+        this.availabilityStartDate = value;
+    }
+
+    /**
+     * Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getAvailabilityEndDate() {
+        return availabilityEndDate;
+    }
+
+    /**
+     * Sets the value of the availabilityEndDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setAvailabilityEndDate(XMLGregorianCalendar value) {
+        this.availabilityEndDate = value;
+    }
+
+    /**
+     * Specifies the costs that are required to access the resource, a fragment of the resource or to use a component
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFee() {
+        return fee;
+    }
+
+    /**
+     * Sets the value of the fee property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFee(String value) {
+        this.fee = value;
     }
 
     public List<String> getDownloadURLs() {
+        if (downloadURLs == null) {
+            downloadURLs = new ArrayList<String>();
+        }
         return downloadURLs;
     }
 
@@ -195,35 +371,14 @@ public class ComponentDistributionInfo {
     }
 
     public List<String> getAccessURLs() {
+        if (accessURLs == null) {
+            accessURLs = new ArrayList<String>();
+        }
         return accessURLs;
     }
 
     public void setAccessURLs(List<String> accessURLs) {
         this.accessURLs = accessURLs;
-    }
-
-    public String getMavenId() {
-        return mavenId;
-    }
-
-    public void setMavenId(String mavenId) {
-        this.mavenId = mavenId;
-    }
-
-    public WebServiceType getWebServiceType() {
-        return webServiceType;
-    }
-
-    public void setWebServiceType(WebServiceType webServiceType) {
-        this.webServiceType = webServiceType;
-    }
-
-    public List<OperatingSystem> getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public void setOperatingSystem(List<OperatingSystem> operatingSystem) {
-        this.operatingSystem = operatingSystem;
     }
 
     public RightsInfo getRightsInfo() {
@@ -234,23 +389,32 @@ public class ComponentDistributionInfo {
         this.rightsInfo = rightsInfo;
     }
 
-    public List<LangAttributeField> getCopyrightStatements() {
+    public List<CopyrightStatement> getCopyrightStatements() {
+        if (copyrightStatements == null) {
+            copyrightStatements = new ArrayList<CopyrightStatement>();
+        }
         return copyrightStatements;
     }
 
-    public void setCopyrightStatements(List<LangAttributeField> copyrightStatements) {
+    public void setCopyrightStatements(List<CopyrightStatement> copyrightStatements) {
         this.copyrightStatements = copyrightStatements;
     }
 
-    public List<LangAttributeField> getAttributionTexts() {
+    public List<AttributionText> getAttributionTexts() {
+        if (attributionTexts == null) {
+            attributionTexts = new ArrayList<AttributionText>();
+        }
         return attributionTexts;
     }
 
-    public void setAttributionTexts(List<LangAttributeField> attributionTexts) {
+    public void setAttributionTexts(List<AttributionText> attributionTexts) {
         this.attributionTexts = attributionTexts;
     }
 
     public List<ActorInfo> getRightsHolders() {
+        if (rightsHolders == null) {
+            rightsHolders = new ArrayList<ActorInfo>();
+        }
         return rightsHolders;
     }
 
@@ -258,82 +422,15 @@ public class ComponentDistributionInfo {
         this.rightsHolders = rightsHolders;
     }
 
-    public XMLGregorianCalendar getAvailabilityStartDate() {
-        return availabilityStartDate;
-    }
-
-    public void setAvailabilityStartDate(XMLGregorianCalendar availabilityStartDate) {
-        this.availabilityStartDate = availabilityStartDate;
-    }
-
-    public XMLGregorianCalendar getAvailabilityEndDate() {
-        return availabilityEndDate;
-    }
-
-    public void setAvailabilityEndDate(XMLGregorianCalendar availabilityEndDate) {
-        this.availabilityEndDate = availabilityEndDate;
-    }
-
-    public String getFee() {
-        return fee;
-    }
-
-    public void setFee(String fee) {
-        this.fee = fee;
-    }
-
-    public List<UserType> getUserTypes() {
+    public List<UserTypeEnum> getUserTypes() {
+        if (userTypes == null) {
+            userTypes = new ArrayList<UserTypeEnum>();
+        }
         return userTypes;
     }
 
-    public void setUserTypes(List<UserType> userTypes) {
+    public void setUserTypes(List<UserTypeEnum> userTypes) {
         this.userTypes = userTypes;
     }
-}
 
-class ComponentDistributionMediumAdapter extends XmlAdapter<String, ComponentDistributionInfo.ComponentDistributionMedium> {
-
-    @Override
-    public String marshal(ComponentDistributionInfo.ComponentDistributionMedium v) throws Exception {
-        return v.getValue();
-    }
-
-    @Override
-    public ComponentDistributionInfo.ComponentDistributionMedium unmarshal(String v) throws Exception {
-        if ("webService".equals(v)) {
-            return WEB_SERVICE;
-        } else if ("sourceCode".equals(v)) {
-            return SOURCE_CODE;
-        } else if ("executableCode".equals(v)) {
-            return EXECUTABLE_CODE;
-        }
-
-        return null;
-    }
-}
-
-class OperatingSystemAdapter extends XmlAdapter<String, ComponentDistributionInfo.OperatingSystem> {
-
-    @Override
-    public String marshal(ComponentDistributionInfo.OperatingSystem v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ComponentDistributionInfo.OperatingSystem unmarshal(String v) throws Exception {
-        return ComponentDistributionInfo.OperatingSystem.forValue(v);
-    }
-}
-
-class WebServiceTypeAdapter extends XmlAdapter<String, ComponentDistributionInfo.WebServiceType> {
-
-    @Override
-    public String marshal(ComponentDistributionInfo.WebServiceType v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ComponentDistributionInfo.WebServiceType unmarshal(String v) throws Exception {
-        return ComponentDistributionInfo.WebServiceType.forValue(v);
-    }
 }

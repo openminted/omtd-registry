@@ -1,17 +1,151 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for componentEvaluationInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="componentEvaluationInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="evaluated" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="evaluationLevels" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="evaluationLevel" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                     &lt;simpleType&gt;
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                         &lt;maxLength value="30"/&gt;
+ *                         &lt;enumeration value="technological"/&gt;
+ *                         &lt;enumeration value="usage"/&gt;
+ *                         &lt;enumeration value="impact"/&gt;
+ *                         &lt;enumeration value="diagnostic"/&gt;
+ *                       &lt;/restriction&gt;
+ *                     &lt;/simpleType&gt;
+ *                   &lt;/element&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationTypes" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="evaluationType" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                     &lt;simpleType&gt;
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                         &lt;maxLength value="20"/&gt;
+ *                         &lt;enumeration value="glassBox"/&gt;
+ *                         &lt;enumeration value="blackBox"/&gt;
+ *                       &lt;/restriction&gt;
+ *                     &lt;/simpleType&gt;
+ *                   &lt;/element&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationCriteria" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="evaluationCriterion" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                     &lt;simpleType&gt;
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                         &lt;maxLength value="30"/&gt;
+ *                         &lt;enumeration value="extrinsic"/&gt;
+ *                         &lt;enumeration value="intrinsic"/&gt;
+ *                       &lt;/restriction&gt;
+ *                     &lt;/simpleType&gt;
+ *                   &lt;/element&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationMeasures" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="evaluationMeasure" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                     &lt;simpleType&gt;
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *                         &lt;maxLength value="30"/&gt;
+ *                         &lt;enumeration value="human"/&gt;
+ *                         &lt;enumeration value="automatic"/&gt;
+ *                       &lt;/restriction&gt;
+ *                     &lt;/simpleType&gt;
+ *                   &lt;/element&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationReports" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="hasEvaluationReport" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedDocumentInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationSwComponents" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="isEvaluatedBy" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedResourceType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluationDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="evaluators" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="evaluator" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}actorInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "componentEvaluationInfoType", propOrder = {
@@ -27,215 +161,129 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 public class ComponentEvaluationInfo {
 
-	@XmlJavaTypeAdapter(EvaluationLevelAdapter.class)
-    enum EvaluationLevel {
+    protected boolean evaluated;
+    @XmlElementWrapper
+    @XmlElement(name = "evaluationLevel", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<EvaluationLevelEnum> evaluationLevels;
+    @XmlElementWrapper
+    @XmlElement(name = "evaluationType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<EvaluationTypeEnum> evaluationTypes;
+    @XmlElementWrapper
+    @XmlElement(name = "evaluationCriterion", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<EvaluationCriterionEnum> evaluationCriteria;
+    @XmlElementWrapper
+    @XmlElement(name = "evaluationMeasure", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<EvaluationMeasureEnum> evaluationMeasures;
+    @XmlElementWrapper
+    @XmlElement(name = "hasEvaluationReport", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedDocumentInfo> evaluationReports;
+    @XmlElementWrapper
+    @XmlElement(name = "isEvaluatedBy", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedResource> evaluationSwComponents;
+    protected String evaluationDetails;
+    @XmlElementWrapper
+    @XmlElement(name = "evaluator", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<ActorInfo> evaluators;
 
-        TECHNOLOGICAL("technological"),
-        USAGE("usage"),
-        IMPACT("impact"),
-        DIAGNOSTIC("diagnostic");
-
-        private String value;
-
-        EvaluationLevel(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ComponentEvaluationInfo.EvaluationLevel forValue(String value) {
-            for (ComponentEvaluationInfo.EvaluationLevel ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-	@XmlJavaTypeAdapter(EvaluationTypeAdapter.class)
-    enum EvaluationType {
-
-        GLASS_BOX("glassBox"),
-        BLACK_BOX("blackBox");
-
-        private String value;
-
-        EvaluationType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ComponentEvaluationInfo.EvaluationType forValue(String value) {
-            for (ComponentEvaluationInfo.EvaluationType ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-	@XmlJavaTypeAdapter(EvaluationCriterionAdapter.class)
-    enum EvaluationCriterion {
-
-        EXTRINSIC("extrinsic"),
-        INTRINSIC("intrinsic");
-
-        private String value;
-
-        EvaluationCriterion(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ComponentEvaluationInfo.EvaluationCriterion forValue(String value) {
-            for (ComponentEvaluationInfo.EvaluationCriterion ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-	@XmlJavaTypeAdapter(EvaluationMeasureAdapter.class)
-    enum EvaluationMeasure {
-
-        HUMAN("human"),
-        AUTOMATIC("automatic");
-
-        private String value;
-
-        EvaluationMeasure(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ComponentEvaluationInfo.EvaluationMeasure forValue(String value) {
-            for (ComponentEvaluationInfo.EvaluationMeasure ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    private Boolean evaluated;
-    @XmlElementWrapper(name="evaluationLevels")
-    @XmlElement(name="evaluationLevel")
-    private List<EvaluationLevel> evaluationLevels;
-    
-    @XmlElementWrapper(name="evaluationTypes")
-    @XmlElement(name="evaluationType")
-    private List<EvaluationType> evaluationTypes;
-    
-    @XmlElementWrapper(name="evaluationCriteria")
-    @XmlElement(name="evaluationCriterion")
-    private List<EvaluationCriterion> evaluationCriteria;
-    
-    @XmlElementWrapper(name="evaluationMeasures")
-    @XmlElement(name="evaluationMeasure")
-    private List<EvaluationMeasure> evaluationMeasures;
-    
-    @XmlElementWrapper(name="evaluationReports")
-    @XmlElement(name="hasEvaluationReport")
-    private List<RelatedDocument> evaluationReports;
-    
-    @XmlElementWrapper(name="evaluationSwComponents")
-    @XmlElement(name="isEvaluatedBy")
-    private List<RelatedResource> evaluationSwComponents;
-    
-    private String evaluationDetails;
-    
-    @XmlElementWrapper(name="evaluators")
-    @XmlElement(name="evaluator")
-    private List<ActorInfo> evaluators;
-
-    public ComponentEvaluationInfo() {
-    }
-
-    public ComponentEvaluationInfo(boolean evaluated) {
-        this.evaluated = evaluated;
-    }
-
-    public ComponentEvaluationInfo(Boolean evaluated, List<EvaluationLevel> evaluationLevels, List<EvaluationType> evaluationTypes,
-                                   List<EvaluationCriterion> evaluationCriteria, List<EvaluationMeasure> evaluationMeasures,
-                                   List<RelatedDocument> evaluationReports, List<RelatedResource> evaluationSwComponents,
-                                   String evaluationDetails, List<ActorInfo> evaluators) {
-        this.evaluated = evaluated;
-        this.evaluationLevels = evaluationLevels;
-        this.evaluationTypes = evaluationTypes;
-        this.evaluationCriteria = evaluationCriteria;
-        this.evaluationMeasures = evaluationMeasures;
-        this.evaluationReports = evaluationReports;
-        this.evaluationSwComponents = evaluationSwComponents;
-        this.evaluationDetails = evaluationDetails;
-        this.evaluators = evaluators;
-    }
-
-    public Boolean isEvaluated() {
+    /**
+     * Gets the value of the evaluated property.
+     * 
+     */
+    public boolean isEvaluated() {
         return evaluated;
     }
 
-    public void setEvaluated(Boolean evaluated) {
-        this.evaluated = evaluated;
+    /**
+     * Sets the value of the evaluated property.
+     * 
+     */
+    public void setEvaluated(boolean value) {
+        this.evaluated = value;
     }
 
-    public List<EvaluationLevel> getEvaluationLevels() {
+    /**
+     * Gets the value of the evaluationDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEvaluationDetails() {
+        return evaluationDetails;
+    }
+
+    /**
+     * Sets the value of the evaluationDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEvaluationDetails(String value) {
+        this.evaluationDetails = value;
+    }
+
+    public List<EvaluationLevelEnum> getEvaluationLevels() {
+        if (evaluationLevels == null) {
+            evaluationLevels = new ArrayList<EvaluationLevelEnum>();
+        }
         return evaluationLevels;
     }
 
-    public void setEvaluationLevels(List<EvaluationLevel> evaluationLevels) {
+    public void setEvaluationLevels(List<EvaluationLevelEnum> evaluationLevels) {
         this.evaluationLevels = evaluationLevels;
     }
 
-    public List<EvaluationType> getEvaluationTypes() {
+    public List<EvaluationTypeEnum> getEvaluationTypes() {
+        if (evaluationTypes == null) {
+            evaluationTypes = new ArrayList<EvaluationTypeEnum>();
+        }
         return evaluationTypes;
     }
 
-    public void setEvaluationTypes(List<EvaluationType> evaluationTypes) {
+    public void setEvaluationTypes(List<EvaluationTypeEnum> evaluationTypes) {
         this.evaluationTypes = evaluationTypes;
     }
 
-    public List<EvaluationCriterion> getEvaluationCriteria() {
+    public List<EvaluationCriterionEnum> getEvaluationCriteria() {
+        if (evaluationCriteria == null) {
+            evaluationCriteria = new ArrayList<EvaluationCriterionEnum>();
+        }
         return evaluationCriteria;
     }
 
-    public void setEvaluationCriteria(List<EvaluationCriterion> evaluationCriteria) {
+    public void setEvaluationCriteria(List<EvaluationCriterionEnum> evaluationCriteria) {
         this.evaluationCriteria = evaluationCriteria;
     }
 
-    public List<EvaluationMeasure> getEvaluationMeasures() {
+    public List<EvaluationMeasureEnum> getEvaluationMeasures() {
+        if (evaluationMeasures == null) {
+            evaluationMeasures = new ArrayList<EvaluationMeasureEnum>();
+        }
         return evaluationMeasures;
     }
 
-    public void setEvaluationMeasures(List<EvaluationMeasure> evaluationMeasures) {
+    public void setEvaluationMeasures(List<EvaluationMeasureEnum> evaluationMeasures) {
         this.evaluationMeasures = evaluationMeasures;
     }
 
-    public List<RelatedDocument> getEvaluationReports() {
+    public List<RelatedDocumentInfo> getEvaluationReports() {
+        if (evaluationReports == null) {
+            evaluationReports = new ArrayList<RelatedDocumentInfo>();
+        }
         return evaluationReports;
     }
 
-    public void setEvaluationReports(List<RelatedDocument> evaluationReports) {
+    public void setEvaluationReports(List<RelatedDocumentInfo> evaluationReports) {
         this.evaluationReports = evaluationReports;
     }
 
     public List<RelatedResource> getEvaluationSwComponents() {
+        if (evaluationSwComponents == null) {
+            evaluationSwComponents = new ArrayList<RelatedResource>();
+        }
         return evaluationSwComponents;
     }
 
@@ -243,71 +291,15 @@ public class ComponentEvaluationInfo {
         this.evaluationSwComponents = evaluationSwComponents;
     }
 
-    public String getEvaluationDetails() {
-        return evaluationDetails;
-    }
-
-    public void setEvaluationDetails(String evaluationDetails) {
-        this.evaluationDetails = evaluationDetails;
-    }
-
     public List<ActorInfo> getEvaluators() {
+        if (evaluators == null) {
+            evaluators = new ArrayList<ActorInfo>();
+        }
         return evaluators;
     }
 
     public void setEvaluators(List<ActorInfo> evaluators) {
         this.evaluators = evaluators;
     }
-    
-    static class EvaluationLevelAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationLevel> {
 
-        @Override
-        public String marshal(ComponentEvaluationInfo.EvaluationLevel v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public ComponentEvaluationInfo.EvaluationLevel unmarshal(String v) throws Exception {
-            return ComponentEvaluationInfo.EvaluationLevel.forValue(v);
-        }
-    }
-    
-    static class EvaluationTypeAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationType> {
-
-        @Override
-        public String marshal(ComponentEvaluationInfo.EvaluationType v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public ComponentEvaluationInfo.EvaluationType unmarshal(String v) throws Exception {
-            return ComponentEvaluationInfo.EvaluationType.forValue(v);
-        }
-    }
-    
-    static class EvaluationCriterionAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationCriterion> {
-
-        @Override
-        public String marshal(ComponentEvaluationInfo.EvaluationCriterion v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public ComponentEvaluationInfo.EvaluationCriterion unmarshal(String v) throws Exception {
-            return ComponentEvaluationInfo.EvaluationCriterion.forValue(v);
-        }
-    }
-    
-    static class EvaluationMeasureAdapter extends XmlAdapter<String, ComponentEvaluationInfo.EvaluationMeasure> {
-
-        @Override
-        public String marshal(ComponentEvaluationInfo.EvaluationMeasure v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public ComponentEvaluationInfo.EvaluationMeasure unmarshal(String v) throws Exception {
-            return ComponentEvaluationInfo.EvaluationMeasure.forValue(v);
-        }
-    }
 }

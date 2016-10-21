@@ -1,126 +1,114 @@
+
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="originalDataProviderType"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="repository"/&gt;
+ *               &lt;enumeration value="journal"/&gt;
+ *               &lt;enumeration value="publisher"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;choice&gt;
+ *           &lt;element name="originalDataProviderRepository" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedRepositoryType"/&gt;
+ *           &lt;element name="originalDataProviderJournal" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedJournalType"/&gt;
+ *           &lt;element name="originalDataProviderPublisher" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedOrganizationType"/&gt;
+ *         &lt;/choice&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
-@XmlType(propOrder = { "originalDataProviderType", "relatedRepository",
-		"relatedJournal", "relatedOrganization" })
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "originalDataProviderType",
+    "originalDataProviderRepository","originalDataProviderJournal","originalDataProviderPublisher"
+})
 public class OriginalDataProviderInfo {
 
-	@XmlJavaTypeAdapter(OriginalDataProviderTypeAdapter.class)
-	enum OriginalDataProviderType {
+    @XmlElement(required = true)
+    protected OriginalDataProviderTypeEnum originalDataProviderType;
+    // @XmlElements({
+    //     @XmlElement(name = "originalDataProviderRepository", type = RelatedRepository.class),
+    //     @XmlElement(name = "originalDataProviderJournal", type = RelatedJournal.class),
+    //     @XmlElement(name = "originalDataProviderPublisher", type = RelatedOrganization.class)
+    // })
+    // protected Object originalDataProviderRepositoryOrOriginalDataProviderJournalOrOriginalDataProviderPublisher;
 
-		REPOSITORY("repository"), JOURNAL("journal"), PUBLISHER("publisher");
+    
+    protected RelatedRepository originalDataProviderRepository;
+    protected RelatedJournal originalDataProviderJournal;
+    protected RelatedOrganization originalDataProviderPublisher;
 
-		private String value;
+    /**
+     * Gets the value of the originalDataProviderType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link OriginalDataProviderTypeEnum }
+     *     
+     */
+    public OriginalDataProviderTypeEnum getOriginalDataProviderType() {
+        return originalDataProviderType;
+    }
 
-		OriginalDataProviderType(String value) {
-			this.value = value;
-		}
+    /**
+     * Sets the value of the originalDataProviderType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link OriginalDataProviderTypeEnum }
+     *     
+     */
+    public void setOriginalDataProviderType(OriginalDataProviderTypeEnum value) {
+        this.originalDataProviderType = value;
+    }
 
-		public String getValue() {
-			return value;
-		}
-
-		public static OriginalDataProviderType forValue(String value) {
-			for (OriginalDataProviderType ut : values()) {
-				if (ut.getValue().equals(value))
-					return ut;
-			}
-
-			return null;
-		}
+	public RelatedRepository getOriginalDataProviderRepository() {
+		return originalDataProviderRepository;
 	}
 
-	// required
-	private OriginalDataProviderType originalDataProviderType;
-
-	// one of the 3
-	@XmlElement(name = "originalDataProviderRepository")
-	private RelatedRepository relatedRepository;
-
-	@XmlElement(name = "originalDataProviderJournal")
-	private RelatedJournal relatedJournal;
-
-	@XmlElement(name = "originalDataProviderOrganization")
-	private RelatedOrganization relatedOrganization;
-
-	public OriginalDataProviderInfo() {
+	public void setOriginalDataProviderRepository(
+			RelatedRepository originalDataProviderRepository) {
+		this.originalDataProviderRepository = originalDataProviderRepository;
 	}
 
-	public OriginalDataProviderInfo(
-			OriginalDataProviderType originalDataProviderType,
-			RelatedRepository relatedRepository) {
-		this.originalDataProviderType = originalDataProviderType;
-		this.relatedRepository = relatedRepository;
+	public RelatedJournal getOriginalDataProviderJournal() {
+		return originalDataProviderJournal;
 	}
 
-	public OriginalDataProviderInfo(
-			OriginalDataProviderType originalDataProviderType,
-			RelatedJournal relatedJournal) {
-		this.originalDataProviderType = originalDataProviderType;
-		this.relatedJournal = relatedJournal;
+	public void setOriginalDataProviderJournal(
+			RelatedJournal originalDataProviderJournal) {
+		this.originalDataProviderJournal = originalDataProviderJournal;
 	}
 
-	public OriginalDataProviderInfo(
-			OriginalDataProviderType originalDataProviderType,
-			RelatedOrganization relatedOrganization) {
-		this.originalDataProviderType = originalDataProviderType;
-		this.relatedOrganization = relatedOrganization;
+	public RelatedOrganization getOriginalDataProviderPublisher() {
+		return originalDataProviderPublisher;
 	}
 
-	public OriginalDataProviderType getOriginalDataProviderType() {
-		return originalDataProviderType;
+	public void setOriginalDataProviderPublisher(
+			RelatedOrganization originalDataProviderPublisher) {
+		this.originalDataProviderPublisher = originalDataProviderPublisher;
 	}
-
-	public void setOriginalDataProviderType(
-			OriginalDataProviderType originalDataProviderType) {
-		this.originalDataProviderType = originalDataProviderType;
-	}
-
-	public RelatedRepository getRelatedRepository() {
-		return relatedRepository;
-	}
-
-	public void setRelatedRepository(RelatedRepository relatedRepository) {
-		this.relatedRepository = relatedRepository;
-	}
-
-	public RelatedJournal getRelatedJournal() {
-		return relatedJournal;
-	}
-
-	public void setRelatedJournal(RelatedJournal relatedJournal) {
-		this.relatedJournal = relatedJournal;
-	}
-
-	public RelatedOrganization getRelatedOrganization() {
-		return relatedOrganization;
-	}
-
-	public void setRelatedOrganization(RelatedOrganization relatedOrganization) {
-		this.relatedOrganization = relatedOrganization;
-	}
-
-}
-
-class OriginalDataProviderTypeAdapter extends
-		XmlAdapter<String, OriginalDataProviderInfo.OriginalDataProviderType> {
-
-	@Override
-	public String marshal(OriginalDataProviderInfo.OriginalDataProviderType v)
-			throws Exception {
-		return v != null ? v.getValue() : null;
-	}
-
-	@Override
-	public OriginalDataProviderInfo.OriginalDataProviderType unmarshal(String v)
-			throws Exception {
-		return OriginalDataProviderInfo.OriginalDataProviderType.forValue(v);
-	}
+    
 }

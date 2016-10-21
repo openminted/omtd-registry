@@ -1,49 +1,78 @@
+
 package eu.openminted.registry.domain;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for processMode.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * <pre>
+ * &lt;simpleType name="processMode"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;maxLength value="20"/&gt;
+ *     &lt;enumeration value="manual"/&gt;
+ *     &lt;enumeration value="automatic"/&gt;
+ *     &lt;enumeration value="mixed"/&gt;
+ *     &lt;enumeration value="interactive"/&gt;
+ *   &lt;/restriction&gt;
+ * &lt;/simpleType&gt;
+ * </pre>
+ * 
  */
-@XmlJavaTypeAdapter(ProcessModeAdapter.class)
+@XmlType(name = "processMode")
+@XmlEnum
 public enum ProcessMode {
 
+
+    /**
+     * For processes performed only manually, without automatic means or aids
+     * 
+     */
+    @XmlEnumValue("manual")
     MANUAL("manual"),
+
+    /**
+     * For processes performed only with automatic means or aids
+     * 
+     */
+    @XmlEnumValue("automatic")
     AUTOMATIC("automatic"),
+
+    /**
+     * For processes performed in a mixed way, using manual and automatic means
+     * 
+     */
+    @XmlEnumValue("mixed")
     MIXED("mixed"),
+
+    /**
+     * For processes performed interactively
+     * 
+     */
+    @XmlEnumValue("interactive")
     INTERACTIVE("interactive");
+    private final String value;
 
-    private String value;
-
-    ProcessMode(String value) {
-        this.value = value;
+    ProcessMode(String v) {
+        value = v;
     }
 
-    public String getValue() {
+    public String value() {
         return value;
     }
 
-    public static ProcessMode forValue(String value) {
-        for (ProcessMode ut: values()) {
-            if (ut.getValue().equals(value))
-                return ut;
+    public static ProcessMode fromValue(String v) {
+        for (ProcessMode c: ProcessMode.values()) {
+            if (c.value.equals(v)) {
+                return c;
+            }
         }
-
-        return null;
+        throw new IllegalArgumentException(v);
     }
+
 }
-
-class ProcessModeAdapter extends XmlAdapter<String, ProcessMode> {
-
-    @Override
-    public String marshal(ProcessMode v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ProcessMode unmarshal(String v) throws Exception {
-        return ProcessMode.forValue(v);
-    }
-}
-

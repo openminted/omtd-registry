@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
-	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
+	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd" />
 	<xs:complexType name="componentInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -10,31 +8,31 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="resourceType" type="xs:string" fixed="component">
+			<xs:element fixed="component" name="resourceType" type="xs:string">
 				<xs:annotation>
-					<xs:documentation/>
+					<xs:documentation />
 					<xs:appinfo>
 						<label>Resource type</label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element ref="ms:identificationInfo"/>
-			<xs:element ref="ms:contactInfo" maxOccurs="1"/>
-			<xs:element ref="ms:versionInfo" minOccurs="0"/>
-			<xs:element name="validationInfos" minOccurs="0">
+			<xs:element ref="ms:identificationInfo" />
+			<xs:element maxOccurs="1" ref="ms:contactInfo" />
+			<xs:element minOccurs="0" ref="ms:versionInfo" />
+			<xs:element minOccurs="0" name="validationInfos">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:validationInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:validationInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:usageInfo" minOccurs="0"/>
-			<xs:element ref="ms:resourceDocumentationInfo" minOccurs="0"/>
-			<xs:element ref="ms:resourceCreationInfo" minOccurs="0"/>
-			<xs:element name="componentTypes" minOccurs="1">
+			<xs:element minOccurs="0" ref="ms:usageInfo" />
+			<xs:element minOccurs="0" ref="ms:resourceDocumentationInfo" />
+			<xs:element minOccurs="0" ref="ms:resourceCreationInfo" />
+			<xs:element minOccurs="1" name="componentTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="componentType" minOccurs="1" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="1" name="componentType">
 							<xs:annotation>
 								<xs:documentation>Specifies the type of a component, in terms of the function/task it performs</xs:documentation>
 								<xs:appinfo>
@@ -43,9 +41,9 @@
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="100"/>
-									<xs:enumeration value="accessComponent"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="componentTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="100" />
+									<xs:enumeration value="accessComponent" />
 									<xs:enumeration value="reader">
 										<xs:annotation>
 											<xs:documentation>A component that reads content of various types (pdf, txt, xml etc.)</xs:documentation>
@@ -445,7 +443,7 @@ words) in two languages</xs:documentation>
 									</xs:enumeration>
 									<xs:enumeration value="sentimentAnalyzer">
 										<xs:annotation>
-											<xs:documentation>A component that tries to identify sentences that express the author’s negative or positive feelings on something; (Sentiment analysis (also known as opinion mining) refers to the use of natural language processing, text analysis and computational linguistics to identify and extract subjective information in source materials (wikipedia) )</xs:documentation>
+											<xs:documentation>A component that tries to identify sentences that express the author&#8217;s negative or positive feelings on something; (Sentiment analysis (also known as opinion mining) refers to the use of natural language processing, text analysis and computational linguistics to identify and extract subjective information in source materials (wikipedia) )</xs:documentation>
 											<xs:appinfo>
 												<xs:closeMatch>opinionMiningTool</xs:closeMatch>
 												<xs:broader>analyzer</xs:broader>
@@ -542,7 +540,7 @@ words) in two languages</xs:documentation>
 									</xs:enumeration>
 									<xs:enumeration value="infrastructure">
 										<xs:annotation>
-											<xs:documentation/>
+											<xs:documentation />
 											<xs:appinfo>
 												<label>Infrastructure</label>
 											</xs:appinfo>
@@ -564,7 +562,7 @@ words) in two languages</xs:documentation>
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
-									<xs:enumeration value="other"/>
+									<xs:enumeration value="other" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
@@ -574,11 +572,11 @@ words) in two languages</xs:documentation>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:componentDistributionInfo" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" ref="ms:componentDistributionInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="inputContentResourceInfo" type="ms:processingResourceInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="inputContentResourceInfo" type="ms:processingResourceInfoType">
 				<xs:annotation>
 					<xs:documentation>Groups together information on the requirements set on the input resource of a component</xs:documentation>
 					<xs:appinfo>
@@ -586,7 +584,7 @@ words) in two languages</xs:documentation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="outputResourceInfo" type="ms:processingResourceInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="outputResourceInfo" type="ms:processingResourceInfoType">
 				<xs:annotation>
 					<xs:documentation>Groups together information on the output of a component</xs:documentation>
 					<xs:appinfo>
@@ -594,32 +592,32 @@ words) in two languages</xs:documentation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="componentDependencies" minOccurs="0">
+			<xs:element minOccurs="0" name="componentDependencies">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:typesystem"/>
-						<xs:element name="tagsets" minOccurs="0">
+						<xs:element ref="ms:typesystem" />
+						<xs:element minOccurs="0" name="tagsets">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element ref="ms:tagset" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:tagset" />
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
-						<xs:element name="annotationResources" minOccurs="0">
+						<xs:element minOccurs="0" name="annotationResources">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element ref="ms:annotationResource" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:annotationResource" />
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
-						<xs:element name="softwareLibraries" minOccurs="0">
+						<xs:element minOccurs="0" name="softwareLibraries">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="requiresSoftware" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element maxOccurs="unbounded" minOccurs="0" name="requiresSoftware" type="xs:string" />
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
-						<xs:element name="requiresHardware" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="requiresHardware">
 							<xs:annotation>
 								<xs:documentation>Hardware required for running a s/w component and/or computational grammar</xs:documentation>
 								<xs:appinfo>
@@ -628,36 +626,25 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="100"/>
-									<xs:enumeration value="graphicCard"/>
-									<xs:enumeration value="microphone"/>
-									<xs:enumeration value="ocrSystem"/>
-									<xs:enumeration value="specialHardwareEquipment"/>
-									<xs:enumeration value="none"/>
-									<xs:enumeration value="other"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="requiresHardwareEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="100" />
+									<xs:enumeration value="graphicCard" />
+									<xs:enumeration value="microphone" />
+									<xs:enumeration value="ocrSystem" />
+									<xs:enumeration value="specialHardwareEquipment" />
+									<xs:enumeration value="none" />
+									<xs:enumeration value="other" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<!-- to be used for workflows -->
-			<!--
-			<xs:element name="componentParametrisedResources" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element ref="ms:typesystem" minOccurs="0"/>
-						<xs:element name="model" type="ms:relatedResourceType" minOccurs="0"/>
-						<xs:element ref="ms:tagset" minOccurs="0"/>
-						<xs:element ref="ms:annotationResource" minOccurs="0"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
--->
-			<xs:element ref="ms:componentCreationInfo" minOccurs="0"/>
-			<xs:element ref="ms:componentEvaluationInfo" minOccurs="0"/>
-			<xs:element ref="ms:componentDocumentationInfo" minOccurs="0"/>
+			
+			
+			<xs:element minOccurs="0" ref="ms:componentCreationInfo" />
+			<xs:element minOccurs="0" ref="ms:componentEvaluationInfo" />
+			<xs:element minOccurs="0" ref="ms:componentDocumentationInfo" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="processingResourceInfoType">
@@ -665,7 +652,7 @@ words) in two languages</xs:documentation>
 			<xs:element name="resourceTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="resourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceType">
 							<xs:annotation>
 								<xs:documentation>The type of the resource that a component takes as input or produces as output</xs:documentation>
 								<xs:appinfo>
@@ -675,96 +662,96 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
-									<xs:enumeration value="corpus"/>
-									<xs:enumeration value="document"/>
-									<xs:enumeration value="userInputText"/>
-									<xs:enumeration value="lexicalConceptualResource"/>
-									<xs:enumeration value="languageDescription"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="resourceTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="30" />
+									<xs:enumeration value="corpus" />
+									<xs:enumeration value="document" />
+									<xs:enumeration value="userInputText" />
+									<xs:enumeration value="lexicalConceptualResource" />
+									<xs:enumeration value="languageDescription" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:mediaType"/>
-			<xs:element name="languages" minOccurs="0">
+			<xs:element ref="ms:mediaType" />
+			<xs:element minOccurs="0" name="languages">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:language" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:language" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="characterEncodings" minOccurs="0">
+			<xs:element minOccurs="0" name="characterEncodings">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:characterEncoding" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:characterEncoding" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="dataFormats" minOccurs="0">
+			<xs:element minOccurs="0" name="dataFormats">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:dataFormat" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:dataFormat" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:typesystem" minOccurs="0"/>
-			<xs:element ref="ms:tagset" minOccurs="0"/>
-			<xs:element name="annotationLevels" minOccurs="0">
+			<xs:element minOccurs="0" ref="ms:typesystem" />
+			<xs:element minOccurs="0" ref="ms:tagset" />
+			<xs:element minOccurs="0" name="annotationLevels">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:annotationLevel" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:annotationLevel" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="modalityTypes" minOccurs="0">
+			<xs:element minOccurs="0" name="modalityTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:modalityType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:modalityType" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="domains" minOccurs="0">
+			<xs:element minOccurs="0" name="domains">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:domain" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:domain" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="textGenres" minOccurs="0">
+			<xs:element minOccurs="0" name="textGenres">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:textGenre" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:textGenre" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="textTypes" minOccurs="0">
+			<xs:element minOccurs="0" name="textTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:textType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:textType" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="registers" minOccurs="0">
+			<xs:element minOccurs="0" name="registers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:register" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:register" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="subjects" minOccurs="0">
+			<xs:element minOccurs="0" name="subjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:subject" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:subject" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="keywords" minOccurs="0">
+			<xs:element minOccurs="0" name="keywords">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:keyword" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:keyword" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -781,10 +768,10 @@ words) in two languages</xs:documentation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="evaluationLevels" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationLevels">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="evaluationLevel" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="evaluationLevel">
 							<xs:annotation>
 								<xs:documentation>Indicates the evaluation level</xs:documentation>
 								<xs:appinfo>
@@ -793,22 +780,22 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
-									<xs:enumeration value="technological"/>
-									<xs:enumeration value="usage"/>
-									<xs:enumeration value="impact"/>
-									<xs:enumeration value="diagnostic"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="evaluationLevelEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="30" />
+									<xs:enumeration value="technological" />
+									<xs:enumeration value="usage" />
+									<xs:enumeration value="impact" />
+									<xs:enumeration value="diagnostic" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationTypes" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationTypes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="evaluationType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="evaluationType">
 							<xs:annotation>
 								<xs:documentation>Indicates the evaluation type</xs:documentation>
 								<xs:appinfo>
@@ -817,20 +804,20 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="20"/>
-									<xs:enumeration value="glassBox"/>
-									<xs:enumeration value="blackBox"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="evaluationTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="20" />
+									<xs:enumeration value="glassBox" />
+									<xs:enumeration value="blackBox" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationCriteria" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationCriteria">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="evaluationCriterion" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="evaluationCriterion">
 							<xs:annotation>
 								<xs:documentation>Defines the criteria of the evaluation of a tool</xs:documentation>
 								<xs:appinfo>
@@ -839,20 +826,20 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
-									<xs:enumeration value="extrinsic"/>
-									<xs:enumeration value="intrinsic"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="evaluationCriterionEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="30" />
+									<xs:enumeration value="extrinsic" />
+									<xs:enumeration value="intrinsic" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationMeasures" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationMeasures">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="evaluationMeasure" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="evaluationMeasure">
 							<xs:annotation>
 								<xs:documentation>Defines whether the evaluation measure is human or automatic</xs:documentation>
 								<xs:appinfo>
@@ -861,20 +848,20 @@ words) in two languages</xs:documentation>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:maxLength value="30"/>
-									<xs:enumeration value="human"/>
-									<xs:enumeration value="automatic"/>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="evaluationMeasureEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:maxLength value="30" />
+									<xs:enumeration value="human" />
+									<xs:enumeration value="automatic" />
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationReports" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationReports">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="hasEvaluationReport" type="ms:relatedDocumentInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="hasEvaluationReport" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
 								<xs:documentation>A bibliographical record of or link to a report describing the evaluation process, tool, method etc. of the component</xs:documentation>
 								<xs:appinfo>
@@ -887,10 +874,10 @@ words) in two languages</xs:documentation>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationSwComponents" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="evaluationSwComponents">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="isEvaluatedBy" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="isEvaluatedBy" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>The identifier of the component used for the evaluation of the component being described</xs:documentation>
 								<xs:appinfo>
@@ -903,7 +890,7 @@ words) in two languages</xs:documentation>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="evaluationDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluationDetails">
 				<xs:annotation>
 					<xs:documentation>Provides further information on the evaluation process of a component</xs:documentation>
 					<xs:appinfo>
@@ -914,14 +901,14 @@ words) in two languages</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="evaluators" minOccurs="0">
+			<xs:element minOccurs="0" name="evaluators">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="evaluator" type="ms:actorInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="evaluator" type="ms:actorInfoType">
 							<xs:annotation>
 								<xs:documentation>Groups information on person or organization that evaluated the component</xs:documentation>
 								<xs:appinfo>
@@ -937,7 +924,7 @@ words) in two languages</xs:documentation>
 	</xs:complexType>
 	<xs:complexType name="componentOperationInfoType">
 		<xs:sequence>
-			<xs:element ref="ms:runningEnvironmentInfo" minOccurs="0">
+			<xs:element minOccurs="0" ref="ms:runningEnvironmentInfo">
 				<xs:annotation>
 					<xs:documentation>Groups together information on the running environment of a tool or a language description</xs:documentation>
 					<xs:appinfo>
@@ -947,7 +934,7 @@ words) in two languages</xs:documentation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="runningTime" minOccurs="0">
+			<xs:element minOccurs="0" name="runningTime">
 				<xs:annotation>
 					<xs:documentation>Gives information on the running time of a component</xs:documentation>
 					<xs:appinfo>
@@ -957,7 +944,7 @@ words) in two languages</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -967,14 +954,14 @@ words) in two languages</xs:documentation>
 		<xs:sequence>
 			<xs:element name="framework">
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="UIMA"/>
-						<xs:enumeration value="GATE"/>
-						<xs:enumeration value="other"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="frameworkEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:enumeration value="UIMA" />
+						<xs:enumeration value="GATE" />
+						<xs:enumeration value="other" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="implementationLanguage" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="implementationLanguage">
 				<xs:annotation>
 					<xs:documentation>The programming languages needed for allowing user contributions, or for running the tools, in case no executables are available</xs:documentation>
 					<xs:appinfo>
@@ -985,11 +972,11 @@ words) in two languages</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="formalism" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="formalism">
 				<xs:annotation>
 					<xs:documentation>Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
 					<xs:appinfo>
@@ -999,11 +986,11 @@ words) in two languages</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element ref="ms:hasOriginalSource" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:hasOriginalSource">
 				<xs:annotation>
 					<xs:documentation>The name, the identifier or the url of thethe original resources that were at the base of the creation process of the resource</xs:documentation>
 					<xs:appinfo>
@@ -1012,7 +999,7 @@ words) in two languages</xs:documentation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="creationDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="creationDetails">
 				<xs:annotation>
 					<xs:documentation>Provides additional information on the creation of a component</xs:documentation>
 					<xs:appinfo>
@@ -1022,7 +1009,7 @@ words) in two languages</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1030,12 +1017,12 @@ words) in two languages</xs:documentation>
 	</xs:complexType>
 	<xs:complexType name="componentDocumentationInfoType">
 		<xs:sequence>
-			<xs:element name="onLineHelpURL" type="ms:httpURI" minOccurs="0"/>
-			<xs:element name="hasManual" type="ms:relatedDocumentInfoType" minOccurs="0"/>
-			<xs:element name="issueTracker" type="ms:httpURI" minOccurs="0"/>
+			<xs:element minOccurs="0" name="onLineHelpURL" type="ms:httpURI" />
+			<xs:element minOccurs="0" name="hasManual" type="ms:relatedDocumentInfoType" />
+			<xs:element minOccurs="0" name="issueTracker" type="ms:httpURI" />
 		</xs:sequence>
 	</xs:complexType>
-	<!-- definition of elements -->
+	
 	<xs:element name="componentMetadataRecord">
 		<xs:annotation>
 			<xs:appinfo>
@@ -1044,8 +1031,8 @@ words) in two languages</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ms:metadataHeaderInfo"/>
-				<xs:element ref="ms:componentInfo"/>
+				<xs:element ref="ms:metadataHeaderInfo" />
+				<xs:element ref="ms:componentInfo" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

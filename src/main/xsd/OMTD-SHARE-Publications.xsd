@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
-	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
+	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd" />
 	<xs:complexType name="documentMetadataRecordType">
 		<xs:annotation>
 			<xs:documentation>Base type for metadata records of single files (documents)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="ms:metadataHeaderInfo"/>
+			<xs:element ref="ms:metadataHeaderInfo" />
 			<xs:element name="document">
 				<xs:annotation>
 					<xs:documentation>Root element for documents (single files); choice among raw publications and annotated publications</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
 					<xs:choice>
-						<xs:element ref="ms:publication"/>
-						<xs:element ref="ms:annotatedPublication"/>
+						<xs:element ref="ms:publication" />
+						<xs:element ref="ms:annotatedPublication" />
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
@@ -35,10 +33,10 @@
 					<xs:documentation>Specifies whether the record includes direct access to the full text, the abstract in txt format (inside the record) or serves only as a bibliographic record (includes only metadata)</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="bibliographicRecordOnly"/>
-						<xs:enumeration value="abstract"/>
-						<xs:enumeration value="fullText"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="documentTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:enumeration value="bibliographicRecordOnly" />
+						<xs:enumeration value="abstract" />
+						<xs:enumeration value="fullText" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -51,8 +49,8 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="publicationTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="30" />
 						<xs:enumeration value="article">
 							<xs:annotation>
 								<xs:documentation>An article from a journal or magazine</xs:documentation>
@@ -239,15 +237,15 @@
 			<xs:element name="identifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="publicationIdentifier" type="ms:publicationIdentifierType" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="publicationIdentifier" type="ms:publicationIdentifierType">
 							<xs:annotation>
 								<xs:documentation>Reference to a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
 								<xs:appinfo>
 									<label>Publication identifier</label>
 									<sameAs>dct:identifier</sameAs>
-									<!-- we allow for all possible identifiers and not only persistent ones as in CCR -->
+									
 									<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
-									<!-- currently DataCite only supports DOI's -->
+									
 									<narrowMatch>dataCite:identifier</narrowMatch>
 								</xs:appinfo>
 							</xs:annotation>
@@ -258,7 +256,7 @@
 			<xs:element name="titles">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="title" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="title">
 							<xs:annotation>
 								<xs:documentation>The title of the publication</xs:documentation>
 								<xs:appinfo>
@@ -272,11 +270,11 @@
 									<xs:extension base="ms:myString">
 										<xs:attribute name="titleType" use="optional">
 											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:enumeration value="alternativeTitle"/>
-													<xs:enumeration value="subtitle"/>
-													<xs:enumeration value="translatedTitle"/>
-													<xs:enumeration value="other"/>
+												<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="titleTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+													<xs:enumeration value="alternativeTitle" />
+													<xs:enumeration value="subtitle" />
+													<xs:enumeration value="translatedTitle" />
+													<xs:enumeration value="other" />
 												</xs:restriction>
 											</xs:simpleType>
 										</xs:attribute>
@@ -284,17 +282,17 @@
 								</xs:complexContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang10">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="authors" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="authors">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="author" type="ms:relatedPersonType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="author" type="ms:relatedPersonType">
 							<xs:annotation>
 								<xs:documentation>The name(s) of the author(s), preferrably in the format: surname, initials (first name) prefix with optional identifier for persons</xs:documentation>
 								<xs:appinfo>
@@ -307,10 +305,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="contributors" minOccurs="0">
+			<xs:element minOccurs="0" name="contributors">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="contributor" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="contributor">
 							<xs:annotation>
 								<xs:documentation>The identifier of the contributor, preferrably in the format: surname, initials (first name) prefix or the unique identifier of the author</xs:documentation>
 								<xs:appinfo>
@@ -327,10 +325,10 @@
 									<xs:extension base="ms:relatedPersonType">
 										<xs:attribute name="contributorType">
 											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:enumeration value="editor"/>
-													<xs:enumeration value="translator"/>
-													<xs:enumeration value="other"/>
+												<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="contributorTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+													<xs:enumeration value="editor" />
+													<xs:enumeration value="translator" />
+													<xs:enumeration value="other" />
 												</xs:restriction>
 											</xs:simpleType>
 										</xs:attribute>
@@ -344,10 +342,10 @@
 									<xs:extension base="ms:relatedOrganizationType">
 										<xs:attribute name="contributorType">
 											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:enumeration value="editor"/>
-													<xs:enumeration value="translator"/>
-													<xs:enumeration value="other"/>
+												<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="contributorTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+													<xs:enumeration value="editor" />
+													<xs:enumeration value="translator" />
+													<xs:enumeration value="other" />
 												</xs:restriction>
 											</xs:simpleType>
 										</xs:attribute>
@@ -361,7 +359,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="publicationDate" type="ms:dateType" minOccurs="0">
+			<xs:element minOccurs="0" name="publicationDate" type="ms:dateType">
 				<xs:annotation>
 					<xs:documentation>The publication date or, for an unpublished work, the date it was written</xs:documentation>
 					<xs:appinfo>
@@ -370,14 +368,14 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element ref="ms:publisher" minOccurs="0"/>
-			<xs:element ref="ms:journal" minOccurs="0"/>
-			<xs:element name="inBook" type="ms:relatedDocumentInfoType" minOccurs="0">
+			<xs:element minOccurs="0" ref="ms:publisher" />
+			<xs:element minOccurs="0" ref="ms:journal" />
+			<xs:element minOccurs="0" name="inBook" type="ms:relatedDocumentInfoType">
 				<xs:annotation>
 					<xs:documentation>The title or identifier of a book in which a publication appears (e.g. as a chapter, as article in a collection of articles, conference proceedings etc.)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="volume" type="xs:string" minOccurs="0">
+			<xs:element minOccurs="0" name="volume" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Specifies the volume of a journal or multivolume book</xs:documentation>
 					<xs:appinfo>
@@ -385,7 +383,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="series" minOccurs="0">
+			<xs:element minOccurs="0" name="series">
 				<xs:annotation>
 					<xs:documentation>The name of a series or set of books. When citing an entire book, the title field gives its title and an optional series field gives the name of a series or multi-volume set in which the book is published</xs:documentation>
 					<xs:appinfo>
@@ -394,11 +392,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="200"/>
+						<xs:maxLength value="200" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="pages" minOccurs="0">
+			<xs:element minOccurs="0" name="pages">
 				<xs:annotation>
 					<xs:documentation>One or more page numbers or range of page numbers</xs:documentation>
 					<xs:appinfo>
@@ -407,11 +405,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="edition" minOccurs="0">
+			<xs:element minOccurs="0" name="edition">
 				<xs:annotation>
 					<xs:documentation>The edition of a book</xs:documentation>
 					<xs:appinfo>
@@ -420,11 +418,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="conference" minOccurs="0">
+			<xs:element minOccurs="0" name="conference">
 				<xs:annotation>
 					<xs:documentation>The name of the conference in which the document has been presented</xs:documentation>
 					<xs:appinfo>
@@ -433,21 +431,21 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="300"/>
+						<xs:maxLength value="300" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
 			<xs:element name="distributions">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:documentDistributionInfo" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" ref="ms:documentDistributionInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="documentLanguages" minOccurs="0">
+			<xs:element minOccurs="0" name="documentLanguages">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentLanguage" type="ms:languageType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="documentLanguage" type="ms:languageType">
 							<xs:annotation>
 								<xs:documentation>The language the document is written in (according to the IETF BCP47 guidelines)</xs:documentation>
 								<xs:appinfo>
@@ -458,10 +456,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="subjects" minOccurs="0">
+			<xs:element minOccurs="0" name="subjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:subject" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:subject">
 							<xs:annotation>
 								<xs:documentation>Subject or topic of the document</xs:documentation>
 								<xs:appinfo>
@@ -472,10 +470,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="keywords" minOccurs="0">
+			<xs:element minOccurs="0" name="keywords">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:keyword" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:keyword">
 							<xs:annotation>
 								<xs:documentation>Words used for indexing of the document</xs:documentation>
 								<xs:appinfo>
@@ -486,10 +484,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="fundingProjects" minOccurs="0">
+			<xs:element minOccurs="0" name="fundingProjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="fundingProject" type="ms:relatedProjectType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingProject" type="ms:relatedProjectType">
 							<xs:annotation>
 								<xs:documentation>The project that has been responsible for the creation of the publication</xs:documentation>
 								<xs:appinfo>
@@ -501,10 +499,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="abstracts" minOccurs="0">
+			<xs:element minOccurs="0" name="abstracts">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="abstract" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="abstract">
 							<xs:annotation>
 								<xs:documentation>The abstract of the document in plain text format; the element can be repeated for the different language versions using the "lang" attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
@@ -517,22 +515,22 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="10000"/>
+										<xs:maxLength value="10000" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang159">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="sizes" minOccurs="0">
+			<xs:element minOccurs="0" name="sizes">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="sizeInfo" type="ms:sizeInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="sizeInfo" type="ms:sizeInfoType">
 							<xs:annotation>
 								<xs:documentation>Size of the publication (e.g. number of words, pages etc.)</xs:documentation>
 								<xs:appinfo>
@@ -553,15 +551,15 @@
 			<xs:element name="identifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="journalIdentifier" type="ms:journalIdentifierType" minOccurs="1" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="1" name="journalIdentifier" type="ms:journalIdentifierType">
 							<xs:annotation>
 								<xs:documentation>Reference to a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
 								<xs:appinfo>
 									<label>Journal Identifier</label>
 									<sameAs>dct:identifier</sameAs>
-									<!-- we allow for all possible identifiers and not only persistent ones as in CCR -->
+									
 									<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
-									<!-- currently DataCite only supports DOI's -->
+									
 									<sameAs>dataCite:identifier</sameAs>
 								</xs:appinfo>
 							</xs:annotation>
@@ -572,7 +570,7 @@
 			<xs:element name="journalTitles">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="journalTitle" minOccurs="1" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="1" name="journalTitle">
 							<xs:annotation>
 								<xs:documentation>The full name of the journal; the element can be repeated for the different language versions using the "lang" attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
@@ -585,37 +583,37 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="500"/>
+										<xs:maxLength value="500" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang222">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:publisher" minOccurs="0"/>
-			<xs:element name="languages" minOccurs="0">
+			<xs:element minOccurs="0" ref="ms:publisher" />
+			<xs:element minOccurs="0" name="languages">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="journalLanguage" type="ms:languageType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="journalLanguage" type="ms:languageType" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="subjects" minOccurs="0">
+			<xs:element minOccurs="0" name="subjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:subject" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:subject" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="rights" minOccurs="0">
+			<xs:element minOccurs="0" name="rights">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:rightsInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:rightsInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -626,11 +624,11 @@
 			<xs:documentation>Base type for annotated documents (single files); combination of raw publication (with link to it) and the annotated file</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="rawPublication" type="ms:relatedDocumentInfoType"/>
-			<xs:element ref="ms:annotationInfo"/>
+			<xs:element name="rawPublication" type="ms:relatedDocumentInfoType" />
+			<xs:element ref="ms:annotationInfo" />
 		</xs:sequence>
 	</xs:complexType>
-	<!-- definition of elements -->
+	
 	<xs:element name="documentMetadataRecord" type="ms:documentMetadataRecordType">
 		<xs:annotation>
 			<xs:documentation>Root element for metadata records of single files (documents); groups metadata header and information about the document itself</xs:documentation>
