@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
-	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-Projects.xsd"/>
-	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd"/>
-	<!-- definition of complex types -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
+	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-ISOVocabularies.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-Projects.xsd" />
+	<xs:include schemaLocation="./OMTD-SHARE-Distributions.xsd" />
+	
 	<xs:complexType name="mailingListInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -22,7 +20,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="subscribe" type="ms:emailAddress" minOccurs="1">
+			<xs:element minOccurs="1" name="subscribe" type="ms:emailAddress">
 				<xs:annotation>
 					<xs:documentation>The email address to be used for subscribing to the mailing list</xs:documentation>
 					<xs:appinfo>
@@ -30,7 +28,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="unsubscribe" type="ms:emailAddress" minOccurs="1">
+			<xs:element minOccurs="1" name="unsubscribe" type="ms:emailAddress">
 				<xs:annotation>
 					<xs:documentation>The email address to be used for unsubscribing from the mailing list</xs:documentation>
 					<xs:appinfo>
@@ -54,10 +52,10 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="otherArchives" minOccurs="0">
+			<xs:element minOccurs="0" name="otherArchives">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="otherArchive" type="ms:httpURI" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="otherArchive" type="ms:httpURI">
 							<xs:annotation>
 								<xs:documentation>Alternative url's where the mailing list messages are archived (for mirrored mailing lists)</xs:documentation>
 								<xs:appinfo>
@@ -75,7 +73,7 @@
 			<xs:element name="resourceNames">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="resourceName" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="resourceName">
 							<xs:annotation>
 								<xs:documentation>The full name by which the resource is known; the element can be repeated for the different language versions using the "lang" attribute to specify the language</xs:documentation>
 								<xs:appinfo>
@@ -85,22 +83,22 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="500"/>
+										<xs:maxLength value="500" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang2">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="descriptions" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="descriptions">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="description" minOccurs="1" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="1" name="description">
 							<xs:annotation>
 								<xs:documentation>Provides the description of the resource in prose; the element can be repeated for the different language versions using the "lang" attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
@@ -113,63 +111,63 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="10000"/>
+										<xs:maxLength value="10000" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang3">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="resourceShortNames" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="resourceShortNames">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="resourceShortName" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceShortName">
 							<xs:annotation>
 								<xs:documentation>The short form (abbreviation, acronym etc.) used to identify the resource; the element can be repeated for the different language versions using the "lang" attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
 									<label>Resource short name</label>
 									<closeMatch>dct:alternative</closeMatch>
 									<exactMatch>http://hdl.handle.net/11459/CCR_C-2544_3626545e-a21d-058c-ebfd-241c0464e7e5 (ccr:resourceName)</exactMatch>
-									<!-- in DataCite, the title has the attribute "titleType" with values "alternativeTitle", "translatedTitle" and "subtitle"; we can do something similar in the next version if desired -->
+									
 									<closeMatch>datacite:title titleType="alternativeTitle"</closeMatch>
 								</xs:appinfo>
 							</xs:annotation>
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:restriction base="ms:myString">
-										<xs:maxLength value="500"/>
+										<xs:maxLength value="500" />
 									</xs:restriction>
 								</xs:simpleContent>
 							</xs:complexType>
 							<xs:unique name="uniqueLang">
-								<xs:selector xpath="."/>
-								<xs:field xpath="@lang"/>
+								<xs:selector xpath="." />
+								<xs:field xpath="@lang" />
 							</xs:unique>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="identifiers" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="identifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="identifier" type="ms:resourceIdentifierType" minOccurs="1" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="1" name="identifier" type="ms:resourceIdentifierType">
 							<xs:annotation>
 								<xs:documentation>Reference to a PID, DOI or any kind of identifier used by the resource provider for the resource; the attribute documents the scheme it adheres to; if the scheme name is not included in the listed values, please use "other" and provide a link  to  information about the scheme</xs:documentation>
 								<xs:appinfo>
 									<label>Identifier</label>
 									<exactMatch>dct:identifier</exactMatch>
-									<!-- we allow for all possible identifiers and not only persistent ones as in CCR -->
+									
 									<closeMatch>http://hdl.handle.net/11459/CCR_C-2573_ae7c2548-8a86-ab6e-7099-e28b7697d1a2 (ccr:persistentIdentifier)</closeMatch>
-									<!-- currently DataCite only supports DOI's -->
+									
 									<exactMatch>dataCite:identifier</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
-							<!-- CHECK: I have not been able to add the restriction of length 100 -->
+							
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
@@ -184,7 +182,7 @@
 						<xs:documentation>A general email address that can be used as contact point for a resource (e.g. resource@example.com); the recommended practice is, however, to indicate a person/group for contact and describe it with the relevant metadata elements</xs:documentation>
 						<xs:appinfo>
 							<label>Contact email</label>
-							<!-- in DataCite, the contactPerson can also be used for contact points -->
+							
 							<closeMatch>datacite:contributor contributorType="ContactPerson"</closeMatch>
 						</xs:appinfo>
 					</xs:annotation>
@@ -199,10 +197,10 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:choice>
-			<xs:element name="contactPersons" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="contactPersons">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="contactPerson" type="ms:relatedPersonType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="contactPerson" type="ms:relatedPersonType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the person(s) that is/are responsible for providing further information regarding the resource</xs:documentation>
 								<xs:appinfo>
@@ -216,10 +214,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="contactGroups" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="contactGroups">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="contactGroup" type="ms:relatedGroupType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="contactGroup" type="ms:relatedGroupType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the group(s) that is/are responsible for providing further information regarding the resource</xs:documentation>
 								<xs:appinfo>
@@ -231,11 +229,11 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<!-- ASK googlegroups?? -->
-			<xs:element name="mailingLists" minOccurs="0" maxOccurs="1">
+			
+			<xs:element maxOccurs="1" minOccurs="0" name="mailingLists">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="mailingListInfo" type="ms:mailingListInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="mailingListInfo" type="ms:mailingListInfoType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the mailing list(s) that can be used for further information regarding the resource</xs:documentation>
 								<xs:appinfo>
@@ -257,7 +255,7 @@
 		<xs:sequence>
 			<xs:element name="version">
 				<xs:annotation>
-					<!-- ASK for semantic version of components and for types of versioning of publications (cf. CrossRef update) -->
+					
 					<xs:documentation>Any string, usually a number, that identifies the version of a resource; for components, the recommended practice is to follow the semantic versioning (http://semver.org/); it should not be confused with the relation that links together a specific resource with its various versions</xs:documentation>
 					<xs:appinfo>
 						<label>Version</label>
@@ -267,11 +265,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="revision" minOccurs="0">
+			<xs:element minOccurs="0" name="revision">
 				<xs:annotation>
 					<xs:documentation>Provides an account of the revisions in free text or a link to a document with revisions</xs:documentation>
 					<xs:appinfo>
@@ -280,11 +278,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="lastDateUpdated" type="ms:dateType" minOccurs="0">
+			<xs:element minOccurs="0" name="lastDateUpdated" type="ms:dateType">
 				<xs:annotation>
 					<xs:documentation>Date of the last update of the version of the resource</xs:documentation>
 					<xs:appinfo>
@@ -295,7 +293,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="updateFrequency" minOccurs="0">
+			<xs:element minOccurs="0" name="updateFrequency">
 				<xs:annotation>
 					<xs:documentation>Specifies the frequency with which the resource is updated</xs:documentation>
 					<xs:appinfo>
@@ -306,7 +304,7 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -323,7 +321,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="validationType" minOccurs="0">
+			<xs:element minOccurs="0" name="validationType">
 				<xs:annotation>
 					<xs:documentation>Specifies the type of the validation that have been performed </xs:documentation>
 					<xs:appinfo>
@@ -332,8 +330,8 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="20"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="validationTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="20" />
 						<xs:enumeration value="formal">
 							<xs:annotation>
 								<xs:appinfo>
@@ -351,7 +349,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="validationMode" type="ms:processMode" minOccurs="0">
+			<xs:element minOccurs="0" name="validationMode" type="ms:processMode">
 				<xs:annotation>
 					<xs:documentation>Specifies the validation methodology applied</xs:documentation>
 					<xs:appinfo>
@@ -360,7 +358,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="validationModeDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="validationModeDetails">
 				<xs:annotation>
 					<xs:documentation>Textual field for additional information on validation</xs:documentation>
 					<xs:appinfo>
@@ -369,11 +367,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="validationExtent" minOccurs="0">
+			<xs:element minOccurs="0" name="validationExtent">
 				<xs:annotation>
 					<xs:documentation>The resource coverage in terms of validated data</xs:documentation>
 					<xs:appinfo>
@@ -382,14 +380,14 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="20"/>
-						<xs:enumeration value="full"/>
-						<xs:enumeration value="partial"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="validationExtentEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="20" />
+						<xs:enumeration value="full" />
+						<xs:enumeration value="partial" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="validationExtentDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="validationExtentDetails">
 				<xs:annotation>
 					<xs:documentation>Provides information on size or other details of partially validated data; to be used if only part of the resource has been validated and as an alternative to SizeInfo if the validated part cannot be counted otherwise</xs:documentation>
 					<xs:appinfo>
@@ -398,11 +396,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="sizePerValidation" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerValidation" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Specifies the size of the validated part of a resource</xs:documentation>
 					<xs:appinfo>
@@ -410,10 +408,10 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="validationReports" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="validationReports">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="hasValidationReport" type="ms:relatedDocumentInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="hasValidationReport" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
 								<xs:documentation>Link to a short account (prose description) of the validation details or the identifier of a document with detailed information on the validation process and results</xs:documentation>
 								<xs:appinfo>
@@ -424,10 +422,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="validationSwComponents" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="validationSwComponents">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="isValidatedBy" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="isValidatedBy" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>Links a resource to the identifier of the software component that has been used for its validation</xs:documentation>
 								<xs:appinfo>
@@ -438,10 +436,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="validators" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="validators">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="validator" type="ms:actorInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="validator" type="ms:actorInfoType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the person(s) or the organization(s) that validated the resource</xs:documentation>
 								<xs:appinfo>
@@ -462,10 +460,10 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="resourceCreators" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="resourceCreators">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="resourceCreator" type="ms:actorInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceCreator" type="ms:actorInfoType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the person or the organization that has created the resource</xs:documentation>
 								<xs:appinfo>
@@ -479,16 +477,15 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="fundingProjects" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="fundingProjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="fundingProject" type="ms:relatedProjectType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingProject" type="ms:relatedProjectType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the project that has funded the resource; choice between the ID of a project or a project title</xs:documentation>
 								<xs:appinfo>
 									<label>Funding project</label>
-									<!-- I've put the link to dct:relation because of OpenAIRE; the syntax in OpenAIRE is info:eu-repo/grantAgreement/Funder/FundingProgram/ProjectID/
-[Jurisdiction]/[ProjectName]/[ProjectAcronym] which can be split into the relevant elements -->
+									
 									<broadMatch>dct:relation</broadMatch>
 									<narrowMatch>http://hdl.handle.net/11459/CCR_C-2522_3bdc6af1-bf1b-3f5d-2938-62d99a1980ab (ccr:funder)</narrowMatch>
 								</xs:appinfo>
@@ -497,7 +494,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="creationDate" type="ms:dateCombinationType" minOccurs="0">
+			<xs:element minOccurs="0" name="creationDate" type="ms:dateCombinationType">
 				<xs:annotation>
 					<xs:documentation>The date of the creation of hte resource, expressed as a range between starting and end date or exact date</xs:documentation>
 					<xs:appinfo>
@@ -510,13 +507,13 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- CHECK maybe rename as provenanceInfo and add here anything specfic to our project (i.e. coming from OpenAIRE, CORE, user query etc.) -->
+	
 	<xs:complexType name="creationInfoType">
 		<xs:sequence>
-			<xs:element name="originalSources" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="originalSources">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="hasOriginalSource" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="hasOriginalSource" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>The identifier of the original resources that were at the base of the creation process of the resource</xs:documentation>
 								<xs:appinfo>
@@ -529,7 +526,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="creationMode" type="ms:processMode" minOccurs="0">
+			<xs:element minOccurs="0" name="creationMode" type="ms:processMode">
 				<xs:annotation>
 					<xs:documentation>Specifies whether the resource is created automatically or in a manual or interactive mode </xs:documentation>
 					<xs:appinfo>
@@ -537,7 +534,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="creationModeDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="creationModeDetails">
 				<xs:annotation>
 					<xs:documentation>Provides further information on the creation methods and processes</xs:documentation>
 					<xs:appinfo>
@@ -546,14 +543,14 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="200"/>
+						<xs:maxLength value="200" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="creationSwComponents" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="creationSwComponents">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="isCreatedBy" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="isCreatedBy" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>The identifier or the s/w component used in the creation process</xs:documentation>
 								<xs:appinfo>
@@ -574,7 +571,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="mustBeCitedWith" type="ms:relatedDocumentInfoType" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="mustBeCitedWith" type="ms:relatedDocumentInfoType">
 				<xs:annotation>
 					<xs:documentation>Publication to be used for citation purposes as requested by resource providers (usually a scientific article that describes the resource)</xs:documentation>
 					<xs:appinfo>
@@ -582,15 +579,15 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="documentationPublications" minOccurs="0">
+			<xs:element minOccurs="0" name="documentationPublications">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="isDocumentedIn" type="ms:relatedDocumentInfoType" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="isDocumentedIn" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
 								<xs:documentation>Refers to papers, manuals, reports etc. describing the resource</xs:documentation>
 								<xs:appinfo>
 									<label>Is documented in</label>
-									<!-- openAIRE uses publicationReference dc:relation info:eu-repo/semantics/reference/<scheme>/<identifier> -->
+									
 									<exactMatch>dataCite:isDocumentedBy</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
@@ -598,10 +595,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="samplesLocations" minOccurs="0">
+			<xs:element minOccurs="0" name="samplesLocations">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="samplesLocation" type="ms:httpURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="samplesLocation" type="ms:httpURI">
 							<xs:annotation>
 								<xs:documentation>A url with samples of the resource or, in the case of tools, of samples of the output</xs:documentation>
 								<xs:appinfo>
@@ -616,8 +613,8 @@
 	</xs:complexType>
 	<xs:complexType name="domainInfoType">
 		<xs:sequence>
-			<xs:element ref="ms:domain"/>
-			<xs:element name="sizePerDomain" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element ref="ms:domain" />
+			<xs:element minOccurs="0" name="sizePerDomain" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Specifies the size of resource parts per domain</xs:documentation>
 					<xs:appinfo>
@@ -627,12 +624,12 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- CHECK left as is because in components it should now also become a group -->
+	
 	<xs:complexType name="annotationInfoType">
 		<xs:sequence>
-			<xs:element ref="ms:annotationLevel"/>
-			<!-- CHECK merged annotatedElement with segmentationLevel, but is it needed? it provides similar information to annotationLevel -->
-			<xs:element name="annotationStandoff" type="xs:boolean" minOccurs="0">
+			<xs:element ref="ms:annotationLevel" />
+			
+			<xs:element minOccurs="0" name="annotationStandoff" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Indicates whether the annotation is created inline or in a stand-off fashion</xs:documentation>
 					<xs:appinfo>
@@ -640,9 +637,9 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element ref="ms:dataFormat" minOccurs="0"/>
-			<xs:element ref="ms:typesystem" minOccurs="0"/>
-			<xs:element ref="ms:tagset" minOccurs="0">
+			<xs:element minOccurs="0" ref="ms:dataFormat" />
+			<xs:element minOccurs="0" ref="ms:typesystem" />
+			<xs:element minOccurs="0" ref="ms:tagset">
 				<xs:annotation>
 					<xs:documentation>An identifier to the tagset used in the annotation of the resource or used by the tool/service</xs:documentation>
 					<xs:appinfo>
@@ -652,8 +649,8 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element ref="ms:theoreticModel" minOccurs="0"/>
-			<xs:element name="guidelinesDocumentedIn" type="ms:relatedDocumentInfoType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element minOccurs="0" ref="ms:theoreticModel" />
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="guidelinesDocumentedIn" type="ms:relatedDocumentInfoType">
 				<xs:annotation>
 					<xs:documentation>A bibliographic reference or ms:httpURI link to the annotation manual</xs:documentation>
 					<xs:appinfo>
@@ -661,7 +658,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="annotationMode" type="ms:processMode" minOccurs="0">
+			<xs:element minOccurs="0" name="annotationMode" type="ms:processMode">
 				<xs:annotation>
 					<xs:documentation>Indicates whether the resource is annotated manually or by automatic processes</xs:documentation>
 					<xs:appinfo>
@@ -669,7 +666,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="annotationModeDetails" type="xs:string" minOccurs="0">
+			<xs:element minOccurs="0" name="annotationModeDetails" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Provides further information on annotation process </xs:documentation>
 					<xs:appinfo>
@@ -677,7 +674,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="isAnnotatedBy" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="isAnnotatedBy" type="ms:relatedResourceType">
 				<xs:annotation>
 					<xs:documentation>The name, the identifier or the url of the tool used for the annotation of the resource</xs:documentation>
 					<xs:appinfo>
@@ -685,7 +682,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="annotationDate" type="ms:dateCombinationType" minOccurs="0">
+			<xs:element minOccurs="0" name="annotationDate" type="ms:dateCombinationType">
 				<xs:annotation>
 					<xs:documentation>The dates (either date or range of dates) in which the annotation process has taken place</xs:documentation>
 					<xs:appinfo>
@@ -693,7 +690,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sizePerAnnotation" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerAnnotation" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on size for the annotated parts of the resource</xs:documentation>
 					<xs:appinfo>
@@ -701,7 +698,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="interannotatorAgreement" minOccurs="0">
+			<xs:element minOccurs="0" name="interannotatorAgreement">
 				<xs:annotation>
 					<xs:documentation>Provides information on the interannotator agreement and the methods/metrics applied </xs:documentation>
 					<xs:appinfo>
@@ -710,11 +707,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="1000"/>
+						<xs:maxLength value="1000" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="intraannotatorAgreement" minOccurs="0">
+			<xs:element minOccurs="0" name="intraannotatorAgreement">
 				<xs:annotation>
 					<xs:documentation>Provides information on the intra-annotator agreement and the methods/metrics applied  </xs:documentation>
 					<xs:appinfo>
@@ -723,14 +720,14 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="1000"/>
+						<xs:maxLength value="1000" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="annotators" minOccurs="0">
+			<xs:element minOccurs="0" name="annotators">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="annotator" type="ms:actorInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="annotator" type="ms:actorInfoType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the annotators of the specific annotation type</xs:documentation>
 								<xs:appinfo>
@@ -750,8 +747,8 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="ms:modalityType" maxOccurs="unbounded"/>
-			<xs:element name="modalityTypeDetails" minOccurs="0">
+			<xs:element maxOccurs="unbounded" ref="ms:modalityType" />
+			<xs:element minOccurs="0" name="modalityTypeDetails">
 				<xs:annotation>
 					<xs:documentation>Provides further information on modalities</xs:documentation>
 					<xs:appinfo>
@@ -760,11 +757,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="500"/>
+						<xs:maxLength value="500" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="sizePerModality" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerModality" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on the size per modality component</xs:documentation>
 					<xs:appinfo>
@@ -776,7 +773,7 @@
 	</xs:complexType>
 	<xs:complexType name="runningEnvironmentInfoType">
 		<xs:sequence>
-			<xs:element name="requiresSoftware" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="requiresSoftware" type="ms:relatedResourceType">
 				<xs:annotation>
 					<xs:documentation>Additional software required for running a s/w component and/or computational grammar</xs:documentation>
 					<xs:appinfo>
@@ -784,7 +781,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="requiresHardware" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="requiresHardware">
 				<xs:annotation>
 					<xs:documentation>Hardware required for running a s/w component and/or computational grammar</xs:documentation>
 					<xs:appinfo>
@@ -792,18 +789,18 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
-						<xs:enumeration value="graphicCard"/>
-						<xs:enumeration value="microphone"/>
-						<xs:enumeration value="ocrSystem"/>
-						<xs:enumeration value="specialHardwareEquipment"/>
-						<xs:enumeration value="none"/>
-						<xs:enumeration value="other"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="requiresHardwareEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="100" />
+						<xs:enumeration value="graphicCard" />
+						<xs:enumeration value="microphone" />
+						<xs:enumeration value="ocrSystem" />
+						<xs:enumeration value="specialHardwareEquipment" />
+						<xs:enumeration value="none" />
+						<xs:enumeration value="other" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="requiresLRs" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="requiresLRs" type="ms:relatedResourceType">
 				<xs:annotation>
 					<xs:documentation>If for running a s/w component and/or computational grammar, specific LRs (e.g. a grammar, a list of words etc.) are required</xs:documentation>
 					<xs:appinfo>
@@ -811,7 +808,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="runningEnvironmentDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="runningEnvironmentDetails">
 				<xs:annotation>
 					<xs:documentation>Provides further information on the running environment</xs:documentation>
 					<xs:appinfo>
@@ -820,7 +817,7 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="200"/>
+						<xs:maxLength value="200" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -833,8 +830,8 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="ms:characterEncoding"/>
-			<xs:element name="sizePerCharacterEncoding" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element ref="ms:characterEncoding" />
+			<xs:element minOccurs="0" name="sizePerCharacterEncoding" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on the size of the resource parts with different character encoding</xs:documentation>
 					<xs:appinfo>
@@ -844,7 +841,7 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- CHECK can also be implemented as range or period -->
+	
 	<xs:complexType name="timeCoverageInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -861,11 +858,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="sizePerTimeCoverage" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerTimeCoverage" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on size per time period represented in the resource</xs:documentation>
 					<xs:appinfo>
@@ -875,7 +872,7 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- for next version consider geolocations also -->
+	
 	<xs:complexType name="geographicCoverageInfoType">
 		<xs:sequence>
 			<xs:element name="geographicCoverage">
@@ -887,11 +884,11 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="100"/>
+						<xs:maxLength value="100" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="sizePerGeographicCoverage" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerGeographicCoverage" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on size per geographically distinct section of the resource</xs:documentation>
 					<xs:appinfo>
@@ -901,7 +898,7 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- CHECK do we really need this? -->
+	
 	<xs:complexType name="lingualityInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -918,15 +915,15 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="20"/>
-						<xs:enumeration value="monolingual"/>
-						<xs:enumeration value="bilingual"/>
-						<xs:enumeration value="multilingual"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="lingualityTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="20" />
+						<xs:enumeration value="monolingual" />
+						<xs:enumeration value="bilingual" />
+						<xs:enumeration value="multilingual" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="multilingualityType" minOccurs="0">
+			<xs:element minOccurs="0" name="multilingualityType">
 				<xs:annotation>
 					<xs:documentation>Indicates whether the corpus is parallel, comparable or mixed</xs:documentation>
 					<xs:appinfo>
@@ -934,21 +931,21 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="parallel"/>
-						<xs:enumeration value="comparable"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="multilingualityTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="30" />
+						<xs:enumeration value="parallel" />
+						<xs:enumeration value="comparable" />
 						<xs:enumeration value="multilingualSingleText">
 							<xs:annotation>
 								<xs:documentation>For corpora including single texts that contain multiple language excerpts; e.g. european parliament discussions</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
-						<xs:enumeration value="originalTranslationsInSameText"/>
-						<xs:enumeration value="other"/>
+						<xs:enumeration value="originalTranslationsInSameText" />
+						<xs:enumeration value="other" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="multilingualityTypeDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="multilingualityTypeDetails">
 				<xs:annotation>
 					<xs:documentation>Provides further information on multilinguality of a resource in free text</xs:documentation>
 					<xs:appinfo>
@@ -957,7 +954,7 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="512"/>
+						<xs:maxLength value="512" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -978,11 +975,11 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="20"/>
-						<xs:enumeration value="dialect"/>
-						<xs:enumeration value="jargon"/>
-						<xs:enumeration value="other"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="languageVarietyTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="20" />
+						<xs:enumeration value="dialect" />
+						<xs:enumeration value="jargon" />
+						<xs:enumeration value="other" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -994,7 +991,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sizePerLanguageVariety" type="ms:sizeInfoType" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="sizePerLanguageVariety" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on the size per language variety component</xs:documentation>
 					<xs:appinfo>
@@ -1027,7 +1024,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="sizePerLanguage" type="ms:sizeInfoType" minOccurs="0">
+			<xs:element minOccurs="0" name="sizePerLanguage" type="ms:sizeInfoType">
 				<xs:annotation>
 					<xs:documentation>Provides information on the size per language component</xs:documentation>
 					<xs:appinfo>
@@ -1035,10 +1032,10 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="languageVarieties" minOccurs="0">
+			<xs:element minOccurs="0" name="languageVarieties">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:languageVarietyInfo" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:languageVarietyInfo">
 							<xs:annotation>
 								<xs:documentation>Groups information on language varieties occurred in the resource (e.g. dialects)</xs:documentation>
 								<xs:appinfo>
@@ -1058,7 +1055,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="ms:size"/>
+			<xs:element ref="ms:size" />
 			<xs:element name="sizeUnit">
 				<xs:annotation>
 					<xs:documentation>Specifies the unit that is used when providing information on the size of the resource or of resource parts</xs:documentation>
@@ -1067,58 +1064,58 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="terms"/>
-						<xs:enumeration value="entries"/>
-						<xs:enumeration value="turns"/>
-						<xs:enumeration value="utterances"/>
-						<xs:enumeration value="articles"/>
-						<xs:enumeration value="files"/>
-						<xs:enumeration value="items"/>
-						<xs:enumeration value="seconds"/>
-						<xs:enumeration value="elements"/>
-						<xs:enumeration value="units"/>
-						<xs:enumeration value="minutes"/>
-						<xs:enumeration value="hours"/>
-						<xs:enumeration value="texts"/>
-						<xs:enumeration value="sentences"/>
-						<xs:enumeration value="bytes"/>
-						<xs:enumeration value="tokens"/>
-						<xs:enumeration value="words"/>
-						<xs:enumeration value="keywords"/>
-						<xs:enumeration value="idiomaticExpressions"/>
-						<xs:enumeration value="triples"/>
-						<xs:enumeration value="neologisms"/>
-						<xs:enumeration value="multiWordUnits"/>
-						<xs:enumeration value="expressions"/>
-						<xs:enumeration value="synsets"/>
-						<xs:enumeration value="classes"/>
-						<xs:enumeration value="concepts"/>
-						<xs:enumeration value="lexicalTypes"/>
-						<xs:enumeration value="phoneticUnits"/>
-						<xs:enumeration value="syntacticUnits"/>
-						<xs:enumeration value="semanticUnits"/>
-						<xs:enumeration value="predicates"/>
-						<xs:enumeration value="phonemes"/>
-						<xs:enumeration value="diphones"/>
-						<xs:enumeration value="T-HPairs"/>
-						<xs:enumeration value="syllables"/>
-						<xs:enumeration value="frames"/>
-						<xs:enumeration value="images"/>
-						<xs:enumeration value="kb"/>
-						<xs:enumeration value="mb"/>
-						<xs:enumeration value="gb"/>
-						<xs:enumeration value="rb"/>
-						<xs:enumeration value="shots"/>
-						<xs:enumeration value="unigrams"/>
-						<xs:enumeration value="bigrams"/>
-						<xs:enumeration value="trigrams"/>
-						<xs:enumeration value="4-grams"/>
-						<xs:enumeration value="5-grams"/>
-						<xs:enumeration value="rules"/>
-						<xs:enumeration value="questions"/>
-						<xs:enumeration value="other"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="sizeUnitEnum"><jaxb:typesafeEnumMember name="V5_GRAMS" value="5-grams" /><jaxb:typesafeEnumMember name="V4_GRAMS" value="4-grams" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="30" />
+						<xs:enumeration value="terms" />
+						<xs:enumeration value="entries" />
+						<xs:enumeration value="turns" />
+						<xs:enumeration value="utterances" />
+						<xs:enumeration value="articles" />
+						<xs:enumeration value="files" />
+						<xs:enumeration value="items" />
+						<xs:enumeration value="seconds" />
+						<xs:enumeration value="elements" />
+						<xs:enumeration value="units" />
+						<xs:enumeration value="minutes" />
+						<xs:enumeration value="hours" />
+						<xs:enumeration value="texts" />
+						<xs:enumeration value="sentences" />
+						<xs:enumeration value="bytes" />
+						<xs:enumeration value="tokens" />
+						<xs:enumeration value="words" />
+						<xs:enumeration value="keywords" />
+						<xs:enumeration value="idiomaticExpressions" />
+						<xs:enumeration value="triples" />
+						<xs:enumeration value="neologisms" />
+						<xs:enumeration value="multiWordUnits" />
+						<xs:enumeration value="expressions" />
+						<xs:enumeration value="synsets" />
+						<xs:enumeration value="classes" />
+						<xs:enumeration value="concepts" />
+						<xs:enumeration value="lexicalTypes" />
+						<xs:enumeration value="phoneticUnits" />
+						<xs:enumeration value="syntacticUnits" />
+						<xs:enumeration value="semanticUnits" />
+						<xs:enumeration value="predicates" />
+						<xs:enumeration value="phonemes" />
+						<xs:enumeration value="diphones" />
+						<xs:enumeration value="T-HPairs" />
+						<xs:enumeration value="syllables" />
+						<xs:enumeration value="frames" />
+						<xs:enumeration value="images" />
+						<xs:enumeration value="kb" />
+						<xs:enumeration value="mb" />
+						<xs:enumeration value="gb" />
+						<xs:enumeration value="rb" />
+						<xs:enumeration value="shots" />
+						<xs:enumeration value="unigrams" />
+						<xs:enumeration value="bigrams" />
+						<xs:enumeration value="trigrams" />
+						<xs:enumeration value="4-grams" />
+						<xs:enumeration value="5-grams" />
+						<xs:enumeration value="rules" />
+						<xs:enumeration value="questions" />
+						<xs:enumeration value="other" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1131,17 +1128,17 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="foreseenUseInfos" minOccurs="0">
+			<xs:element minOccurs="0" name="foreseenUseInfos">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:foreseenUseInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:foreseenUseInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="actualUseInfos" minOccurs="0">
+			<xs:element minOccurs="0" name="actualUseInfos">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:actualUseInfo" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:actualUseInfo" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -1162,17 +1159,17 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="humanUse"/>
-						<xs:enumeration value="nlpApplications"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="foreseenUseEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="30" />
+						<xs:enumeration value="humanUse" />
+						<xs:enumeration value="nlpApplications" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="useNlpApplications" minOccurs="0">
+			<xs:element minOccurs="0" name="useNlpApplications">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:useNLPSpecific" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:useNLPSpecific" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -1193,24 +1190,24 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="humanUse"/>
-						<xs:enumeration value="nlpApplications"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="actualUseEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:maxLength value="30" />
+						<xs:enumeration value="humanUse" />
+						<xs:enumeration value="nlpApplications" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="useNlpApplications" minOccurs="0">
+			<xs:element minOccurs="0" name="useNlpApplications">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:useNLPSpecific" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:useNLPSpecific" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="usageReports" minOccurs="0">
+			<xs:element minOccurs="0" name="usageReports">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="usageReport" type="ms:relatedDocumentInfoType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="usageReport" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
 								<xs:documentation>Reports on the research papers documenting the usage of a resource, either in a structured form or in free text</xs:documentation>
 								<xs:appinfo>
@@ -1221,10 +1218,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="derivedResources" minOccurs="0">
+			<xs:element minOccurs="0" name="derivedResources">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="derivedResource" type="ms:relatedResourceType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="derivedResource" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>The name, the identifier or the url of the outcome or product of the resource.</xs:documentation>
 								<xs:appinfo>
@@ -1235,10 +1232,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="usageProjects" minOccurs="0">
+			<xs:element minOccurs="0" name="usageProjects">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="usageProject" type="ms:relatedProjectType" minOccurs="0" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="usageProject" type="ms:relatedProjectType">
 							<xs:annotation>
 								<xs:documentation>Groups information on the project in which the resource has been used</xs:documentation>
 								<xs:appinfo>
@@ -1249,7 +1246,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="actualUseDetails" minOccurs="0">
+			<xs:element minOccurs="0" name="actualUseDetails">
 				<xs:annotation>
 					<xs:documentation>Reports on the usage of the resource in free text</xs:documentation>
 					<xs:appinfo>
@@ -1258,7 +1255,7 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:maxLength value="250"/>
+						<xs:maxLength value="250" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1288,7 +1285,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<!-- defintion of elements -->
+	
 	<xs:element name="identificationInfo" type="ms:identificationInfoType">
 		<xs:annotation>
 			<xs:documentation>Groups together information needed to identify the resource</xs:documentation>
@@ -1364,8 +1361,8 @@
 		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
-					<xs:attribute name="classificationSchemeName" type="ms:classificationSchemeName" use="required"/>
-					<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+					<xs:attribute name="classificationSchemeName" type="ms:classificationSchemeName" use="required" />
+					<xs:attribute name="schemeURI" type="xs:anyURI" use="optional" />
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -1404,7 +1401,7 @@
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:string">
-				<xs:maxLength value="500"/>
+				<xs:maxLength value="500" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1481,7 +1478,7 @@
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:string">
-				<xs:maxLength value="100"/>
+				<xs:maxLength value="100" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1493,16 +1490,16 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="30"/>
-				<xs:enumeration value="bodyGesture"/>
-				<xs:enumeration value="facialExpression"/>
-				<xs:enumeration value="voice"/>
-				<xs:enumeration value="combinationOfModalities"/>
-				<xs:enumeration value="signLanguage"/>
-				<xs:enumeration value="spokenLanguage"/>
-				<xs:enumeration value="writtenLanguage"/>
-				<xs:enumeration value="other"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="modalityTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="30" />
+				<xs:enumeration value="bodyGesture" />
+				<xs:enumeration value="facialExpression" />
+				<xs:enumeration value="voice" />
+				<xs:enumeration value="combinationOfModalities" />
+				<xs:enumeration value="signLanguage" />
+				<xs:enumeration value="spokenLanguage" />
+				<xs:enumeration value="writtenLanguage" />
+				<xs:enumeration value="other" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1514,13 +1511,13 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="30"/>
-				<xs:enumeration value="text"/>
-				<xs:enumeration value="audio"/>
-				<xs:enumeration value="video"/>
-				<xs:enumeration value="image"/>
-				<xs:enumeration value="textNumerical"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="mediaTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="30" />
+				<xs:enumeration value="text" />
+				<xs:enumeration value="audio" />
+				<xs:enumeration value="video" />
+				<xs:enumeration value="image" />
+				<xs:enumeration value="textNumerical" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1532,148 +1529,148 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="100"/>
-				<xs:enumeration value="US-ASCII"/>
-				<xs:enumeration value="windows-1250"/>
-				<xs:enumeration value="windows-1251"/>
-				<xs:enumeration value="windows-1252"/>
-				<xs:enumeration value="windows-1253"/>
-				<xs:enumeration value="windows-1254"/>
-				<xs:enumeration value="windows-1257"/>
-				<xs:enumeration value="ISO-8859-1"/>
-				<xs:enumeration value="ISO-8859-2"/>
-				<xs:enumeration value="ISO-8859-4"/>
-				<xs:enumeration value="ISO-8859-5"/>
-				<xs:enumeration value="ISO-8859-7"/>
-				<xs:enumeration value="ISO-8859-9"/>
-				<xs:enumeration value="ISO-8859-13"/>
-				<xs:enumeration value="ISO-8859-15"/>
-				<xs:enumeration value="KOI8-R"/>
-				<xs:enumeration value="UTF-8"/>
-				<xs:enumeration value="UTF-16"/>
-				<xs:enumeration value="UTF-16BE"/>
-				<xs:enumeration value="UTF-16LE"/>
-				<xs:enumeration value="windows-1255"/>
-				<xs:enumeration value="windows-1256"/>
-				<xs:enumeration value="windows-1258"/>
-				<xs:enumeration value="ISO-8859-3"/>
-				<xs:enumeration value="ISO-8859-6"/>
-				<xs:enumeration value="ISO-8859-8"/>
-				<xs:enumeration value="windows-31j"/>
-				<xs:enumeration value="EUC-JP"/>
-				<xs:enumeration value="x-EUC-JP-LINUX"/>
-				<xs:enumeration value="Shift_JIS"/>
-				<xs:enumeration value="ISO-2022-JP"/>
-				<xs:enumeration value="x-mswin-936"/>
-				<xs:enumeration value="GB18030"/>
-				<xs:enumeration value="x-EUC-CN"/>
-				<xs:enumeration value="GBK"/>
-				<xs:enumeration value="ISCII91"/>
-				<xs:enumeration value="x-windows-949"/>
-				<xs:enumeration value="EUC-KR"/>
-				<xs:enumeration value="ISO-2022-KR"/>
-				<xs:enumeration value="x-windows-950"/>
-				<xs:enumeration value="x-MS950-HKSCS"/>
-				<xs:enumeration value="x-EUC-TW"/>
-				<xs:enumeration value="Big5"/>
-				<xs:enumeration value="Big5-HKSCS"/>
-				<xs:enumeration value="TIS-620"/>
-				<xs:enumeration value="Big5_Solaris"/>
-				<xs:enumeration value="Cp037"/>
-				<xs:enumeration value="Cp273"/>
-				<xs:enumeration value="Cp277"/>
-				<xs:enumeration value="Cp278"/>
-				<xs:enumeration value="Cp280"/>
-				<xs:enumeration value="Cp284"/>
-				<xs:enumeration value="Cp285"/>
-				<xs:enumeration value="Cp297"/>
-				<xs:enumeration value="Cp420"/>
-				<xs:enumeration value="Cp424"/>
-				<xs:enumeration value="Cp437"/>
-				<xs:enumeration value="Cp500"/>
-				<xs:enumeration value="Cp737"/>
-				<xs:enumeration value="Cp775"/>
-				<xs:enumeration value="Cp838"/>
-				<xs:enumeration value="Cp850"/>
-				<xs:enumeration value="Cp852"/>
-				<xs:enumeration value="Cp855"/>
-				<xs:enumeration value="Cp856"/>
-				<xs:enumeration value="Cp857"/>
-				<xs:enumeration value="Cp858"/>
-				<xs:enumeration value="Cp860"/>
-				<xs:enumeration value="Cp861"/>
-				<xs:enumeration value="Cp862"/>
-				<xs:enumeration value="Cp863"/>
-				<xs:enumeration value="Cp864"/>
-				<xs:enumeration value="Cp865"/>
-				<xs:enumeration value="Cp866"/>
-				<xs:enumeration value="Cp868"/>
-				<xs:enumeration value="Cp869"/>
-				<xs:enumeration value="Cp870"/>
-				<xs:enumeration value="Cp871"/>
-				<xs:enumeration value="Cp874"/>
-				<xs:enumeration value="Cp875"/>
-				<xs:enumeration value="Cp918"/>
-				<xs:enumeration value="Cp921"/>
-				<xs:enumeration value="Cp922"/>
-				<xs:enumeration value="Cp930"/>
-				<xs:enumeration value="Cp933"/>
-				<xs:enumeration value="Cp935"/>
-				<xs:enumeration value="Cp937"/>
-				<xs:enumeration value="Cp939"/>
-				<xs:enumeration value="Cp942"/>
-				<xs:enumeration value="Cp942C"/>
-				<xs:enumeration value="Cp943"/>
-				<xs:enumeration value="Cp943C"/>
-				<xs:enumeration value="Cp948"/>
-				<xs:enumeration value="Cp949"/>
-				<xs:enumeration value="Cp949C"/>
-				<xs:enumeration value="Cp950"/>
-				<xs:enumeration value="Cp964"/>
-				<xs:enumeration value="Cp970"/>
-				<xs:enumeration value="Cp1006"/>
-				<xs:enumeration value="Cp1025"/>
-				<xs:enumeration value="Cp1026"/>
-				<xs:enumeration value="Cp1046"/>
-				<xs:enumeration value="Cp1047"/>
-				<xs:enumeration value="Cp1097"/>
-				<xs:enumeration value="Cp1098"/>
-				<xs:enumeration value="Cp1112"/>
-				<xs:enumeration value="Cp1122"/>
-				<xs:enumeration value="Cp1123"/>
-				<xs:enumeration value="Cp1124"/>
-				<xs:enumeration value="Cp1140"/>
-				<xs:enumeration value="Cp1141"/>
-				<xs:enumeration value="Cp1142"/>
-				<xs:enumeration value="Cp1143"/>
-				<xs:enumeration value="Cp1144"/>
-				<xs:enumeration value="Cp1145"/>
-				<xs:enumeration value="Cp1146"/>
-				<xs:enumeration value="Cp1147"/>
-				<xs:enumeration value="Cp1148"/>
-				<xs:enumeration value="Cp1149"/>
-				<xs:enumeration value="Cp1381"/>
-				<xs:enumeration value="Cp1383"/>
-				<xs:enumeration value="Cp33722"/>
-				<xs:enumeration value="ISO2022_CN_CNS"/>
-				<xs:enumeration value="ISO2022_CN_GB"/>
-				<xs:enumeration value="JISAutoDetect"/>
-				<xs:enumeration value="MS874"/>
-				<xs:enumeration value="MacArabic"/>
-				<xs:enumeration value="MacCentralEurope"/>
-				<xs:enumeration value="MacCroatian"/>
-				<xs:enumeration value="MacCyrillic"/>
-				<xs:enumeration value="MacDingbat"/>
-				<xs:enumeration value="MacGreek"/>
-				<xs:enumeration value="MacHebrew"/>
-				<xs:enumeration value="MacIceland"/>
-				<xs:enumeration value="MacRoman"/>
-				<xs:enumeration value="MacRomania"/>
-				<xs:enumeration value="MacSymbol"/>
-				<xs:enumeration value="MacThai"/>
-				<xs:enumeration value="MacTurkish"/>
-				<xs:enumeration value="MacUkraine"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="characterEncodingEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="100" />
+				<xs:enumeration value="US-ASCII" />
+				<xs:enumeration value="windows-1250" />
+				<xs:enumeration value="windows-1251" />
+				<xs:enumeration value="windows-1252" />
+				<xs:enumeration value="windows-1253" />
+				<xs:enumeration value="windows-1254" />
+				<xs:enumeration value="windows-1257" />
+				<xs:enumeration value="ISO-8859-1" />
+				<xs:enumeration value="ISO-8859-2" />
+				<xs:enumeration value="ISO-8859-4" />
+				<xs:enumeration value="ISO-8859-5" />
+				<xs:enumeration value="ISO-8859-7" />
+				<xs:enumeration value="ISO-8859-9" />
+				<xs:enumeration value="ISO-8859-13" />
+				<xs:enumeration value="ISO-8859-15" />
+				<xs:enumeration value="KOI8-R" />
+				<xs:enumeration value="UTF-8" />
+				<xs:enumeration value="UTF-16" />
+				<xs:enumeration value="UTF-16BE" />
+				<xs:enumeration value="UTF-16LE" />
+				<xs:enumeration value="windows-1255" />
+				<xs:enumeration value="windows-1256" />
+				<xs:enumeration value="windows-1258" />
+				<xs:enumeration value="ISO-8859-3" />
+				<xs:enumeration value="ISO-8859-6" />
+				<xs:enumeration value="ISO-8859-8" />
+				<xs:enumeration value="windows-31j" />
+				<xs:enumeration value="EUC-JP" />
+				<xs:enumeration value="x-EUC-JP-LINUX" />
+				<xs:enumeration value="Shift_JIS" />
+				<xs:enumeration value="ISO-2022-JP" />
+				<xs:enumeration value="x-mswin-936" />
+				<xs:enumeration value="GB18030" />
+				<xs:enumeration value="x-EUC-CN" />
+				<xs:enumeration value="GBK" />
+				<xs:enumeration value="ISCII91" />
+				<xs:enumeration value="x-windows-949" />
+				<xs:enumeration value="EUC-KR" />
+				<xs:enumeration value="ISO-2022-KR" />
+				<xs:enumeration value="x-windows-950" />
+				<xs:enumeration value="x-MS950-HKSCS" />
+				<xs:enumeration value="x-EUC-TW" />
+				<xs:enumeration value="Big5" />
+				<xs:enumeration value="Big5-HKSCS" />
+				<xs:enumeration value="TIS-620" />
+				<xs:enumeration value="Big5_Solaris" />
+				<xs:enumeration value="Cp037" />
+				<xs:enumeration value="Cp273" />
+				<xs:enumeration value="Cp277" />
+				<xs:enumeration value="Cp278" />
+				<xs:enumeration value="Cp280" />
+				<xs:enumeration value="Cp284" />
+				<xs:enumeration value="Cp285" />
+				<xs:enumeration value="Cp297" />
+				<xs:enumeration value="Cp420" />
+				<xs:enumeration value="Cp424" />
+				<xs:enumeration value="Cp437" />
+				<xs:enumeration value="Cp500" />
+				<xs:enumeration value="Cp737" />
+				<xs:enumeration value="Cp775" />
+				<xs:enumeration value="Cp838" />
+				<xs:enumeration value="Cp850" />
+				<xs:enumeration value="Cp852" />
+				<xs:enumeration value="Cp855" />
+				<xs:enumeration value="Cp856" />
+				<xs:enumeration value="Cp857" />
+				<xs:enumeration value="Cp858" />
+				<xs:enumeration value="Cp860" />
+				<xs:enumeration value="Cp861" />
+				<xs:enumeration value="Cp862" />
+				<xs:enumeration value="Cp863" />
+				<xs:enumeration value="Cp864" />
+				<xs:enumeration value="Cp865" />
+				<xs:enumeration value="Cp866" />
+				<xs:enumeration value="Cp868" />
+				<xs:enumeration value="Cp869" />
+				<xs:enumeration value="Cp870" />
+				<xs:enumeration value="Cp871" />
+				<xs:enumeration value="Cp874" />
+				<xs:enumeration value="Cp875" />
+				<xs:enumeration value="Cp918" />
+				<xs:enumeration value="Cp921" />
+				<xs:enumeration value="Cp922" />
+				<xs:enumeration value="Cp930" />
+				<xs:enumeration value="Cp933" />
+				<xs:enumeration value="Cp935" />
+				<xs:enumeration value="Cp937" />
+				<xs:enumeration value="Cp939" />
+				<xs:enumeration value="Cp942" />
+				<xs:enumeration value="Cp942C" />
+				<xs:enumeration value="Cp943" />
+				<xs:enumeration value="Cp943C" />
+				<xs:enumeration value="Cp948" />
+				<xs:enumeration value="Cp949" />
+				<xs:enumeration value="Cp949C" />
+				<xs:enumeration value="Cp950" />
+				<xs:enumeration value="Cp964" />
+				<xs:enumeration value="Cp970" />
+				<xs:enumeration value="Cp1006" />
+				<xs:enumeration value="Cp1025" />
+				<xs:enumeration value="Cp1026" />
+				<xs:enumeration value="Cp1046" />
+				<xs:enumeration value="Cp1047" />
+				<xs:enumeration value="Cp1097" />
+				<xs:enumeration value="Cp1098" />
+				<xs:enumeration value="Cp1112" />
+				<xs:enumeration value="Cp1122" />
+				<xs:enumeration value="Cp1123" />
+				<xs:enumeration value="Cp1124" />
+				<xs:enumeration value="Cp1140" />
+				<xs:enumeration value="Cp1141" />
+				<xs:enumeration value="Cp1142" />
+				<xs:enumeration value="Cp1143" />
+				<xs:enumeration value="Cp1144" />
+				<xs:enumeration value="Cp1145" />
+				<xs:enumeration value="Cp1146" />
+				<xs:enumeration value="Cp1147" />
+				<xs:enumeration value="Cp1148" />
+				<xs:enumeration value="Cp1149" />
+				<xs:enumeration value="Cp1381" />
+				<xs:enumeration value="Cp1383" />
+				<xs:enumeration value="Cp33722" />
+				<xs:enumeration value="ISO2022_CN_CNS" />
+				<xs:enumeration value="ISO2022_CN_GB" />
+				<xs:enumeration value="JISAutoDetect" />
+				<xs:enumeration value="MS874" />
+				<xs:enumeration value="MacArabic" />
+				<xs:enumeration value="MacCentralEurope" />
+				<xs:enumeration value="MacCroatian" />
+				<xs:enumeration value="MacCyrillic" />
+				<xs:enumeration value="MacDingbat" />
+				<xs:enumeration value="MacGreek" />
+				<xs:enumeration value="MacHebrew" />
+				<xs:enumeration value="MacIceland" />
+				<xs:enumeration value="MacRoman" />
+				<xs:enumeration value="MacRomania" />
+				<xs:enumeration value="MacSymbol" />
+				<xs:enumeration value="MacThai" />
+				<xs:enumeration value="MacTurkish" />
+				<xs:enumeration value="MacUkraine" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1685,21 +1682,21 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="150"/>
-				<xs:enumeration value="alignment"/>
-				<xs:enumeration value="discourseAnnotation"/>
-				<xs:enumeration value="discourseAnnotation-argumentation"/>
-				<xs:enumeration value="discourseAnnotation-audienceReactions"/>
-				<xs:enumeration value="discourseAnnotation-coreference"/>
-				<xs:enumeration value="discourseAnnotation-dialogueActs"/>
-				<xs:enumeration value="discourseAnnotation-discourseRelations"/>
-				<xs:enumeration value="lemmatization"/>
-				<xs:enumeration value="morphosyntacticAnnotation-bPosTagging"/>
-				<xs:enumeration value="morphosyntacticAnnotation-posTagging"/>
-				<xs:enumeration value="segmentation"/>
-				<xs:enumeration value="semanticAnnotation"/>
-				<xs:enumeration value="semanticAnnotation-certaintyLevel"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="annotationLevelEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="150" />
+				<xs:enumeration value="alignment" />
+				<xs:enumeration value="discourseAnnotation" />
+				<xs:enumeration value="discourseAnnotation-argumentation" />
+				<xs:enumeration value="discourseAnnotation-audienceReactions" />
+				<xs:enumeration value="discourseAnnotation-coreference" />
+				<xs:enumeration value="discourseAnnotation-dialogueActs" />
+				<xs:enumeration value="discourseAnnotation-discourseRelations" />
+				<xs:enumeration value="lemmatization" />
+				<xs:enumeration value="morphosyntacticAnnotation-bPosTagging" />
+				<xs:enumeration value="morphosyntacticAnnotation-posTagging" />
+				<xs:enumeration value="segmentation" />
+				<xs:enumeration value="semanticAnnotation" />
+				<xs:enumeration value="semanticAnnotation-certaintyLevel" />
 				<xs:enumeration value="semanticAnnotation-emotions">
 					<xs:annotation>
 						<xs:appinfo>
@@ -1707,7 +1704,7 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="semanticAnnotation-events"/>
+				<xs:enumeration value="semanticAnnotation-events" />
 				<xs:enumeration value="semanticAnnotation-namedEntities">
 					<xs:annotation>
 						<xs:appinfo>
@@ -1715,17 +1712,17 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="semanticAnnotation-polarity"/>
-				<xs:enumeration value="semanticAnnotation-questionTopicalTarget"/>
-				<xs:enumeration value="semanticAnnotation-readabilty"/>
-				<xs:enumeration value="semanticAnnotation-semanticClasses"/>
-				<xs:enumeration value="semanticAnnotation-semanticRelations"/>
-				<xs:enumeration value="semanticAnnotation-semanticRoles"/>
-				<xs:enumeration value="semanticAnnotation-speechActs"/>
-				<xs:enumeration value="semanticAnnotation-subjectivity"/>
-				<xs:enumeration value="semanticAnnotation-temporalExpressions"/>
-				<xs:enumeration value="semanticAnnotation-textualEntailment"/>
-				<xs:enumeration value="semanticAnnotation-wordSenses"/>
+				<xs:enumeration value="semanticAnnotation-polarity" />
+				<xs:enumeration value="semanticAnnotation-questionTopicalTarget" />
+				<xs:enumeration value="semanticAnnotation-readabilty" />
+				<xs:enumeration value="semanticAnnotation-semanticClasses" />
+				<xs:enumeration value="semanticAnnotation-semanticRelations" />
+				<xs:enumeration value="semanticAnnotation-semanticRoles" />
+				<xs:enumeration value="semanticAnnotation-speechActs" />
+				<xs:enumeration value="semanticAnnotation-subjectivity" />
+				<xs:enumeration value="semanticAnnotation-temporalExpressions" />
+				<xs:enumeration value="semanticAnnotation-textualEntailment" />
+				<xs:enumeration value="semanticAnnotation-wordSenses" />
 				<xs:enumeration value="syntacticAnnotation-semanticFrames">
 					<xs:annotation>
 						<xs:appinfo>
@@ -1733,37 +1730,37 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="speechAnnotation"/>
-				<xs:enumeration value="speechAnnotation-orthographicTranscription"/>
-				<xs:enumeration value="speechAnnotation-paralanguageAnnotation"/>
-				<xs:enumeration value="speechAnnotation-phoneticTranscription"/>
-				<xs:enumeration value="speechAnnotation-prosodicAnnotation"/>
-				<xs:enumeration value="speechAnnotation-soundEvents"/>
-				<xs:enumeration value="speechAnnotation-soundToTextAlignment"/>
-				<xs:enumeration value="speechAnnotation-speakerIdentification"/>
-				<xs:enumeration value="speechAnnotation-speakerTurns"/>
-				<xs:enumeration value="stemming"/>
-				<xs:enumeration value="structuralAnnotation"/>
-				<xs:enumeration value="structuralAnnotation-documentDivisions"/>
-				<xs:enumeration value="structuralAnnotation-sentences"/>
-				<xs:enumeration value="structuralAnnotation-clauses"/>
-				<xs:enumeration value="structuralAnnotation-phrases"/>
-				<xs:enumeration value="structuralAnnotation-words"/>
-				<xs:enumeration value="syntacticAnnotation-subcategorizationFrames"/>
-				<xs:enumeration value="syntacticAnnotation-dependencyTrees"/>
-				<xs:enumeration value="syntacticAnnotation-constituencyTrees"/>
-				<xs:enumeration value="syntacticAnnotation-chunks"/>
-				<xs:enumeration value="syntacticosemanticAnnotation-links"/>
-				<xs:enumeration value="translation"/>
-				<xs:enumeration value="transliteration"/>
-				<xs:enumeration value="modalityAnnotation-bodyMovements"/>
-				<xs:enumeration value="modalityAnnotation-facialExpressions"/>
-				<xs:enumeration value="modalityAnnotation-gazeEyeMovements"/>
-				<xs:enumeration value="modalityAnnotation-handArmGestures"/>
-				<xs:enumeration value="modalityAnnotation-handManipulationOfObjects"/>
-				<xs:enumeration value="modalityAnnotation-headMovements"/>
-				<xs:enumeration value="modalityAnnotation-lipMovements"/>
-				<xs:enumeration value="other"/>
+				<xs:enumeration value="speechAnnotation" />
+				<xs:enumeration value="speechAnnotation-orthographicTranscription" />
+				<xs:enumeration value="speechAnnotation-paralanguageAnnotation" />
+				<xs:enumeration value="speechAnnotation-phoneticTranscription" />
+				<xs:enumeration value="speechAnnotation-prosodicAnnotation" />
+				<xs:enumeration value="speechAnnotation-soundEvents" />
+				<xs:enumeration value="speechAnnotation-soundToTextAlignment" />
+				<xs:enumeration value="speechAnnotation-speakerIdentification" />
+				<xs:enumeration value="speechAnnotation-speakerTurns" />
+				<xs:enumeration value="stemming" />
+				<xs:enumeration value="structuralAnnotation" />
+				<xs:enumeration value="structuralAnnotation-documentDivisions" />
+				<xs:enumeration value="structuralAnnotation-sentences" />
+				<xs:enumeration value="structuralAnnotation-clauses" />
+				<xs:enumeration value="structuralAnnotation-phrases" />
+				<xs:enumeration value="structuralAnnotation-words" />
+				<xs:enumeration value="syntacticAnnotation-subcategorizationFrames" />
+				<xs:enumeration value="syntacticAnnotation-dependencyTrees" />
+				<xs:enumeration value="syntacticAnnotation-constituencyTrees" />
+				<xs:enumeration value="syntacticAnnotation-chunks" />
+				<xs:enumeration value="syntacticosemanticAnnotation-links" />
+				<xs:enumeration value="translation" />
+				<xs:enumeration value="transliteration" />
+				<xs:enumeration value="modalityAnnotation-bodyMovements" />
+				<xs:enumeration value="modalityAnnotation-facialExpressions" />
+				<xs:enumeration value="modalityAnnotation-gazeEyeMovements" />
+				<xs:enumeration value="modalityAnnotation-handArmGestures" />
+				<xs:enumeration value="modalityAnnotation-handManipulationOfObjects" />
+				<xs:enumeration value="modalityAnnotation-headMovements" />
+				<xs:enumeration value="modalityAnnotation-lipMovements" />
+				<xs:enumeration value="other" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -1775,8 +1772,8 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="100"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="useNLPSpecificEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="100" />
 				<xs:enumeration value="alignment">
 					<xs:annotation>
 						<xs:appinfo>
@@ -2442,8 +2439,8 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ms:mimeType"/>
-				<xs:element name="dataFormatSpecific" minOccurs="0">
+				<xs:element ref="ms:mimeType" />
+				<xs:element minOccurs="0" name="dataFormatSpecific">
 					<xs:annotation>
 						<xs:documentation>The supplementary level of data format</xs:documentation>
 						<xs:appinfo>
@@ -2451,8 +2448,8 @@
 						</xs:appinfo>
 					</xs:annotation>
 					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:maxLength value="100"/>
+						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="dataFormatSpecificEnum"><jaxb:typesafeEnumMember name="XCES_FORMAT_VARIANT_ILSP" value="xces; format-variant=ilsp" /><jaxb:typesafeEnumMember name="PTB_FORMAT_VARIANT_COMBINED" value="ptb; format-variant=combined" /><jaxb:typesafeEnumMember name="PTB_FORMAT_VARIANT_CHUNKED" value="ptb; format-variant=chunked" /><jaxb:typesafeEnumMember name="BIONLP_FORMAT_VARIANT_ST2013A1_A2" value="bioNLP; format-variant=ST2013a1_a2" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+							<xs:maxLength value="100" />
 							<xs:enumeration value="aclAnthology">
 								<xs:annotation>
 									<xs:appinfo>
@@ -2701,7 +2698,7 @@
 							<xs:enumeration value="tupp-dz">
 								<xs:annotation>
 									<xs:appinfo>
-										<label>TüPP-D/Z corpus</label>
+										<label>Tu&#776;PP-D/Z corpus</label>
 									</xs:appinfo>
 								</xs:annotation>
 							</xs:enumeration>
@@ -2743,7 +2740,7 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
-				<xs:element name="documentationURL" type="xs:anyURI" minOccurs="0">
+				<xs:element minOccurs="0" name="documentationURL" type="xs:anyURI">
 					<xs:annotation>
 						<xs:documentation>Link to the documentation for the specific data format (explanations and examples)</xs:documentation>
 						<xs:appinfo>
@@ -2762,8 +2759,8 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="50"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="mimeTypeEnum"><jaxb:typesafeEnumMember name="APPLICATION_VND_MS_EXCEL" value="application/vnd.ms-excel" /><jaxb:typesafeEnumMember name="APPLICATION_VND_XMI_XML" value="application/vnd.xmi+xml" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="50" />
 				<xs:enumeration value="text/plain">
 					<xs:annotation>
 						<xs:appinfo>
@@ -3051,11 +3048,11 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="audio/PCMA"/>
-				<xs:enumeration value="audio/flac"/>
-				<xs:enumeration value="audio/speex"/>
-				<xs:enumeration value="audio/vorbis"/>
-				<xs:enumeration value="video/mp2t"/>
+				<xs:enumeration value="audio/PCMA" />
+				<xs:enumeration value="audio/flac" />
+				<xs:enumeration value="audio/speex" />
+				<xs:enumeration value="audio/vorbis" />
+				<xs:enumeration value="video/mp2t" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -3076,7 +3073,7 @@
 		</xs:annotation>
 		<xs:simpleType>
 			<xs:restriction base="xs:string">
-				<xs:maxLength value="100"/>
+				<xs:maxLength value="100" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
@@ -3090,8 +3087,8 @@
 		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
-					<xs:attribute name="classificationSchemeName" type="ms:classificationSchemeName" use="required"/>
-					<xs:attribute name="schemeURI" type="xs:anyURI" use="optional"/>
+					<xs:attribute name="classificationSchemeName" type="ms:classificationSchemeName" use="required" />
+					<xs:attribute name="schemeURI" type="xs:anyURI" use="optional" />
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -3112,15 +3109,15 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:maxLength value="30"/>
-				<xs:enumeration value="phonetics"/>
-				<xs:enumeration value="phonology"/>
-				<xs:enumeration value="semantics"/>
-				<xs:enumeration value="morphology"/>
-				<xs:enumeration value="syntax"/>
-				<xs:enumeration value="pragmatics"/>
-				<xs:enumeration value="other"/>
+			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="encodingLevelEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+				<xs:maxLength value="30" />
+				<xs:enumeration value="phonetics" />
+				<xs:enumeration value="phonology" />
+				<xs:enumeration value="semantics" />
+				<xs:enumeration value="morphology" />
+				<xs:enumeration value="syntax" />
+				<xs:enumeration value="pragmatics" />
+				<xs:enumeration value="other" />
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>

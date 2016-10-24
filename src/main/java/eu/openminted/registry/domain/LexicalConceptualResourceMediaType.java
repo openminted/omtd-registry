@@ -1,152 +1,62 @@
+
 package eu.openminted.registry.domain;
 
-import java.util.List;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(propOrder = { "mediaType", "lingualityInfo", "languages",
-		"metalanguages", "modalities", "sizes", "domains",
-		"timeClassifications", "geographicClassifications", "creationInfo" })
+
+/**
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}lexicalConceptualResourceTextInfo"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "lexicalConceptualResourceTextInfo"
+})
 public class LexicalConceptualResourceMediaType {
 
-	private MediaType mediaType;
+    @XmlElement(required = true)
+    protected LexicalConceptualResourceTextInfo lexicalConceptualResourceTextInfo;
 
-	private List<LingualityInfo> lingualityInfo;
+    /**
+     * Gets the value of the lexicalConceptualResourceTextInfo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link LexicalConceptualResourceTextInfo }
+     *     
+     */
+    public LexicalConceptualResourceTextInfo getLexicalConceptualResourceTextInfo() {
+        return lexicalConceptualResourceTextInfo;
+    }
 
-	@XmlElementWrapper(name = "languages")
-	@XmlElement(name = "languageInfo")
-	private List<LanguageInfo> languages;
+    /**
+     * Sets the value of the lexicalConceptualResourceTextInfo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link LexicalConceptualResourceTextInfo }
+     *     
+     */
+    public void setLexicalConceptualResourceTextInfo(LexicalConceptualResourceTextInfo value) {
+        this.lexicalConceptualResourceTextInfo = value;
+    }
 
-	@XmlElementWrapper(name = "metalanguages")
-    @XmlElement(name = "metalanguageInfo")
-	private List<LanguageInfo> metalanguages;
-
-	@XmlElementWrapper(name = "modalities")
-    @XmlElement(name = "modalityInfo")
-	private List<ModalityInfo> modalities;
-
-    @XmlElementWrapper(name = "sizes")
-    @XmlElement(name = "sizeInfo",required = true)
-    protected List<SizeInfo> sizes;
-    
-    @XmlElementWrapper(name = "domains")
-    @XmlElement(name = "domainInfo")
-    protected List<DomainInfo> domains;
-    
-    @XmlElementWrapper(name = "timeClassifications")
-    @XmlElement(name = "timeCoverageInfo")
-    protected List<TimeCoverageInfo> timeClassifications;
-    
-    @XmlElementWrapper(name = "geographicClassifications")
-    @XmlElement(name = "geographicCoverageInfo")
-    protected List<GeographicCoverageInfo> geographicClassifications;
-
-	private CreationInfo creationInfo;
-
-	public LexicalConceptualResourceMediaType() {
-	}
-
-	public LexicalConceptualResourceMediaType(MediaType mediaType,
-			List<LingualityInfo> lingualityInfo, List<LanguageInfo> languages,
-			List<LanguageInfo> metalanguages, List<ModalityInfo> modalities,
-			List<SizeInfo> sizes, List<DomainInfo> domains,
-			List<TimeCoverageInfo> timeClassifications,
-			List<GeographicCoverageInfo> geographicClassifications,
-			CreationInfo creationInfo) {
-		super();
-		this.mediaType = mediaType;
-		this.lingualityInfo = lingualityInfo;
-		this.languages = languages;
-		this.metalanguages = metalanguages;
-		this.modalities = modalities;
-		this.sizes = sizes;
-		this.domains = domains;
-		this.timeClassifications = timeClassifications;
-		this.geographicClassifications = geographicClassifications;
-		this.creationInfo = creationInfo;
-	}
-
-	public List<LingualityInfo> getLingualityInfo() {
-		return lingualityInfo;
-	}
-
-	public void setLingualityInfo(List<LingualityInfo> linguilityInfo) {
-		this.lingualityInfo = linguilityInfo;
-	}
-
-	public List<LanguageInfo> getLanguages() {
-		return languages;
-	}
-
-	public void setLanguages(List<LanguageInfo> languages) {
-		this.languages = languages;
-	}
-
-	public List<ModalityInfo> getModalities() {
-		return modalities;
-	}
-
-	public void setModalities(List<ModalityInfo> modalities) {
-		this.modalities = modalities;
-	}
-
-	public List<SizeInfo> getSizes() {
-		return sizes;
-	}
-
-	public void setSizes(List<SizeInfo> sizes) {
-		this.sizes = sizes;
-	}
-
-	public List<DomainInfo> getDomains() {
-		return domains;
-	}
-
-	public void setDomains(List<DomainInfo> domains) {
-		this.domains = domains;
-	}
-
-	public List<TimeCoverageInfo> getTimeClassifications() {
-		return timeClassifications;
-	}
-
-	public void setTimeClassifications(
-			List<TimeCoverageInfo> timeClassifications) {
-		this.timeClassifications = timeClassifications;
-	}
-
-	public List<GeographicCoverageInfo> getGeographicClassifications() {
-		return geographicClassifications;
-	}
-
-	public void setGeographicClassifications(
-			List<GeographicCoverageInfo> geographicClassifications) {
-		this.geographicClassifications = geographicClassifications;
-	}
-
-	public CreationInfo getCreationInfo() {
-		return creationInfo;
-	}
-
-	public void setCreationInfo(CreationInfo creationInfo) {
-		this.creationInfo = creationInfo;
-	}
-
-	public List<LanguageInfo> getMetalanguages() {
-		return metalanguages;
-	}
-
-	public void setMetalanguages(List<LanguageInfo> metalanguages) {
-		this.metalanguages = metalanguages;
-	}
-
-	public MediaType getMediaType() {
-		return mediaType;
-	}
-
-	public void setMediaType(MediaType mediaType) {
-		this.mediaType = mediaType;
-	}
 }

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageDescriptionMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema&#10;&#9;&#9;&#9;&#9;http://www.meta-share.org/OMTD-SHARE_XMLSchema/OMTD-SHARE-LanguageDescription.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms2642548</metadataRecordIdentifier>
+    <metadataCreationDate>2012-12-19</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Haltrup Hansen Dorte</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-04-09</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <languageDescriptionInfo>
+    <resourceType>languageDescription</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">CST NP-grammar</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">The grammar identifies simple NP's ranging from the start of the NP to the its kernel. Relative clauses and coordinations of NP's are not found, but proper names in postposition and the first preposition syntagma after the kernel are recognised on an experimental basis. The NP grammar is modelled on NP's found in the Danish Parole corpus, uses POS-tags from in the taggerXML and is made for the Cass a finite-state chunck parser. 
+
+</description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">2642548</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Haltrup Hansen Dorte</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>no version</version>
+    </versionInfo>
+    <validationInfos/>
+    <resourceDocumentationInfo>
+      <samplesLocations>
+        <samplesLocation>http://cst.dk/online/np_genkender/uk/index.html</samplesLocation>
+      </samplesLocations>
+    </resourceDocumentationInfo>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="en">Haltrup Hansen Dorte</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+      </resourceCreators>
+      <fundingProjects/>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>other</distributionMedium>
+        </distributionMediums>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>CLARIN_ACA-NC</licence>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedOrganization>
+              <organizationNames>
+                <organizationName lang="en">University of Copenhagen</organizationName>
+              </organizationNames>
+            </relatedOrganization>
+          </rightsHolder>
+        </rightsHolders>
+        <userTypes>
+          <userType>academic</userType>
+        </userTypes>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <languageDescriptionType>grammar</languageDescriptionType>
+    <languageDescriptionEncodingInfo>
+      <encodingLevels>
+        <encodingLevel>syntax</encodingLevel>
+      </encodingLevels>
+      <standardsBestPractices/>
+      <theoreticModels/>
+      <formalisms/>
+      <tasks>
+        <task>npRecognition</task>
+      </tasks>
+      <grammaticalPhenomenaCoverages/>
+    </languageDescriptionEncodingInfo>
+    <languageDescriptionMediaType>
+      <languageDescriptionTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>da</languageTag>
+              <languageId>da</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>N/A</size>
+            <sizeUnit>other</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </languageDescriptionTextInfo>
+    </languageDescriptionMediaType>
+  </languageDescriptionInfo>
+</languageDescriptionMetadataRecord>

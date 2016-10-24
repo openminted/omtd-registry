@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
 	<xs:simpleType name="languageIdType">
 		<xs:annotation>
 			<xs:documentation>Base type for languages according to ISO 639; the codes are taken from ISO 639-1 and, if not covered, from ISO 639-3, according to the BCP-47 guidlelines</xs:documentation>
-		</xs:annotation>
+		<xs:appinfo><jaxb:typesafeEnumClass map="false"><jaxb:typesafeEnumMember name="QAA__QTZ" value="qaa..qtz" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="bg">
 				<xs:annotation>
@@ -835,7 +833,7 @@
 			<xs:enumeration value="nb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Norwegian Bokmål</xs:label>
+						<xs:label>Norwegian Bokm&#229;l</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1241,7 +1239,7 @@
 			<xs:enumeration value="vo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Volapük</xs:label>
+						<xs:label>Volap&#252;k</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1332,7 +1330,7 @@
 			<xs:enumeration value="aae">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arbëreshë Albanian</xs:label>
+						<xs:label>Arb&#235;resh&#235; Albanian</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1388,7 +1386,7 @@
 			<xs:enumeration value="aan">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Anambé</xs:label>
+						<xs:label>Anamb&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1402,7 +1400,7 @@
 			<xs:enumeration value="aap">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pará Arára</xs:label>
+						<xs:label>Par&#225; Ar&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1416,7 +1414,7 @@
 			<xs:enumeration value="aas">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aasáx</xs:label>
+						<xs:label>Aas&#225;x</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1465,7 +1463,7 @@
 			<xs:enumeration value="aba">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Abé</xs:label>
+						<xs:label>Ab&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1647,7 +1645,7 @@
 			<xs:enumeration value="acb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Áncá</xs:label>
+						<xs:label>&#193;nc&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -1738,7 +1736,7 @@
 			<xs:enumeration value="acs">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Acroá</xs:label>
+						<xs:label>Acro&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -2396,7 +2394,7 @@
 			<xs:enumeration value="ahn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Àhàn</xs:label>
+						<xs:label>&#192;h&#224;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -2613,7 +2611,7 @@
 			<xs:enumeration value="aji">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ajië</xs:label>
+						<xs:label>Aji&#235;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -2977,7 +2975,7 @@
 			<xs:enumeration value="alw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Alaba-K’abeena; Wanbasana</xs:label>
+						<xs:label>Alaba-K&#8217;abeena; Wanbasana</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3005,7 +3003,7 @@
 			<xs:enumeration value="ama">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Amanayé</xs:label>
+						<xs:label>Amanay&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3201,7 +3199,7 @@
 			<xs:enumeration value="ane">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xârâcùù</xs:label>
+						<xs:label>X&#226;r&#226;c&#249;&#249;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3425,7 +3423,7 @@
 			<xs:enumeration value="aok">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arhö</xs:label>
+						<xs:label>Arh&#246;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3439,7 +3437,7 @@
 			<xs:enumeration value="aom">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ömie</xs:label>
+						<xs:label>&#214;mie</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3551,7 +3549,7 @@
 			<xs:enumeration value="api">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Apiaká</xs:label>
+						<xs:label>Apiak&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3586,7 +3584,7 @@
 			<xs:enumeration value="apn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Apinayé</xs:label>
+						<xs:label>Apinay&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3635,7 +3633,7 @@
 			<xs:enumeration value="apu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Apurinã</xs:label>
+						<xs:label>Apurin&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3663,7 +3661,7 @@
 			<xs:enumeration value="apy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Apalaí</xs:label>
+						<xs:label>Apala&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3733,14 +3731,14 @@
 			<xs:enumeration value="aqr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arhâ</xs:label>
+						<xs:label>Arh&#226;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="aqt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Angaité</xs:label>
+						<xs:label>Angait&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3803,7 +3801,7 @@
 			<xs:enumeration value="ark">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arikapú</xs:label>
+						<xs:label>Arikap&#250;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3866,7 +3864,7 @@
 			<xs:enumeration value="aru">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aruá (Amazonas State); Arawá</xs:label>
+						<xs:label>Aru&#225; (Amazonas State); Araw&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3887,7 +3885,7 @@
 			<xs:enumeration value="arx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aruá (Rodonia State)</xs:label>
+						<xs:label>Aru&#225; (Rodonia State)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -3992,7 +3990,7 @@
 			<xs:enumeration value="asn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xingú Asuriní</xs:label>
+						<xs:label>Xing&#250; Asurin&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4132,7 +4130,7 @@
 			<xs:enumeration value="ati">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Attié</xs:label>
+						<xs:label>Atti&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4412,7 +4410,7 @@
 			<xs:enumeration value="aux">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aurá</xs:label>
+						<xs:label>Aur&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4510,7 +4508,7 @@
 			<xs:enumeration value="avv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Avá-Canoeiro</xs:label>
+						<xs:label>Av&#225;-Canoeiro</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4545,7 +4543,7 @@
 			<xs:enumeration value="awe">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Awetí</xs:label>
+						<xs:label>Awet&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4615,7 +4613,7 @@
 			<xs:enumeration value="awt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Araweté</xs:label>
+						<xs:label>Arawet&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4671,7 +4669,7 @@
 			<xs:enumeration value="axg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mato Grosso Arára</xs:label>
+						<xs:label>Mato Grosso Ar&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4699,7 +4697,7 @@
 			<xs:enumeration value="axx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xârâgurè</xs:label>
+						<xs:label>X&#226;r&#226;gur&#232;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4930,7 +4928,7 @@
 			<xs:enumeration value="bab">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Bainouk-Gunyuño</xs:label>
+						<xs:label>Bainouk-Gunyu&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -4951,7 +4949,7 @@
 			<xs:enumeration value="bae">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Baré</xs:label>
+						<xs:label>Bar&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5140,7 +5138,7 @@
 			<xs:enumeration value="bbj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ghomálá'</xs:label>
+						<xs:label>Ghom&#225;l&#225;'</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5175,7 +5173,7 @@
 			<xs:enumeration value="bbo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Northern Bobo Madaré; Konabéré</xs:label>
+						<xs:label>Northern Bobo Madar&#233;; Konab&#233;r&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5315,7 +5313,7 @@
 			<xs:enumeration value="bci">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Baoulé</xs:label>
+						<xs:label>Baoul&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5448,7 +5446,7 @@
 			<xs:enumeration value="bdc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Emberá-Baudó</xs:label>
+						<xs:label>Ember&#225;-Baud&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5735,7 +5733,7 @@
 			<xs:enumeration value="bet">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Guiberoua Béte</xs:label>
+						<xs:label>Guiberoua B&#233;te</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5749,7 +5747,7 @@
 			<xs:enumeration value="bev">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Daloa Bété</xs:label>
+						<xs:label>Daloa B&#233;t&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -5861,7 +5859,7 @@
 			<xs:enumeration value="bfl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Banda-Ndélé</xs:label>
+						<xs:label>Banda-Nd&#233;l&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -6610,7 +6608,7 @@
 			<xs:enumeration value="bjw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Bakwé</xs:label>
+						<xs:label>Bakw&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -6736,7 +6734,7 @@
 			<xs:enumeration value="bkq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Bakairí</xs:label>
+						<xs:label>Bakair&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7380,7 +7378,7 @@
 			<xs:enumeration value="boi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Barbareño</xs:label>
+						<xs:label>Barbare&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7422,7 +7420,7 @@
 			<xs:enumeration value="boo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tiemacèwè Bozo</xs:label>
+						<xs:label>Tiemac&#232;w&#232; Bozo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7443,7 +7441,7 @@
 			<xs:enumeration value="bor">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Borôro</xs:label>
+						<xs:label>Bor&#244;ro</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7492,7 +7490,7 @@
 			<xs:enumeration value="boz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tiéyaxo Bozo</xs:label>
+						<xs:label>Ti&#233;yaxo Bozo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7548,7 +7546,7 @@
 			<xs:enumeration value="bpk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Orowe; 'Ôrôê</xs:label>
+						<xs:label>Orowe; '&#212;r&#244;&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -7723,7 +7721,7 @@
 			<xs:enumeration value="bqk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Banda-Mbrès</xs:label>
+						<xs:label>Banda-Mbr&#232;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -8150,7 +8148,7 @@
 			<xs:enumeration value="bsv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Baga Sobané</xs:label>
+						<xs:label>Baga Soban&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -8213,7 +8211,7 @@
 			<xs:enumeration value="btg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Gagnoa Bété</xs:label>
+						<xs:label>Gagnoa B&#233;t&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -8759,7 +8757,7 @@
 			<xs:enumeration value="bwj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Láá Láá Bwamu</xs:label>
+						<xs:label>L&#225;&#225; L&#225;&#225; Bwamu</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -8808,7 +8806,7 @@
 			<xs:enumeration value="bwq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Southern Bobo Madaré</xs:label>
+						<xs:label>Southern Bobo Madar&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9375,7 +9373,7 @@
 			<xs:enumeration value="bzx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kɛlɛngaxo Bozo</xs:label>
+						<xs:label>K&#603;l&#603;ngaxo Bozo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9396,7 +9394,7 @@
 			<xs:enumeration value="caa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chortí</xs:label>
+						<xs:label>Chort&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9438,7 +9436,7 @@
 			<xs:enumeration value="cag">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nivaclé</xs:label>
+						<xs:label>Nivacl&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9459,7 +9457,7 @@
 			<xs:enumeration value="caj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chané</xs:label>
+						<xs:label>Chan&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9480,7 +9478,7 @@
 			<xs:enumeration value="cam">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cemuhî</xs:label>
+						<xs:label>Cemuh&#238;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9494,7 +9492,7 @@
 			<xs:enumeration value="cao">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chácobo</xs:label>
+						<xs:label>Ch&#225;cobo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9522,7 +9520,7 @@
 			<xs:enumeration value="cas">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tsimané</xs:label>
+						<xs:label>Tsiman&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9536,7 +9534,7 @@
 			<xs:enumeration value="cav">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cavineña</xs:label>
+						<xs:label>Cavine&#241;a</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9578,7 +9576,7 @@
 			<xs:enumeration value="cbb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cabiyarí</xs:label>
+						<xs:label>Cabiyar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -9963,7 +9961,7 @@
 			<xs:enumeration value="cet">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Centúúm</xs:label>
+						<xs:label>Cent&#250;&#250;m</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10068,7 +10066,7 @@
 			<xs:enumeration value="chj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ojitlán Chinantec</xs:label>
+						<xs:label>Ojitl&#225;n Chinantec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10131,7 +10129,7 @@
 			<xs:enumeration value="cht">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cholón</xs:label>
+						<xs:label>Chol&#243;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10159,7 +10157,7 @@
 			<xs:enumeration value="chz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ozumacín Chinantec</xs:label>
+						<xs:label>Ozumac&#237;n Chinantec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10236,7 +10234,7 @@
 			<xs:enumeration value="cir">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tiri; Haméa; Méa</xs:label>
+						<xs:label>Tiri; Ham&#233;a; M&#233;a</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10306,14 +10304,14 @@
 			<xs:enumeration value="cjo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ashéninka Pajonal</xs:label>
+						<xs:label>Ash&#233;ninka Pajonal</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="cjp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cabécar</xs:label>
+						<xs:label>Cab&#233;car</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10432,7 +10430,7 @@
 			<xs:enumeration value="ckz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cakchiquel-Quiché Mixed Language</xs:label>
+						<xs:label>Cakchiquel-Quich&#233; Mixed Language</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10572,7 +10570,7 @@
 			<xs:enumeration value="cmi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Emberá-Chamí</xs:label>
+						<xs:label>Ember&#225;-Cham&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10642,7 +10640,7 @@
 			<xs:enumeration value="cnc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Côông</xs:label>
+						<xs:label>C&#244;&#244;ng</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10663,7 +10661,7 @@
 			<xs:enumeration value="cni">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Asháninka</xs:label>
+						<xs:label>Ash&#225;ninka</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10810,7 +10808,7 @@
 			<xs:enumeration value="con">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cofán</xs:label>
+						<xs:label>Cof&#225;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10894,14 +10892,14 @@
 			<xs:enumeration value="cpb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ucayali-Yurúa Ashéninka</xs:label>
+						<xs:label>Ucayali-Yur&#250;a Ash&#233;ninka</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="cpc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ajyíninka Apurucayali</xs:label>
+						<xs:label>Ajy&#237;ninka Apurucayali</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10964,7 +10962,7 @@
 			<xs:enumeration value="cpu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pichis Ashéninka</xs:label>
+						<xs:label>Pichis Ash&#233;ninka</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -10978,7 +10976,7 @@
 			<xs:enumeration value="cpy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>South Ucayali Ashéninka</xs:label>
+						<xs:label>South Ucayali Ash&#233;ninka</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11048,7 +11046,7 @@
 			<xs:enumeration value="cri">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sãotomense</xs:label>
+						<xs:label>S&#227;otomense</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11160,7 +11158,7 @@
 			<xs:enumeration value="crz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cruzeño</xs:label>
+						<xs:label>Cruze&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11181,7 +11179,7 @@
 			<xs:enumeration value="csc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Catalan Sign Language; Lengua de señas catalana; Llengua de Signes Catalana</xs:label>
+						<xs:label>Catalan Sign Language; Lengua de se&#241;as catalana; Llengua de Signes Catalana</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11398,7 +11396,7 @@
 			<xs:enumeration value="cto">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Emberá-Catío</xs:label>
+						<xs:label>Ember&#225;-Cat&#237;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11517,7 +11515,7 @@
 			<xs:enumeration value="cup">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cupeño</xs:label>
+						<xs:label>Cupe&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -11692,7 +11690,7 @@
 			<xs:enumeration value="daa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dangaléat</xs:label>
+						<xs:label>Dangal&#233;at</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -12924,7 +12922,7 @@
 			<xs:enumeration value="dnn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dzùùngoo</xs:label>
+						<xs:label>Dz&#249;&#249;ngoo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -12966,7 +12964,7 @@
 			<xs:enumeration value="dny">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dení</xs:label>
+						<xs:label>Den&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -13071,7 +13069,7 @@
 			<xs:enumeration value="dos">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dogosé</xs:label>
+						<xs:label>Dogos&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -13743,7 +13741,7 @@
 			<xs:enumeration value="ebr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ebrié</xs:label>
+						<xs:label>Ebri&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -14072,7 +14070,7 @@
 			<xs:enumeration value="emp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Northern Emberá</xs:label>
+						<xs:label>Northern Ember&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -14226,7 +14224,7 @@
 			<xs:enumeration value="eot">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Beti (Côte d'Ivoire)</xs:label>
+						<xs:label>Beti (C&#244;te d'Ivoire)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -14779,7 +14777,7 @@
 			<xs:enumeration value="fkk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kirya-Konzəl</xs:label>
+						<xs:label>Kirya-Konz&#601;l</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -14968,7 +14966,7 @@
 			<xs:enumeration value="frp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arpitan; Francoprovençal</xs:label>
+						<xs:label>Arpitan; Francoproven&#231;al</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -15017,7 +15015,7 @@
 			<xs:enumeration value="fss">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Finland-Swedish Sign Language; finlandssvenskt teckenspråk; suomenruotsalainen viittomakieli</xs:label>
+						<xs:label>Finland-Swedish Sign Language; finlandssvenskt teckenspr&#229;k; suomenruotsalainen viittomakieli</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -15087,7 +15085,7 @@
 			<xs:enumeration value="fun">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Fulniô</xs:label>
+						<xs:label>Fulni&#244;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -15143,7 +15141,7 @@
 			<xs:enumeration value="fwa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Fwâi</xs:label>
+						<xs:label>Fw&#226;i</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -15934,7 +15932,7 @@
 			<xs:enumeration value="gha">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ghadamès</xs:label>
+						<xs:label>Ghadam&#232;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -16312,7 +16310,7 @@
 			<xs:enumeration value="gmd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mághdì</xs:label>
+						<xs:label>M&#225;ghd&#236;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -16326,7 +16324,7 @@
 			<xs:enumeration value="gmg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Magɨyi</xs:label>
+						<xs:label>Mag&#616;yi</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -16529,7 +16527,7 @@
 			<xs:enumeration value="gnw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Western Bolivian Guaraní</xs:label>
+						<xs:label>Western Bolivian Guaran&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -16564,7 +16562,7 @@
 			<xs:enumeration value="god">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Godié</xs:label>
+						<xs:label>Godi&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -16984,7 +16982,7 @@
 			<xs:enumeration value="gta">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Guató</xs:label>
+						<xs:label>Guat&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17012,7 +17010,7 @@
 			<xs:enumeration value="gub">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Guajajára</xs:label>
+						<xs:label>Guajaj&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17026,7 +17024,7 @@
 			<xs:enumeration value="gud">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yocoboué Dida</xs:label>
+						<xs:label>Yocobou&#233; Dida</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17047,7 +17045,7 @@
 			<xs:enumeration value="gug">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Paraguayan Guaraní</xs:label>
+						<xs:label>Paraguayan Guaran&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17061,7 +17059,7 @@
 			<xs:enumeration value="gui">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Eastern Bolivian Guaraní</xs:label>
+						<xs:label>Eastern Bolivian Guaran&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17089,7 +17087,7 @@
 			<xs:enumeration value="gun">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mbyá Guaraní</xs:label>
+						<xs:label>Mby&#225; Guaran&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17110,7 +17108,7 @@
 			<xs:enumeration value="guq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aché</xs:label>
+						<xs:label>Ach&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17131,14 +17129,14 @@
 			<xs:enumeration value="gut">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Maléku Jaíka</xs:label>
+						<xs:label>Mal&#233;ku Ja&#237;ka</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="guu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yanomamö</xs:label>
+						<xs:label>Yanomam&#246;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17159,7 +17157,7 @@
 			<xs:enumeration value="gux">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Gourmanchéma</xs:label>
+						<xs:label>Gourmanch&#233;ma</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17201,7 +17199,7 @@
 			<xs:enumeration value="gvj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Guajá</xs:label>
+						<xs:label>Guaj&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17229,14 +17227,14 @@
 			<xs:enumeration value="gvo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Gavião Do Jiparaná</xs:label>
+						<xs:label>Gavi&#227;o Do Jiparan&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="gvp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pará Gavião</xs:label>
+						<xs:label>Par&#225; Gavi&#227;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17313,7 +17311,7 @@
 			<xs:enumeration value="gwi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Gwichʼin</xs:label>
+						<xs:label>Gwich&#700;in</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17376,7 +17374,7 @@
 			<xs:enumeration value="gxx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wè Southern</xs:label>
+						<xs:label>W&#232; Southern</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17439,7 +17437,7 @@
 			<xs:enumeration value="gym">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ngäbere</xs:label>
+						<xs:label>Ng&#228;bere</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17586,7 +17584,7 @@
 			<xs:enumeration value="hao">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hakö</xs:label>
+						<xs:label>Hak&#246;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17733,7 +17731,7 @@
 			<xs:enumeration value="hed">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Herdé</xs:label>
+						<xs:label>Herd&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17887,7 +17885,7 @@
 			<xs:enumeration value="hir">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Himarimã</xs:label>
+						<xs:label>Himarim&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -17908,7 +17906,7 @@
 			<xs:enumeration value="hix">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hixkaryána</xs:label>
+						<xs:label>Hixkary&#225;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18132,7 +18130,7 @@
 			<xs:enumeration value="hmv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hmong Dô</xs:label>
+						<xs:label>Hmong D&#244;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18272,7 +18270,7 @@
 			<xs:enumeration value="hoh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hobyót</xs:label>
+						<xs:label>Hoby&#243;t</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18342,7 +18340,7 @@
 			<xs:enumeration value="hot">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hote; Malê</xs:label>
+						<xs:label>Hote; Mal&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18440,7 +18438,7 @@
 			<xs:enumeration value="hrt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hértevin</xs:label>
+						<xs:label>H&#233;rtevin</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18692,14 +18690,14 @@
 			<xs:enumeration value="hux">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nüpode Huitoto</xs:label>
+						<xs:label>N&#252;pode Huitoto</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="huy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hulaulá</xs:label>
+						<xs:label>Hulaul&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18741,14 +18739,14 @@
 			<xs:enumeration value="hvv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa María Del Mar Huave</xs:label>
+						<xs:label>Santa Mar&#237;a Del Mar Huave</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="hwa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wané</xs:label>
+						<xs:label>Wan&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -18972,7 +18970,7 @@
 			<xs:enumeration value="idt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Idaté</xs:label>
+						<xs:label>Idat&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19000,7 +18998,7 @@
 			<xs:enumeration value="ife">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ifè</xs:label>
+						<xs:label>If&#232;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19476,7 +19474,7 @@
 			<xs:enumeration value="inp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Iñapari</xs:label>
+						<xs:label>I&#241;apari</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19497,7 +19495,7 @@
 			<xs:enumeration value="inz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ineseño</xs:label>
+						<xs:label>Inese&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19588,7 +19586,7 @@
 			<xs:enumeration value="irn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Irántxe</xs:label>
+						<xs:label>Ir&#225;ntxe</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19833,7 +19831,7 @@
 			<xs:enumeration value="itz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Itzá</xs:label>
+						<xs:label>Itz&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -19945,7 +19943,7 @@
 			<xs:enumeration value="jaa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Jamamadí</xs:label>
+						<xs:label>Jamamad&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20134,7 +20132,7 @@
 			<xs:enumeration value="jbt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Jabutí</xs:label>
+						<xs:label>Jabut&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20617,7 +20615,7 @@
 			<xs:enumeration value="jor">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Jorá</xs:label>
+						<xs:label>Jor&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20694,7 +20692,7 @@
 			<xs:enumeration value="jru">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Japrería</xs:label>
+						<xs:label>Japrer&#237;a</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20708,7 +20706,7 @@
 			<xs:enumeration value="jua">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Júma</xs:label>
+						<xs:label>J&#250;ma</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20736,7 +20734,7 @@
 			<xs:enumeration value="juh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hõne</xs:label>
+						<xs:label>H&#245;ne</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20785,14 +20783,14 @@
 			<xs:enumeration value="jup">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hupdë</xs:label>
+						<xs:label>Hupd&#235;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="jur">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Jurúna</xs:label>
+						<xs:label>Jur&#250;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20820,7 +20818,7 @@
 			<xs:enumeration value="juw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wãpha</xs:label>
+						<xs:label>W&#227;pha</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -20988,7 +20986,7 @@
 			<xs:enumeration value="kav">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Katukína</xs:label>
+						<xs:label>Katuk&#237;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21009,7 +21007,7 @@
 			<xs:enumeration value="kay">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kamayurá</xs:label>
+						<xs:label>Kamayur&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21023,14 +21021,14 @@
 			<xs:enumeration value="kbb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kaxuiâna</xs:label>
+						<xs:label>Kaxui&#226;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="kbc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kadiwéu</xs:label>
+						<xs:label>Kadiw&#233;u</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21065,7 +21063,7 @@
 			<xs:enumeration value="kbh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Camsá</xs:label>
+						<xs:label>Cams&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21121,7 +21119,7 @@
 			<xs:enumeration value="kbp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kabiyè</xs:label>
+						<xs:label>Kabiy&#232;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21219,7 +21217,7 @@
 			<xs:enumeration value="kcd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ngkâlmpw Kanum</xs:label>
+						<xs:label>Ngk&#226;lmpw Kanum</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21443,7 +21441,7 @@
 			<xs:enumeration value="kdk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Numèè; Kwényi</xs:label>
+						<xs:label>Num&#232;&#232;; Kw&#233;nyi</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21548,7 +21546,7 @@
 			<xs:enumeration value="keb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kélé</xs:label>
+						<xs:label>K&#233;l&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21611,7 +21609,7 @@
 			<xs:enumeration value="kek">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kekchí</xs:label>
+						<xs:label>Kekch&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21821,7 +21819,7 @@
 			<xs:enumeration value="kfo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Koro (Côte d'Ivoire)</xs:label>
+						<xs:label>Koro (C&#244;te d'Ivoire)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21898,7 +21896,7 @@
 			<xs:enumeration value="kfz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Koromfé</xs:label>
+						<xs:label>Koromf&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21968,7 +21966,7 @@
 			<xs:enumeration value="kgk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kaiwá</xs:label>
+						<xs:label>Kaiw&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -21982,7 +21980,7 @@
 			<xs:enumeration value="kgm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Karipúna</xs:label>
+						<xs:label>Karip&#250;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -22080,7 +22078,7 @@
 			<xs:enumeration value="khb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lü</xs:label>
+						<xs:label>L&#252;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -22094,7 +22092,7 @@
 			<xs:enumeration value="khd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Bädi Kanum</xs:label>
+						<xs:label>B&#228;di Kanum</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -22493,7 +22491,7 @@
 			<xs:enumeration value="kjm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kháng</xs:label>
+						<xs:label>Kh&#225;ng</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -22626,7 +22624,7 @@
 			<xs:enumeration value="kkh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Khün</xs:label>
+						<xs:label>Kh&#252;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -22983,7 +22981,7 @@
 			<xs:enumeration value="kmg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kâte</xs:label>
+						<xs:label>K&#226;te</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23088,7 +23086,7 @@
 			<xs:enumeration value="kmv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Karipúna Creole French</xs:label>
+						<xs:label>Karip&#250;na Creole French</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23200,7 +23198,7 @@
 			<xs:enumeration value="knm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kanamarí</xs:label>
+						<xs:label>Kanamar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23249,7 +23247,7 @@
 			<xs:enumeration value="knt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Panoan Katukína</xs:label>
+						<xs:label>Panoan Katuk&#237;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23291,7 +23289,7 @@
 			<xs:enumeration value="knz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kalamsé</xs:label>
+						<xs:label>Kalams&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23515,7 +23513,7 @@
 			<xs:enumeration value="kpj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Karajá</xs:label>
+						<xs:label>Karaj&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23543,7 +23541,7 @@
 			<xs:enumeration value="kpn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kepkiriwát</xs:label>
+						<xs:label>Kepkiriw&#225;t</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23732,7 +23730,7 @@
 			<xs:enumeration value="kqp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kimré</xs:label>
+						<xs:label>Kimr&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -23837,7 +23835,7 @@
 			<xs:enumeration value="kre">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Panará</xs:label>
+						<xs:label>Panar&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24026,7 +24024,7 @@
 			<xs:enumeration value="ksh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kölsch</xs:label>
+						<xs:label>K&#246;lsch</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24110,7 +24108,7 @@
 			<xs:enumeration value="kst">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Winyé</xs:label>
+						<xs:label>Winy&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24250,7 +24248,7 @@
 			<xs:enumeration value="ktn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Karitiâna</xs:label>
+						<xs:label>Kariti&#226;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24320,14 +24318,14 @@
 			<xs:enumeration value="ktx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kaxararí</xs:label>
+						<xs:label>Kaxarar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="kty">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kango (Bas-Uélé District)</xs:label>
+						<xs:label>Kango (Bas-U&#233;l&#233; District)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24390,7 +24388,7 @@
 			<xs:enumeration value="kui">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kuikúro-Kalapálo</xs:label>
+						<xs:label>Kuik&#250;ro-Kalap&#225;lo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24691,7 +24689,7 @@
 			<xs:enumeration value="kwa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dâw</xs:label>
+						<xs:label>D&#226;w</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24838,7 +24836,7 @@
 			<xs:enumeration value="kwv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sara Kaba Náà</xs:label>
+						<xs:label>Sara Kaba N&#225;&#224;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24964,7 +24962,7 @@
 			<xs:enumeration value="kxo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kanoé</xs:label>
+						<xs:label>Kano&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -24978,7 +24976,7 @@
 			<xs:enumeration value="kxq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Smärky Kanum</xs:label>
+						<xs:label>Sm&#228;rky Kanum</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25167,7 +25165,7 @@
 			<xs:enumeration value="kyr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kuruáya</xs:label>
+						<xs:label>Kuru&#225;ya</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25223,7 +25221,7 @@
 			<xs:enumeration value="kyz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kayabí</xs:label>
+						<xs:label>Kayab&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25377,7 +25375,7 @@
 			<xs:enumeration value="kzw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Karirí-Xocó</xs:label>
+						<xs:label>Karir&#237;-Xoc&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25804,7 +25802,7 @@
 			<xs:enumeration value="ldb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Dũya</xs:label>
+						<xs:label>D&#361;ya</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25867,7 +25865,7 @@
 			<xs:enumeration value="ldn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Láadan</xs:label>
+						<xs:label>L&#225;adan</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -25923,7 +25921,7 @@
 			<xs:enumeration value="lee">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lyélé</xs:label>
+						<xs:label>Ly&#233;l&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -26231,7 +26229,7 @@
 			<xs:enumeration value="lhs">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mlahsö</xs:label>
+						<xs:label>Mlahs&#246;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -26483,7 +26481,7 @@
 			<xs:enumeration value="lkd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lakondê</xs:label>
+						<xs:label>Lakond&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -26546,7 +26544,7 @@
 			<xs:enumeration value="lkr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Päri</xs:label>
+						<xs:label>P&#228;ri</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -26749,7 +26747,7 @@
 			<xs:enumeration value="lme">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pévé</xs:label>
+						<xs:label>P&#233;v&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27036,7 +27034,7 @@
 			<xs:enumeration value="loi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Loma (Côte d'Ivoire)</xs:label>
+						<xs:label>Loma (C&#244;te d'Ivoire)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27099,7 +27097,7 @@
 			<xs:enumeration value="lor">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Téén</xs:label>
+						<xs:label>T&#233;&#233;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27358,7 +27356,7 @@
 			<xs:enumeration value="lsp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Panamanian Sign Language; Lengua de Señas Panameñas</xs:label>
+						<xs:label>Panamanian Sign Language; Lengua de Se&#241;as Paname&#241;as</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27414,7 +27412,7 @@
 			<xs:enumeration value="ltn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Latundê</xs:label>
+						<xs:label>Latund&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27743,7 +27741,7 @@
 			<xs:enumeration value="maa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Jerónimo Tecóatl Mazatec</xs:label>
+						<xs:label>San Jer&#243;nimo Tec&#243;atl Mazatec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27792,7 +27790,7 @@
 			<xs:enumeration value="maj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Jalapa De Díaz Mazatec</xs:label>
+						<xs:label>Jalapa De D&#237;az Mazatec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27827,7 +27825,7 @@
 			<xs:enumeration value="maq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chiquihuitlán Mazatec</xs:label>
+						<xs:label>Chiquihuitl&#225;n Mazatec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27855,7 +27853,7 @@
 			<xs:enumeration value="mav">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sateré-Mawé</xs:label>
+						<xs:label>Sater&#233;-Maw&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27939,7 +27937,7 @@
 			<xs:enumeration value="mbj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nadëb</xs:label>
+						<xs:label>Nad&#235;b</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27953,7 +27951,7 @@
 			<xs:enumeration value="mbl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Maxakalí</xs:label>
+						<xs:label>Maxakal&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27967,7 +27965,7 @@
 			<xs:enumeration value="mbn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Macaguán</xs:label>
+						<xs:label>Macagu&#225;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -27995,7 +27993,7 @@
 			<xs:enumeration value="mbr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nukak Makú</xs:label>
+						<xs:label>Nukak Mak&#250;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -28093,7 +28091,7 @@
 			<xs:enumeration value="mcf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Matsés</xs:label>
+						<xs:label>Mats&#233;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -28156,7 +28154,7 @@
 			<xs:enumeration value="mco">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Coatlán Mixe</xs:label>
+						<xs:label>Coatl&#225;n Mixe</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -28380,7 +28378,7 @@
 			<xs:enumeration value="mdv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa Lucía Monteverde Mixtec</xs:label>
+						<xs:label>Santa Luc&#237;a Monteverde Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -28408,7 +28406,7 @@
 			<xs:enumeration value="mdz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Suruí Do Pará</xs:label>
+						<xs:label>Suru&#237; Do Par&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29024,7 +29022,7 @@
 			<xs:enumeration value="mhn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mócheno</xs:label>
+						<xs:label>M&#243;cheno</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29115,7 +29113,7 @@
 			<xs:enumeration value="mib">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Atatláhuca Mixtec</xs:label>
+						<xs:label>Atatl&#225;huca Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29164,7 +29162,7 @@
 			<xs:enumeration value="mii">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chigmecatitlán Mixtec</xs:label>
+						<xs:label>Chigmecatitl&#225;n Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29185,7 +29183,7 @@
 			<xs:enumeration value="mil">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Peñoles Mixtec</xs:label>
+						<xs:label>Pe&#241;oles Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29220,7 +29218,7 @@
 			<xs:enumeration value="miq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mískito</xs:label>
+						<xs:label>M&#237;skito</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29787,7 +29785,7 @@
 			<xs:enumeration value="mmc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Michoacán Mazahua</xs:label>
+						<xs:label>Michoac&#225;n Mazahua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29822,7 +29820,7 @@
 			<xs:enumeration value="mmh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mehináku</xs:label>
+						<xs:label>Mehin&#225;ku</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -29969,7 +29967,7 @@
 			<xs:enumeration value="mnd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mondé</xs:label>
+						<xs:label>Mond&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30130,7 +30128,7 @@
 			<xs:enumeration value="moc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mocoví</xs:label>
+						<xs:label>Mocov&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30200,7 +30198,7 @@
 			<xs:enumeration value="mop">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mopán Maya</xs:label>
+						<xs:label>Mop&#225;n Maya</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30228,7 +30226,7 @@
 			<xs:enumeration value="mot">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Barí</xs:label>
+						<xs:label>Bar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30354,7 +30352,7 @@
 			<xs:enumeration value="mpm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yosondúa Mixtec</xs:label>
+						<xs:label>Yosond&#250;a Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30382,7 +30380,7 @@
 			<xs:enumeration value="mpq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Matís</xs:label>
+						<xs:label>Mat&#237;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30410,7 +30408,7 @@
 			<xs:enumeration value="mpu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Makuráp</xs:label>
+						<xs:label>Makur&#225;p</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30886,7 +30884,7 @@
 			<xs:enumeration value="msn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Vurës</xs:label>
+						<xs:label>Vur&#235;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -30900,7 +30898,7 @@
 			<xs:enumeration value="msp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Maritsauá</xs:label>
+						<xs:label>Maritsau&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31075,7 +31073,7 @@
 			<xs:enumeration value="mtp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wichí Lhamtés Nocten</xs:label>
+						<xs:label>Wich&#237; Lhamt&#233;s Nocten</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31131,7 +31129,7 @@
 			<xs:enumeration value="mtx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tidaá Mixtec</xs:label>
+						<xs:label>Tida&#225; Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31187,7 +31185,7 @@
 			<xs:enumeration value="muh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mündü</xs:label>
+						<xs:label>M&#252;nd&#252;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31348,7 +31346,7 @@
 			<xs:enumeration value="mvg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yucuañe Mixtec</xs:label>
+						<xs:label>Yucua&#241;e Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31586,7 +31584,7 @@
 			<xs:enumeration value="mwq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mün Chin</xs:label>
+						<xs:label>M&#252;n Chin</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31663,7 +31661,7 @@
 			<xs:enumeration value="mxb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tezoatlán Mixtec</xs:label>
+						<xs:label>Tezoatl&#225;n Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31803,7 +31801,7 @@
 			<xs:enumeration value="mxv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Metlatónoc Mixtec</xs:label>
+						<xs:label>Metlat&#243;noc Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31824,7 +31822,7 @@
 			<xs:enumeration value="mxy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Southeastern Nochixtlán Mixtec</xs:label>
+						<xs:label>Southeastern Nochixtl&#225;n Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31936,7 +31934,7 @@
 			<xs:enumeration value="myp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pirahã</xs:label>
+						<xs:label>Pirah&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31957,7 +31955,7 @@
 			<xs:enumeration value="myu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mundurukú</xs:label>
+						<xs:label>Munduruk&#250;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -31999,7 +31997,7 @@
 			<xs:enumeration value="mza">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa María Zacatepec Mixtec</xs:label>
+						<xs:label>Santa Mar&#237;a Zacatepec Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32041,14 +32039,14 @@
 			<xs:enumeration value="mzh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wichí Lhamtés Güisnay</xs:label>
+						<xs:label>Wich&#237; Lhamt&#233;s G&#252;isnay</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="mzi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ixcatlán Mazatec</xs:label>
+						<xs:label>Ixcatl&#225;n Mazatec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32069,7 +32067,7 @@
 			<xs:enumeration value="mzl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mazatlán Mixe</xs:label>
+						<xs:label>Mazatl&#225;n Mixe</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32111,7 +32109,7 @@
 			<xs:enumeration value="mzr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Marúbo</xs:label>
+						<xs:label>Mar&#250;bo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32181,7 +32179,7 @@
 			<xs:enumeration value="nab">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Southern Nambikuára</xs:label>
+						<xs:label>Southern Nambiku&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32573,7 +32571,7 @@
 			<xs:enumeration value="ncl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Michoacán Nahuatl</xs:label>
+						<xs:label>Michoac&#225;n Nahuatl</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32825,7 +32823,7 @@
 			<xs:enumeration value="neb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Toura (Côte d'Ivoire)</xs:label>
+						<xs:label>Toura (C&#244;te d'Ivoire)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32846,7 +32844,7 @@
 			<xs:enumeration value="nee">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nêlêmwa-Nixumwak</xs:label>
+						<xs:label>N&#234;l&#234;mwa-Nixumwak</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -32909,7 +32907,7 @@
 			<xs:enumeration value="neo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ná-Meo</xs:label>
+						<xs:label>N&#225;-Meo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33000,7 +32998,7 @@
 			<xs:enumeration value="nfl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ayiwo; Äiwoo</xs:label>
+						<xs:label>Ayiwo; &#196;iwoo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33224,7 +33222,7 @@
 			<xs:enumeration value="nhd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chiripá; Ava Guaraní</xs:label>
+						<xs:label>Chirip&#225;; Ava Guaran&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33259,7 +33257,7 @@
 			<xs:enumeration value="nhi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Zacatlán-Ahuacatlán-Tepetzintla Nahuatl</xs:label>
+						<xs:label>Zacatl&#225;n-Ahuacatl&#225;n-Tepetzintla Nahuatl</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33357,7 +33355,7 @@
 			<xs:enumeration value="nhz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa María La Alta Nahuatl</xs:label>
+						<xs:label>Santa Mar&#237;a La Alta Nahuatl</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33931,7 +33929,7 @@
 			<xs:enumeration value="nlz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nalögo</xs:label>
+						<xs:label>Nal&#246;go</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -33945,7 +33943,7 @@
 			<xs:enumeration value="nmb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Big Nambas; V'ënen Taut</xs:label>
+						<xs:label>Big Nambas; V'&#235;nen Taut</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -34029,7 +34027,7 @@
 			<xs:enumeration value="nmn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>!Xóõ</xs:label>
+						<xs:label>!X&#243;&#245;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -34372,7 +34370,7 @@
 			<xs:enumeration value="nom">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nocamán</xs:label>
+						<xs:label>Nocam&#225;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -34554,7 +34552,7 @@
 			<xs:enumeration value="nqo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>N'Ko; N’Ko</xs:label>
+						<xs:label>N'Ko; N&#8217;Ko</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -34925,7 +34923,7 @@
 			<xs:enumeration value="ntu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Natügu</xs:label>
+						<xs:label>Nat&#252;gu</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -35058,7 +35056,7 @@
 			<xs:enumeration value="nuo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nguôn</xs:label>
+						<xs:label>Ngu&#244;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -35590,7 +35588,7 @@
 			<xs:enumeration value="obi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Obispeño</xs:label>
+						<xs:label>Obispe&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36276,7 +36274,7 @@
 			<xs:enumeration value="oon">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Önge</xs:label>
+						<xs:label>&#214;nge</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36332,7 +36330,7 @@
 			<xs:enumeration value="opy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ofayé</xs:label>
+						<xs:label>Ofay&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36353,7 +36351,7 @@
 			<xs:enumeration value="ore">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Orejón</xs:label>
+						<xs:label>Orej&#243;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36577,7 +36575,7 @@
 			<xs:enumeration value="otq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Querétaro Otomi</xs:label>
+						<xs:label>Quer&#233;taro Otomi</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36591,7 +36589,7 @@
 			<xs:enumeration value="ots">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Estado de México Otomi</xs:label>
+						<xs:label>Estado de M&#233;xico Otomi</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36738,7 +36736,7 @@
 			<xs:enumeration value="pab">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Parecís</xs:label>
+						<xs:label>Parec&#237;s</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36752,7 +36750,7 @@
 			<xs:enumeration value="pad">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Paumarí</xs:label>
+						<xs:label>Paumar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36766,7 +36764,7 @@
 			<xs:enumeration value="paf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Paranawát</xs:label>
+						<xs:label>Paranaw&#225;t</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36794,7 +36792,7 @@
 			<xs:enumeration value="pak">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Parakanã</xs:label>
+						<xs:label>Parakan&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36864,7 +36862,7 @@
 			<xs:enumeration value="pav">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pakaásnovos</xs:label>
+						<xs:label>Paka&#225;snovos</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36878,7 +36876,7 @@
 			<xs:enumeration value="pax">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pankararé</xs:label>
+						<xs:label>Pankarar&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36892,14 +36890,14 @@
 			<xs:enumeration value="paz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pankararú</xs:label>
+						<xs:label>Pankarar&#250;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="pbb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Páez</xs:label>
+						<xs:label>P&#225;ez</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -36934,7 +36932,7 @@
 			<xs:enumeration value="pbh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>E'ñapa Woromaipu</xs:label>
+						<xs:label>E'&#241;apa Woromaipu</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37018,7 +37016,7 @@
 			<xs:enumeration value="pca">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa Inés Ahuatempan Popoloca</xs:label>
+						<xs:label>Santa In&#233;s Ahuatempan Popoloca</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37291,7 +37289,7 @@
 			<xs:enumeration value="pev">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pémono</xs:label>
+						<xs:label>P&#233;mono</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37319,7 +37317,7 @@
 			<xs:enumeration value="pfa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pááfang</xs:label>
+						<xs:label>P&#225;&#225;fang</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37683,7 +37681,7 @@
 			<xs:enumeration value="pka">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ardhamāgadhī Prākrit</xs:label>
+						<xs:label>Ardham&#257;gadh&#299; Pr&#257;krit</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37725,7 +37723,7 @@
 			<xs:enumeration value="pko">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pökoot</xs:label>
+						<xs:label>P&#246;koot</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37809,7 +37807,7 @@
 			<xs:enumeration value="plg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pilagá</xs:label>
+						<xs:label>Pilag&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37893,7 +37891,7 @@
 			<xs:enumeration value="plu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Palikúr</xs:label>
+						<xs:label>Palik&#250;r</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -37970,7 +37968,7 @@
 			<xs:enumeration value="pmh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Māhārāṣṭri Prākrit</xs:label>
+						<xs:label>M&#257;h&#257;r&#257;&#7779;&#7789;ri Pr&#257;krit</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38285,7 +38283,7 @@
 			<xs:enumeration value="pog">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Potiguára</xs:label>
+						<xs:label>Potigu&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38306,7 +38304,7 @@
 			<xs:enumeration value="pok">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pokangá</xs:label>
+						<xs:label>Pokang&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38334,7 +38332,7 @@
 			<xs:enumeration value="pop">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pwapwâ</xs:label>
+						<xs:label>Pwapw&#226;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38467,7 +38465,7 @@
 			<xs:enumeration value="pps">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Luís Temalacayuca Popoloca</xs:label>
+						<xs:label>San Lu&#237;s Temalacayuca Popoloca</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38572,7 +38570,7 @@
 			<xs:enumeration value="pri">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Paicî</xs:label>
+						<xs:label>Paic&#238;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38607,7 +38605,7 @@
 			<xs:enumeration value="pro">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Old Provençal (to 1500); Old Occitan (to 1500)</xs:label>
+						<xs:label>Old Proven&#231;al (to 1500); Old Occitan (to 1500)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38621,7 +38619,7 @@
 			<xs:enumeration value="prq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ashéninka Perené</xs:label>
+						<xs:label>Ash&#233;ninka Peren&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38796,7 +38794,7 @@
 			<xs:enumeration value="psu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sauraseni Prākrit</xs:label>
+						<xs:label>Sauraseni Pr&#257;krit</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38824,7 +38822,7 @@
 			<xs:enumeration value="pth">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pataxó Hã-Ha-Hãe</xs:label>
+						<xs:label>Patax&#243; H&#227;-Ha-H&#227;e</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38845,7 +38843,7 @@
 			<xs:enumeration value="pto">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Zo'é</xs:label>
+						<xs:label>Zo'&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39006,7 +39004,7 @@
 			<xs:enumeration value="pur">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Puruborá</xs:label>
+						<xs:label>Purubor&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39041,7 +39039,7 @@
 			<xs:enumeration value="puy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Purisimeño</xs:label>
+						<xs:label>Purisime&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39132,14 +39130,14 @@
 			<xs:enumeration value="pyn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Poyanáwa</xs:label>
+						<xs:label>Poyan&#225;wa</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="pys">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Paraguayan Sign Language; Lengua de Señas del Paraguay</xs:label>
+						<xs:label>Paraguayan Sign Language; Lengua de Se&#241;as del Paraguay</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39188,21 +39186,21 @@
 			<xs:enumeration value="qub">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Huallaga Huánuco Quechua</xs:label>
+						<xs:label>Huallaga Hu&#225;nuco Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="quc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>K'iche'; Quiché</xs:label>
+						<xs:label>K'iche'; Quich&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="qud">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Calderón Highland Quichua</xs:label>
+						<xs:label>Calder&#243;n Highland Quichua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39342,14 +39340,14 @@
 			<xs:enumeration value="qve">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Eastern Apurímac Quechua</xs:label>
+						<xs:label>Eastern Apur&#237;mac Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="qvh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Huamalíes-Dos de Mayo Huánuco Quechua</xs:label>
+						<xs:label>Huamal&#237;es-Dos de Mayo Hu&#225;nuco Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39384,7 +39382,7 @@
 			<xs:enumeration value="qvn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>North Junín Quechua</xs:label>
+						<xs:label>North Jun&#237;n Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39405,7 +39403,7 @@
 			<xs:enumeration value="qvs">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Martín Quechua</xs:label>
+						<xs:label>San Mart&#237;n Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39482,7 +39480,7 @@
 			<xs:enumeration value="qxa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Chiquián Ancash Quechua</xs:label>
+						<xs:label>Chiqui&#225;n Ancash Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39496,7 +39494,7 @@
 			<xs:enumeration value="qxh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Panao Huánuco Quechua</xs:label>
+						<xs:label>Panao Hu&#225;nuco Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39538,7 +39536,7 @@
 			<xs:enumeration value="qxr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cañar Highland Quichua</xs:label>
+						<xs:label>Ca&#241;ar Highland Quichua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39559,7 +39557,7 @@
 			<xs:enumeration value="qxu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Arequipa-La Unión Quechua</xs:label>
+						<xs:label>Arequipa-La Uni&#243;n Quechua</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39790,7 +39788,7 @@
 			<xs:enumeration value="rcf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Réunion Creole French</xs:label>
+						<xs:label>R&#233;union Creole French</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -39923,7 +39921,7 @@
 			<xs:enumeration value="rgr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Resígaro</xs:label>
+						<xs:label>Res&#237;garo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -40196,7 +40194,7 @@
 			<xs:enumeration value="rmq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Caló</xs:label>
+						<xs:label>Cal&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -40700,7 +40698,7 @@
 			<xs:enumeration value="sae">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sabanê</xs:label>
+						<xs:label>Saban&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -40931,7 +40929,7 @@
 			<xs:enumeration value="sbo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sabüm</xs:label>
+						<xs:label>Sab&#252;m</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -41372,7 +41370,7 @@
 			<xs:enumeration value="sen">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nanerigé Sénoufo</xs:label>
+						<xs:label>Nanerig&#233; S&#233;noufo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -41386,14 +41384,14 @@
 			<xs:enumeration value="sep">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sìcìté Sénoufo</xs:label>
+						<xs:label>S&#236;c&#236;t&#233; S&#233;noufo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="seq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Senara Sénoufo</xs:label>
+						<xs:label>Senara S&#233;noufo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -41862,7 +41860,7 @@
 			<xs:enumeration value="sih">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Zire; Sîshëë</xs:label>
+						<xs:label>Zire; S&#238;sh&#235;&#235;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -42135,7 +42133,7 @@
 			<xs:enumeration value="skf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sakirabiá</xs:label>
+						<xs:label>Sakirabi&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -42282,7 +42280,7 @@
 			<xs:enumeration value="slc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sáliba</xs:label>
+						<xs:label>S&#225;liba</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -42331,7 +42329,7 @@
 			<xs:enumeration value="slj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Salumá</xs:label>
+						<xs:label>Salum&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -42926,7 +42924,7 @@
 			<xs:enumeration value="spc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sapé</xs:label>
+						<xs:label>Sap&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -42982,7 +42980,7 @@
 			<xs:enumeration value="spn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sanapaná</xs:label>
+						<xs:label>Sanapan&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -43234,7 +43232,7 @@
 			<xs:enumeration value="srq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sirionó</xs:label>
+						<xs:label>Sirion&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -43262,7 +43260,7 @@
 			<xs:enumeration value="sru">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Suruí</xs:label>
+						<xs:label>Suru&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -43430,7 +43428,7 @@
 			<xs:enumeration value="sss">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sô</xs:label>
+						<xs:label>S&#244;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -43745,7 +43743,7 @@
 			<xs:enumeration value="suy">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Suyá</xs:label>
+						<xs:label>Suy&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -43962,7 +43960,7 @@
 			<xs:enumeration value="swx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Suruahá</xs:label>
+						<xs:label>Suruah&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -44277,7 +44275,7 @@
 			<xs:enumeration value="taf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tapirapé</xs:label>
+						<xs:label>Tapirap&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -44403,7 +44401,7 @@
 			<xs:enumeration value="tba">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aikanã</xs:label>
+						<xs:label>Aikan&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -44641,7 +44639,7 @@
 			<xs:enumeration value="tci">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wára</xs:label>
+						<xs:label>W&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -44718,7 +44716,7 @@
 			<xs:enumeration value="tcw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tecpatlán Totonac</xs:label>
+						<xs:label>Tecpatl&#225;n Totonac</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -44760,14 +44758,14 @@
 			<xs:enumeration value="tdc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Emberá-Tadó</xs:label>
+						<xs:label>Ember&#225;-Tad&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="tdd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tai Nüa</xs:label>
+						<xs:label>Tai N&#252;a</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45495,7 +45493,7 @@
 			<xs:enumeration value="tiq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tiéfo</xs:label>
+						<xs:label>Ti&#233;fo</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45628,7 +45626,7 @@
 			<xs:enumeration value="tka">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Truká</xs:label>
+						<xs:label>Truk&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45656,7 +45654,7 @@
 			<xs:enumeration value="tkf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tukumanféd</xs:label>
+						<xs:label>Tukumanf&#233;d</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45859,7 +45857,7 @@
 			<xs:enumeration value="tlp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Filomena Mata-Coahuitlán Totonac</xs:label>
+						<xs:label>Filomena Mata-Coahuitl&#225;n Totonac</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45950,7 +45948,7 @@
 			<xs:enumeration value="tme">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tremembé</xs:label>
+						<xs:label>Trememb&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -45964,7 +45962,7 @@
 			<xs:enumeration value="tmg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ternateño</xs:label>
+						<xs:label>Ternate&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46027,7 +46025,7 @@
 			<xs:enumeration value="tmp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tai Mène</xs:label>
+						<xs:label>Tai M&#232;ne</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46111,7 +46109,7 @@
 			<xs:enumeration value="tnc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tanimuca-Retuarã</xs:label>
+						<xs:label>Tanimuca-Retuar&#227;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46202,7 +46200,7 @@
 			<xs:enumeration value="tnr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ménik</xs:label>
+						<xs:label>M&#233;nik</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46342,7 +46340,7 @@
 			<xs:enumeration value="too">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xicotepec De Juárez Totonac</xs:label>
+						<xs:label>Xicotepec De Ju&#225;rez Totonac</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46426,7 +46424,7 @@
 			<xs:enumeration value="tpc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Azoyú Me'phaa; Azoyú Tlapanec</xs:label>
+						<xs:label>Azoy&#250; Me'phaa; Azoy&#250; Tlapanec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46461,7 +46459,7 @@
 			<xs:enumeration value="tpj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tapieté</xs:label>
+						<xs:label>Tapiet&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46489,7 +46487,7 @@
 			<xs:enumeration value="tpn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tupinambá</xs:label>
+						<xs:label>Tupinamb&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46517,7 +46515,7 @@
 			<xs:enumeration value="tpr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tuparí</xs:label>
+						<xs:label>Tupar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46545,7 +46543,7 @@
 			<xs:enumeration value="tpw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tupí</xs:label>
+						<xs:label>Tup&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46573,7 +46571,7 @@
 			<xs:enumeration value="tqb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tembé</xs:label>
+						<xs:label>Temb&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46692,7 +46690,7 @@
 			<xs:enumeration value="trg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lishán Didán</xs:label>
+						<xs:label>Lish&#225;n Did&#225;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46706,7 +46704,7 @@
 			<xs:enumeration value="tri">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Trió</xs:label>
+						<xs:label>Tri&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46762,7 +46760,7 @@
 			<xs:enumeration value="trq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Martín Itunyoso Triqui</xs:label>
+						<xs:label>San Mart&#237;n Itunyoso Triqui</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46825,7 +46823,7 @@
 			<xs:enumeration value="trz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Torá</xs:label>
+						<xs:label>Tor&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -46909,14 +46907,14 @@
 			<xs:enumeration value="tsl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ts'ün-Lao</xs:label>
+						<xs:label>Ts'&#252;n-Lao</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="tsm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Turkish Sign Language; Türk İşaret Dili</xs:label>
+						<xs:label>Turkish Sign Language; T&#252;rk &#304;&#351;aret Dili</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47182,7 +47180,7 @@
 			<xs:enumeration value="tub">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tübatulabal</xs:label>
+						<xs:label>T&#252;batulabal</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47196,7 +47194,7 @@
 			<xs:enumeration value="tud">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tuxá</xs:label>
+						<xs:label>Tux&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47322,7 +47320,7 @@
 			<xs:enumeration value="tux">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tuxináwa</xs:label>
+						<xs:label>Tuxin&#225;wa</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47483,7 +47481,7 @@
 			<xs:enumeration value="twh">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tai Dón</xs:label>
+						<xs:label>Tai D&#243;n</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47539,7 +47537,7 @@
 			<xs:enumeration value="twt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Turiwára</xs:label>
+						<xs:label>Turiw&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47672,7 +47670,7 @@
 			<xs:enumeration value="txu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kayapó</xs:label>
+						<xs:label>Kayap&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47756,14 +47754,14 @@
 			<xs:enumeration value="tys">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tày Sa Pa</xs:label>
+						<xs:label>T&#224;y Sa Pa</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="tyt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tày Tac</xs:label>
+						<xs:label>T&#224;y Tac</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47791,7 +47789,7 @@
 			<xs:enumeration value="tyz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tày</xs:label>
+						<xs:label>T&#224;y</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -47854,7 +47852,7 @@
 			<xs:enumeration value="uam">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Uamué</xs:label>
+						<xs:label>Uamu&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48106,7 +48104,7 @@
 			<xs:enumeration value="uks">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Urubú-Kaapor Sign Language; Kaapor Sign Language</xs:label>
+						<xs:label>Urub&#250;-Kaapor Sign Language; Kaapor Sign Language</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48274,7 +48272,7 @@
 			<xs:enumeration value="umo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Umotína</xs:label>
+						<xs:label>Umot&#237;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48337,7 +48335,7 @@
 			<xs:enumeration value="unk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Enawené-Nawé</xs:label>
+						<xs:label>Enawen&#233;-Naw&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48414,7 +48412,7 @@
 			<xs:enumeration value="urb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Urubú-Kaapor; Kaapor</xs:label>
+						<xs:label>Urub&#250;-Kaapor; Kaapor</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48512,7 +48510,7 @@
 			<xs:enumeration value="urr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lehalurup; Löyöp</xs:label>
+						<xs:label>Lehalurup; L&#246;y&#246;p</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -48883,7 +48881,7 @@
 			<xs:enumeration value="veo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ventureño</xs:label>
+						<xs:label>Venture&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49100,7 +49098,7 @@
 			<xs:enumeration value="vmf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mainfränkisch</xs:label>
+						<xs:label>Mainfr&#228;nkisch</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49219,7 +49217,7 @@
 			<xs:enumeration value="vmz">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mazatlán Mazatec</xs:label>
+						<xs:label>Mazatl&#225;n Mazatec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49268,7 +49266,7 @@
 			<xs:enumeration value="vro">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Võro</xs:label>
+						<xs:label>V&#245;ro</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49380,7 +49378,7 @@
 			<xs:enumeration value="waf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wakoná</xs:label>
+						<xs:label>Wakon&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49485,7 +49483,7 @@
 			<xs:enumeration value="wau">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Waurá</xs:label>
+						<xs:label>Waur&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49639,7 +49637,7 @@
 			<xs:enumeration value="wca">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yanomámi</xs:label>
+						<xs:label>Yanom&#225;mi</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49702,7 +49700,7 @@
 			<xs:enumeration value="wec">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wè Western</xs:label>
+						<xs:label>W&#232; Western</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -49968,7 +49966,7 @@
 			<xs:enumeration value="wir">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wiraféd</xs:label>
+						<xs:label>Wiraf&#233;d</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -50143,7 +50141,7 @@
 			<xs:enumeration value="wlv">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wichí Lhamtés Vejoz</xs:label>
+						<xs:label>Wich&#237; Lhamt&#233;s Vejoz</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -50192,7 +50190,7 @@
 			<xs:enumeration value="wmd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Mamaindé</xs:label>
+						<xs:label>Mamaind&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -50374,7 +50372,7 @@
 			<xs:enumeration value="wob">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wè Northern</xs:label>
+						<xs:label>W&#232; Northern</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -50885,7 +50883,7 @@
 			<xs:enumeration value="wyr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Wayoró</xs:label>
+						<xs:label>Wayor&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -50941,14 +50939,14 @@
 			<xs:enumeration value="xai">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kaimbé</xs:label>
+						<xs:label>Kaimb&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="xaj">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ararandewára</xs:label>
+						<xs:label>Ararandew&#225;ra</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51025,7 +51023,7 @@
 			<xs:enumeration value="xav">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xavánte</xs:label>
+						<xs:label>Xav&#225;nte</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51137,14 +51135,14 @@
 			<xs:enumeration value="xbw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kambiwá</xs:label>
+						<xs:label>Kambiw&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="xbx">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kabixí</xs:label>
+						<xs:label>Kabix&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51340,7 +51338,7 @@
 			<xs:enumeration value="xer">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xerénte</xs:label>
+						<xs:label>Xer&#233;nte</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51354,7 +51352,7 @@
 			<xs:enumeration value="xet">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xetá</xs:label>
+						<xs:label>Xet&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51396,7 +51394,7 @@
 			<xs:enumeration value="xgf">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Gabrielino-Fernandeño</xs:label>
+						<xs:label>Gabrielino-Fernande&#241;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51543,14 +51541,14 @@
 			<xs:enumeration value="xip">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xipináwa</xs:label>
+						<xs:label>Xipin&#225;wa</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="xir">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xiriâna</xs:label>
+						<xs:label>Xiri&#226;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -51704,7 +51702,7 @@
 			<xs:enumeration value="xkr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xakriabá</xs:label>
+						<xs:label>Xakriab&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52187,7 +52185,7 @@
 			<xs:enumeration value="xoo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xukurú</xs:label>
+						<xs:label>Xukur&#250;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52271,7 +52269,7 @@
 			<xs:enumeration value="xpn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Kapinawá</xs:label>
+						<xs:label>Kapinaw&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52348,7 +52346,7 @@
 			<xs:enumeration value="xra">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Krahô</xs:label>
+						<xs:label>Krah&#244;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52551,7 +52549,7 @@
 			<xs:enumeration value="xsu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sanumá</xs:label>
+						<xs:label>Sanum&#225;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52642,7 +52640,7 @@
 			<xs:enumeration value="xtm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Magdalena Peñasco Mixtec</xs:label>
+						<xs:label>Magdalena Pe&#241;asco Mixtec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52712,7 +52710,7 @@
 			<xs:enumeration value="xtw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Tawandê</xs:label>
+						<xs:label>Tawand&#234;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -52964,7 +52962,7 @@
 			<xs:enumeration value="xxr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Koropó</xs:label>
+						<xs:label>Korop&#243;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53076,7 +53074,7 @@
 			<xs:enumeration value="yae">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Pumé</xs:label>
+						<xs:label>Pum&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53090,7 +53088,7 @@
 			<xs:enumeration value="yag">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yámana</xs:label>
+						<xs:label>Y&#225;mana</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53202,7 +53200,7 @@
 			<xs:enumeration value="yaw">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yawalapití</xs:label>
+						<xs:label>Yawalapit&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53293,7 +53291,7 @@
 			<xs:enumeration value="ybn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yabaâna</xs:label>
+						<xs:label>Yaba&#226;na</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53517,7 +53515,7 @@
 			<xs:enumeration value="ygs">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yolŋu Sign Language</xs:label>
+						<xs:label>Yol&#331;u Sign Language</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -53853,7 +53851,7 @@
 			<xs:enumeration value="yly">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nyâlayu; Nyelâyu</xs:label>
+						<xs:label>Ny&#226;layu; Nyel&#226;yu</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -54231,14 +54229,14 @@
 			<xs:enumeration value="yre">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yaouré</xs:label>
+						<xs:label>Yaour&#233;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="yri">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yarí</xs:label>
+						<xs:label>Yar&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -54448,7 +54446,7 @@
 			<xs:enumeration value="yui">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yurutí</xs:label>
+						<xs:label>Yurut&#237;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -54700,21 +54698,21 @@
 			<xs:enumeration value="zaa">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sierra de Juárez Zapotec</xs:label>
+						<xs:label>Sierra de Ju&#225;rez Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zab">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Juan Guelavía Zapotec</xs:label>
+						<xs:label>San Juan Guelav&#237;a Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zac">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ocotlán Zapotec</xs:label>
+						<xs:label>Ocotl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -54784,7 +54782,7 @@
 			<xs:enumeration value="zam">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Miahuatlán Zapotec</xs:label>
+						<xs:label>Miahuatl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -54805,14 +54803,14 @@
 			<xs:enumeration value="zaq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Aloápam Zapotec</xs:label>
+						<xs:label>Alo&#225;pam Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zar">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Rincón Zapotec</xs:label>
+						<xs:label>Rinc&#243;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55162,7 +55160,7 @@
 			<xs:enumeration value="zkp">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>São Paulo Kaingáng</xs:label>
+						<xs:label>S&#227;o Paulo Kaing&#225;ng</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55477,7 +55475,7 @@
 			<xs:enumeration value="zoc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Copainalá Zoque</xs:label>
+						<xs:label>Copainal&#225; Zoque</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55498,7 +55496,7 @@
 			<xs:enumeration value="zoo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Asunción Mixtepec Zapotec</xs:label>
+						<xs:label>Asunci&#243;n Mixtepec Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55512,14 +55510,14 @@
 			<xs:enumeration value="zor">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Rayón Zoque</xs:label>
+						<xs:label>Ray&#243;n Zoque</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zos">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Francisco León Zoque</xs:label>
+						<xs:label>Francisco Le&#243;n Zoque</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55547,7 +55545,7 @@
 			<xs:enumeration value="zpd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Southeastern Ixtlán Zapotec</xs:label>
+						<xs:label>Southeastern Ixtl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55582,7 +55580,7 @@
 			<xs:enumeration value="zpi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa María Quiegolani Zapotec</xs:label>
+						<xs:label>Santa Mar&#237;a Quiegolani Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55603,7 +55601,7 @@
 			<xs:enumeration value="zpl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lachixío Zapotec</xs:label>
+						<xs:label>Lachix&#237;o Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55617,14 +55615,14 @@
 			<xs:enumeration value="zpn">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Santa Inés Yatzechi Zapotec</xs:label>
+						<xs:label>Santa In&#233;s Yatzechi Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zpo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Amatlán Zapotec</xs:label>
+						<xs:label>Amatl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55652,21 +55650,21 @@
 			<xs:enumeration value="zps">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Coatlán Zapotec</xs:label>
+						<xs:label>Coatl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zpt">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Vicente Coatlán Zapotec</xs:label>
+						<xs:label>San Vicente Coatl&#225;n Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="zpu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Yalálag Zapotec</xs:label>
+						<xs:label>Yal&#225;lag Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55736,7 +55734,7 @@
 			<xs:enumeration value="zro">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Záparo</xs:label>
+						<xs:label>Z&#225;paro</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55806,21 +55804,21 @@
 			<xs:enumeration value="ztg">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Xanaguía Zapotec</xs:label>
+						<xs:label>Xanagu&#237;a Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="ztl">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lapaguía-Guivini Zapotec</xs:label>
+						<xs:label>Lapagu&#237;a-Guivini Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="ztm">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>San Agustín Mixtepec Zapotec</xs:label>
+						<xs:label>San Agust&#237;n Mixtepec Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55841,7 +55839,7 @@
 			<xs:enumeration value="ztq">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Quioquitani-Quierí Zapotec</xs:label>
+						<xs:label>Quioquitani-Quier&#237; Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55862,7 +55860,7 @@
 			<xs:enumeration value="ztu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Güilá Zapotec</xs:label>
+						<xs:label>G&#252;il&#225; Zapotec</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55983,7 +55981,7 @@
 	<xs:simpleType name="scriptIdType">
 		<xs:annotation>
 			<xs:documentation>Base type for scripts according to ISO 15924</xs:documentation>
-		</xs:annotation>
+		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="QAAA__QABX" value="Qaaa..Qabx" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Afak">
 				<xs:annotation>
@@ -56233,7 +56231,7 @@
 			<xs:enumeration value="Ethi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ethiopic; Geʻez; Ge'ez</xs:label>
+						<xs:label>Ethiopic; Ge&#699;ez; Ge'ez</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56296,7 +56294,7 @@
 			<xs:enumeration value="Hang">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hangul; Hangŭl; Hangeul</xs:label>
+						<xs:label>Hangul; Hang&#365;l; Hangeul</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56310,7 +56308,7 @@
 			<xs:enumeration value="Hano">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Hanunoo; Hanunσo</xs:label>
+						<xs:label>Hanunoo; Hanun&#963;o</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56513,7 +56511,7 @@
 			<xs:enumeration value="Lepc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Lepcha; Rσng</xs:label>
+						<xs:label>Lepcha; R&#963;ng</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56625,7 +56623,7 @@
 			<xs:enumeration value="Modi">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Modi; Moḍī</xs:label>
+						<xs:label>Modi; Mo&#7693;&#299;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56688,21 +56686,21 @@
 			<xs:enumeration value="Nkgb">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nakhi Geba; 'Na-'Khi ²Ggŏ-Ήbaw; Naxi Geba</xs:label>
+						<xs:label>Nakhi Geba; 'Na-'Khi &#178;Gg&#335;-&#905;baw; Naxi Geba</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Nkoo">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>N’Ko; N'Ko</xs:label>
+						<xs:label>N&#8217;Ko; N'Ko</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Nshu">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Nόshu</xs:label>
+						<xs:label>N&#972;shu</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56884,14 +56882,14 @@
 			<xs:enumeration value="Shrd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Sharada; Śāradā</xs:label>
+						<xs:label>Sharada; &#346;&#257;rad&#257;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Sidd">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Siddham; Siddhaṃ; Siddhamātṛkā</xs:label>
+						<xs:label>Siddham; Siddha&#7747;; Siddham&#257;t&#7771;k&#257;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -56968,7 +56966,7 @@
 			<xs:enumeration value="Takr">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Takri; Ṭākrī; Ṭāṅkrī</xs:label>
+						<xs:label>Takri; &#7788;&#257;kr&#299;; &#7788;&#257;&#7749;kr&#299;</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -57166,7 +57164,7 @@
 	<xs:simpleType name="regionIdType">
 		<xs:annotation>
 			<xs:documentation>Base type for countries (regions) according to ISO 3166</xs:documentation>
-		</xs:annotation>
+		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="V419" value="419" /><jaxb:typesafeEnumMember name="V155" value="155" /><jaxb:typesafeEnumMember name="V154" value="154" /><jaxb:typesafeEnumMember name="V151" value="151" /><jaxb:typesafeEnumMember name="V150" value="150" /><jaxb:typesafeEnumMember name="V145" value="145" /><jaxb:typesafeEnumMember name="V143" value="143" /><jaxb:typesafeEnumMember name="V142" value="142" /><jaxb:typesafeEnumMember name="V061" value="061" /><jaxb:typesafeEnumMember name="V057" value="057" /><jaxb:typesafeEnumMember name="V054" value="054" /><jaxb:typesafeEnumMember name="V053" value="053" /><jaxb:typesafeEnumMember name="V039" value="039" /><jaxb:typesafeEnumMember name="V035" value="035" /><jaxb:typesafeEnumMember name="V034" value="034" /><jaxb:typesafeEnumMember name="V030" value="030" /><jaxb:typesafeEnumMember name="V029" value="029" /><jaxb:typesafeEnumMember name="V021" value="021" /><jaxb:typesafeEnumMember name="V019" value="019" /><jaxb:typesafeEnumMember name="V018" value="018" /><jaxb:typesafeEnumMember name="V017" value="017" /><jaxb:typesafeEnumMember name="V015" value="015" /><jaxb:typesafeEnumMember name="V014" value="014" /><jaxb:typesafeEnumMember name="V013" value="013" /><jaxb:typesafeEnumMember name="V011" value="011" /><jaxb:typesafeEnumMember name="V009" value="009" /><jaxb:typesafeEnumMember name="V005" value="005" /><jaxb:typesafeEnumMember name="V003" value="003" /><jaxb:typesafeEnumMember name="V002" value="002" /><jaxb:typesafeEnumMember name="V001" value="001" /><jaxb:typesafeEnumMember name="XA__XZ" value="XA..XZ" /><jaxb:typesafeEnumMember name="QM__QZ" value="QM..QZ" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="AA">
 				<xs:annotation>
@@ -57283,7 +57281,7 @@
 			<xs:enumeration value="AX">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Εland Islands</xs:label>
+						<xs:label>&#917;land Islands</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -57360,7 +57358,7 @@
 			<xs:enumeration value="BL">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Saint Barthιlemy</xs:label>
+						<xs:label>Saint Barth&#953;lemy</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -57486,7 +57484,7 @@
 			<xs:enumeration value="CI">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Cτte d'Ivoire</xs:label>
+						<xs:label>C&#964;te d'Ivoire</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -57556,7 +57554,7 @@
 			<xs:enumeration value="CW">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Curaηao</xs:label>
+						<xs:label>Cura&#951;ao</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -58536,7 +58534,7 @@
 			<xs:enumeration value="RE">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Rιunion</xs:label>
+						<xs:label>R&#953;union</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -59203,7 +59201,7 @@
 	<xs:simpleType name="variantIdType">
 		<xs:annotation>
 			<xs:documentation>Base type for language variants according to the BCP-47 guidlelines</xs:documentation>
-		</xs:annotation>
+		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="V1996" value="1996" /><jaxb:typesafeEnumMember name="V1994" value="1994" /><jaxb:typesafeEnumMember name="V1959ACAD" value="1959acad" /><jaxb:typesafeEnumMember name="V1901" value="1901" /><jaxb:typesafeEnumMember name="V1694ACAD" value="1694acad" /><jaxb:typesafeEnumMember name="V1606NICT" value="1606nict" /></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="1606nict">
 				<xs:annotation>
@@ -59248,7 +59246,7 @@
 					<xs:appinfo>
 						<xs:label>Early Modern French</xs:label>
 					</xs:appinfo>
-					<xs:documentation>17th century French, as catalogued in the "Dictionnaire de l'acadιmie franηoise", 4eme ed. 1694; frequently includes elements of Middle French, as this is a transitional period</xs:documentation>
+					<xs:documentation>17th century French, as catalogued in the "Dictionnaire de l'acad&#953;mie fran&#951;oise", 4eme ed. 1694; frequently includes elements of Middle French, as this is a transitional period</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="1901">
@@ -59307,7 +59305,7 @@
 					<xs:appinfo>
 						<xs:label>Unified Turkic Latin Alphabet (Historical)</xs:label>
 					</xs:appinfo>
-					<xs:documentation>Denotes alphabet used in Turkic republics/regions of the former USSR in late 1920s, and throughout 1930s, which aspired to represent equivalent phonemes in a unified fashion. Also known as: New Turkic Alphabet; Birlәşdirilmiş Jeni Tyrk Әlifbasь (Birlesdirilmis Jeni Tyrk Elifbasi); Jaŋalif (Janalif).</xs:documentation>
+					<xs:documentation>Denotes alphabet used in Turkic republics/regions of the former USSR in late 1920s, and throughout 1930s, which aspired to represent equivalent phonemes in a unified fashion. Also known as: New Turkic Alphabet; Birl&#1241;&#351;dirilmi&#351; Jeni Tyrk &#1240;lifbas&#1100; (Birlesdirilmis Jeni Tyrk Elifbasi); Ja&#331;alif (Janalif).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="balanka">
@@ -59351,9 +59349,9 @@
 			<xs:enumeration value="bohoric">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Slovene in Bohorič alphabet</xs:label>
+						<xs:label>Slovene in Bohori&#269; alphabet</xs:label>
 					</xs:appinfo>
-					<xs:documentation>The subtag represents the alphabet codified by Adam Bohorič in 1584 and used from the first printed Slovene book and up to the mid-19th century.</xs:documentation>
+					<xs:documentation>The subtag represents the alphabet codified by Adam Bohori&#269; in 1584 and used from the first printed Slovene book and up to the mid-19th century.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="boont">
@@ -59396,7 +59394,7 @@
 			<xs:enumeration value="hognorsk">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Norwegian in Hψgnorsk (High Norwegian) orthography</xs:label>
+						<xs:label>Norwegian in H&#968;gnorsk (High Norwegian) orthography</xs:label>
 					</xs:appinfo>
 					<xs:documentation>Norwegian following Ivar Aasen's orthographical principles, including modern usage.</xs:documentation>
 				</xs:annotation>
@@ -59420,7 +59418,7 @@
 					<xs:appinfo>
 						<xs:label>Jauer dialect of Romansh</xs:label>
 					</xs:appinfo>
-					<xs:documentation>The spoken dialect of the Val Mόstair, which has no written standard.</xs:documentation>
+					<xs:documentation>The spoken dialect of the Val M&#972;stair, which has no written standard.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="jyutping">
@@ -59509,7 +59507,7 @@
 			<xs:enumeration value="nulik">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Volapόk nulik; Volapόk perevidφl; Volapόk nulδdik; de Jong's Volapόk; New Volapόk; Revised Volapόk; Modern Volapόk</xs:label>
+						<xs:label>Volap&#972;k nulik; Volap&#972;k perevid&#966;l; Volap&#972;k nul&#948;dik; de Jong's Volap&#972;k; New Volap&#972;k; Revised Volap&#972;k; Modern Volap&#972;k</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -59562,7 +59560,7 @@
 			<xs:enumeration value="rigik">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Volapόk rigik; Schleyer's Volapόk; Original Volapόk; Classic Volapόk</xs:label>
+						<xs:label>Volap&#972;k rigik; Schleyer's Volap&#972;k; Original Volap&#972;k; Classic Volap&#972;k</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>

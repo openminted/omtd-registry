@@ -1,132 +1,213 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for componentCreationInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="componentCreationInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="framework"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="UIMA"/&gt;
+ *               &lt;enumeration value="GATE"/&gt;
+ *               &lt;enumeration value="other"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="implementationLanguage" maxOccurs="unbounded" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="100"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="formalism" maxOccurs="unbounded" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="100"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}hasOriginalSource" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="creationDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="500"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "componentCreationInfoType", propOrder = {
     "framework",
-    "implementationLanguages",
-    "formalisms",
-    "hasOriginalSources",
+    "implementationLanguage",
+    "formalism",
+    "hasOriginalSource",
     "creationDetails"
 })
 public class ComponentCreationInfo {
 
-	@XmlJavaTypeAdapter(ComponentCreationInfo.FrameworkAdapter.class)
-    enum Framework {
+    @XmlElement(required = true)
+    protected FrameworkEnum framework;
+    protected List<String> implementationLanguage;
+    protected List<String> formalism;
+    protected List<ResourceIdentifier> hasOriginalSource;
+    protected String creationDetails;
 
-        UIMA("UIMA"),
-        GATE("GATE"),
-        OTHER("other");
-
-        private String value;
-
-        Framework(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ComponentCreationInfo.Framework forValue(String value) {
-            for (ComponentCreationInfo.Framework ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    private Framework framework;
-    @XmlElement(name = "implementationLanguage")
-    private List<String> implementationLanguages;
-    
-    @XmlElement(name = "formalism")
-    private List<String> formalisms;
-    
-    @XmlElement(name = "hasOriginalSource")
-    private List<Identifier<ResourceIdentifierSchema>> hasOriginalSources;
-    private String creationDetails;
-
-    public ComponentCreationInfo() {
-    }
-
-    public ComponentCreationInfo(Framework framework) {
-        this.framework = framework;
-    }
-
-    public ComponentCreationInfo(Framework framework, List<String> implementationLanguages, List<String> formalisms,
-                                 List<Identifier<ResourceIdentifierSchema>> hasOriginalSources, String creationDetails) {
-        this.framework = framework;
-        this.implementationLanguages = implementationLanguages;
-        this.formalisms = formalisms;
-        this.hasOriginalSources = hasOriginalSources;
-        this.creationDetails = creationDetails;
-    }
-
-    public Framework getFramework() {
+    /**
+     * Gets the value of the framework property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link FrameworkEnum }
+     *     
+     */
+    public FrameworkEnum getFramework() {
         return framework;
     }
 
-    public void setFramework(Framework framework) {
-        this.framework = framework;
+    /**
+     * Sets the value of the framework property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link FrameworkEnum }
+     *     
+     */
+    public void setFramework(FrameworkEnum value) {
+        this.framework = value;
     }
 
-    public List<String> getImplementationLanguages() {
-        return implementationLanguages;
+    /**
+     * Gets the value of the implementationLanguage property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the implementationLanguage property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getImplementationLanguage().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getImplementationLanguage() {
+        if (implementationLanguage == null) {
+            implementationLanguage = new ArrayList<String>();
+        }
+        return this.implementationLanguage;
     }
 
-    public void setImplementationLanguages(List<String> implementationLanguages) {
-        this.implementationLanguages = implementationLanguages;
+    /**
+     * Gets the value of the formalism property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the formalism property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getFormalism().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getFormalism() {
+        if (formalism == null) {
+            formalism = new ArrayList<String>();
+        }
+        return this.formalism;
     }
 
-    public List<String> getFormalisms() {
-        return formalisms;
+    /**
+     * The name, the identifier or the url of thethe original resources that were at the base of the creation process of the resource Gets the value of the hasOriginalSource property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the hasOriginalSource property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getHasOriginalSource().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ResourceIdentifier }
+     * 
+     * 
+     */
+    public List<ResourceIdentifier> getHasOriginalSource() {
+        if (hasOriginalSource == null) {
+            hasOriginalSource = new ArrayList<ResourceIdentifier>();
+        }
+        return this.hasOriginalSource;
     }
 
-    public void setFormalisms(List<String> formalisms) {
-        this.formalisms = formalisms;
-    }
-
-    public List<Identifier<ResourceIdentifierSchema>> getHasOriginalSources() {
-        return hasOriginalSources;
-    }
-
-    public void setHasOriginalSources(List<Identifier<ResourceIdentifierSchema>> hasOriginalSources) {
-        this.hasOriginalSources = hasOriginalSources;
-    }
-
+    /**
+     * Gets the value of the creationDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
     public String getCreationDetails() {
         return creationDetails;
     }
 
-    public void setCreationDetails(String creationDetails) {
-        this.creationDetails = creationDetails;
+    /**
+     * Sets the value of the creationDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreationDetails(String value) {
+        this.creationDetails = value;
     }
-    
-    static class FrameworkAdapter extends XmlAdapter<String, ComponentCreationInfo.Framework> {
 
-        @Override
-        public String marshal(ComponentCreationInfo.Framework v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public ComponentCreationInfo.Framework unmarshal(String v) throws Exception {
-            return ComponentCreationInfo.Framework.forValue(v);
-        }
-    }
 }

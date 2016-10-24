@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageDescriptionMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema&#10;&#9;&#9;&#9;&#9;http://www.meta-share.org/OMTD-SHARE_XMLSchema/OMTD-SHARE-LanguageDescription.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1040829</metadataRecordIdentifier>
+    <metadataCreationDate>2012-11-21</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Mititelu Verginica</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2012-11-21</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <languageDescriptionInfo>
+    <resourceType>languageDescription</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">CoDII-NPI.ro</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">A collection of Romanian Negative Polarity Items (NPIs).</description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1040829</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="ro">Iordăchioaia Gianina</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <resourceDocumentationInfo>
+      <samplesLocations/>
+    </resourceDocumentationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>accessibleThroughInterface</distributionMedium>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>nonStandardLicenceTerms</licence>
+              <conditionsOfUse>nonCommercialUse</conditionsOfUse>
+              <conditionsOfUse>attribution</conditionsOfUse>
+              <conditionsOfUse>informLicensor</conditionsOfUse>
+              <conditionsOfUse>noRedistribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedOrganization>
+              <organizationNames>
+                <organizationName lang="en">Eberhard-Karls-Universitaet Tuebingen</organizationName>
+              </organizationNames>
+            </relatedOrganization>
+          </rightsHolder>
+        </rightsHolders>
+        <userTypes>
+          <userType>academic</userType>
+          <userType>commercial</userType>
+        </userTypes>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <languageDescriptionType>grammar</languageDescriptionType>
+    <languageDescriptionMediaType>
+      <languageDescriptionTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>ro</languageTag>
+              <languageId>ro</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>N/A</size>
+            <sizeUnit>other</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </languageDescriptionTextInfo>
+    </languageDescriptionMediaType>
+  </languageDescriptionInfo>
+</languageDescriptionMetadataRecord>

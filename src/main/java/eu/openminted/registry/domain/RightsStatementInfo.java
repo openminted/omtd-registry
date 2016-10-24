@@ -1,83 +1,101 @@
+
 package eu.openminted.registry.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * Groups information on official statements indicative of licensing terms for the use of a resource (e.g. open access, free to read, all rights reserved etc.); its semantics should be clear, preferrably formally expressed and stored at a url
+ * 
+ * <p>Java class for rightsStatementInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="rightsStatementInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="rightsStmtName"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;enumeration value="openAccess"/&gt;
+ *               &lt;enumeration value="closedAccess"/&gt;
+ *               &lt;enumeration value="embargoedAccess"/&gt;
+ *               &lt;enumeration value="restrictedAccess"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="rightsStmtURL" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "rightsStatementInfoType", propOrder = {
+    "rightsStmtName",
+    "rightsStmtURL"
+})
 public class RightsStatementInfo {
 
-	@XmlJavaTypeAdapter(RightsStatementInfo.RightsStatementNameAdapter.class)
-    enum RightsStatementName {
+    @XmlElement(required = true)
+    protected RightsStmtNameEnum rightsStmtName;
+    @XmlElement(required = true)
+    protected String rightsStmtURL;
 
-        OPEN_ACCESS("openAccess"),
-        CLOSED_ACCESS("closedAccess"),
-        EMBARGOED_ACCESS("embargoedAccess"),
-        RESTRICTED_ACCESS("restrictedAccess");
-
-        private String value;
-
-        RightsStatementName(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static RightsStatementName forValue(String value) {
-            for (RightsStatementName ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
+    /**
+     * Gets the value of the rightsStmtName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link RightsStmtNameEnum }
+     *     
+     */
+    public RightsStmtNameEnum getRightsStmtName() {
+        return rightsStmtName;
     }
 
-    //required
-	@XmlElement(name = "rightsStmtName")
-    private RightsStatementName rightsStatementName;
-    //required
-	@XmlElement(name = "rightsStmtURL")
-    private String rightsStatementURL;
-
-    public RightsStatementInfo() {
+    /**
+     * Sets the value of the rightsStmtName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link RightsStmtNameEnum }
+     *     
+     */
+    public void setRightsStmtName(RightsStmtNameEnum value) {
+        this.rightsStmtName = value;
     }
 
-    public RightsStatementInfo(RightsStatementName rightsStatementName, String rightsStatementURL) {
-        this.rightsStatementName = rightsStatementName;
-        this.rightsStatementURL = rightsStatementURL;
+    /**
+     * Gets the value of the rightsStmtURL property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRightsStmtURL() {
+        return rightsStmtURL;
     }
 
-    public RightsStatementName getRightsStatementName() {
-        return rightsStatementName;
+    /**
+     * Sets the value of the rightsStmtURL property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRightsStmtURL(String value) {
+        this.rightsStmtURL = value;
     }
 
-    public void setRightsStatementName(RightsStatementName rightsStatementName) {
-        this.rightsStatementName = rightsStatementName;
-    }
-
-    public String getRightsStatementURL() {
-        return rightsStatementURL;
-    }
-
-    public void setRightsStatementURL(String rightsStatementURL) {
-        this.rightsStatementURL = rightsStatementURL;
-    }
-    
-    public static class RightsStatementNameAdapter extends XmlAdapter<String, RightsStatementInfo.RightsStatementName> {
-
-        @Override
-        public String marshal(RightsStatementInfo.RightsStatementName v) throws Exception {
-            return v!=null?v.getValue():null;
-        }
-
-        @Override
-        public RightsStatementInfo.RightsStatementName unmarshal(String v) throws Exception {
-            return RightsStatementInfo.RightsStatementName.forValue(v);
-        }
-    }
 }

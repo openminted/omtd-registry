@@ -1,140 +1,142 @@
+
 package eu.openminted.registry.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for lingualityInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="lingualityInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="lingualityType"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="20"/&gt;
+ *               &lt;enumeration value="monolingual"/&gt;
+ *               &lt;enumeration value="bilingual"/&gt;
+ *               &lt;enumeration value="multilingual"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="multilingualityType" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="30"/&gt;
+ *               &lt;enumeration value="parallel"/&gt;
+ *               &lt;enumeration value="comparable"/&gt;
+ *               &lt;enumeration value="multilingualSingleText"/&gt;
+ *               &lt;enumeration value="originalTranslationsInSameText"/&gt;
+ *               &lt;enumeration value="other"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="multilingualityTypeDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="512"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "lingualityInfoType", propOrder = {
+    "lingualityType",
+    "multilingualityType",
+    "multilingualityTypeDetails"
+})
 public class LingualityInfo {
 
-    @XmlJavaTypeAdapter(LingualityTypeAdapter.class)
-    enum LingualityType {
+    @XmlElement(required = true)
+    protected LingualityTypeEnum lingualityType;
+    protected MultilingualityTypeEnum multilingualityType;
+    protected String multilingualityTypeDetails;
 
-        MONOLINGUAL("monolingual"),
-        BILINGUAL("bilingual"),
-        MULTILINGUAL("multilingual");
-
-        private String value;
-
-        LingualityType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static LingualityType forValue(String value) {
-            for (LingualityType ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    @XmlJavaTypeAdapter(MultiLingualityTypeAdapter.class)
-    enum MultiLingualityType {
-
-        PARALLEL("parallel"),
-        COMPARABLE("comparable"),
-        MULTILINGUAL_SINGLE_TEXT("multilingualSingleText"),
-        ORIGINAL_TRANSLATIONS_IN_SAME_TEXT("originalTranslationsInSameText"),
-        OTHER("other");
-
-        private String value;
-
-        MultiLingualityType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static MultiLingualityType forValue(String value) {
-            for (MultiLingualityType ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    private LingualityType lingualityType;
-    
-    @XmlElement(name = "multilingualityType")
-    private MultiLingualityType multiLingualityType;
-    private String multilingualityTypeDetails;
-
-    public LingualityInfo() {
-    }
-
-    public LingualityInfo(LingualityType lingualityType) {
-        this.lingualityType = lingualityType;
-    }
-
-    public LingualityInfo(LingualityType lingualityType, MultiLingualityType multiLingualityType, String multilingualityTypeDetails) {
-        this.lingualityType = lingualityType;
-        this.multiLingualityType = multiLingualityType;
-        this.multilingualityTypeDetails = multilingualityTypeDetails;
-    }
-
-    public LingualityType getLingualityType() {
+    /**
+     * Gets the value of the lingualityType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link LingualityTypeEnum }
+     *     
+     */
+    public LingualityTypeEnum getLingualityType() {
         return lingualityType;
     }
 
-    public void setLingualityType(LingualityType lingualityType) {
-        this.lingualityType = lingualityType;
+    /**
+     * Sets the value of the lingualityType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link LingualityTypeEnum }
+     *     
+     */
+    public void setLingualityType(LingualityTypeEnum value) {
+        this.lingualityType = value;
     }
 
-    public MultiLingualityType getMultiLingualityType() {
-        return multiLingualityType;
+    /**
+     * Gets the value of the multilingualityType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link MultilingualityTypeEnum }
+     *     
+     */
+    public MultilingualityTypeEnum getMultilingualityType() {
+        return multilingualityType;
     }
 
-    public void setMultiLingualityType(MultiLingualityType multiLingualityType) {
-        this.multiLingualityType = multiLingualityType;
+    /**
+     * Sets the value of the multilingualityType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link MultilingualityTypeEnum }
+     *     
+     */
+    public void setMultilingualityType(MultilingualityTypeEnum value) {
+        this.multilingualityType = value;
     }
 
+    /**
+     * Gets the value of the multilingualityTypeDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
     public String getMultilingualityTypeDetails() {
         return multilingualityTypeDetails;
     }
 
-    public void setMultilingualityTypeDetails(String multilingualityTypeDetails) {
-        this.multilingualityTypeDetails = multilingualityTypeDetails;
-    }
-}
-
-class LingualityTypeAdapter extends XmlAdapter<String, LingualityInfo.LingualityType> {
-
-    @Override
-    public String marshal(LingualityInfo.LingualityType v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public LingualityInfo.LingualityType unmarshal(String v) throws Exception {
-        return LingualityInfo.LingualityType.forValue(v);
-    }
-}
-
-class MultiLingualityTypeAdapter extends XmlAdapter<String, LingualityInfo.MultiLingualityType> {
-
-    @Override
-    public String marshal(LingualityInfo.MultiLingualityType v) throws Exception {
-        return v!=null?v.getValue():null;
+    /**
+     * Sets the value of the multilingualityTypeDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMultilingualityTypeDetails(String value) {
+        this.multilingualityTypeDetails = value;
     }
 
-    @Override
-    public LingualityInfo.MultiLingualityType unmarshal(String v) throws Exception {
-        return LingualityInfo.MultiLingualityType.forValue(v);
-    }
 }

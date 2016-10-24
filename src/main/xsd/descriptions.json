@@ -1,0 +1,1378 @@
+{
+    "abstract": {
+        "desc": "The abstract of the document in plain text format; the element can be repeated for the different language versions using the \"lang\" attribute to specify the language.",
+        "label": "Abstract"
+    },
+    "accessURL": {
+        "desc": "A landing page, feed, SPARQL endpoint etc. that gives access to the resource or where the web service/workflow is executed; please use for resources that are \"accessibleThroughInterface\" or \"webExecutable\"",
+        "label": "Access URL"
+    },
+    "actorInfoType": {
+        "desc": "Base type for actors/agents; choice between person and organization",
+        "label": null
+    },
+    "actualUse": {
+        "desc": "Classification of the actual use of the resource",
+        "label": "Actual use"
+    },
+    "actualUseDetails": {
+        "desc": "Reports on the usage of the resource in free text",
+        "label": "Actual use details"
+    },
+    "actualUseInfo": {
+        "desc": "Groups information on how the resource has already been used",
+        "label": "Actual use"
+    },
+    "address": {
+        "desc": "The street and the number of the postal address of a person or organization",
+        "label": "Address"
+    },
+    "affiliatedOrganization": {
+        "desc": "The organization to which a person is affiliated",
+        "label": "Affiliated organization"
+    },
+    "affiliation": {
+        "desc": "Groups information on organization to whom the person is affiliated",
+        "label": "Affiliation"
+    },
+    "algorithm": {
+        "desc": "Training algorithm used for the model (e.g. maximum entropy, svm etc.)",
+        "label": null
+    },
+    "algorithmDetails": {
+        "desc": "Detailed description of the algorithm, incl. info on whether it's supervised or not",
+        "label": null
+    },
+    "annotatedCorpusInfo": {
+        "desc": "Groups together information on annotated corpora of all media types",
+        "label": "Annotated corpus"
+    },
+    "annotatedCorpusInfoType": {
+        "desc": "Groups together all information related to annotated corpora",
+        "label": "Media type parts of corpus"
+    },
+    "annotatedDocumentInfoType": {
+        "desc": "Base type for annotated documents (single files); combination of raw publication (with link to it) and the annotated file",
+        "label": null
+    },
+    "annotatedPublication": {
+        "desc": "Groups information on annotated documents (publications), with a link to the record of the raw publication and information about the annotation",
+        "label": "Document"
+    },
+    "annotationDate": {
+        "desc": "The dates (either date or range of dates) in which the annotation process has taken place",
+        "label": "Annotation date"
+    },
+    "annotationInfo": {
+        "desc": "Groups information on the annotated part(s) of a resource",
+        "label": "Annotation"
+    },
+    "annotationLevel": {
+        "desc": "Specifies the annotation level of the resource or what a s/w component consumes or produces as an output",
+        "label": "Annotation level"
+    },
+    "annotationMode": {
+        "desc": "Indicates whether the resource is annotated manually or by automatic processes",
+        "label": null
+    },
+    "annotationModeDetails": {
+        "desc": "Provides further information on annotation process ",
+        "label": "Annotation mode details"
+    },
+    "annotationResource": {
+        "desc": "A resource (e.g. ontology, terminological resource) used for annotating a document, corpus, sentence etc.",
+        "label": "Annotation resource"
+    },
+    "annotationStandoff": {
+        "desc": "Indicates whether the annotation is created inline or in a stand-off fashion",
+        "label": "Annotation standoff"
+    },
+    "annotationsInfo": {
+        "desc": "Groups together information on annotations",
+        "label": "Annotations"
+    },
+    "annotator": {
+        "desc": "Groups information on the annotators of the specific annotation type",
+        "label": "Annotator"
+    },
+    "archive": {
+        "desc": "The url where the mailing list messages are archived",
+        "label": "Archive"
+    },
+    "attachedLexiconPosition": {
+        "desc": "Indicates the position of the lexicon, if attached to the grammar",
+        "label": "Attached lexicon position"
+    },
+    "attributionText": {
+        "desc": "The text that must be quoted for attribution purposes when using a resource - for cases where a resource is provided with a restriction on attribution; you can use a standard text such as \"Resource A by Resource Creator/Owner B used under licence C as accessed at D\"",
+        "label": "Attribution text"
+    },
+    "author": {
+        "desc": "The name(s) of the author(s), preferrably in the format: surname, initials (first name) prefix with optional identifier for persons",
+        "label": "Author"
+    },
+    "availabilityEndDate": {
+        "desc": "Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.",
+        "label": "Availability end date"
+    },
+    "availabilityStartDate": {
+        "desc": "Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.",
+        "label": "Availability start date"
+    },
+    "characterEncoding": {
+        "desc": "The name of the character encoding used in the resource or accepted by the tool/service",
+        "label": "Character encoding"
+    },
+    "characterEncodingInfo": {
+        "desc": "Groups together information on character encoding of the resource",
+        "label": "Character encoding"
+    },
+    "city": {
+        "desc": "The name of the city, town or village as mentioned in the postal address of a person or organization ",
+        "label": "City"
+    },
+    "classificationSchemeName": {
+        "desc": "Base type for listing recommended/popular classification schemes",
+        "label": "Dewey Decimal Classification"
+    },
+    "collectedFrom": {
+        "desc": "Refers to the entity (repository, aggregator etc.) from which the metadata record has been harvested",
+        "label": "Source repository"
+    },
+    "communicationInfo": {
+        "desc": "Groups information on communication details of a person or an organization",
+        "label": "Communication"
+    },
+    "compatibleLexiconType": {
+        "desc": "Type of (external) lexicon that can be used with the grammar",
+        "label": "Compatible lexicon type"
+    },
+    "componentCreationInfo": {
+        "desc": "Groups together information on the creation of a component",
+        "label": "Component creation"
+    },
+    "componentDistributionInfo": {
+        "desc": "Groups information on the distribution of a component (software code, executable programme, web service/workflow)",
+        "label": "Document distribution"
+    },
+    "componentDocumentationInfo": {
+        "desc": "Groups together information on the documentation of a component",
+        "label": "Component documentation"
+    },
+    "componentEvaluationInfo": {
+        "desc": "Groups together information on the evaluation status of a component",
+        "label": "Component evaluation"
+    },
+    "componentInfo": {
+        "desc": "Groups together all information related to software components",
+        "label": "Component"
+    },
+    "componentOperationInfo": {
+        "desc": "Groups together information on the operation of a component",
+        "label": "Component operation"
+    },
+    "componentType": {
+        "desc": "Specifies the type of a component, in terms of the function/task it performs",
+        "label": "Type of component"
+    },
+    "conditionsOfUse": {
+        "desc": "Specifies the conditions and terms of use imposed by the licence. It is an optional element and only to be taken as providing brief human readable information on the fact that the LR is provided under a specific set of conditions. These correspond to the most frequently used conditions imposed by the licensor of the LR (via the specified licence). The proper exposition of all conditions and possible exceptions is to be found inside the licence text. LR depositors should, hence, carefully choose the values of this field to match the licence chosen and users should carefully read that licence before using the LR.",
+        "label": "Conditions of use"
+    },
+    "conference": {
+        "desc": "The name of the conference in which the document has been presented",
+        "label": "Conference"
+    },
+    "conformanceToStandardsBestPractices": {
+        "desc": "Specifies the standards or the best practices to which the tagset used for the annotation conforms",
+        "label": "Conformance to standards / best practices"
+    },
+    "contactEmail": {
+        "desc": "A general email address that can be used as contact point for a resource (e.g. resource@example.com); the recommended practice is, however, to indicate a person/group for contact and describe it with the relevant metadata elements",
+        "label": "Contact email"
+    },
+    "contactGroup": {
+        "desc": "Groups information on the group(s) that is/are responsible for providing further information regarding the resource",
+        "label": "Contact group"
+    },
+    "contactInfo": {
+        "desc": "Groups information on the possible sources for obtaining further information regarding the resource; at least a general email address or a landing page (website) must be supplied, although the recommended practice is to describe a contact person/group",
+        "label": "Contact"
+    },
+    "contactPerson": {
+        "desc": "Groups information on the person(s) that is/are responsible for providing further information regarding the resource",
+        "label": "Contact person"
+    },
+    "contributor": {
+        "desc": "The identifier of the contributor, preferrably in the format: surname, initials (first name) prefix or the unique identifier of the author",
+        "label": "Contributor"
+    },
+    "copyrightStatement": {
+        "desc": "A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the \"lang\" attribute to specify the language.",
+        "label": "Copyright statement"
+    },
+    "corpusInfo": {
+        "desc": "Groups together all information related to corpora",
+        "label": "Corpus"
+    },
+    "corpusMediaParts": {
+        "desc": "Used to specify the media type specific to corpora and group together the relevant information",
+        "label": "Media type parts of corpus"
+    },
+    "corpusMediaPartsType": {
+        "desc": "Used to specify the media type specific to corpora and group together the relevant information",
+        "label": "Media type component of corpus"
+    },
+    "corpusTextPartInfo": {
+        "desc": "Groups together information on the text component of a resource",
+        "label": "Corpus text part"
+    },
+    "country": {
+        "desc": "The identifier of the country mentioned in the postal address of a person or organization as defined in the list of values of ISO 3166; label is used to show the full name",
+        "label": "Country identifier"
+    },
+    "creationDate": {
+        "desc": "The date of the creation of hte resource, expressed as a range between starting and end date or exact date",
+        "label": "Creation date"
+    },
+    "creationDetails": {
+        "desc": "Provides additional information on the creation of a component",
+        "label": "Creation details"
+    },
+    "creationInfo": {
+        "desc": "Groups together information on the resource creation (e.g. for corpora, selection of texts/audio files/ video files etc.; for lexica, construction of lemma list etc.)",
+        "label": "Creation"
+    },
+    "creationMode": {
+        "desc": "Specifies whether the resource is created automatically or in a manual or interactive mode ",
+        "label": null
+    },
+    "creationModeDetails": {
+        "desc": "Provides further information on the creation methods and processes",
+        "label": "Creation mode details"
+    },
+    "dataFormat": {
+        "desc": "Specifies the format that is used since often the mime type will not be sufficient for machine processing; NOTE: normally the format should be represented as a combination of the mimetype (e.g. application/xml) and some name and link to the documentation about the supplementary conventions used (e.g xces, alvisED etc.)",
+        "label": "Data format"
+    },
+    "dataFormatSpecific": {
+        "desc": "The supplementary level of data format",
+        "label": "ACL anthology"
+    },
+    "datasetDistributionInfo": {
+        "desc": "Groups information on the distribution of a dataset resource (multiple files)",
+        "label": "Document distribution"
+    },
+    "date": {
+        "desc": "Basic format for dates, with optional day and month and obligatory year",
+        "label": "Date"
+    },
+    "dateCombinationType": {
+        "desc": "Base type to be used for choice betwwen range of dates and exact date",
+        "label": null
+    },
+    "dateRange": {
+        "desc": "Basic format for date ranges, allowing combinations of years and full dates",
+        "label": "Date range"
+    },
+    "dateRangeType": {
+        "desc": "Base type to be used for range of dates (time periods)",
+        "label": null
+    },
+    "dateType": {
+        "desc": "Base type to be used for dates, allowing optional day and month",
+        "label": null
+    },
+    "day": {
+        "desc": "Optional day, always in two-digit format",
+        "label": null
+    },
+    "departmentName": {
+        "desc": "The name of the department or unit (e.g. specific university faculty/department, department/unit of a research organization or private company etc.)",
+        "label": "Department name"
+    },
+    "derivedResource": {
+        "desc": "The name, the identifier or the url of the outcome or product of the resource.",
+        "label": "Derived resource"
+    },
+    "description": {
+        "desc": "Provides the description of the resource in prose; the element can be repeated for the different language versions using the \"lang\" attribute to specify the language.",
+        "label": "Description"
+    },
+    "distributionMedium": {
+        "desc": "Specifies the medium (channel) used for delivery or providing access to the resource",
+        "label": "Distribution medium"
+    },
+    "document": {
+        "desc": "Root element for documents (single files); choice among raw publications and annotated publications",
+        "label": null
+    },
+    "documentDistributionInfo": {
+        "desc": "Groups information on the distribution of a document (single file)",
+        "label": "Document distribution"
+    },
+    "documentInfoType": {
+        "desc": "Base type for documents (single files) mainly intended for publications",
+        "label": "Publication type"
+    },
+    "documentLanguage": {
+        "desc": "The language the document is written in (according to the IETF BCP47 guidelines)",
+        "label": "Language of the document"
+    },
+    "documentMetadataRecord": {
+        "desc": "Root element for metadata records of single files (documents); groups metadata header and information about the document itself",
+        "label": "Document metadata record"
+    },
+    "documentMetadataRecordType": {
+        "desc": "Base type for metadata records of single files (documents)",
+        "label": null
+    },
+    "documentType": {
+        "desc": "Specifies whether the record includes direct access to the full text, the abstract in txt format (inside the record) or serves only as a bibliographic record (includes only metadata)",
+        "label": null
+    },
+    "documentUnstructured": {
+        "desc": "Used either as a free text description or as an unstructured (free form) presentation of a bibliographic record; alternative to the structured presentation of a document (cf. documentInfo)",
+        "label": "Unstructured document"
+    },
+    "documentationURL": {
+        "desc": "Link to the documentation for the specific data format (explanations and examples)",
+        "label": null
+    },
+    "domain": {
+        "desc": "Specifies the application domain of the resource or the tool/service",
+        "label": "Domain"
+    },
+    "domainInfo": {
+        "desc": "Groups together information on domains represented in the resource; can be repeated for parts of the resource with distinct domain",
+        "label": "Domain"
+    },
+    "downloadURL": {
+        "desc": "Any url where the resource can be downloaded from; please, use if the resource is \"downloadable\" and you have not uploaded the resource in the repository",
+        "label": "Download URL"
+    },
+    "edition": {
+        "desc": "The edition of a book",
+        "label": "Edition"
+    },
+    "email": {
+        "desc": "The email address of a person, group or organization",
+        "label": "Email"
+    },
+    "emailAddress": {
+        "desc": "Base type for validating email addresses",
+        "label": null
+    },
+    "encodingLevel": {
+        "desc": "Information on the contents of the lexicalConceptualResource as regards the linguistic level of analysis",
+        "label": "Encoding level"
+    },
+    "endDate": {
+        "desc": "Basic format for end dates, with optional day and month and obligatory year",
+        "label": "End date"
+    },
+    "evaluated": {
+        "desc": "Indicates whether the component has been evaluated",
+        "label": "Evaluated"
+    },
+    "evaluationCriterion": {
+        "desc": "Defines the criteria of the evaluation of a tool",
+        "label": "Evaluation criteria"
+    },
+    "evaluationDetails": {
+        "desc": "Provides further information on the evaluation process of a component",
+        "label": "Evaluation details"
+    },
+    "evaluationLevel": {
+        "desc": "Indicates the evaluation level",
+        "label": "Evaluation level"
+    },
+    "evaluationMeasure": {
+        "desc": "Defines whether the evaluation measure is human or automatic",
+        "label": "Evaluation measure"
+    },
+    "evaluationType": {
+        "desc": "Indicates the evaluation type",
+        "label": "Evaluation type"
+    },
+    "evaluator": {
+        "desc": "Groups information on person or organization that evaluated the component",
+        "label": "Evaluator"
+    },
+    "externalRef": {
+        "desc": "Another resource to which the lexicalConceptualResource is linked (e.g. link to a wordnet or ontology)",
+        "label": "External reference"
+    },
+    "extraTextualInformationUnit": {
+        "desc": "The unit of the extratextual information contained in the lexical conceptual resource",
+        "label": "Extratextual information unit"
+    },
+    "extratextualInformation": {
+        "desc": "An indication of the extratextual information contained in the lexicalConceptualResouce; can be used as an alternative to audio, image, videos etc. for cases where these are not considered an important part of the lcr",
+        "label": "Extratextual information"
+    },
+    "faxNumber": {
+        "desc": "The fax number of a person or an organization; recommended format: +_international code_city code_number",
+        "label": "Fax number"
+    },
+    "fee": {
+        "desc": "Specifies the costs that are required to access the resource, a fragment of the resource or to use a component",
+        "label": "Fee"
+    },
+    "foreseenUse": {
+        "desc": "Classification of the intended use of the resource",
+        "label": "Foreseen use"
+    },
+    "foreseenUseInfo": {
+        "desc": "Groups information on the use for which the resource is created",
+        "label": "Foreseen use"
+    },
+    "formalism": {
+        "desc": "Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)",
+        "label": "Formalism"
+    },
+    "fullText": {
+        "desc": "The full text of the publication in simple text format",
+        "label": null
+    },
+    "funder": {
+        "desc": "Funder of the project (e.g. EC for European Commission); preferred format is the registration through fundref",
+        "label": "Funder"
+    },
+    "fundingCountry": {
+        "desc": "The name of the funding country, in case of national funding as mentioned in ISO3166",
+        "label": "Funding country"
+    },
+    "fundingProgramme": {
+        "desc": "A specific programme (e.g. FP7, H2020)",
+        "label": "Funding program"
+    },
+    "fundingProject": {
+        "desc": "Groups information on the project that has funded the resource; choice between the ID of a project or a project title",
+        "label": "Funding project"
+    },
+    "fundingType": {
+        "desc": "Specifies the type of funding of the project",
+        "label": "Funding type"
+    },
+    "geographicCoverage": {
+        "desc": "The geographic region that the content of a resource is about; for countries, recommended use of ISO-3166",
+        "label": "Geographic coverage"
+    },
+    "geographicCoverageInfo": {
+        "desc": "Groups information on geographic classification of the resource",
+        "label": "Geographic coverage"
+    },
+    "givenName": {
+        "desc": "The given name (first name) of a person related to the resource; initials can also be used",
+        "label": "Given name"
+    },
+    "grammaticalPhenomenaCoverage": {
+        "desc": "An indication of the grammatical phenomena covered by the grammar",
+        "label": "Grammatical phenomena coverage"
+    },
+    "groupName": {
+        "desc": "The name(s) of the group",
+        "label": "Group name"
+    },
+    "guidelinesDocumentedIn": {
+        "desc": "A bibliographic reference or ms:httpURI link to the annotation manual",
+        "label": "Guidelines documented in"
+    },
+    "hasEvaluationReport": {
+        "desc": "A bibliographical record of or link to a report describing the evaluation process, tool, method etc. of the component",
+        "label": "Evaluation report"
+    },
+    "hasOriginalSource": {
+        "desc": "The identifier of the original resources that were at the base of the creation process of the resource",
+        "label": "Has original source"
+    },
+    "hasValidationReport": {
+        "desc": "Link to a short account (prose description) of the validation details or the identifier of a document with detailed information on the validation process and results",
+        "label": "Has validation report"
+    },
+    "homepage": {
+        "desc": "A URL used as homepage of a person, group or organization",
+        "label": "Homepage"
+    },
+    "httpURI": {
+        "desc": "Base type to be used for url's, ftp's, secure url's",
+        "label": null
+    },
+    "identificationInfo": {
+        "desc": "Groups together information needed to identify the resource",
+        "label": "Identification"
+    },
+    "identifier": {
+        "desc": "Reference to a PID, DOI or any kind of identifier used by the resource provider for the resource; the attribute documents the scheme it adheres to; if the scheme name is not included in the listed values, please use \"other\" and provide a link  to  information about the scheme",
+        "label": "Identifier"
+    },
+    "implementationLanguage": {
+        "desc": "The programming languages needed for allowing user contributions, or for running the tools, in case no executables are available",
+        "label": "Implementation language"
+    },
+    "inBook": {
+        "desc": "The title or identifier of a book in which a publication appears (e.g. as a chapter, as article in a collection of articles, conference proceedings etc.)",
+        "label": null
+    },
+    "inputContentResourceInfo": {
+        "desc": "Groups together information on the requirements set on the input resource of a component",
+        "label": "Input"
+    },
+    "interannotatorAgreement": {
+        "desc": "Provides information on the interannotator agreement and the methods/metrics applied ",
+        "label": "Interannotator agreement"
+    },
+    "intraannotatorAgreement": {
+        "desc": "Provides information on the intra-annotator agreement and the methods/metrics applied  ",
+        "label": "Intraannotator agreement"
+    },
+    "isAnnotatedBy": {
+        "desc": "The name, the identifier or the url of the tool used for the annotation of the resource",
+        "label": "Annotation tool"
+    },
+    "isCreatedBy": {
+        "desc": "The identifier or the s/w component used in the creation process",
+        "label": "Is created by"
+    },
+    "isDocumentedIn": {
+        "desc": "Refers to papers, manuals, reports etc. describing the resource",
+        "label": "Is documented in"
+    },
+    "isEvaluatedBy": {
+        "desc": "The identifier of the component used for the evaluation of the component being described",
+        "label": "Is evaluated by"
+    },
+    "isValidatedBy": {
+        "desc": "Links a resource to the identifier of the software component that has been used for its validation",
+        "label": "Is validated by"
+    },
+    "journal": {
+        "desc": "Information about the journal where the publication has appeared",
+        "label": "Journal"
+    },
+    "journalIdentifier": {
+        "desc": "Reference to a DOI (recommended) or any kind of identifier used for the publication",
+        "label": "Journal Identifier"
+    },
+    "journalIdentifierType": {
+        "desc": "Base type for identifier schemes for journals",
+        "label": null
+    },
+    "journalInfoType": {
+        "desc": "Base type for journals",
+        "label": "Journal Identifier"
+    },
+    "journalTitle": {
+        "desc": "The full name of the journal; the element can be repeated for the different language versions using the \"lang\" attribute to specify the language.",
+        "label": "Journal name"
+    },
+    "jurisdiction": {
+        "desc": "Authority granted to a formally consittute legal body (e.g. EU for European Union)",
+        "label": "Funding program"
+    },
+    "keyword": {
+        "desc": "A word or phrase considered important for the classification of a resource and included as tag in its metadata",
+        "label": "Keyword"
+    },
+    "landingPage": {
+        "desc": "A URL used as the landing page of a resource providing general information; for instance, it may present a description of the resource, its creators and possibly include links to the URL where it can be accessed from",
+        "label": "Landing page"
+    },
+    "language": {
+        "desc": "A human understandable name of the language that is used in the resource or supported by the tool/service, as specified in the BCP47 guidelines (https://tools.ietf.org/html/bcp47); the guidelines includes (a) language subtag according to ISO 639-1 and for languages not covered by this, the ISO 639-3; (b) the script tag according to ISO 15924; (c) the region tag according to ISO 3166-1;  (d) the variant subtag",
+        "label": "Language"
+    },
+    "languageDescriptionEncodingInfo": {
+        "desc": "Groups together information on the contents of the LanguageDescriptions",
+        "label": "Language description encoding"
+    },
+    "languageDescriptionInfo": {
+        "desc": "Groups together all information related to language descriptions",
+        "label": "Language description"
+    },
+    "languageDescriptionMediaType": {
+        "desc": "Groups information on the media type-specific components for language descriptions",
+        "label": "Media type component of language description"
+    },
+    "languageDescriptionOperationInfo": {
+        "desc": "Groups together information on the operation requirements of the Language Descriptions",
+        "label": "Language description operation"
+    },
+    "languageDescriptionPerformanceInfo": {
+        "desc": "Groups together information on the performance of the Language Descriptions",
+        "label": "Language description performance"
+    },
+    "languageDescriptionTextInfo": {
+        "desc": "Groups together all information relevant to the text module of a language description (e.g. format, languages, size etc.); it is obligatory for all language descriptions",
+        "label": "Language description text component"
+    },
+    "languageDescriptionType": {
+        "desc": "The type of the language description",
+        "label": "Language description type"
+    },
+    "languageId": {
+        "desc": "The identifier of the language subelement according to the IETF BCP47 guidelines (i.e. ISO 639-3 codes when existing supplemented with ISO 639-3 codes for new entries)",
+        "label": "Language identifier"
+    },
+    "languageIdType": {
+        "desc": "Base type for languages according to ISO 639; the codes are taken from ISO 639-1 and, if not covered, from ISO 639-3, according to the BCP-47 guidlelines",
+        "label": null
+    },
+    "languageInfo": {
+        "desc": "Groups information on the languages represented in the resource",
+        "label": "Language"
+    },
+    "languageTag": {
+        "desc": "The identifier of the language that is included in the resource or supported by the tool/service, according to the IETF BCP47 guidelines; NOTE in the XSD there is no validation as to the validity of the id, but the system validates the input metadata and the editor produces the correct id on the basis of the subelements (language, script, region and variant)",
+        "label": "Language"
+    },
+    "languageType": {
+        "desc": "The container for the language elements (i.e. identifier according to BCP47 guidelines and all the elements that produce this id)",
+        "label": "Language"
+    },
+    "languageVarietyInfo": {
+        "desc": "Groups information on language varieties occurred in the resource (e.g. dialects)",
+        "label": "Language variety"
+    },
+    "languageVarietyName": {
+        "desc": "The name of the language variety that occurs in the resource or is supported by a tool/service",
+        "label": "Language variety name"
+    },
+    "languageVarietyType": {
+        "desc": "Specifies the type of the language variety that occurs in the resource or is supported by a tool/service",
+        "label": "Language variety type"
+    },
+    "lastDateUpdated": {
+        "desc": "Date of the last update of the version of the resource",
+        "label": "Last date updated"
+    },
+    "lexicalConceptualResourceEncodingInfo": {
+        "desc": "Groups all information regarding the contents of lexical/conceptual resources",
+        "label": "Lexical / Conceptual resource encoding"
+    },
+    "lexicalConceptualResourceInfo": {
+        "desc": "Groups together all information related to lexical/conceptual resources",
+        "label": "Lexical/conceptual resource"
+    },
+    "lexicalConceptualResourceMediaType": {
+        "desc": "Restriction of mediaType for lexicalConceptualResources",
+        "label": "Media type component of lexical / conceptual resource"
+    },
+    "lexicalConceptualResourceTextInfo": {
+        "desc": "Groups information on the textual part of the lexical/conceptual resource",
+        "label": "Lexical / Conceptual resource text"
+    },
+    "lexicalConceptualResourceType": {
+        "desc": "Specifies the subtype of lexicalConceptualResource",
+        "label": "Lexical conceptual resource type"
+    },
+    "licence": {
+        "desc": "The licence of use for the resource; if possible, please use one of the recommended standard licences",
+        "label": "Licence"
+    },
+    "licenceInfo": {
+        "desc": "Groups information on licences for the resource; can be repeated to allow for different modes of access and restrictions of use (e.g. free for academic use, on-a-fee basis for commercial use, download of a sample for free use etc.)",
+        "label": "Licence"
+    },
+    "lingualityInfo": {
+        "desc": "Groups information on the number of languages of the resource part and of the way they are combined to each other",
+        "label": "Linguality"
+    },
+    "lingualityType": {
+        "desc": "Indicates whether the resource includes one, two or more languages",
+        "label": "Linguality type"
+    },
+    "linguisticInformation": {
+        "desc": "A more detailed account of the linguistic information contained in the lexicalConceptualResource",
+        "label": "Linguistic information"
+    },
+    "mailingListInfo": {
+        "desc": "Groups information on the mailing list(s) that can be used for further information regarding the resource",
+        "label": "Mailing list"
+    },
+    "mailingListName": {
+        "desc": "The name of the mailing list",
+        "label": "Mailing list name"
+    },
+    "mediaType": {
+        "desc": "Specifies the media type of the resource and basically corresponds to the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed to different types of media.",
+        "label": "Media type"
+    },
+    "metadataCreationDate": {
+        "desc": "The date of creation of this metadata description (automatically inserted by the software)",
+        "label": "Metadata creation date"
+    },
+    "metadataCreator": {
+        "desc": "Groups information on the person that has created the metadata record (for records manually edited)",
+        "label": "Metadata creator"
+    },
+    "metadataHeaderInfo": {
+        "desc": "Groups information on the metadata record itself",
+        "label": "Metadata header"
+    },
+    "metadataHeaderInfoType": {
+        "desc": "Base type for metadata header",
+        "label": "Metadata link"
+    },
+    "metadataIdentifierType": {
+        "desc": "Base type for identifier schemes for metadata records",
+        "label": null
+    },
+    "metadataLanguage": {
+        "desc": "The language in which the metadata description is written according to IETF BCP47 (ISO 639-1 or ISO 639-3 for languages not covered by the first standard)",
+        "label": "Metadata language"
+    },
+    "metadataLastDateUpdated": {
+        "desc": "The date of the last updating of the metadata record (automatically inserted by the system)",
+        "label": "Metadata last date updated"
+    },
+    "metadataRecordIdentifier": {
+        "desc": "A persistent identifier for the metadata record itself",
+        "label": "Metadata link"
+    },
+    "metalanguageInfo": {
+        "desc": "Groups information on the languages used for the description of the resource",
+        "label": "Metalanguage"
+    },
+    "mimeType": {
+        "desc": "The mime-type of the resource which is a formalized specifier for the format included or a mime-type that the tool/service accepts, in conformance with the values of the IANA (Internet Assigned Numbers Authority); you can select one of the pre-defined values or add a value, PREFERABLY FROM THE IANA MEDIA MIMETYPE RECOMMENDED VALUES (http://www.iana.org/assignments/media-types/media-types.xhtml)",
+        "label": "Mime type"
+    },
+    "modalityInfo": {
+        "desc": "Groups information on the modalities represented in the resource",
+        "label": "Modality"
+    },
+    "modalityType": {
+        "desc": "Specifies the type of the modality represented in the resource or processed by a tool/service",
+        "label": "Modality type"
+    },
+    "modalityTypeDetails": {
+        "desc": "Provides further information on modalities",
+        "label": "Modality type details"
+    },
+    "modelInfo": {
+        "desc": "Groups together all information related to models",
+        "label": "Model"
+    },
+    "modelMediaType": {
+        "desc": "Restriction of mediaType for models",
+        "label": "Media type component of model"
+    },
+    "modelTextInfo": {
+        "desc": "Groups together all information related to the textual part of models",
+        "label": "Model"
+    },
+    "month": {
+        "desc": "Optional month; to be used in two-digit format",
+        "label": null
+    },
+    "multilingualityType": {
+        "desc": "Indicates whether the corpus is parallel, comparable or mixed",
+        "label": "Multilinguality type"
+    },
+    "multilingualityTypeDetails": {
+        "desc": "Provides further information on multilinguality of a resource in free text",
+        "label": "Multilinguality type details"
+    },
+    "mustBeCitedWith": {
+        "desc": "Publication to be used for citation purposes as requested by resource providers (usually a scientific article that describes the resource)",
+        "label": "Must be cited with"
+    },
+    "myString": {
+        "desc": "Base type for multilingual elements",
+        "label": null
+    },
+    "name": {
+        "desc": "The full name of a person; the preferred format is \"family name, given name\"",
+        "label": "Name"
+    },
+    "nonStandaradLicenceTermsText": {
+        "desc": "Used for inputting the text of licences (that are not included in the pre-defined list) and terms of use or terms of service (for web services)",
+        "label": "Text (for non-standard licences / terms of use / terms of service)"
+    },
+    "nonStandardLicenceName": {
+        "desc": "The name with which a licence is known; to be used for licences not included in the pre-defined list of recommended licences",
+        "label": "Name (for non-standard licences)"
+    },
+    "nonStandardLicenceTermsURL": {
+        "desc": "Used to provide a hyperlink to a url containing the text of a licence not included in the predefined list or describing the terms of use for a language resource or terms of service for web services",
+        "label": "URL for non-standard licences / terms of use / terms of service"
+    },
+    "operatingSystem": {
+        "desc": "The operating system on which the tool will be running",
+        "label": "Operating system"
+    },
+    "organizationAlternativeName": {
+        "desc": "An alternative name (e.g. abbreviation, acronym, translation etc.) used for an organization",
+        "label": "Organization alternative name"
+    },
+    "organizationIdentifier": {
+        "desc": "Reference to any kind of identifier used for an organization; the attribute should be used to specify the type of identifier (e.g. ORCID, LinkedIn etc.)",
+        "label": "Identifier"
+    },
+    "organizationIdentifierType": {
+        "desc": "Base type for identifier schemes for organizations",
+        "label": null
+    },
+    "organizationInfo": {
+        "desc": "Groups information on organizations related to the resource",
+        "label": "Organization"
+    },
+    "organizationName": {
+        "desc": "The name(s) of the organization",
+        "label": "Organization name"
+    },
+    "originalDataProviderInfo": {
+        "desc": "Refers to the original data provider, in case the metadata record carries information taken from previous repositories/journals/publishers (e.g. in case the record's last source is an aggregator)",
+        "label": "Original data provider"
+    },
+    "originalDataProviderJournal": {
+        "desc": "Information about the journal that has originally provided the metadata record",
+        "label": "Original data provider (journal)"
+    },
+    "originalDataProviderPublisher": {
+        "desc": "Information about the publisher (organization) that has originally provided the metadata record",
+        "label": "Original data provider (publisher)"
+    },
+    "originalDataProviderRepository": {
+        "desc": "Information about the repository that has originally provided the metadata record",
+        "label": "Original data provider (repository)"
+    },
+    "originalDataProviderType": {
+        "desc": "Refers to the type of the original data provider (repository/journal/publisher/aggregator etc.)",
+        "label": "Original data provider type"
+    },
+    "otherArchive": {
+        "desc": "Alternative url's where the mailing list messages are archived (for mirrored mailing lists)",
+        "label": "Other archive"
+    },
+    "output": {
+        "desc": "Indicates whether the output of the operation of the grammar is a statement of grammaticality (grammatical/ungrammatical) or structures (interpretation of the input)",
+        "label": "Output"
+    },
+    "outputResourceInfo": {
+        "desc": "Groups together information on the output of a component",
+        "label": "Output"
+    },
+    "pages": {
+        "desc": "One or more page numbers or range of page numbers",
+        "label": "Pages"
+    },
+    "personIdentifier": {
+        "desc": "Reference to any kind of identifier used for a person; the attribute should be used to specify the type of identifier (e.g. ORCID, LinkedIn etc.)",
+        "label": "Identifier"
+    },
+    "personIdentifierType": {
+        "desc": "Base type for identifier schemes for persons",
+        "label": null
+    },
+    "personInfo": {
+        "desc": "Groups information relevant to personsrelated to the resource; to be used mainly for contact persons, resource creators, validators, annotators etc. for whom personal data can be provided",
+        "label": "Person"
+    },
+    "personName": {
+        "desc": "The name(s) of the person, preferrably in the format: surname, initials (first name) prefix",
+        "label": "Person name"
+    },
+    "position": {
+        "desc": "The position or the title of a person if affiliated to an organization ",
+        "label": "Position"
+    },
+    "post": {
+        "desc": "The email address to be used for posting messages to the mailing list",
+        "label": "Post"
+    },
+    "processMode": {
+        "desc": "Base type for all modes of processing (e.g. annotation, conversion, creation etc.)",
+        "label": "Manual"
+    },
+    "projectDates": {
+        "desc": "The duration dates the project",
+        "label": "Project dates"
+    },
+    "projectIdentifier": {
+        "desc": "A unique identifier for research projects",
+        "label": null
+    },
+    "projectIdentifierType": {
+        "desc": "Base type for identifier schemes for projects",
+        "label": null
+    },
+    "projectInfo": {
+        "desc": "Groups information on a project related to the resource(e.g. a project the resource has been used in; a funded project that led to the resource creation etc.)",
+        "label": "Project"
+    },
+    "projectName": {
+        "desc": "The full name of a project related to the resource",
+        "label": "Project name"
+    },
+    "projectShortName": {
+        "desc": "A short name, abbreviation or acronym of a project related to the resource",
+        "label": "Project short name"
+    },
+    "publication": {
+        "desc": "Groups information on a document in a structured format; it can be used both for published or unpublished documents",
+        "label": "Document"
+    },
+    "publicationDate": {
+        "desc": "The publication date or, for an unpublished work, the date it was written",
+        "label": "Publication date"
+    },
+    "publicationIdentifier": {
+        "desc": "Reference to a DOI (recommended) or any kind of identifier used for the publication",
+        "label": "Publication identifier"
+    },
+    "publicationIdentifierType": {
+        "desc": "Base type for identifier schemes for publications",
+        "label": null
+    },
+    "publicationType": {
+        "desc": "Specifies the type of the publication",
+        "label": "Publication type"
+    },
+    "publisher": {
+        "desc": "Information about the publisher",
+        "label": "Publisher"
+    },
+    "rawCorpusInfo": {
+        "desc": "Groups together information on corpora of all media types",
+        "label": "Raw corpus"
+    },
+    "rawCorpusInfoType": {
+        "desc": "Groups together all information related to raw corpora",
+        "label": "Media type component of corpus"
+    },
+    "region": {
+        "desc": "The name of the region, county or department as mentioned in the postal address of a person or organization",
+        "label": "Region"
+    },
+    "regionIdType": {
+        "desc": "Base type for countries (regions) according to ISO 3166",
+        "label": null
+    },
+    "regiontId": {
+        "desc": "The identifier of the region subelement according to the IETF BCP47 guidelines (i.e. ISO 3166 codes)",
+        "label": "Region identifier"
+    },
+    "register": {
+        "desc": "For corpora that have already been using register classification",
+        "label": "Register"
+    },
+    "relatedGroupType": {
+        "desc": "Base type for related groups; group name and choice between organization names and identifiers",
+        "label": "Group name"
+    },
+    "relatedJournalType": {
+        "desc": "Base type for related journals; choice between journal titles and identifiers",
+        "label": "Journal title"
+    },
+    "relatedLexiconInfo": {
+        "desc": "Groups together information on requirements for lexica set by the LanguageDescriptions",
+        "label": "Related lexicon"
+    },
+    "relatedLexiconType": {
+        "desc": "Indicates the position of the lexica that must or can be used with the grammar",
+        "label": "Related lexicon type"
+    },
+    "relatedMetadataScheme": {
+        "desc": "Refers to the metadata schema originally used for the description of the resource",
+        "label": "Original metadata scheme"
+    },
+    "relatedOrganizationType": {
+        "desc": "Base type for related organizations; choice between organization names and identifiers",
+        "label": "Organization name"
+    },
+    "relatedPersonType": {
+        "desc": "Base type for related persons; choice between person names and person identifiers",
+        "label": "Person name"
+    },
+    "relatedProjectType": {
+        "desc": "Base type for related projects; choice between project names and identifiers",
+        "label": "Project name"
+    },
+    "relatedRepositoryType": {
+        "desc": "Base type for related repositories; choice between repository names and identifiers",
+        "label": "Repository name"
+    },
+    "relatedResource1": {
+        "desc": "Reference to a resource participating in a relation; the preferred form of reference is a unique identifier, otherwise the resource name",
+        "label": "Related resource"
+    },
+    "relatedResource2": {
+        "desc": "Reference to a resource participating in a relation; the preferred form of reference is a unique identifier, otherwise the resource name",
+        "label": "Related resource"
+    },
+    "relatedResourceType": {
+        "desc": "Base type for related resources; choice between resource names and identifiers",
+        "label": "Resource name"
+    },
+    "relationInfo": {
+        "desc": "Groups together information on relations between resources",
+        "label": "Annotations"
+    },
+    "relationType": {
+        "desc": "Specifies the type of relation holding between two entities (e.g. two resources that comprise one new resource together, a corpus and the s/w component that has been used for its creation or a corpus and the publication that describes it",
+        "label": "Relation type"
+    },
+    "repository": {
+        "desc": "Information about the repository where the publication is deposited",
+        "label": "Repository"
+    },
+    "repositoryIdentifierType": {
+        "desc": "Base type for identifier schemes for repositories, archives etc.",
+        "label": null
+    },
+    "repositoryName": {
+        "desc": "The name(s) of the repository",
+        "label": "Repository name"
+    },
+    "requiresHardware": {
+        "desc": "Hardware required for running a s/w component and/or computational grammar",
+        "label": "Requires hardware"
+    },
+    "requiresLRs": {
+        "desc": "If for running a s/w component and/or computational grammar, specific LRs (e.g. a grammar, a list of words etc.) are required",
+        "label": "Requires language resources"
+    },
+    "requiresSoftware": {
+        "desc": "Additional software required for running a s/w component and/or computational grammar",
+        "label": "Requires software"
+    },
+    "resourceCreationInfo": {
+        "desc": "Groups information on the creation procedure of a resource",
+        "label": "Resource creation"
+    },
+    "resourceCreator": {
+        "desc": "Groups information on the person or the organization that has created the resource",
+        "label": "Resource creator"
+    },
+    "resourceDocumentationInfo": {
+        "desc": "Groups together information on any document describing the resource",
+        "label": "Resource documentation"
+    },
+    "resourceIdentifierType": {
+        "desc": "Base type for identifier schemes for resources (corpora, lexical/conceptual resources etc.)",
+        "label": null
+    },
+    "resourceName": {
+        "desc": "The full name by which the resource is known; the element can be repeated for the different language versions using the \"lang\" attribute to specify the language",
+        "label": null
+    },
+    "resourceShortName": {
+        "desc": "The short form (abbreviation, acronym etc.) used to identify the resource; the element can be repeated for the different language versions using the \"lang\" attribute to specify the language.",
+        "label": "Resource short name"
+    },
+    "resourceType": {
+        "desc": null,
+        "label": "Resource type"
+    },
+    "revision": {
+        "desc": "Provides an account of the revisions in free text or a link to a document with revisions",
+        "label": "Revision"
+    },
+    "rightsHolder": {
+        "desc": "Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights to another person or organization (e.g. an author as a creator assigns her rights to the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) to distribute the work.",
+        "label": "Rights holder"
+    },
+    "rightsStatementInfo": {
+        "desc": "Groups information on official statements indicative of licensing terms for the use of a resource (e.g. open access, free to read, all rights reserved etc.); its semantics should be clear, preferrably formally expressed and stored at a url",
+        "label": "Rights statement"
+    },
+    "rightsStatementInfoType": {
+        "desc": "Groups information on official statements indicative of licensing terms for the use of a resource (e.g. open access, free to read, all rights reserved etc.); its semantics should be clear, preferrably formally expressed and stored at a url",
+        "label": "Rights statement"
+    },
+    "rightsStmtName": {
+        "desc": "The name of an official statement indicative of licensing terms for the use of a resource (e.g. open access, free to read etc.); its semantics should be clear, preferrably formally expressed and stored at a url",
+        "label": "Rights statement name"
+    },
+    "rightsStmtURL": {
+        "desc": "Link to the URL with the text that formally explains the licensing conditions imposed by the statement",
+        "label": "Rights statement URL"
+    },
+    "robustness": {
+        "desc": "Free text statement on the robustness of the grammar (how well the grammar can cope with misspelt/unknown etc. input, i.e. whether it can produce even partial interpretations of the input)",
+        "label": "Robustness"
+    },
+    "runningEnvironmentDetails": {
+        "desc": "Provides further information on the running environment",
+        "label": "Running environment details"
+    },
+    "runningEnvironmentInfo": {
+        "desc": "Groups together information on the running environment of a tool or a language description",
+        "label": "Running environment"
+    },
+    "runningTime": {
+        "desc": "Gives information on the running time of a component",
+        "label": "Running time"
+    },
+    "samplesLocation": {
+        "desc": "A url with samples of the resource or, in the case of tools, of samples of the output",
+        "label": "Samples location"
+    },
+    "scriptId": {
+        "desc": "The identifier of the script subelement according to the IETF BCP47 guidelines (i.e. ISO 15924 codes)",
+        "label": "Script identifier"
+    },
+    "scriptIdType": {
+        "desc": "Base type for scripts according to ISO 15924",
+        "label": null
+    },
+    "series": {
+        "desc": "The name of a series or set of books. When citing an entire book, the title field gives its title and an optional series field gives the name of a series or multi-volume set in which the book is published",
+        "label": "Series"
+    },
+    "sex": {
+        "desc": "The gender of a person",
+        "label": "Sex"
+    },
+    "shallowness": {
+        "desc": "Free text statement on the shallowness of the grammar (how deep the syntactic analysis performed by the grammar can be)",
+        "label": "Shallowness"
+    },
+    "size": {
+        "desc": "Specifies the size of the resource with regard to the SizeUnit measurement in form of a number",
+        "label": "Size"
+    },
+    "sizeInfo": {
+        "desc": "Groups information on the size of the resource or of resource parts",
+        "label": "Size"
+    },
+    "sizePerAnnotation": {
+        "desc": "Provides information on size for the annotated parts of the resource",
+        "label": "Size per annotation"
+    },
+    "sizePerCharacterEncoding": {
+        "desc": "Provides information on the size of the resource parts with different character encoding",
+        "label": "Size per character encoding"
+    },
+    "sizePerDomain": {
+        "desc": "Specifies the size of resource parts per domain",
+        "label": "Size per domain"
+    },
+    "sizePerGeographicCoverage": {
+        "desc": "Provides information on size per geographically distinct section of the resource",
+        "label": "Size per geographic coverage"
+    },
+    "sizePerLanguage": {
+        "desc": "Provides information on the size per language component",
+        "label": "Size per language"
+    },
+    "sizePerLanguageVariety": {
+        "desc": "Provides information on the size per language variety component",
+        "label": "Size per language variety"
+    },
+    "sizePerModality": {
+        "desc": "Provides information on the size per modality component",
+        "label": "Size per modality"
+    },
+    "sizePerStructuralEncoding": {
+        "desc": "Provides information on the size of the resource parts with different format",
+        "label": "Size per text format"
+    },
+    "sizePerTextClassification": {
+        "desc": "Provides information on size of resource parts with different text classification",
+        "label": "Size per text classification"
+    },
+    "sizePerTextFormat": {
+        "desc": "Provides information on the size of the resource parts with different format",
+        "label": "Size per text format"
+    },
+    "sizePerTimeCoverage": {
+        "desc": "Provides information on size per time period represented in the resource",
+        "label": "Size per time coverage"
+    },
+    "sizePerValidation": {
+        "desc": "Specifies the size of the validated part of a resource",
+        "label": "Size per validation"
+    },
+    "sizeUnit": {
+        "desc": "Specifies the unit that is used when providing information on the size of the resource or of resource parts",
+        "label": "Size unit"
+    },
+    "sourceMetadataLink": {
+        "desc": "A link to the original metadata record, in cases of harvesting",
+        "label": "Original metadata record link"
+    },
+    "sourceOfMetadataRecord": {
+        "desc": "Refers to the catalog or repository from which the metadata record has been originated (for harvested records)",
+        "label": "Source of metadata record"
+    },
+    "startDate": {
+        "desc": "Basic format for start dates, with optional day and month and obligatory year",
+        "label": "Start date"
+    },
+    "structuralEncoding": {
+        "desc": "Information on whether the structure of the corpus documents is formally encoded and the scheme used for this",
+        "label": "Structural encoding"
+    },
+    "structuralEncodingInfo": {
+        "desc": "Groups information on the encoding of the structure of the contents of the corpus",
+        "label": "Text format"
+    },
+    "subject": {
+        "desc": "For resources that are using subject / topic classification",
+        "label": "Subject"
+    },
+    "subscribe": {
+        "desc": "The email address to be used for subscribing to the mailing list",
+        "label": "Subscribe"
+    },
+    "surname": {
+        "desc": "The surname (family name) of a person related to the resource",
+        "label": "Surname"
+    },
+    "tagset": {
+        "desc": "A name or an identifier (e.g. url reference) to the tagset used in the annotation of the resource or used by the component",
+        "label": "Tagset"
+    },
+    "task": {
+        "desc": "An indication of the task performed by the grammar",
+        "label": "Task"
+    },
+    "telephoneNumber": {
+        "desc": "The telephone number of a person or an organization; recommended format: +_international code_city code_number",
+        "label": "Telephone number"
+    },
+    "textClassificationInfo": {
+        "desc": "Groups together information on text type/genre of the resource",
+        "label": "Text classification"
+    },
+    "textFormatInfo": {
+        "desc": "Groups information on the text format(s) of a resource",
+        "label": "Text format"
+    },
+    "textGenre": {
+        "desc": "Genre: The conventionalized discourse or text types of the content of the resource, based on extra-linguistic and internal linguistic criteria",
+        "label": "Text genre"
+    },
+    "textType": {
+        "desc": "Specifies the type of the text according to a text type classification",
+        "label": "Text type"
+    },
+    "theoreticModel": {
+        "desc": "Name of the theoretic model applied for the creation or enrichment of the resource, and/or a reference (URL or bibliographic reference) to informative material about the theoretic model used",
+        "label": "Theoretic model"
+    },
+    "timeCoverage": {
+        "desc": "The time period that the content of a resource is about",
+        "label": "Time coverage"
+    },
+    "timeCoverageInfo": {
+        "desc": "Groups together information on time classification of the resource",
+        "label": "Time coverage"
+    },
+    "title": {
+        "desc": "The title of the publication",
+        "label": "Title"
+    },
+    "trainingCorpusDetails": {
+        "desc": "Detailed description of the training corpus (e.g. size, number of features etc.)",
+        "label": null
+    },
+    "typesystem": {
+        "desc": "A name or an identifier (e.g. url reference) to the typesystem used in the annotation of the resource or used by the component",
+        "label": "Tagset"
+    },
+    "unsubscribe": {
+        "desc": "The email address to be used for unsubscribing from the mailing list",
+        "label": "Unsubscribe"
+    },
+    "updateFrequency": {
+        "desc": "Specifies the frequency with which the resource is updated",
+        "label": "Update frequency"
+    },
+    "usageInfo": {
+        "desc": "Groups information on usage of the resource (both intended and actual use)",
+        "label": "Usage"
+    },
+    "usageProject": {
+        "desc": "Groups information on the project in which the resource has been used",
+        "label": "Usage project"
+    },
+    "usageReport": {
+        "desc": "Reports on the research papers documenting the usage of a resource, either in a structured form or in free text",
+        "label": "Usage report"
+    },
+    "useNLPSpecific": {
+        "desc": "Specifies the NLP application for which the resource iscreated or the application in which it has actually been used.",
+        "label": "Use specific to NLP"
+    },
+    "userType": {
+        "desc": "The conditions imposed by the user type (for instance, use may be allowed only for academic users or the fee may vary depending on the user type)",
+        "label": "User type"
+    },
+    "validated": {
+        "desc": "Specifies the validation status of the resource",
+        "label": "Validated"
+    },
+    "validationExtent": {
+        "desc": "The resource coverage in terms of validated data",
+        "label": "Validation extent"
+    },
+    "validationExtentDetails": {
+        "desc": "Provides information on size or other details of partially validated data; to be used if only part of the resource has been validated and as an alternative to SizeInfo if the validated part cannot be counted otherwise",
+        "label": "Validation extent details"
+    },
+    "validationInfo": {
+        "desc": "Groups information on validation of a resource; it can be repeated to allow for different validations (e.g. formal validation of the whole resource; content validation of one part of the resource etc.). ",
+        "label": "Validation"
+    },
+    "validationMode": {
+        "desc": "Specifies the validation methodology applied",
+        "label": "Validation mode"
+    },
+    "validationModeDetails": {
+        "desc": "Textual field for additional information on validation",
+        "label": "Validation mode details"
+    },
+    "validationType": {
+        "desc": "Specifies the type of the validation that have been performed ",
+        "label": "Validation type"
+    },
+    "validator": {
+        "desc": "Groups information on the person(s) or the organization(s) that validated the resource",
+        "label": "Validator"
+    },
+    "variantId": {
+        "desc": "The identifier of the variant subelement according to the IETF BCP47 guidelines",
+        "label": "Variant identifier"
+    },
+    "variantIdType": {
+        "desc": "Base type for language variants according to the BCP-47 guidlelines",
+        "label": null
+    },
+    "variantName": {
+        "desc": "variant name used for the model",
+        "label": null
+    },
+    "version": {
+        "desc": "Any string, usually a number, that identifies the version of a resource; for components, the recommended practice is to follow the semantic versioning (http://semver.org/); it should not be confused with the relation that links together a specific resource with its various versions",
+        "label": "Version"
+    },
+    "versionInfo": {
+        "desc": "Groups information on a specific version or release of the resource",
+        "label": "Version"
+    },
+    "volume": {
+        "desc": "Specifies the volume of a journal or multivolume book",
+        "label": "Volume"
+    },
+    "webpage": {
+        "desc": "A URL used as webpage of a project",
+        "label": "Webpage"
+    },
+    "weightedGrammar": {
+        "desc": "Indicates whether the grammar contains numerical weights (incl. probabilities)",
+        "label": "Weighted grammar"
+    },
+    "year": {
+        "desc": "for year; to be used with four digits always",
+        "label": null
+    },
+    "zipCode": {
+        "desc": "The zip code of the postal address of a person or organization ",
+        "label": "Zip code"
+    }
+}

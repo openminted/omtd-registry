@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageDescriptionMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema&#10;&#9;&#9;&#9;&#9;http://www.meta-share.org/OMTD-SHARE_XMLSchema/OMTD-SHARE-LanguageDescription.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1905978</metadataRecordIdentifier>
+    <metadataCreationDate>2013-01-17</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Krasnowska Katarzyna</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-01-17</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <languageDescriptionInfo>
+    <resourceType>languageDescription</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">TAG grammar for Polish</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">A TAG (Tree Adjoining Grammar) extracted automatically from Składnica constituency treebank. The grammar and lexicon are in XMG (http://wiki.loria.fr/wiki/XMG/Documentation) and LEX2ALL (http://wiki.loria.fr/wiki/LEX2ALL) formats respectively. The grammar contains 2802 elementary tree families (1825 initial trees and 977 auxiliary trees). The lexicon contains 11515 lexemes, anchoring a total of 23399 trees (one lexeme can serve as a lexical anchor to more than one tree, e.g. in case of verbs with more than one possible valence frame).</description>
+      </descriptions>
+      <resourceShortNames/>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1905978</identifier>
+        <identifier resourceIdentifierSchemeName="other">443</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Krasnowska Katarzyna</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <validationInfos/>
+    <resourceCreationInfo>
+      <resourceCreators/>
+      <fundingProjects>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="en">Central and South-East European Resources</projectName>
+          </projectNames>
+        </fundingProject>
+      </fundingProjects>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>GPL</licence>
+              <conditionsOfUse>attribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <languageDescriptionType>grammar</languageDescriptionType>
+    <languageDescriptionMediaType>
+      <languageDescriptionTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>pl</languageTag>
+              <languageId>pl</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>N/A</size>
+            <sizeUnit>other</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </languageDescriptionTextInfo>
+    </languageDescriptionMediaType>
+  </languageDescriptionInfo>
+</languageDescriptionMetadataRecord>

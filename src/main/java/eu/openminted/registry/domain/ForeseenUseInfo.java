@@ -1,91 +1,99 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for foreseenUseInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="foreseenUseInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="foreseenUse"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="30"/&gt;
+ *               &lt;enumeration value="humanUse"/&gt;
+ *               &lt;enumeration value="nlpApplications"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="useNlpApplications" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}useNLPSpecific" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "foreseenUseInfoType", propOrder = {
+    "foreseenUse",
+    "useNlpApplications"
+})
 public class ForeseenUseInfo {
 
-	@XmlJavaTypeAdapter(ForeseenUseAdapter.class)
-    enum ForeseenUse {
+    @XmlElement(required = true)
+    protected ForeseenUseEnum foreseenUse;
+    @XmlElementWrapper
+    @XmlElement(name = "useNLPSpecific", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<UseNLPSpecificEnum> useNlpApplications;
 
-        HUMAN_USE("humanUse"),
-        NLP_APPLICATIONS("nlpApplications");
-
-        private String value;
-
-        ForeseenUse(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ForeseenUse forValue(String value) {
-            for (ForeseenUse ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-	@XmlElement(name = "foreseenUse")
-    private ForeseenUse foreseenUse;
-    //TODO this should be made into an enum (use useNLPSpecific)
-    
-    @XmlElementWrapper(name = "useNlpApplications")
-    @XmlElement(name = "useNLPSpecific")
-    private List<String> useNlpApplications;
-
-    public ForeseenUseInfo() {
-    }
-
-    public ForeseenUseInfo(ForeseenUse foreseenUse) {
-        this.foreseenUse = foreseenUse;
-    }
-
-    public ForeseenUseInfo(ForeseenUse foreseenUse, List<String> useNlpApplications) {
-        this.foreseenUse = foreseenUse;
-        this.useNlpApplications = useNlpApplications;
-    }
-
-    public ForeseenUse getForeseenUse() {
+    /**
+     * Gets the value of the foreseenUse property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ForeseenUseEnum }
+     *     
+     */
+    public ForeseenUseEnum getForeseenUse() {
         return foreseenUse;
     }
 
-    public void setForeseenUse(ForeseenUse foreseenUse) {
-        this.foreseenUse = foreseenUse;
+    /**
+     * Sets the value of the foreseenUse property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ForeseenUseEnum }
+     *     
+     */
+    public void setForeseenUse(ForeseenUseEnum value) {
+        this.foreseenUse = value;
     }
 
-    public List<String> getUseNlpApplications() {
+    public List<UseNLPSpecificEnum> getUseNlpApplications() {
+        if (useNlpApplications == null) {
+            useNlpApplications = new ArrayList<UseNLPSpecificEnum>();
+        }
         return useNlpApplications;
     }
 
-    public void setUseNlpApplications(List<String> useNlpApplications) {
+    public void setUseNlpApplications(List<UseNLPSpecificEnum> useNlpApplications) {
         this.useNlpApplications = useNlpApplications;
     }
-    
-}
 
-class ForeseenUseAdapter extends XmlAdapter<String, ForeseenUseInfo.ForeseenUse> {
-
-    @Override
-    public String marshal(ForeseenUseInfo.ForeseenUse v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ForeseenUseInfo.ForeseenUse unmarshal(String v) throws Exception {
-        return ForeseenUseInfo.ForeseenUse.forValue(v);
-    }
 }
