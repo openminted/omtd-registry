@@ -30,7 +30,7 @@ public class ComponentService {
 	    	Paging paging = null;
 	    			        
 		    try {
-		        paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId(), 0, 0, new String[0]);
+		        paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue(), 0, 0, new String[0]);
 			} catch (ServiceException e) {
 			    return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -43,7 +43,7 @@ public class ComponentService {
 	    	Resource resource = new Resource();
 	    	
 	    	String serialized = new String();
-	    	serialized = Utils.unserializeComponent(component);
+	    	serialized = Utils.unserialize(component, Component.class);
 	    	
 	    	if(!serialized.equals("failed")){
 	    		resource.setPayload(serialized);
@@ -77,7 +77,7 @@ public class ComponentService {
 	    	Resource resource = new Resource();
 	    	
 	    	try {
-				paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId(), 0, 0, new String[0]);
+				paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue(), 0, 0, new String[0]);
 			} catch (ServiceException e) {
 				responseEntity = new ResponseEntity<String>("{\"message\":\""+e.getMessage()+"\"}", HttpStatus.FORBIDDEN);
 				return responseEntity;
@@ -89,7 +89,7 @@ public class ComponentService {
 	    		return responseEntity;
 	    	}else{
 	    		String serialized = new String();
-		    	serialized = Utils.unserializeComponent(component);
+		    	serialized = Utils.unserialize(component, Component.class);
 		    	
 		    	if(!serialized.equals("failed")){
 		    		resource.setPayload(serialized);
@@ -122,7 +122,7 @@ public class ComponentService {
 	    	Resource resource = new Resource();
 	    	
 	    	try {
-				paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getId(), 0, 0, new String[0]);
+				paging = searchService.search("component", "omtdid any "+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue(), 0, 0, new String[0]);
 			} catch (ServiceException e) {
 				responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
 				return responseEntity;
