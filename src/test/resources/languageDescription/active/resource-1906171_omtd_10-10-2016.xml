@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageDescriptionMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema&#10;&#9;&#9;&#9;&#9;http://www.meta-share.org/OMTD-SHARE_XMLSchema/OMTD-SHARE-LanguageDescription.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1906171</metadataRecordIdentifier>
+    <metadataCreationDate>2013-01-23</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Kibort Anna</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-01-23</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <languageDescriptionInfo>
+    <resourceType>languageDescription</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">LFG Treebank for Polish</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">A collection of sentences from the Polish National Corpus, parsed with the LFG grammar, represented as syntactic trees and analysed for grammatical functions.</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">pol-lfg-treebank</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1906171</identifier>
+        <identifier resourceIdentifierSchemeName="other">449</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Kibort Anna</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>1.0</version>
+    </versionInfo>
+    <validationInfos/>
+    <usageInfo>
+      <foreseenUseInfos>
+        <foreseenUseInfo>
+          <foreseenUse>nlpApplications</foreseenUse>
+          <useNlpApplications>
+            <useNLPSpecific>shallowParsing</useNLPSpecific>
+          </useNlpApplications>
+        </foreseenUseInfo>
+      </foreseenUseInfos>
+      <actualUseInfos/>
+    </usageInfo>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="en">Kibort Anna</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+      </resourceCreators>
+      <fundingProjects>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="en">Central and South-East European Resources</projectName>
+          </projectNames>
+        </fundingProject>
+      </fundingProjects>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <downloadURLs>
+          <downloadURL>http://zil.ipipan.waw.pl/LFG</downloadURL>
+        </downloadURLs>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>GPL</licence>
+              <conditionsOfUse>shareAlike</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <fee>free of charge</fee>
+        <userTypes/>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <languageDescriptionType>other</languageDescriptionType>
+    <languageDescriptionEncodingInfo>
+      <encodingLevels>
+        <encodingLevel>syntax</encodingLevel>
+      </encodingLevels>
+      <standardsBestPractices/>
+      <theoreticModels>
+        <theoreticModel>LFG (Lexical Functional Grammar) grammars minimally provide two levels of representation: constituent structure (c-structure) produced by context-free phrase structure rules and functional structure (f-structure) created by functional descriptions.</theoreticModel>
+      </theoreticModels>
+      <formalisms/>
+      <tasks/>
+      <grammaticalPhenomenaCoverages/>
+    </languageDescriptionEncodingInfo>
+    <languageDescriptionMediaType>
+      <languageDescriptionTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>monolingual</lingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>pl</languageTag>
+              <languageId>pl</languageId>
+              <scriptId>Latn</scriptId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities>
+          <modalityInfo>
+            <modalityType>writtenLanguage</modalityType>
+          </modalityInfo>
+        </modalities>
+        <sizes>
+          <sizeInfo>
+            <size>837</size>
+            <sizeUnit>sentences</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </languageDescriptionTextInfo>
+    </languageDescriptionMediaType>
+  </languageDescriptionInfo>
+</languageDescriptionMetadataRecord>

@@ -1,21 +1,151 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import java.util.List;
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for datasetDistributionInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="datasetDistributionInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="distributionMediums"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}distributionMedium" maxOccurs="unbounded"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="downloadURLs" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}downloadURL" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="accessURLs" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}accessURL" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="textFormats" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}textFormatInfo" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="characterEncodings" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}characterEncodingInfo" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="sizes" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}sizeInfo" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}rightsInfo"/&gt;
+ *         &lt;element name="copyrightStatements" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}copyrightStatement" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="attributionTexts" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}attributionText" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="rightsHolders" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}rightsHolder" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}availabilityStartDate" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}availabilityEndDate" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}fee" minOccurs="0"/&gt;
+ *         &lt;element name="userTypes" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}userType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "datasetDistributionInfo", propOrder = {
+@XmlType(name = "datasetDistributionInfoType", propOrder = {
     "distributionMediums",
     "downloadURLs",
     "accessURLs",
@@ -33,243 +163,233 @@ import java.util.List;
 })
 public class DatasetDistributionInfo {
 
-	@XmlJavaTypeAdapter(DistributionMediumAdapter.class)
-	enum DistributionMedium {
+    @XmlElementWrapper(required = true)
+    @XmlElement(name = "distributionMedium", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<DistributionMediumEnum> distributionMediums;
+    @XmlElementWrapper
+    @XmlElement(name = "downloadURL", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<String> downloadURLs;
+    @XmlElementWrapper
+    @XmlElement(name = "accessURL", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<String> accessURLs;
+    @XmlElementWrapper
+    @XmlElement(name = "textFormatInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<TextFormatInfo> textFormats;
+    @XmlElementWrapper
+    @XmlElement(name = "characterEncodingInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<CharacterEncodingInfo> characterEncodings;
+    @XmlElementWrapper
+    @XmlElement(name = "sizeInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<SizeInfo> sizes;
 
-		WEB_EXECUTABLE("webExecutable"), PAPER_COPY("paperCopy"), HARD_DISK(
-				"hardDisk"), BLU_RAY("bluRay"), DVD_R("DVD-R"), CD_ROM("CD-ROM"), DOWNLOADABLE(
-				"downloadable"), ACCESSIBLE_THROUGH_INTERFACE(
-				"accessibleThroughInterface"), OTHER("other");
+    protected RightsInfo rightsInfo;
+    
+    @XmlElementWrapper
+    @XmlElement(name = "copyrightStatement", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<CopyrightStatement> copyrightStatements;
+    @XmlElementWrapper
+    @XmlElement(name = "attributionText", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<AttributionText> attributionTexts;
+    @XmlElementWrapper
+    @XmlElement(name = "rightsHolder", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<ActorInfo> rightsHolders;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar availabilityStartDate;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar availabilityEndDate;
+    protected String fee;
+    @XmlElementWrapper
+    @XmlElement(name = "userType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<UserTypeEnum> userTypes;
 
-		private String value;
+    /**
+     * Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getAvailabilityStartDate() {
+        return availabilityStartDate;
+    }
 
-		DistributionMedium(String value) {
-			this.value = value;
-		}
+    /**
+     * Sets the value of the availabilityStartDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setAvailabilityStartDate(XMLGregorianCalendar value) {
+        this.availabilityStartDate = value;
+    }
 
-		public String getValue() {
-			return value;
-		}
+    /**
+     * Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getAvailabilityEndDate() {
+        return availabilityEndDate;
+    }
 
-		public static DistributionMedium forValue(String value) {
-			for (DistributionMedium ut : values()) {
-				if (ut.getValue().equals(value))
-					return ut;
-			}
+    /**
+     * Sets the value of the availabilityEndDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setAvailabilityEndDate(XMLGregorianCalendar value) {
+        this.availabilityEndDate = value;
+    }
 
-			return null;
-		}
-	}
+    /**
+     * Specifies the costs that are required to access the resource, a fragment of the resource or to use a component
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFee() {
+        return fee;
+    }
 
-	// required
-	@XmlElementWrapper(name = "distributionMediums")
-	@XmlElement(name = "distributionMedium")
-	private List<DistributionMedium> distributionMediums;
-	
-	@XmlElementWrapper(name = "downloadURLs")
-	@XmlElement(name = "downloadURL")
-	private List<String> downloadURLs;
-	
-	@XmlElementWrapper(name = "accessURLs")
-	@XmlElement(name = "accessURL")
-	private List<String> accessURLs;
+    /**
+     * Sets the value of the fee property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFee(String value) {
+        this.fee = value;
+    }
 
-	@XmlElementWrapper(name = "textFormats")
-	@XmlElement(name = "textFormatInfo")
-	private List<TextFormatInfo> textFormats;
+    public List<DistributionMediumEnum> getDistributionMediums() {
+        if (distributionMediums == null) {
+            distributionMediums = new ArrayList<DistributionMediumEnum>();
+        }
+        return distributionMediums;
+    }
 
-	@XmlElementWrapper(name = "characterEncodings")
-	@XmlElement(name = "characterEncodingInfo")
-	private List<CharacterEncodingInfo> characterEncodings;
+    public void setDistributionMediums(List<DistributionMediumEnum> distributionMediums) {
+        this.distributionMediums = distributionMediums;
+    }
 
-	@XmlElementWrapper(name = "sizes")
-	@XmlElement(name = "sizeInfo")
-	private List<SizeInfo> sizes;
-	// required
-	private RightsInfo rightsInfo;
-	
-	@XmlElementWrapper(name = "copyrightStatements")
-	@XmlElement(name = "copyrightStatement")
-	private List<LangAttributeField> copyrightStatements;
-	
-	@XmlElementWrapper(name = "attributionTexts")
-	@XmlElement(name = "attributionText")
-	private List<LangAttributeField> attributionTexts;
+    public List<String> getDownloadURLs() {
+        if (downloadURLs == null) {
+            downloadURLs = new ArrayList<String>();
+        }
+        return downloadURLs;
+    }
 
-	@XmlElementWrapper(name = "rightsHolders")
-	@XmlElement(name = "rightsHolder")
-	private List<ActorInfo> rightsHolders;
-	
-	private XMLGregorianCalendar availabilityStartDate;
-	
-	private XMLGregorianCalendar availabilityEndDate;
-	private String fee;
-	
-	@XmlElementWrapper(name = "userTypes")
-	@XmlElement(name = "userType")
-	private List<UserType> userTypes;
+    public void setDownloadURLs(List<String> downloadURLs) {
+        this.downloadURLs = downloadURLs;
+    }
 
-	public DatasetDistributionInfo() {
-	}
+    public List<String> getAccessURLs() {
+        if (accessURLs == null) {
+            accessURLs = new ArrayList<String>();
+        }
+        return accessURLs;
+    }
 
-	public DatasetDistributionInfo(
-			List<DistributionMedium> distributionMediums, RightsInfo rightsInfo) {
-		this.distributionMediums = distributionMediums;
-		this.rightsInfo = rightsInfo;
-	}
+    public void setAccessURLs(List<String> accessURLs) {
+        this.accessURLs = accessURLs;
+    }
 
-	public DatasetDistributionInfo(
-			List<DistributionMedium> distributionMediums,
-			List<String> downloadURLs, List<String> accessURLs,
-			List<TextFormatInfo> textFormats,
-			List<CharacterEncodingInfo> characterEncodings,
-			List<SizeInfo> sizes, RightsInfo rightsInfo,
-			List<LangAttributeField> copyrightStatements, List<LangAttributeField> attributionTexts,
-			List<ActorInfo> rightsHolders, XMLGregorianCalendar availabilityStartDate,
-			XMLGregorianCalendar availabilityEndDate, String fee, List<UserType> userTypes) {
-		this.distributionMediums = distributionMediums;
-		this.downloadURLs = downloadURLs;
-		this.accessURLs = accessURLs;
-		this.textFormats = textFormats;
-		this.characterEncodings = characterEncodings;
-		this.sizes = sizes;
-		this.rightsInfo = rightsInfo;
-		this.copyrightStatements = copyrightStatements;
-		this.attributionTexts = attributionTexts;
-		this.rightsHolders = rightsHolders;
-		this.availabilityStartDate = availabilityStartDate;
-		this.availabilityEndDate = availabilityEndDate;
-		this.fee = fee;
-		this.userTypes = userTypes;
-	}
+    public List<TextFormatInfo> getTextFormats() {
+        if (textFormats == null) {
+            textFormats = new ArrayList<TextFormatInfo>();
+        }
+        return textFormats;
+    }
 
-	public List<DistributionMedium> getDistributionMediums() {
-		return distributionMediums;
-	}
+    public void setTextFormats(List<TextFormatInfo> textFormats) {
+        this.textFormats = textFormats;
+    }
 
-	public void setDistributionMediums(
-			List<DistributionMedium> distributionMediums) {
-		this.distributionMediums = distributionMediums;
-	}
+    public List<CharacterEncodingInfo> getCharacterEncodings() {
+        if (characterEncodings == null) {
+            characterEncodings = new ArrayList<CharacterEncodingInfo>();
+        }
+        return characterEncodings;
+    }
 
-	public List<String> getDownloadURLs() {
-		return downloadURLs;
-	}
+    public void setCharacterEncodings(List<CharacterEncodingInfo> characterEncodings) {
+        this.characterEncodings = characterEncodings;
+    }
 
-	public void setDownloadURLs(List<String> downloadURLs) {
-		this.downloadURLs = downloadURLs;
-	}
+    public List<SizeInfo> getSizes() {
+        if (sizes == null) {
+            sizes = new ArrayList<SizeInfo>();
+        }
+        return sizes;
+    }
 
-	public List<String> getAccessURLs() {
-		return accessURLs;
-	}
+    public void setSizes(List<SizeInfo> sizes) {
+        this.sizes = sizes;
+    }
 
-	public void setAccessURLs(List<String> accessURLs) {
-		this.accessURLs = accessURLs;
-	}
+    public RightsInfo getRightsInfo() {
+        return rightsInfo;
+    }
 
-	public List<TextFormatInfo> getTextFormats() {
-		return textFormats;
-	}
+    public void setRightsInfo(RightsInfo rightsInfo) {
+        this.rightsInfo = rightsInfo;
+    }
 
-	public void setTextFormats(List<TextFormatInfo> textFormats) {
-		this.textFormats = textFormats;
-	}
+    public List<CopyrightStatement> getCopyrightStatements() {
+        if (copyrightStatements == null) {
+            copyrightStatements = new ArrayList<CopyrightStatement>();
+        }
+        return copyrightStatements;
+    }
 
-	public List<CharacterEncodingInfo> getCharacterEncodings() {
-		return characterEncodings;
-	}
+    public void setCopyrightStatements(List<CopyrightStatement> copyrightStatements) {
+        this.copyrightStatements = copyrightStatements;
+    }
 
-	public void setCharacterEncodings(
-			List<CharacterEncodingInfo> characterEncodings) {
-		this.characterEncodings = characterEncodings;
-	}
+    public List<AttributionText> getAttributionTexts() {
+        if (attributionTexts == null) {
+            attributionTexts = new ArrayList<AttributionText>();
+        }
+        return attributionTexts;
+    }
 
-	public List<SizeInfo> getSizes() {
-		return sizes;
-	}
+    public void setAttributionTexts(List<AttributionText> attributionTexts) {
+        this.attributionTexts = attributionTexts;
+    }
 
-	public void setSizes(List<SizeInfo> sizes) {
-		this.sizes = sizes;
-	}
+    public List<ActorInfo> getRightsHolders() {
+        if (rightsHolders == null) {
+            rightsHolders = new ArrayList<ActorInfo>();
+        }
+        return rightsHolders;
+    }
 
-	public RightsInfo getRightsInfo() {
-		return rightsInfo;
-	}
+    public void setRightsHolders(List<ActorInfo> rightsHolders) {
+        this.rightsHolders = rightsHolders;
+    }
 
-	public void setRightsInfo(RightsInfo rightsInfo) {
-		this.rightsInfo = rightsInfo;
-	}
+    public List<UserTypeEnum> getUserTypes() {
+        if (userTypes == null) {
+            userTypes = new ArrayList<UserTypeEnum>();
+        }
+        return userTypes;
+    }
 
-	public List<LangAttributeField> getCopyrightStatements() {
-		return copyrightStatements;
-	}
+    public void setUserTypes(List<UserTypeEnum> userTypes) {
+        this.userTypes = userTypes;
+    }
 
-	public void setCopyrightStatements(List<LangAttributeField> copyrightStatements) {
-		this.copyrightStatements = copyrightStatements;
-	}
-
-	public List<LangAttributeField> getAttributionTexts() {
-		return attributionTexts;
-	}
-
-	public void setAttributionTexts(List<LangAttributeField> attributionTexts) {
-		this.attributionTexts = attributionTexts;
-	}
-
-	public List<ActorInfo> getRightsHolders() {
-		return rightsHolders;
-	}
-
-	public void setRightsHolders(List<ActorInfo> rightsHolders) {
-		this.rightsHolders = rightsHolders;
-	}
-
-	public XMLGregorianCalendar getAvailabilityStartDate() {
-		return availabilityStartDate;
-	}
-
-	public void setAvailabilityStartDate(XMLGregorianCalendar availabilityStartDate) {
-		this.availabilityStartDate = availabilityStartDate;
-	}
-
-	public XMLGregorianCalendar getAvailabilityEndDate() {
-		return availabilityEndDate;
-	}
-
-	public void setAvailabilityEndDate(XMLGregorianCalendar availabilityEndDate) {
-		this.availabilityEndDate = availabilityEndDate;
-	}
-
-	public String getFee() {
-		return fee;
-	}
-
-	public void setFee(String fee) {
-		this.fee = fee;
-	}
-
-	public List<UserType> getUserTypes() {
-		return userTypes;
-	}
-
-	public void setUserTypes(List<UserType> userTypes) {
-		this.userTypes = userTypes;
-	}
-}
-
-class DistributionMediumAdapter extends
-		XmlAdapter<String, DatasetDistributionInfo.DistributionMedium> {
-
-	@Override
-	public String marshal(DatasetDistributionInfo.DistributionMedium v)
-			throws Exception {
-		return v != null ? v.getValue() : null;
-	}
-
-	@Override
-	public DatasetDistributionInfo.DistributionMedium unmarshal(String v)
-			throws Exception {
-		return DatasetDistributionInfo.DistributionMedium.forValue(v);
-	}
 }

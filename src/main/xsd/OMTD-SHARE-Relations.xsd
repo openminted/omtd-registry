@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited by ILSP/Athena R.C. -->
-<xs:schema xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0" xml:lang="en">
-	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
+	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd" />
 	<xs:complexType name="relationInfoType">
 		<xs:sequence>
 			<xs:element name="relationType">
@@ -13,32 +11,32 @@
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="isPartOf"/>
-						<xs:enumeration value="isPartWith"/>
-						<xs:enumeration value="hasPart"/>
-						<xs:enumeration value="hasOutcome"/>
-						<xs:enumeration value="isCombinedWith"/>
-						<xs:enumeration value="requiresLR"/>
-						<xs:enumeration value="requiresSoftware"/>
-						<xs:enumeration value="isexactMatch"/>
-						<xs:enumeration value="isSimilarTo"/>
-						<xs:enumeration value="isContinuationOf"/>
-						<xs:enumeration value="isVersionOf"/>
-						<xs:enumeration value="isSimilarTo"/>
-						<xs:enumeration value="replaces"/>
-						<xs:enumeration value="isReplacedWith"/>
-						<xs:enumeration value="isCreatedBy"/>
-						<xs:enumeration value="isElicitedBy"/>
-						<xs:enumeration value="isRecordedBy"/>
-						<xs:enumeration value="isEditedBy"/>
-						<xs:enumeration value="isAnalysedBy"/>
-						<xs:enumeration value="isEvaluatedBy"/>
-						<xs:enumeration value="isQueriedBy"/>
-						<xs:enumeration value="isAccessedBy"/>
-						<xs:enumeration value="isArchivedBy"/>
-						<xs:enumeration value="isDisplayedBy"/>
-						<xs:enumeration value="isCompatibleWith"/>
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="relationTypeEnum" /></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+						<xs:enumeration value="isPartOf" />
+						<xs:enumeration value="isPartWith" />
+						<xs:enumeration value="hasPart" />
+						<xs:enumeration value="hasOutcome" />
+						<xs:enumeration value="isCombinedWith" />
+						<xs:enumeration value="requiresLR" />
+						<xs:enumeration value="requiresSoftware" />
+						<xs:enumeration value="isexactMatch" />
+						<xs:enumeration value="isSimilarTo" />
+						<xs:enumeration value="isContinuationOf" />
+						<xs:enumeration value="isVersionOf" />
+						<xs:enumeration value="isSimilarTo" />
+						<xs:enumeration value="replaces" />
+						<xs:enumeration value="isReplacedWith" />
+						<xs:enumeration value="isCreatedBy" />
+						<xs:enumeration value="isElicitedBy" />
+						<xs:enumeration value="isRecordedBy" />
+						<xs:enumeration value="isEditedBy" />
+						<xs:enumeration value="isAnalysedBy" />
+						<xs:enumeration value="isEvaluatedBy" />
+						<xs:enumeration value="isQueriedBy" />
+						<xs:enumeration value="isAccessedBy" />
+						<xs:enumeration value="isArchivedBy" />
+						<xs:enumeration value="isDisplayedBy" />
+						<xs:enumeration value="isCompatibleWith" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -53,7 +51,7 @@
 			<xs:element name="relatedResources">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="relatedResource2" type="ms:relatedResourceType" maxOccurs="unbounded">
+						<xs:element maxOccurs="unbounded" name="relatedResource2" type="ms:relatedResourceType">
 							<xs:annotation>
 								<xs:documentation>Reference to a resource participating in a relation; the preferred form of reference is a unique identifier, otherwise the resource name</xs:documentation>
 								<xs:appinfo>
@@ -66,7 +64,7 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- definition of elements -->
+	
 	<xs:element name="relationInfo" type="ms:relationInfoType">
 		<xs:annotation>
 			<xs:documentation>Groups together information on relations between resources</xs:documentation>

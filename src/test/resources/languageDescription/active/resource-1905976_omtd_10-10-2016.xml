@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageDescriptionMetadataRecord xmlns="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema&#10;&#9;&#9;&#9;&#9;http://www.meta-share.org/OMTD-SHARE_XMLSchema/OMTD-SHARE-LanguageDescription.xsd">
+  <metadataHeaderInfo>
+    <metadataRecordIdentifier metadataIdentifierSchemeName="other">ms1905976</metadataRecordIdentifier>
+    <metadataCreationDate>2013-02-05</metadataCreationDate>
+    <metadataCreators>
+      <metadataCreator>
+        <personNames>
+          <personName lang="en">Tadić Marko</personName>
+        </personNames>
+      </metadataCreator>
+    </metadataCreators>
+    <metadataLastDateUpdated>2013-04-08</metadataLastDateUpdated>
+  </metadataHeaderInfo>
+  <languageDescriptionInfo>
+    <resourceType>languageDescription</resourceType>
+    <identificationInfo>
+      <resourceNames>
+        <resourceName lang="en">Croatian and Slovene NERC models for Stanford NERC</resourceName>
+      </resourceNames>
+      <descriptions>
+        <description lang="en">Stanford NER model for named entity recognition and classification (NERC) in Croatian texts is built by using the Stanford Named Entity Recognizer tool (URL http://nlp.stanford.edu/software/CRF-NER.shtml) based on Conditional Random Fields (CRF). The model was trained on a portion of texts crawled from the Vjesnik news portal and manually annotated for ENAMEX TYPE={LOCATION, ORGANIZATION, PERSON}. The manually tagged portion of the text consists of 200.006 tokens in 7.358 sentences, containing 5.966 person tokens, 6.897 organization tokens and 4.784 location tokens. Tokens and named entity tags were used as features in the training procedure.
+Stanford NER model for named entity recognition and classification (NERC) in Slovene texts is built by using the Stanford Named Entity Recognizer tool (URL http://nlp.stanford.edu/software/CRF-NER.shtml) based on Conditional Random Fields (CRF). The model was trained on a portion of texts selected from the SSJ-500k corpus of Slovene (URL http://www.slovenscina.eu/tehnologije/ucni-korpus) and manually annotated for ENAMEX TYPE={LOCATION, ORGANIZATION, PERSON, MISC}. The manually tagged portion of the text consists of 216.011 tokens in 9.663 sentences, containing 4.204 person tokens, 2.526 organization tokens, 2.421 location tokens and 1.143 miscellaneous tokens. Manually assigned POS/MSD tags and lemmas for the 216.011 tokens were extracted from the corpus and used as features in the training procedure.</description>
+      </descriptions>
+      <resourceShortNames>
+        <resourceShortName lang="en">hrStanfordNERC, slStanfordNERC</resourceShortName>
+      </resourceShortNames>
+      <identifiers>
+        <identifier resourceIdentifierSchemeName="other">1905976</identifier>
+        <identifier resourceIdentifierSchemeName="other">324</identifier>
+      </identifiers>
+    </identificationInfo>
+    <contactInfo>
+      <contactEmail/>
+      <contactPersons>
+        <contactPerson>
+          <personNames>
+            <personName lang="en">Bekavac Božo</personName>
+          </personNames>
+        </contactPerson>
+      </contactPersons>
+    </contactInfo>
+    <versionInfo>
+      <version>1.0</version>
+    </versionInfo>
+    <validationInfos/>
+    <usageInfo>
+      <foreseenUseInfos/>
+      <actualUseInfos/>
+    </usageInfo>
+    <resourceCreationInfo>
+      <resourceCreators>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="en">Bekavac Božo</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+        <resourceCreator>
+          <relatedPerson>
+            <personNames>
+              <personName lang="en">Agić Željko</personName>
+            </personNames>
+          </relatedPerson>
+        </resourceCreator>
+      </resourceCreators>
+      <fundingProjects>
+        <fundingProject>
+          <projectNames>
+            <projectName lang="en">Central and South-East European Resources</projectName>
+          </projectNames>
+        </fundingProject>
+      </fundingProjects>
+    </resourceCreationInfo>
+    <distributionInfos>
+      <datasetDistributionInfo>
+        <distributionMediums>
+          <distributionMedium>downloadable</distributionMedium>
+        </distributionMediums>
+        <downloadURLs>
+          <downloadURL>http://meta-share.ffzg.hr/repository/StanfordNERC</downloadURL>
+        </downloadURLs>
+        <textFormats/>
+        <characterEncodings/>
+        <rightsInfo>
+          <licenceInfos>
+            <licenceInfo>
+              <licence>ApacheLicence_2.0</licence>
+              <conditionsOfUse>attribution</conditionsOfUse>
+            </licenceInfo>
+          </licenceInfos>
+        </rightsInfo>
+        <attributionTexts/>
+        <rightsHolders>
+          <rightsHolder>
+            <relatedPerson>
+              <personNames>
+                <personName lang="en">Bekavac Božo</personName>
+              </personNames>
+            </relatedPerson>
+          </rightsHolder>
+        </rightsHolders>
+        <userTypes>
+          <userType>academic</userType>
+        </userTypes>
+      </datasetDistributionInfo>
+    </distributionInfos>
+    <languageDescriptionType>other</languageDescriptionType>
+    <languageDescriptionMediaType>
+      <languageDescriptionTextInfo>
+        <mediaType>text</mediaType>
+        <lingualityInfo>
+          <lingualityType>multilingual</lingualityType>
+          <multilingualityType>other</multilingualityType>
+        </lingualityInfo>
+        <languages>
+          <languageInfo>
+            <language>
+              <languageTag>hr</languageTag>
+              <languageId>hr</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+          <languageInfo>
+            <language>
+              <languageTag>sl</languageTag>
+              <languageId>sl</languageId>
+            </language>
+            <languageVarieties/>
+          </languageInfo>
+        </languages>
+        <modalities/>
+        <sizes>
+          <sizeInfo>
+            <size>N/A</size>
+            <sizeUnit>other</sizeUnit>
+          </sizeInfo>
+        </sizes>
+        <domains/>
+        <timeClassifications/>
+        <geographicClassifications/>
+      </languageDescriptionTextInfo>
+    </languageDescriptionMediaType>
+  </languageDescriptionInfo>
+</languageDescriptionMetadataRecord>

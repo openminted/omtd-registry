@@ -20,7 +20,5 @@ public class Value implements Comparable<Value> {
 	@Override
 	public int compareTo(Value o) {
 		return Integer.compare(count, o.count);
-	}
-	 
-	 
+	}	 
 }

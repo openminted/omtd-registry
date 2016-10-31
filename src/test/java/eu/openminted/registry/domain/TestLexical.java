@@ -80,7 +80,7 @@ public class TestLexical {
 	public void test() throws JAXBException, FileNotFoundException {
 		int id = (int) Thread.currentThread().getId() % numThreads;
 		BufferedReader in = new BufferedReader(new FileReader(testXML));
-		LexicalConceptualResource lexicalConceptual = (LexicalConceptualResource) unmarshaller.get(id).unmarshal(in);
+		Lexical lexicalConceptual = (Lexical) unmarshaller.get(id).unmarshal(in);
 
 		
 		StringWriter sw = new StringWriter();

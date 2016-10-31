@@ -1,117 +1,194 @@
+
 package eu.openminted.registry.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 /**
- * Created by stefania on 9/5/16.
+ * <p>Java class for actualUseInfoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="actualUseInfoType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="actualUse"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="30"/&gt;
+ *               &lt;enumeration value="humanUse"/&gt;
+ *               &lt;enumeration value="nlpApplications"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="useNlpApplications" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}useNLPSpecific" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="usageReports" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="usageReport" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedDocumentInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="derivedResources" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="derivedResource" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedResourceType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="usageProjects" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="usageProject" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedProjectType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="actualUseDetails" minOccurs="0"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;maxLength value="250"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
  */
-
-@XmlType(name = "actualUseInfo", propOrder = {
-	    "actualUse",
-	    "useNlpApplications",
-	    "usageReports",
-	    "derivedResources",
-	    "usageProjects",
-	    "actualUseDetails"
-	})
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "actualUseInfoType", propOrder = {
+    "actualUse",
+    "useNlpApplications",
+    "usageReports",
+    "derivedResources",
+    "usageProjects",
+    "actualUseDetails"
+})
 public class ActualUseInfo {
 
-	@XmlJavaTypeAdapter(ActualUseAdapter.class)
-    enum ActualUse {
+    @XmlElement(required = true)
+    protected ActualUseEnum actualUse;
+    @XmlElementWrapper
+    @XmlElement(name = "useNLPSpecific", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<UseNLPSpecificEnum> useNlpApplications;
+    @XmlElementWrapper
+    @XmlElement(name = "usageReport", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedDocumentInfo> usageReports;
+    @XmlElementWrapper
+    @XmlElement(name = "derivedResource", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedResource> derivedResources;
+    @XmlElementWrapper
+    @XmlElement(name = "usageProject", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedProject> usageProjects;
+    protected String actualUseDetails;
 
-        HUMAN_USE("humanUse"),
-        NLP_APPLICATIONS("nlpApplications");
-
-        private String value;
-
-        ActualUse(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-        
-        public static ActualUse forValue(String value) {
-            for (ActualUse ut: values()) {
-                if (ut.getValue().equals(value))
-                    return ut;
-            }
-
-            return null;
-        }
-    }
-
-    //required
-    private ActualUse actualUse;
-    //TODO this should be made into an enum (use useNLPSpecific)
-    
-    @XmlElementWrapper(name = "useNlpApplications")
-    @XmlElement(name = "useNLPSpecific")
-    private List<String> useNlpApplications;
-    
-    @XmlElementWrapper(name = "usageReports")
-    @XmlElement(name = "usageReport")
-    private List<RelatedDocument> usageReports;
-    
-    @XmlElementWrapper(name = "derivedResources")
-    @XmlElement(name = "derivedResource")
-    private List<RelatedResource> derivedResources;
-    
-    @XmlElementWrapper(name = "usageProjects")
-    @XmlElement(name = "usageProject")
-    private List<RelatedProject> usageProjects;
-    
-    private String actualUseDetails;
-
-    public ActualUseInfo() {
-    }
-
-    public ActualUseInfo(ActualUse actualUse) {
-        this.actualUse = actualUse;
-    }
-
-    public ActualUseInfo(ActualUse actualUse, List<String> useNlpApplications, List<RelatedDocument> usageReports,
-                         List<RelatedResource> derivedResources, List<RelatedProject> usageProjects, String actualUseDetails) {
-        this.actualUse = actualUse;
-        this.useNlpApplications = useNlpApplications;
-        this.usageReports = usageReports;
-        this.derivedResources = derivedResources;
-        this.usageProjects = usageProjects;
-        this.actualUseDetails = actualUseDetails;
-    }
-
-    public ActualUse getActualUse() {
+    /**
+     * Gets the value of the actualUse property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ActualUseEnum }
+     *     
+     */
+    public ActualUseEnum getActualUse() {
         return actualUse;
     }
 
-    public void setActualUse(ActualUse actualUse) {
-        this.actualUse = actualUse;
+    /**
+     * Sets the value of the actualUse property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ActualUseEnum }
+     *     
+     */
+    public void setActualUse(ActualUseEnum value) {
+        this.actualUse = value;
     }
 
-    public List<String> getUseNlpApplications() {
+    /**
+     * Gets the value of the actualUseDetails property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getActualUseDetails() {
+        return actualUseDetails;
+    }
+
+    /**
+     * Sets the value of the actualUseDetails property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setActualUseDetails(String value) {
+        this.actualUseDetails = value;
+    }
+
+    public List<UseNLPSpecificEnum> getUseNlpApplications() {
+        if (useNlpApplications == null) {
+            useNlpApplications = new ArrayList<UseNLPSpecificEnum>();
+        }
         return useNlpApplications;
     }
 
-    public void setUseNlpApplications(List<String> useNlpApplications) {
+    public void setUseNlpApplications(List<UseNLPSpecificEnum> useNlpApplications) {
         this.useNlpApplications = useNlpApplications;
     }
 
-    public List<RelatedDocument> getUsageReports() {
+    public List<RelatedDocumentInfo> getUsageReports() {
+        if (usageReports == null) {
+            usageReports = new ArrayList<RelatedDocumentInfo>();
+        }
         return usageReports;
     }
 
-    public void setUsageReports(List<RelatedDocument> usageReports) {
+    public void setUsageReports(List<RelatedDocumentInfo> usageReports) {
         this.usageReports = usageReports;
     }
 
     public List<RelatedResource> getDerivedResources() {
+        if (derivedResources == null) {
+            derivedResources = new ArrayList<RelatedResource>();
+        }
         return derivedResources;
     }
 
@@ -120,6 +197,9 @@ public class ActualUseInfo {
     }
 
     public List<RelatedProject> getUsageProjects() {
+        if (usageProjects == null) {
+            usageProjects = new ArrayList<RelatedProject>();
+        }
         return usageProjects;
     }
 
@@ -127,24 +207,4 @@ public class ActualUseInfo {
         this.usageProjects = usageProjects;
     }
 
-    public String getActualUseDetails() {
-        return actualUseDetails;
-    }
-
-    public void setActualUseDetails(String actualUseDetails) {
-        this.actualUseDetails = actualUseDetails;
-    }
-}
-
-class ActualUseAdapter extends XmlAdapter<String, ActualUseInfo.ActualUse> {
-
-    @Override
-    public String marshal(ActualUseInfo.ActualUse v) throws Exception {
-        return v!=null?v.getValue():null;
-    }
-
-    @Override
-    public ActualUseInfo.ActualUse unmarshal(String v) throws Exception {
-        return ActualUseInfo.ActualUse.forValue(v);
-    }
 }
