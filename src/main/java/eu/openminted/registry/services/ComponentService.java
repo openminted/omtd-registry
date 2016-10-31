@@ -43,7 +43,7 @@ public class ComponentService {
 	    	Resource resource = new Resource();
 	    	
 	    	String serialized = new String();
-	    	serialized = Utils.unserializeComponent(component);
+	    	serialized = Utils.unserialize(component, Component.class);
 	    	
 	    	if(!serialized.equals("failed")){
 	    		resource.setPayload(serialized);
@@ -89,7 +89,7 @@ public class ComponentService {
 	    		return responseEntity;
 	    	}else{
 	    		String serialized = new String();
-		    	serialized = Utils.unserializeComponent(component);
+		    	serialized = Utils.unserialize(component, Component.class);
 		    	
 		    	if(!serialized.equals("failed")){
 		    		resource.setPayload(serialized);

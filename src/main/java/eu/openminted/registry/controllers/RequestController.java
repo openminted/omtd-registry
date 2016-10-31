@@ -56,7 +56,7 @@ public class RequestController {
 	    @RequestMapping(value = "/request/"/*,params = {"keyword","resourceType","language","mediaType","rights","mimeType","dataFormatSpecific","license"}*/ ,method = RequestMethod.GET, headers = "Accept=application/json")  
 	    public ResponseEntity<String> getResourceTypeByFilters(@RequestParam(value = "keyword" , required=false ,defaultValue = "") String keyword, @RequestParam(value = "resourceType", required=false ,defaultValue = "") String[] resourceType, @RequestParam(value = "language", required=false ,defaultValue = "") String[] language, @RequestParam(value = "mediaType", required=false ,defaultValue = "") String[] mediaType, @RequestParam(value = "rights", required=false ,defaultValue = "") String[] rights, @RequestParam(value = "mimeType", required=false ,defaultValue = "") String[] mimeType, @RequestParam(value = "dataFormatSpecific", required=false ,defaultValue = "") String[] dataFormatSpecific, @RequestParam(value = "license", required=false ,defaultValue = "") String[] license,@RequestParam(value = "from" , required=false ,defaultValue = "0") int from,@RequestParam(value = "to" , required=false ,defaultValue = "-1") int to  ) {
 
-	    	return requestService.getResponseByFilters(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, from, to);
+	    	return requestService.getResponseByFiltersElastic(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, from, to);
 	   
 	    }
 	    

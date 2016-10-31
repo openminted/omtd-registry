@@ -46,7 +46,7 @@ public class CorpusController {
 	    	if(paging.getResults().size()!=0){//resource found
 	    		
 	    		Resource resource = (Resource) paging.getResults().get(0);
-	    		corpus = Utils.serializeCorpus((Resource) paging.getResults().get(0));
+	    		corpus = Utils.serialize((Resource) paging.getResults().get(0), Corpus.class);
 			       if(corpus == null){
 			    	   return new ResponseEntity<String>("Error serializing corpus",HttpStatus.INTERNAL_SERVER_ERROR);
 			       }
@@ -68,7 +68,7 @@ public class CorpusController {
 	    	Resource resource = new Resource();
 	    	
 	    	String serialized = new String();
-	    	serialized = Utils.unserializeCorpus(corpus);
+	    	serialized = Utils.unserialize(corpus,Corpus.class);
 	    	
 	    	if(!serialized.equals("failed")){
 	    		resource.setPayload(serialized);
