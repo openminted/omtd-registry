@@ -1,5 +1,6 @@
 package eu.openminted.registry.services;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -328,6 +329,8 @@ public class RequestService {
 				
 		} catch (ServiceException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		}
 
 		List<Facet> facetsCollection = new ArrayList<Facet>();
