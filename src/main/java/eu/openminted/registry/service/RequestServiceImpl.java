@@ -1,6 +1,5 @@
-package eu.openminted.registry.services;
+package eu.openminted.registry.service;
 
-import eu.openminted.registry.controllers.Utils;
 import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
@@ -19,12 +18,12 @@ import java.net.UnknownHostException;
 import java.util.*;
 
 @Service("requestService")
-public class RequestService {
+public class RequestServiceImpl implements RequestService{
 
 	@Autowired
 	SearchService searchService;
 
-	private Logger logger = Logger.getLogger(RequestService.class);
+	private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
 	private static Map<String, String> labels = new HashMap<>();
 	private static String[] facets = new String[] { "language", "mediatype", "rights", "mimetype", "dataformatspecific",

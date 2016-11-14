@@ -105,6 +105,11 @@
 			<artifactId>jaxb2-basics-runtime</artifactId>
 			<version>${jaxb2_commons.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-registry-rest</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
