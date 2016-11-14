@@ -29,6 +29,11 @@
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-registry-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
@@ -143,108 +148,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<id>xsd-renaming</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<executable>py</executable>
-					<workingDirectory>src/main/xsd/</workingDirectory>
-					<arguments>
-						<argument>enum.py</argument>
-						<argument>original/OMTD-SHARE-Actors.xsd</argument>
-						<argument>original/OMTD-SHARE-Component.xsd</argument>
-						<argument>original/OMTD-SHARE-Corpus.xsd</argument>
-						<argument>original/OMTD-SHARE-Distributions.xsd</argument>
-						<argument>original/OMTD-SHARE-GlobalTypes.xsd</argument>
-						<argument>original/OMTD-SHARE-ISOVocabularies.xsd</argument>
-						<argument>original/OMTD-SHARE-LanguageDescription.xsd</argument>
-						<argument>original/OMTD-SHARE-LexicalConceptualResource.xsd</argument>
-						<argument>original/OMTD-SHARE-Model.xsd</argument>
-						<argument>original/OMTD-SHARE-Projects.xsd</argument>
-						<argument>original/OMTD-SHARE-Publications.xsd</argument>
-						<argument>original/OMTD-SHARE-Relations.xsd</argument>
-						<argument>original/OMTD-SHARE-ResourceCommon.xsd</argument>
-						<argument>original/OMTD-SHARE-ResourceTypes.xsd</argument>
-						<argument>original/OMTD-SHARE-TextSpecific.xsd</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.13.1</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<verbose>false</verbose>
-							<generateDirectory>${project.build.sourceDirectory}</generateDirectory>
-							<schemaDirectory>src/main/xsd</schemaDirectory>
-							<bindingDirectory>src/main/xjb</bindingDirectory>
-							<removeOldOutput>false</removeOldOutput>
-							<episode>false</episode>
-							<generatePackage>eu.openminted.registry.domain</generatePackage>
-							<addGeneratedAnnotation>true</addGeneratedAnnotation>
-							<extension>true</extension>
-							<args>
-								<arg>-no-header</arg>
-								<arg>-XautoNameResolution</arg>
-								<arg>-Xsimplify</arg>
-								<arg>-Xxew</arg>
-								<arg>-Xxew:instantiate lazy</arg>
-							</args>
-							<plugins>
-								<plugin>
-									<groupId>com.github.jaxb-xew-plugin</groupId>
-									<artifactId>jaxb-xew-plugin</artifactId>
-									<version>1.7</version>
-								</plugin>
-								<plugin>
-									<groupId>org.jvnet.jaxb2_commons</groupId>
-									<artifactId>jaxb2-basics</artifactId>
-									<version>${jaxb2_commons.version}</version>
-								</plugin>
-							</plugins>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
-			<plugin>
-				<groupId>cz.habarta.typescript-generator</groupId>
-				<artifactId>typescript-generator-maven-plugin</artifactId>
-				<version>1.10.220</version>
-				<executions>
-					<execution>
-						<id>generate</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<jsonLibrary>jackson2</jsonLibrary>
-							<classPatterns>
-								<pattern>eu.openminted.registry.domain.*</pattern>
-							</classPatterns>
-							<outputFile>target/sample.d.ts</outputFile>
-							<outputKind>module</outputKind>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<!--</pluginManagement>-->
 		<finalName>omtd-registry</finalName>
 	</build>
 </project>
