@@ -1,39 +1,30 @@
 package eu.openminted.registry.services;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import eu.openminted.registry.controllers.Utils;
+import eu.openminted.registry.core.domain.Occurencies;
+import eu.openminted.registry.core.domain.Paging;
+import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.domain.*;
+import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import eu.openminted.registry.core.domain.Occurencies;
-import eu.openminted.registry.core.domain.Paging;
-import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Browsing;
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.Facet;
-import eu.openminted.registry.domain.Result;
-import eu.openminted.registry.domain.Utils;
-import eu.openminted.registry.domain.Value;
+import java.net.UnknownHostException;
+import java.util.*;
 
 @Service("requestService")
 public class RequestService {
 
 	@Autowired
 	SearchService searchService;
-	
+
+	private Logger logger = Logger.getLogger(RequestService.class);
 
 	private static Map<String, String> labels = new HashMap<>();
 	private static String[] facets = new String[] { "language", "mediatype", "rights", "mimetype", "dataformatspecific",
@@ -287,46 +278,44 @@ public class RequestService {
 		}
 		qBuilder.queryName("*"); //<------------edw einai pou prepei na mpei to keyword MALLON
 		Occurencies overall = new Occurencies();
-		
+
 		try {
-				Paging paging = null;
-				int quantity = 10;
-				if(to==-1){
-					//quantity = 10
-					to = from + 10;
-				}else{
-					quantity = to - from;
-				}
-				
-				paging = searchService.searchElastic("resourceTypes", qBuilder, from, quantity, facets);
-					
-				// Paging paging = searchService.search(resourceTypeForSearch,
-				// cqlQuery, from, to/2, facets);
-				if(paging!=null){
-					for(int j=0;j<paging.getResults().size();j++){
-						Resource resourceTemp = (Resource) paging.getResults().get(j);
-						if(resourceTemp.getResourceType().equals("component")){
-							ArrayList<Component> components = new ArrayList<Component>();
-							for (int i = 0; i < 10 && i < paging.getResults().size(); i++) {
-								Resource resource = (Resource) paging.getResults().get(i);
-								components.add(Utils.serialize(resource, Component.class));
-							}
-							result.setComponents(components);
-						}else if(resourceTemp.getResourceType().equals("corpus")){
-							ArrayList<Corpus> corpora = new ArrayList<Corpus>();
-							for (int i = 0; i < paging.getResults().size(); i++) {
-								Resource resource = (Resource) paging.getResults().get(i);
-								corpora.add(Utils.serialize(resource,Corpus.class));
-							}
-							result.setCorpora(corpora);
+			Paging paging = null;
+			int quantity = 10;
+			if(to==-1){
+				//quantity = 10
+				to = from + 10;
+			}else{
+				quantity = to - from;
+			}
+
+			paging = searchService.searchElastic("resourceTypes", qBuilder, from, quantity, facets);
+
+			if(paging!=null){
+				for(int j=0;j<paging.getResults().size();j++){
+					Resource resourceTemp = (Resource) paging.getResults().get(j);
+					if(resourceTemp.getResourceType().equals("component")){
+						ArrayList<Component> components = new ArrayList<Component>();
+						for (int i = 0; i < 10 && i < paging.getResults().size(); i++) {
+							Resource resource = (Resource) paging.getResults().get(i);
+							components.add(Utils.serialize(resource, Component.class));
 						}
+						result.setComponents(components);
+					}else if(resourceTemp.getResourceType().equals("corpus")){
+						ArrayList<Corpus> corpora = new ArrayList<Corpus>();
+						for (int i = 0; i < paging.getResults().size(); i++) {
+							Resource resource = (Resource) paging.getResults().get(i);
+							corpora.add(Utils.serialize(resource,Corpus.class));
+						}
+						result.setCorpora(corpora);
 					}
 				}
-				
-				totalNumber += paging.getTotal();
+			}
 
-				overall = paging.getOccurencies();
-				
+			totalNumber += paging.getTotal();
+
+			overall = paging.getOccurencies();
+
 		} catch (ServiceException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (UnknownHostException e) {
@@ -335,6 +324,7 @@ public class RequestService {
 
 		List<Facet> facetsCollection = new ArrayList<Facet>();
 
+		long timeS = System.currentTimeMillis();
 		for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
 			Facet singleFacet = new Facet();
 

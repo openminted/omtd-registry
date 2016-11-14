@@ -1,34 +1,16 @@
 package eu.openminted.registry.controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.services.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.openminted.registry.core.domain.Occurencies;
-import eu.openminted.registry.core.domain.Paging;
-import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.ResourceService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Browsing;
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.Facet;
-import eu.openminted.registry.domain.Result;
-import eu.openminted.registry.domain.Utils;
-import eu.openminted.registry.domain.Value;
-import eu.openminted.registry.services.RequestService;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class RequestController {

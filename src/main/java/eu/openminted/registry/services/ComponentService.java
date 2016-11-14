@@ -13,7 +13,7 @@ import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Utils;
+import eu.openminted.registry.controllers.Utils;
 
 @Service("componentService")
 public class ComponentService {

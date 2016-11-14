@@ -1,5 +1,7 @@
 package eu.openminted.registry.controllers;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,9 @@ import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Utils;
 import eu.openminted.registry.services.ComponentService;
+
+import java.net.UnknownHostException;
 
 @RestController
 public class ComponentController {
@@ -36,10 +39,13 @@ public class ComponentController {
 	    	
 	        ResponseEntity<String> responseEntity;
 	        Paging paging = null;
-	        
+			BoolQueryBuilder qBuilder = new BoolQueryBuilder();
+
+			qBuilder.must(QueryBuilders.termsQuery("omtdid",id));
+
 	        try {
-	        	paging = searchService.search("component", "omtdid any "+id, 0, 0, new String[0]);
-		    } catch (ServiceException e) {
+	        	paging = searchService.searchElastic("component", qBuilder, 0, 0, new String[0]);
+		    } catch (ServiceException | UnknownHostException e) {
 		    	return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 	        
