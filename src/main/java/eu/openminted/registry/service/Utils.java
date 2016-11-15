@@ -37,12 +37,14 @@ public class Utils {
     @SuppressWarnings("unchecked")
     public static <T> T serialize(Resource resource, Class<T> returnType){
         T type;
+        if (resource == null) {
+            return null;
+        }
         try {
-            type = returnType.newInstance();
             Unmarshaller unmarshaller = JAXBCONTEXT.createUnmarshaller();
 
             type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
-        } catch (JAXBException | InstantiationException | IllegalAccessException je) {
+        } catch (JAXBException je) {
             type = null;
         }
         return type;
