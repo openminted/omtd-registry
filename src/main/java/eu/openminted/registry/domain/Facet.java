@@ -7,7 +7,16 @@ public class Facet {
 	 private String field;
 	 private String label;
 	 private List<Value> values;
-	 
+
+	public Facet() {
+	}
+
+	public Facet(String field, String label, List<Value> values) {
+		this.field = field;
+		this.label = label;
+		this.values = values;
+	}
+
 	public String getField() {
 		return field;
 	}
