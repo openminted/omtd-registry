@@ -97,24 +97,18 @@ public class RequestServiceImpl implements RequestService {
             paging = searchService.search("resourceTypes", qBuilder, from, quantity, facets);
 
             if (paging != null) {
-                for (int j = 0; j < paging.getResults().size(); j++) {
-                    Resource resourceTemp = (Resource) paging.getResults().get(j);
-                    if (resourceTemp.getResourceType().equals("component")) {
-                        ArrayList<Component> components = new ArrayList<Component>();
-                        for (int i = 0; i < 10 && i < paging.getResults().size(); i++) {
-                            Resource resource = (Resource) paging.getResults().get(i);
-                            components.add(Utils.serialize(resource, Component.class));
-                        }
-                        result.setComponents(components);
-                    } else if (resourceTemp.getResourceType().equals("corpus")) {
-                        ArrayList<Corpus> corpora = new ArrayList<Corpus>();
-                        for (int i = 0; i < paging.getResults().size(); i++) {
-                            Resource resource = (Resource) paging.getResults().get(i);
-                            corpora.add(Utils.serialize(resource, Corpus.class));
-                        }
-                        result.setCorpora(corpora);
+                List<Corpus> corpora = new ArrayList<>();
+                List<Component> components = new ArrayList<>();
+                for(Object resourceObj :  paging.getResults()) {
+                    Resource resource = (Resource) resourceObj;
+                    if("corpus".equals(resource.getResourceType())) {
+                        corpora.add(Utils.serialize(resource, Corpus.class));
+                    } else if ("component".equals(resource.getResourceType())) {
+                        components.add(Utils.serialize(resource, Component.class));
                     }
                 }
+                result.setComponents(components);
+                result.setCorpora(corpora);
             }
 
             totalNumber += paging.getTotal();
