@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.UnknownHostException;
+
 @RestController
 public class ComponentController {
 
@@ -37,7 +39,7 @@ public class ComponentController {
 
 	        try {
 	        	paging = searchService.searchElastic("component", qBuilder, 0, 0, new String[0]);
-		    } catch (ServiceException e) {
+		    } catch (ServiceException | UnknownHostException e) {
 		    	return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 	        

@@ -32,7 +32,7 @@ public class CorpusController {
 	   SearchService searchService;
 	  
 	    @RequestMapping(value = "/request/corpus/{id}", method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getCorpus(@PathVariable("id") String id) {  
+	    public ResponseEntity<String> getCorpus(@PathVariable("id") String id) {
 	    	
 	    	ResponseEntity<String> responseEntity;
 	    	Paging paging = null;
@@ -42,10 +42,10 @@ public class CorpusController {
 
 			try {
 				paging = searchService.searchElastic("component", qBuilder, 0, 0, new String[0]);
-			} catch (ServiceException e) {
+			} catch (ServiceException | UnknownHostException e) {
 				return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-	    	
+
 	    	Corpus corpus = new Corpus();
 	    	
 	    	if(paging.getResults().size()!=0){//resource found
