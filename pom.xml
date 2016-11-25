@@ -18,20 +18,13 @@
             <artifactId>registry-core-api</artifactId>
             <version>0.0.3-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
         <!-- JAXB2 -->
-        <!-- THESE ARE THE DEPENDENCIES FOR THE AUTO GEN TO WORK -->
         <!--<dependency>-->
             <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
             <!--<artifactId>runtime</artifactId>-->
             <!--<version>0.4.1.5</version>-->
         <!--</dependency>-->
+
         <!--<dependency>-->
             <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
             <!--<artifactId>jaxb2-basics-runtime</artifactId>-->
