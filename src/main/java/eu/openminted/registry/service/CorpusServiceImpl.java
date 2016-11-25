@@ -5,6 +5,7 @@ import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
+import eu.openminted.registry.domain.Corpus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-@Service("componentService")
-public class ComponentServiceImpl implements ResourceCRUDService<Component> {
+/**
+ * Created by stefanos on 15-Nov-16.
+ */
+@Service("corpusService")
+public class CorpusServiceImpl implements ResourceCRUDService<Corpus> {
 
-    private Logger logger = Logger.getLogger(ComponentServiceImpl.class);
+    private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
 
     @Autowired
     SearchService searchService;
@@ -24,35 +28,35 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
     ResourceService resourceService;
 
     @Override
-    public Component get(String id) {
-        Component component;
+    public Corpus get(String id) {
+        Corpus resource;
         try {
-            component = Utils.serialize(searchService.searchId("component", id), Component.class);
+            resource = Utils.serialize(searchService.searchId("corpus", id), Corpus.class);
         } catch (UnknownHostException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
-        return component;
+        return resource;
     }
 
     @Override
-    public void add(Component component) {
-        Component $component;
+    public void add(Corpus corpus) {
+        Corpus $corpus;
         try {
-            $component = Utils.serialize(searchService.searchId("component",
-                    component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), Component.class);
+            $corpus = Utils.serialize(searchService.searchId("corpus",
+                    corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), Corpus.class);
         } catch (UnknownHostException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
 
-        if ($component != null) {
+        if ($corpus != null) {
             throw new ServiceException("Component already exists");
         }
 
         Resource resource = new Resource();
 
-        String serialized = Utils.unserialize(component, Component.class);
+        String serialized = Utils.unserialize(corpus, Corpus.class);
 
         if (!serialized.equals("failed")) {
             resource.setPayload(serialized);
@@ -72,12 +76,11 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
     }
 
     @Override
-    public void update(Component component) {
-
+    public void update(Corpus corpus) {
         Resource $resource;
         Resource resource = new Resource();
         try {
-            $resource = searchService.searchId("component", component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+            $resource = searchService.searchId("component", corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
         } catch (UnknownHostException e) {
             logger.fatal(e);
             throw new ServiceException(e);
@@ -86,7 +89,7 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
         if ($resource != null) {
             throw new ServiceException("Component already exists");
         } else {
-            String serialized = Utils.unserialize(component, Component.class);
+            String serialized = Utils.unserialize(corpus, Corpus.class);
 
             if (!serialized.equals("failed")) {
                 resource.setPayload(serialized);
@@ -101,11 +104,10 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
     }
 
     @Override
-    public void delete(Component component) {
-
+    public void delete(Corpus corpus) {
         Resource resource;
         try {
-            resource = searchService.searchId("component", component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+            resource = searchService.searchId("corpus", corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
             if (resource != null) {
                 throw new ServiceException("Component already exists");
             } else {

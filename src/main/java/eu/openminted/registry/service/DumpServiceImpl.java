@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.text.SimpleDateFormat;
@@ -27,152 +28,23 @@ import java.util.zip.ZipOutputStream;
 public class DumpServiceImpl implements DumpService {
 
 
+    private static FileAttribute PERMISSIONS = PosixFilePermissions.asFileAttribute(EnumSet.of
+            (PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission
+                            .OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ,
+                    PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission
+                            .OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE));
+
     @Autowired
     ResourceService resourceService;
 
     @Autowired
     ResourceTypeService resourceTypeService;
 
-
-    public File bringAll() {
-
-
-        String parentName = "/home/user/tmp/dump-testCase";
-        File masterDirectory = new File(parentName);
-
-        try {
-            Files.createDirectory(masterDirectory.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        List<ResourceType> resourceTypes;
-        List<Resource> resources;
-
-        resourceTypes = resourceTypeService.getAllResourceType();
-        List<File> fileList = new ArrayList<>();
-        for (int i = 0; i < resourceTypes.size(); i++) {
-            if (!resourceTypes.get(i).getName().equals("user")) {
-                resources = resourceService.getResource(resourceTypes.get(i).getName());
-                createDirectory(parentName + "/" + resourceTypes.get(i).getName(), resources);
-                try {
-                    File tempFile = new File(parentName + "/" + resourceTypes.get(i).getName() + ".json");
-                    Path filePath = Files.createFile(tempFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-                    FileWriter file = new FileWriter(filePath.toFile());
-                    file.write(Utils.objToJson(resourceTypes.get(i)));
-                    file.flush();
-                    file.close();
-                } catch (IOException e) {
-                    new ServiceException("Failed to create schema-file for " + resourceTypes.get(i).getName());
-                }
-            }
-        }
-        File tempDir = new File(parentName);
-        getAllFiles(tempDir, fileList);
-        File masterZip = new File(parentName + "/final.zip");
-        writeZipFile(masterZip, fileList);
-        try {
-            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
-            Files.createFile(tempFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-            masterZip.renameTo(tempFile);
-//			return tempFile;
-        } catch (IOException e1) {
-
-        }
-        return masterZip;
-    }
-
-    public File bringResourceType(String resourceType) {
-
-
-        String parentName = "/home/user/tmp/dump-testCase";
-        File masterDirectory = new File(parentName);
-
-        try {
-            Files.createDirectory(masterDirectory.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        ResourceType resourceTypes = new ResourceType();
-        List<Resource> resources;
-
-        resourceTypes = resourceTypeService.getResourceType(resourceType);
-        List<File> fileList = new ArrayList<>();
-        if (resourceTypes != null) {
-            resources = resourceService.getResource(resourceTypes.getName());
-            createDirectory(parentName + "/" + resourceTypes.getName(), resources);
-            try {
-                File tempFile = new File(parentName + "/" + resourceTypes.getName() + ".json");
-                Path filePath = Files.createFile(tempFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-                FileWriter file = new FileWriter(filePath.toFile());
-                file.write(Utils.objToJson(resourceTypes));
-                file.flush();
-                file.close();
-            } catch (IOException e) {
-                new ServiceException("Failed to create schema-file for " + resourceTypes.getName());
-            }
-        }
-        File tempDir = new File(parentName);
-        getAllFiles(tempDir, fileList);
-        File masterZip = new File(parentName + "/final.zip");
-        writeZipFile(masterZip, fileList);
-        try {
-            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
-            Files.createFile(tempFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-            masterZip.renameTo(tempFile);
-//			return tempFile;
-        } catch (IOException e1) {
-
-        }
-        return masterZip;
-    }
-
-    public void createDirectory(String name, List<Resource> resources) {
-        File parentDirectory = new File(name);
-
-        if (!parentDirectory.exists()) {
-            try {
-                Files.createDirectory(parentDirectory.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        for (int i = 0; i < resources.size(); i++) {
-            try {
-                File openFile = new File(name + "/" + resources.get(i).getId() + ".json");
-                if (openFile.exists()) {
-                    Path filePath = Files.createFile(openFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-                    FileWriter file = new FileWriter(filePath.toFile());
-                    file.write(Utils.objToJson(resources.get(i)));
-                    file.flush();
-                    file.close();
-                } else {
-                    Path filePath = Files.createFile(openFile.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
-                    FileWriter file = new FileWriter(filePath.toFile());
-                    file.write(Utils.objToJson(resources.get(i)));
-                    file.flush();
-                    file.close();
-                }
-            } catch (IOException e) {
-//				new ServiceException("Failed to create file(s) for "+ name);
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
-    public String getCurrentDate() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("ddMMyyyy");//dd/MM/yyyy
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
-    }
-
     static void writeZipFile(File directoryToZip, List<File> fileList) {
 
         try {
 
-            Path filePath = Files.createFile(directoryToZip.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ, PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.OTHERS_EXECUTE)));
+            Path filePath = Files.createFile(directoryToZip.toPath(), PERMISSIONS);
             FileOutputStream fos = new FileOutputStream(filePath.toFile());
             ZipOutputStream zos = new ZipOutputStream(fos);
 
@@ -231,19 +103,128 @@ public class DumpServiceImpl implements DumpService {
         fis.close();
     }
 
-    static boolean deleteDirectory(File directory) {
-        if (directory.exists()) {
-            File[] files = directory.listFiles();
-            if (null != files) {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].isDirectory()) {
-                        deleteDirectory(files[i]);
-                    } else {
-                        files[i].delete();
-                    }
+    public File bringAll() {
+
+
+        String parentName = "/home/user/tmp/dump-testCase";
+        File masterDirectory = new File(parentName);
+
+        try {
+            Files.createDirectory(masterDirectory.toPath(), PERMISSIONS);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        List<ResourceType> resourceTypes;
+        List<Resource> resources;
+
+        resourceTypes = resourceTypeService.getAllResourceType();
+        List<File> fileList = new ArrayList<>();
+        for (int i = 0; i < resourceTypes.size(); i++) {
+            if (!resourceTypes.get(i).getName().equals("user")) {
+                resources = resourceService.getResource(resourceTypes.get(i).getName());
+                createDirectory(parentName + "/" + resourceTypes.get(i).getName(), resources);
+                try {
+                    File tempFile = new File(parentName + "/" + resourceTypes.get(i).getName() + ".json");
+                    Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
+                    FileWriter file = new FileWriter(filePath.toFile());
+                    file.write(Utils.objToJson(resourceTypes.get(i)));
+                    file.flush();
+                    file.close();
+                } catch (IOException e) {
+                    new ServiceException("Failed to create schema-file for " + resourceTypes.get(i).getName());
                 }
             }
         }
-        return (directory.delete());
+        File tempDir = new File(parentName);
+        getAllFiles(tempDir, fileList);
+        File masterZip = new File(parentName + "/final.zip");
+        writeZipFile(masterZip, fileList);
+        try {
+            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
+            Files.createFile(tempFile.toPath(), PERMISSIONS);
+            masterZip.renameTo(tempFile);
+//			return tempFile;
+        } catch (IOException e1) {
+
+        }
+        return masterZip;
+    }
+
+    public File bringResourceType(String resourceType) {
+
+
+        String parentName = "/home/user/tmp/dump-testCase";
+        File masterDirectory = new File(parentName);
+
+        try {
+            Files.createDirectory(masterDirectory.toPath(), PERMISSIONS);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        ResourceType resourceTypes = new ResourceType();
+        List<Resource> resources;
+
+        resourceTypes = resourceTypeService.getResourceType(resourceType);
+        List<File> fileList = new ArrayList<>();
+        if (resourceTypes != null) {
+            resources = resourceService.getResource(resourceTypes.getName());
+            createDirectory(parentName + "/" + resourceTypes.getName(), resources);
+            try {
+                File tempFile = new File(parentName + "/" + resourceTypes.getName() + ".json");
+                Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
+                FileWriter file = new FileWriter(filePath.toFile());
+                file.write(Utils.objToJson(resourceTypes));
+                file.flush();
+                file.close();
+            } catch (IOException e) {
+                new ServiceException("Failed to create schema-file for " + resourceTypes.getName());
+            }
+        }
+        File tempDir = new File(parentName);
+        getAllFiles(tempDir, fileList);
+        File masterZip = new File(parentName + "/final.zip");
+        writeZipFile(masterZip, fileList);
+        try {
+            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
+            Files.createFile(tempFile.toPath(), PERMISSIONS);
+            masterZip.renameTo(tempFile);
+//			return tempFile;
+        } catch (IOException e1) {
+
+        }
+        return masterZip;
+    }
+
+    public void createDirectory(String name, List<Resource> resources) {
+        File parentDirectory = new File(name);
+
+        if (!parentDirectory.exists()) {
+            try {
+                Files.createDirectory(parentDirectory.toPath(), PERMISSIONS);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < resources.size(); i++) {
+            try {
+                File openFile = new File(name + "/" + resources.get(i).getId() + ".json");
+                Path filePath = Files.createFile(openFile.toPath(), PERMISSIONS);
+                FileWriter file = new FileWriter(filePath.toFile());
+                file.write(Utils.objToJson(resources.get(i)));
+                file.flush();
+                file.close();
+            } catch (IOException e) {
+//				new ServiceException("Failed to create file(s) for "+ name);
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public String getCurrentDate() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("ddMMyyyy");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
 }
