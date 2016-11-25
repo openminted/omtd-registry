@@ -1,7 +1,0 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="1.0.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xml:lang="en">
-	
-	<xs:include schemaLocation="./OMTD-SHARE-LexicalConceptualResource.xsd" />
-	<xs:include schemaLocation="./OMTD-SHARE-Corpus.xsd" />
-	<xs:include schemaLocation="./OMTD-SHARE-LanguageDescription.xsd" />
-	<xs:include schemaLocation="./OMTD-SHARE-Component.xsd" />
-</xs:schema>

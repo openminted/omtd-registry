@@ -7,6 +7,23 @@ import re
 MAX_ENUM = 300
 verbose = False
 
+class Rename:
+
+	@staticmethod
+	def rename(name):
+		if name is '':
+			name = 'BLANK'
+		new_name = name
+		match = re.match('^[^0-9][a-zA-Z_0-9]+$',name)
+		if match is None:
+			new_name = re.sub(r'\s',"",name)
+			new_name = re.sub(r'/',"_",name)
+			new_name = re.sub(r'[^\w\d_]','_', new_name)
+			if re.match('\d.*',new_name) is not None :
+				new_name = 'V' + new_name
+		return new_name.upper()
+
+
 def create_appInfo(node, namespace) :
 	annotation = node.findall('./xs:annotation',namespace) 
 	if not annotation:
