@@ -26,17 +26,17 @@ public class RequestServiceImpl implements RequestService {
     private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
     private static Map<String, String> labels = new HashMap<>();
-    private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype", "dataformatspecific",
-            "licence", "resourcetype"};
+    private static String[] facets = new String[]{"language", "mediaType", "rights", "mimeType", "dataformatspecific",
+            "licence", "resourceType"};
 
     static {
         labels.put("language", "Language");
-        labels.put("mediatype", "Media Type");
+        labels.put("mediaType", "Media Type");
         labels.put("rights", "Rights");
-        labels.put("mimetype", "Mime Type");
+        labels.put("mimeType", "Mime Type");
         labels.put("dataformatspecific", "Data format specific");
         labels.put("licence", "Licence");
-        labels.put("resourcetype", "Resource Type");
+        labels.put("resourceType", "Resource Type");
     }
 
     public ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
@@ -47,8 +47,8 @@ public class RequestServiceImpl implements RequestService {
         ResponseEntity<String> responseEntity = null;
 
         Result result = new Result();
-        result.setComponents(new ArrayList<Component>());
-        result.setCorpora(new ArrayList<Corpus>());
+        result.setComponents(new ArrayList<>());
+        result.setCorpora(new ArrayList<>());
 
         BoolQueryBuilder qBuilder = new BoolQueryBuilder();
 
@@ -121,7 +121,7 @@ public class RequestServiceImpl implements RequestService {
             e.printStackTrace();
         }
 
-        List<Facet> facetsCollection = new ArrayList<Facet>();
+        List<Facet> facetsCollection = new ArrayList<>();
 
         for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
             Facet singleFacet = new Facet();
@@ -129,7 +129,7 @@ public class RequestServiceImpl implements RequestService {
             singleFacet.setField(pair.getKey() + "");
             singleFacet.setLabel(labels.get(pair.getKey()));
 
-            List<Value> values = new ArrayList<Value>();
+            List<Value> values = new ArrayList<>();
             Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
 
             for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
@@ -150,8 +150,7 @@ public class RequestServiceImpl implements RequestService {
         }
         //TODO na gurnaw to swsto "to"
         Browsing browsing = new Browsing(totalNumber, from, from + totalNumber, result, facetsCollection);
-
-        return new ResponseEntity<String>(Utils.objToJson(browsing), HttpStatus.OK);
+        return new ResponseEntity<>(Utils.objToJson(browsing), HttpStatus.OK);
 
     }
 
