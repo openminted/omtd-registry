@@ -18,39 +18,18 @@
             <artifactId>registry-core-api</artifactId>
             <version>0.0.3-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>eu.openminted</groupId>
-            <artifactId>registry-core-rest</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.openminted</groupId>
-            <artifactId>registry-core</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.7.4</version>
-        </dependency>
         <!-- JAXB2 -->
-        <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>runtime</artifactId>
-            <version>0.4.1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>2.2.11</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>jaxb2-basics-runtime</artifactId>
-            <version>${jaxb2_commons.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
+            <!--<artifactId>runtime</artifactId>-->
+            <!--<version>0.4.1.5</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
+            <!--<artifactId>jaxb2-basics-runtime</artifactId>-->
+            <!--<version>${jaxb2_commons.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
