@@ -35,8 +35,7 @@ public class RequestController {
     RequestService requestService;
 
 
-    @RequestMapping(value = "/request/"/*,params = {"keyword","resourceType","language","mediaType","rights",
-    "mimeType","dataFormatSpecific","license"}*/, method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "/request", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<String> getResourceTypeByFilters(
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(value = "resourceType", required = false, defaultValue = "") String[] resourceType,

@@ -38,7 +38,7 @@ public class UserController {
         try {
             paging = searchService.search("user", "username any " + username, 0, 0, new String[0]);
         } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+            responseEntity = new ResponseEntity<>("", HttpStatus.FORBIDDEN);
             return responseEntity;
         }
 
@@ -49,22 +49,22 @@ public class UserController {
                 User user = objectMapper.readValue(resource.getPayload(), User.class);
                 if (user.getPassword().equals(password)) {
                     user.setPassword("******");
-                    responseEntity = new ResponseEntity<String>(Utils.objToJson(user), HttpStatus.ACCEPTED);
+                    responseEntity = new ResponseEntity<>(Utils.objToJson(user), HttpStatus.ACCEPTED);
                 } else {
-                    responseEntity = new ResponseEntity<String>("", HttpStatus.FORBIDDEN);
+                    responseEntity = new ResponseEntity<>("", HttpStatus.FORBIDDEN);
                 }
             } catch (JsonParseException e) {
-                responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
             } catch (JsonMappingException e) {
-                responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
             } catch (IOException e) {
-                responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
             }
 
             return responseEntity;
         } else {
-            responseEntity = new ResponseEntity<String>("Multiple entries +" + Utils.objToJson(paging), HttpStatus
-					.FORBIDDEN);
+            responseEntity = new ResponseEntity<>("Multiple entries +" + Utils.objToJson(paging), HttpStatus
+                    .FORBIDDEN);
         }
 
 
@@ -79,14 +79,14 @@ public class UserController {
         try {
             paging = searchService.search("user", "username any " + user.getUsername(), 0, 0, new String[0]);
         } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<String>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
-					.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
+                    .INTERNAL_SERVER_ERROR);
             return responseEntity;
         }
 
         if (paging.getTotal() != 0) {
-            responseEntity = new ResponseEntity<String>("{\"message\":\"username already taken.\"}", HttpStatus
-					.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>("{\"message\":\"username already taken.\"}", HttpStatus
+                    .INTERNAL_SERVER_ERROR);
             return responseEntity;
         }
 
@@ -98,7 +98,7 @@ public class UserController {
         if (!serialized.equals("failed")) {
             resource.setPayload(serialized);
         } else {
-            responseEntity = new ResponseEntity<String>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
             return responseEntity;
         }
 
@@ -112,12 +112,12 @@ public class UserController {
 
         try {
             resourceService.addResource(resource);
-            responseEntity = new ResponseEntity<String>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
+            responseEntity = new ResponseEntity<>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
         } catch (ServiceException e) {
 
             logger.error("Error saving user", e);
-            responseEntity = new ResponseEntity<String>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
-					.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
+                    .INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
@@ -133,7 +133,7 @@ public class UserController {
         try {
             paging = searchService.search("user", "username any " + user.getUsername(), 0, 0, new String[0]);
         } catch (ServiceException e1) {
-            return new ResponseEntity<String>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (paging.getResults().size() == 1) {
@@ -141,22 +141,22 @@ public class UserController {
             resource = resourceService.getResource("user", resource.getId());
             resource.setPayload(Utils.objToJson(user));
         } else {
-            return new ResponseEntity<String>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         resourceFinal = resource;
         try {
             resourceService.deleteResource(resource.getId());
             resourceFinal = resourceService.addResource(resourceFinal);
         } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<String>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus
-					.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus
+                    .INTERNAL_SERVER_ERROR);
         }
 
 
         if (resourceFinal == null) {
-            responseEntity = new ResponseEntity<String>(Utils.objToJson(resourceFinal), HttpStatus.NO_CONTENT);
+            responseEntity = new ResponseEntity<>(Utils.objToJson(resourceFinal), HttpStatus.NO_CONTENT);
         }
-        responseEntity = new ResponseEntity<String>(Utils.objToJson(user), HttpStatus.ACCEPTED);
+        responseEntity = new ResponseEntity<>(Utils.objToJson(user), HttpStatus.ACCEPTED);
         return responseEntity;
     }
 //	  

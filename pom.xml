@@ -11,6 +11,7 @@
         <spring.version>4.2.1.RELEASE</spring.version>
         <hibernate.version>5.1.0.Final</hibernate.version>
         <joda-time.version>2.3</joda-time.version>
+        <jaxb2_commons.version>0.8.2</jaxb2_commons.version>
     </properties>
 
     <dependencies>
@@ -61,6 +62,12 @@
             <artifactId>activemq-all</artifactId>
             <version>5.10.0</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+            <version>2.5.0</version>
         </dependency>
 
     </dependencies>

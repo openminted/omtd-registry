@@ -1,9 +1,6 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.service.ResourceService;
-import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.domain.Component;
-
 import eu.openminted.registry.exception.ResourceNotFoundException;
 import eu.openminted.registry.exception.ServerError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +24,7 @@ public class ComponentController {
         return new ServerError(req.getRequestURL().toString(), ex);
     }
 
-    @RequestMapping(value = "/request/component/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/request/component/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Component> getComponent(@PathVariable("id") String id) {
         Component component = componentService.get(id);
         if(component == null)
@@ -37,7 +34,7 @@ public class ComponentController {
 
     }
 
-    @RequestMapping(value = "/request/component/", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/request/component/", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
     public ResponseEntity<String> addComponentJson(@RequestBody Component component) {
 
         componentService.add(component);
@@ -45,7 +42,7 @@ public class ComponentController {
 
     }
 
-    @RequestMapping(value = "/request/component/", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(value = "/request/component/", method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
     public ResponseEntity<String> addComponentXml(@RequestBody Component component) {
 
         componentService.add(component);
@@ -53,7 +50,7 @@ public class ComponentController {
 
     }
 
-    @RequestMapping(value = "/request/component/", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @RequestMapping(value = "/request/component/", method = RequestMethod.PUT, headers = "Accept=application/json; charset=utf-8")
     public ResponseEntity<String> updateComponent(@RequestBody Component component) {
 
         componentService.update(component);
@@ -61,7 +58,7 @@ public class ComponentController {
 
     }
 
-    @RequestMapping(value = "/request/component/", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @RequestMapping(value = "/request/component/", method = RequestMethod.DELETE, headers = "Accept=application/json; charset=utf-8")
     public ResponseEntity<String> deleteComponent(@RequestBody Component component) {
 
         componentService.delete(component);
