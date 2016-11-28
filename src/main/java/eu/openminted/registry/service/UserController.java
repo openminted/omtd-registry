@@ -29,135 +29,21 @@ public class UserController {
 
     private Logger logger = Logger.getLogger(UserController.class);
 
-    @RequestMapping(value = "/user/login/{username}/{password}", method = RequestMethod.GET, headers =
-            "Accept=application/json")
-    public ResponseEntity<String> getUser(@PathVariable("username") String username,
-                                          @PathVariable("password") String password) {
-        Paging paging = null;
-        ResponseEntity<String> responseEntity;
-        try {
-            paging = searchService.search("user", "username any " + username, 0, 0, new String[0]);
-        } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<>("", HttpStatus.FORBIDDEN);
-            return responseEntity;
-        }
-
-        if (paging.getTotal() == 1) {
-            Resource resource = (Resource) paging.getResults().get(0);
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                User user = objectMapper.readValue(resource.getPayload(), User.class);
-                if (user.getPassword().equals(password)) {
-                    user.setPassword("******");
-                    responseEntity = new ResponseEntity<>(Utils.objToJson(user), HttpStatus.ACCEPTED);
-                } else {
-                    responseEntity = new ResponseEntity<>("", HttpStatus.FORBIDDEN);
-                }
-            } catch (JsonParseException e) {
-                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-            } catch (JsonMappingException e) {
-                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-            } catch (IOException e) {
-                responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-            }
-
-            return responseEntity;
-        } else {
-            responseEntity = new ResponseEntity<>("Multiple entries +" + Utils.objToJson(paging), HttpStatus
-                    .FORBIDDEN);
-        }
-
-
-        return responseEntity;
-    }
+//    @RequestMapping(value = "/user/login", method = RequestMethod.POST, headers =
+//            "Accept=application/json")
+//    public ResponseEntity<String> getUser(@PathVariable("username") String username,
+//                                          @PathVariable("password") String password) {
+//        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
+//    }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> addUser(@RequestBody User user) {
-        ResponseEntity<String> responseEntity = null;
-
-        Paging paging = null;
-        try {
-            paging = searchService.search("user", "username any " + user.getUsername(), 0, 0, new String[0]);
-        } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
-                    .INTERNAL_SERVER_ERROR);
-            return responseEntity;
-        }
-
-        if (paging.getTotal() != 0) {
-            responseEntity = new ResponseEntity<>("{\"message\":\"username already taken.\"}", HttpStatus
-                    .INTERNAL_SERVER_ERROR);
-            return responseEntity;
-        }
-
-
-        Resource resource = new Resource();
-        String serialized = new String();
-        serialized = Utils.objToJson(user);
-
-        if (!serialized.equals("failed")) {
-            resource.setPayload(serialized);
-        } else {
-            responseEntity = new ResponseEntity<>("{\"message\":\"Failed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
-            return responseEntity;
-        }
-
-        resource.setCreationDate(new Date());
-        resource.setModificationDate(new Date());
-        resource.setPayloadFormat("json");
-        resource.setResourceType("user");
-        resource.setVersion("not_set");
-        resource.setId("wont be saved");
-        resource.setPayloadUrl("not_set");
-
-        try {
-            resourceService.addResource(resource);
-            responseEntity = new ResponseEntity<>("{\"message\":\"All good\"}", HttpStatus.ACCEPTED);
-        } catch (ServiceException e) {
-
-            logger.error("Error saving user", e);
-            responseEntity = new ResponseEntity<>("{\"message\":\"" + e.getMessage() + "\"}", HttpStatus
-                    .INTERNAL_SERVER_ERROR);
-        }
-
-        return responseEntity;
+        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
     }
 
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> updateUser(@RequestBody User user) {
-        ResponseEntity<String> responseEntity = null;
-        Resource resourceFinal = null;
-        Resource resource = new Resource();
-        Paging paging = null;
-
-        try {
-            paging = searchService.search("user", "username any " + user.getUsername(), 0, 0, new String[0]);
-        } catch (ServiceException e1) {
-            return new ResponseEntity<>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (paging.getResults().size() == 1) {
-            resource = (Resource) paging.getResults().get(0);
-            resource = resourceService.getResource("user", resource.getId());
-            resource.setPayload(Utils.objToJson(user));
-        } else {
-            return new ResponseEntity<>("failed", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        resourceFinal = resource;
-        try {
-            resourceService.deleteResource(resource.getId());
-            resourceFinal = resourceService.addResource(resourceFinal);
-        } catch (ServiceException e) {
-            responseEntity = new ResponseEntity<>("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus
-                    .INTERNAL_SERVER_ERROR);
-        }
-
-
-        if (resourceFinal == null) {
-            responseEntity = new ResponseEntity<>(Utils.objToJson(resourceFinal), HttpStatus.NO_CONTENT);
-        }
-        responseEntity = new ResponseEntity<>(Utils.objToJson(user), HttpStatus.ACCEPTED);
-        return responseEntity;
+        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
     }
 //	  
 //	    @RequestMapping(value = "/resources/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")  
