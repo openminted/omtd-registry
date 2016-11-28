@@ -1,6 +1,10 @@
 package eu.openminted.registry.service;
 
-import java.util.ArrayList;
+import eu.openminted.registry.core.controllers.Utils;
+import eu.openminted.registry.core.domain.Occurencies;
+import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.core.service.ResourceTypeService;
+import eu.openminted.registry.core.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,30 +13,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.openminted.registry.core.controllers.Utils;
-import eu.openminted.registry.core.domain.Occurencies;
-import eu.openminted.registry.core.service.ResourceService;
-import eu.openminted.registry.core.service.ResourceTypeService;
-import eu.openminted.registry.core.service.SearchService;
+import java.util.ArrayList;
 
 @RestController
 public class OccurenciesController {
 
 
-	   @Autowired
-	   ResourceService resourceService;
-	   
-	   @Autowired
-	   ResourceTypeService resourceTypeService;
-	   
-	   @Autowired
-	   SearchService searchService;
-	  
-	    @RequestMapping(value = "/occurencies/{resourceType}/", method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType) {  
-	    	
-	    	ResponseEntity<String> responseEntity;
-	    	
+    @Autowired
+    ResourceService resourceService;
+
+    @Autowired
+    ResourceTypeService resourceTypeService;
+
+    @Autowired
+    SearchService searchService;
+
+    @RequestMapping(value = "/occurencies/{resourceType}/", method = RequestMethod.GET, headers =
+            "Accept=application/json")
+    public ResponseEntity<String> getResourceType(@PathVariable("resourceType") String resourceType) {
+
+        ResponseEntity<String> responseEntity;
+
 //	    	ResourceType resourceTypeClass = resourceTypeService.getResourceType(resourceType);
 //	    	if(resourceTypeClass!=null){
 //		    	Map<String,Map<String,String>> overallValues = new HashMap<String,Map<String,String>>();
@@ -59,16 +60,16 @@ public class OccurenciesController {
 //		    	
 //		    	responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies),HttpStatus.ACCEPTED);
 //	    	}else{
-	    		responseEntity = new ResponseEntity<String>("{\"message\":\"resource type not found\"",HttpStatus.NO_CONTENT);
+        responseEntity = new ResponseEntity<String>("{\"message\":\"resource type not found\"", HttpStatus.NO_CONTENT);
 //	    	}
-	    	return responseEntity;
-	    } 
-	    
-	    @RequestMapping(value = "/occurencies/", method = RequestMethod.GET, headers = "Accept=application/json")  
-	    public ResponseEntity<String> getOccurencies() {  
-	    	
-	    	ResponseEntity<String> responseEntity;
-	    	ArrayList<Occurencies> occurencies = new ArrayList<Occurencies>();
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/occurencies/", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<String> getOccurencies() {
+
+        ResponseEntity<String> responseEntity;
+        ArrayList<Occurencies> occurencies = new ArrayList<Occurencies>();
 //	    	
 //	    	List<ResourceType> resourceTypes= resourceTypeService.getAllResourceType();
 //	    	if(resourceTypes!=null){
@@ -98,12 +99,13 @@ public class OccurenciesController {
 //			    	occurencies.add(occurency);
 //		    	}
 //	    	}else{
-//	    		responseEntity = new ResponseEntity<String>("{\"message\":\"No resource types available\"",HttpStatus.NO_CONTENT);
+//	    		responseEntity = new ResponseEntity<String>("{\"message\":\"No resource types available\"",HttpStatus
+// .NO_CONTENT);
 //	    	}
-	    	responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies),HttpStatus.ACCEPTED);
+        responseEntity = new ResponseEntity<String>(Utils.objToJson(occurencies), HttpStatus.ACCEPTED);
 
 
-	    	return responseEntity;
-	    } 
+        return responseEntity;
+    }
 
 }
