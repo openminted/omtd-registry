@@ -80,7 +80,7 @@ public class RequestServiceImpl implements RequestService {
         } else {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
-        //qBuilder.queryName("*"); //<------------edw einai pou prepei na mpei to keyword MALLON
+
         logger.debug(qBuilder.toString());
         Occurencies overall = new Occurencies();
 
@@ -148,8 +148,7 @@ public class RequestServiceImpl implements RequestService {
             if (singleFacet.getValues().size() > 0)
                 facetsCollection.add(singleFacet);
         }
-        //TODO na gurnaw to swsto "to"
-        Browsing browsing = new Browsing(totalNumber, from, from + totalNumber, result, facetsCollection);
+        Browsing browsing = new Browsing(totalNumber, from, from + result.getTotal(), result, facetsCollection);
         return new ResponseEntity<>(Utils.objToJson(browsing), HttpStatus.OK);
 
     }
