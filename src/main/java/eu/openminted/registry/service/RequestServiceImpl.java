@@ -95,15 +95,19 @@ public class RequestServiceImpl implements RequestService {
             paging = searchService.search("resourceTypes", qBuilder, from, quantity, facets);
 
             if (paging != null) {
-                List<Corpus> corpora = new ArrayList<>();
-                List<Component> components = new ArrayList<>();
+                List<Order<Corpus>> corpora = new ArrayList<>();
+                List<Order<Component>> components = new ArrayList<>();
+                int pos = 0;
                 for(Object resourceObj :  paging.getResults()) {
                     Resource resource = (Resource) resourceObj;
                     if("corpus".equals(resource.getResourceType())) {
-                        corpora.add(Utils.serialize(resource, Corpus.class));
+                        Corpus temp = Utils.serialize(resource, Corpus.class);
+                        corpora.add(new Order<>(pos,temp));
                     } else if ("component".equals(resource.getResourceType())) {
-                        components.add(Utils.serialize(resource, Component.class));
+                        Component temp = Utils.serialize(resource, Component.class);
+                        components.add(new Order<>(pos,temp));
                     }
+                    pos++;
                 }
                 result.setComponents(components);
                 result.setCorpora(corpora);
