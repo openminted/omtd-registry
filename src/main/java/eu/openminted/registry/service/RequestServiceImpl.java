@@ -26,16 +26,16 @@ public class RequestServiceImpl implements RequestService {
     private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
     private static Map<String, String> labels = new HashMap<>();
-    private static String[] facets = new String[]{"language", "mediaType", "rights", "mimeType", "dataformatspecific",
+    private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype", "dataformatspecific",
             "licence", "resourceType"};
 
     static {
         labels.put("language", "Language");
-        labels.put("mediaType", "Media Type");
+        labels.put("mediatype", "Media Type");
         labels.put("rights", "Rights");
-        labels.put("mimeType", "Mime Type");
+        labels.put("mimetype", "Mime Type");
         labels.put("dataformatspecific", "Data format specific");
-        labels.put("licence", "Licence");
+        labels.put("license", "License");
         labels.put("resourceType", "Resource Type");
     }
 
@@ -61,27 +61,25 @@ public class RequestServiceImpl implements RequestService {
             qBuilder.must(QueryBuilders.termQuery("language", language[i]));
         }
         for (int i = 0; i < mediaType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mediaType", mediaType[i]));
+            qBuilder.must(QueryBuilders.termQuery("mediatype", mediaType[i]));
         }
         for (int i = 0; i < rights.length; i++) {
             qBuilder.must(QueryBuilders.termQuery("rights", rights[i]));
         }
         for (int i = 0; i < mimeType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mimeType", mimeType[i]));
+            qBuilder.must(QueryBuilders.termQuery("mimetype", mimeType[i]));
         }
         for (int i = 0; i < dataFormatSpecific.length; i++) {
             qBuilder.must(QueryBuilders.termQuery("dataFormatSpecific", dataFormatSpecific[i]));
         }
         for (int i = 0; i < license.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("licence", license[i]));
+            qBuilder.must(QueryBuilders.termQuery("license", license[i]));
         }
         if (!keyword.equals("")) {
             qBuilder.must(QueryBuilders.matchQuery("payload", keyword));
         } else {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
-
-        logger.debug(qBuilder.toString());
         Occurencies overall = new Occurencies();
 
         try {
