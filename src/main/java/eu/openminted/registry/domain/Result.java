@@ -4,22 +4,22 @@ import java.util.List;
 
 public class Result {
 
-    private List<Corpus> corpora;
-    private List<Component> components;
+    private List<Order<Corpus>> corpora;
+    private List<Order<Component>> components;
 
-    public List<Corpus> getCorpora() {
+    public List<Order<Corpus>> getCorpora() {
         return corpora;
     }
 
-    public void setCorpora(List<Corpus> corpora) {
+    public void setCorpora(List<Order<Corpus>> corpora) {
         this.corpora = corpora;
     }
 
-    public List<Component> getComponents() {
+    public List<Order<Component>> getComponents() {
         return components;
     }
 
-    public void setComponents(List<Component> components) {
+    public void setComponents(List<Order<Component>> components) {
         this.components = components;
     }
 
