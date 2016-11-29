@@ -16,7 +16,7 @@ public class RequestController {
 
     private static Map<String, String> labels = new HashMap<>();
     private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype",
-            "dataformatspecific", "license", "resourcetype"};
+            "dataformatspecific", "license", "resourceType"};
 
     static {
         labels.put("language", "Language");
@@ -40,9 +40,9 @@ public class RequestController {
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(value = "resourceType", required = false, defaultValue = "") String[] resourceType,
             @RequestParam(value = "language", required = false, defaultValue = "") String[] language,
-            @RequestParam(value = "mediaType", required = false, defaultValue = "") String[] mediaType,
+            @RequestParam(value = "mediatype", required = false, defaultValue = "") String[] mediaType,
             @RequestParam(value = "rights", required = false, defaultValue = "") String[] rights,
-            @RequestParam(value = "mimeType", required = false, defaultValue = "") String[] mimeType,
+            @RequestParam(value = "mimetype", required = false, defaultValue = "") String[] mimeType,
             @RequestParam(value = "dataFormatSpecific", required = false, defaultValue = "") String[]
 					dataFormatSpecific,
             @RequestParam(value = "license", required = false, defaultValue = "") String[] license,
