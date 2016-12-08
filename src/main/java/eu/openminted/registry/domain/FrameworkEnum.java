@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
  *     &lt;enumeration value="UIMA"/&gt;
  *     &lt;enumeration value="GATE"/&gt;
+ *     &lt;enumeration value="AlvisNLP"/&gt;
  *     &lt;enumeration value="other"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
@@ -28,6 +29,8 @@ public enum FrameworkEnum {
 
     UIMA("UIMA"),
     GATE("GATE"),
+    @XmlEnumValue("AlvisNLP")
+    ALVIS_NLP("AlvisNLP"),
     @XmlEnumValue("other")
     OTHER("other");
     private final String value;

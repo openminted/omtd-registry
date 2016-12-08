@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="webService"/&gt;
  *     &lt;enumeration value="sourceCode"/&gt;
  *     &lt;enumeration value="executableCode"/&gt;
+ *     &lt;enumeration value="sourceAndExecutableCode"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
@@ -31,7 +32,9 @@ public enum ComponentDistributionMediumEnum {
     @XmlEnumValue("sourceCode")
     SOURCE_CODE("sourceCode"),
     @XmlEnumValue("executableCode")
-    EXECUTABLE_CODE("executableCode");
+    EXECUTABLE_CODE("executableCode"),
+    @XmlEnumValue("sourceAndExecutableCode")
+    SOURCE_AND_EXECUTABLE_CODE("sourceAndExecutableCode");
     private final String value;
 
     ComponentDistributionMediumEnum(String v) {

@@ -80,6 +80,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *             &lt;/complexContent&gt;
  *           &lt;/complexType&gt;
  *         &lt;/element&gt;
+ *         &lt;element name="userQuery" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="metadataLanguages" minOccurs="0"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
@@ -113,6 +114,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "metadataCreationDate",
     "metadataCreators",
     "sourceOfMetadataRecord",
+    "userQuery",
     "metadataLanguages",
     "metadataLastDateUpdated",
     "revision"
@@ -128,6 +130,7 @@ public class MetadataHeaderInfo {
     @XmlElement(name = "metadataCreator", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<RelatedPerson> metadataCreators;
     protected SourceOfMetadataRecord sourceOfMetadataRecord;
+    protected String userQuery;
     @XmlElementWrapper
     @XmlElement(name = "metadataLanguage", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<Language> metadataLanguages;
@@ -206,6 +209,30 @@ public class MetadataHeaderInfo {
      */
     public void setSourceOfMetadataRecord(SourceOfMetadataRecord value) {
         this.sourceOfMetadataRecord = value;
+    }
+
+    /**
+     * Gets the value of the userQuery property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUserQuery() {
+        return userQuery;
+    }
+
+    /**
+     * Sets the value of the userQuery property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUserQuery(String value) {
+        this.userQuery = value;
     }
 
     /**

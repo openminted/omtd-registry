@@ -20,12 +20,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="resourceTypes"&gt;
+ *         &lt;element name="processingResourceTypes"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="resourceType" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                   &lt;element name="processingResourceType" maxOccurs="unbounded"&gt;
  *                     &lt;simpleType&gt;
  *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
  *                         &lt;maxLength value="30"/&gt;
@@ -176,7 +176,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "processingResourceInfoType", propOrder = {
-    "resourceTypes",
+    "processingResourceTypes",
     "mediaType",
     "languages",
     "characterEncodings",
@@ -195,8 +195,8 @@ import javax.xml.bind.annotation.XmlType;
 public class ProcessingResourceInfo {
 
     @XmlElementWrapper(required = true)
-    @XmlElement(name = "resourceType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
-    protected List<ResourceTypeEnum> resourceTypes;
+    @XmlElement(name = "processingResourceType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<ProcessingResourceTypeEnum> processingResourceTypes;
     @XmlElement(required = true)
     protected MediaTypeEnum mediaType;
     @XmlElementWrapper
@@ -307,15 +307,15 @@ public class ProcessingResourceInfo {
         this.tagset = value;
     }
 
-    public List<ResourceTypeEnum> getResourceTypes() {
-        if (resourceTypes == null) {
-            resourceTypes = new ArrayList<ResourceTypeEnum>();
+    public List<ProcessingResourceTypeEnum> getProcessingResourceTypes() {
+        if (processingResourceTypes == null) {
+            processingResourceTypes = new ArrayList<ProcessingResourceTypeEnum>();
         }
-        return resourceTypes;
+        return processingResourceTypes;
     }
 
-    public void setResourceTypes(List<ResourceTypeEnum> resourceTypes) {
-        this.resourceTypes = resourceTypes;
+    public void setProcessingResourceTypes(List<ProcessingResourceTypeEnum> processingResourceTypes) {
+        this.processingResourceTypes = processingResourceTypes;
     }
 
     public List<Language> getLanguages() {

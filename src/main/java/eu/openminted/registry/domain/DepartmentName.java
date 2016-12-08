@@ -16,15 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType&gt;
  *   &lt;simpleContent&gt;
  *     &lt;extension base="&lt;http://www.meta-share.org/OMTD-SHARE_XMLSchema&gt;myString"&gt;
- *       &lt;attribute name="nameType"&gt;
- *         &lt;simpleType&gt;
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *             &lt;enumeration value="shortName"/&gt;
- *             &lt;enumeration value="alternativeName"/&gt;
- *             &lt;enumeration value="translatedName"/&gt;
- *           &lt;/restriction&gt;
- *         &lt;/simpleType&gt;
- *       &lt;/attribute&gt;
+ *       &lt;attribute ref="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}nameType"/&gt;
  *     &lt;/extension&gt;
  *   &lt;/simpleContent&gt;
  * &lt;/complexType&gt;
@@ -38,7 +30,7 @@ public class DepartmentName
     extends MyString
 {
 
-    @XmlAttribute(name = "nameType")
+    @XmlAttribute(name = "nameType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected NameTypeEnum nameType;
 
     /**

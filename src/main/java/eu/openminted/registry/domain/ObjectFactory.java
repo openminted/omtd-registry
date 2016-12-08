@@ -30,6 +30,11 @@ public class ObjectFactory {
     private final static QName _StartDate_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "startDate");
     private final static QName _DateRange_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "dateRange");
     private final static QName _MetadataHeaderInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "metadataHeaderInfo");
+    private final static QName _OrganizationIdentifier_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "organizationIdentifier");
+    private final static QName _PersonIdentifier_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "personIdentifier");
+    private final static QName _PublicationIdentifier_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "publicationIdentifier");
+    private final static QName _ProjectIdentifier_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "projectIdentifier");
+    private final static QName _JournalIdentifier_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "journalIdentifier");
     private final static QName _PersonInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "personInfo");
     private final static QName _CommunicationInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "communicationInfo");
     private final static QName _OrganizationInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "organizationInfo");
@@ -88,7 +93,9 @@ public class ObjectFactory {
     private final static QName _Size_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "size");
     private final static QName _Keyword_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "keyword");
     private final static QName _EncodingLevel_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "encodingLevel");
+    private final static QName _RequiresHardware_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "requiresHardware");
     private final static QName _ComponentInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "componentInfo");
+    private final static QName _ParameterInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "parameterInfo");
     private final static QName _ComponentEvaluationInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "componentEvaluationInfo");
     private final static QName _ComponentOperationInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "componentOperationInfo");
     private final static QName _ComponentCreationInfo_QNAME = new QName("http://www.meta-share.org/OMTD-SHARE_XMLSchema", "componentCreationInfo");
@@ -156,6 +163,62 @@ public class ObjectFactory {
      */
     public MetadataHeaderInfo createMetadataHeaderInfo() {
         return new MetadataHeaderInfo();
+    }
+
+    /**
+     * Create an instance of {@link ResourceName }
+     * 
+     */
+    public ResourceName createResourceName() {
+        return new ResourceName();
+    }
+
+    /**
+     * Create an instance of {@link MyString }
+     * 
+     */
+    public MyString createMyString() {
+        return new MyString();
+    }
+
+    /**
+     * Create an instance of {@link OrganizationIdentifier }
+     * 
+     */
+    public OrganizationIdentifier createOrganizationIdentifier() {
+        return new OrganizationIdentifier();
+    }
+
+    /**
+     * Create an instance of {@link PersonIdentifier }
+     * 
+     */
+    public PersonIdentifier createPersonIdentifier() {
+        return new PersonIdentifier();
+    }
+
+    /**
+     * Create an instance of {@link PublicationIdentifier }
+     * 
+     */
+    public PublicationIdentifier createPublicationIdentifier() {
+        return new PublicationIdentifier();
+    }
+
+    /**
+     * Create an instance of {@link ProjectIdentifier }
+     * 
+     */
+    public ProjectIdentifier createProjectIdentifier() {
+        return new ProjectIdentifier();
+    }
+
+    /**
+     * Create an instance of {@link JournalIdentifier }
+     * 
+     */
+    public JournalIdentifier createJournalIdentifier() {
+        return new JournalIdentifier();
     }
 
     /**
@@ -535,6 +598,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ParameterInfoType }
+     * 
+     */
+    public ParameterInfoType createParameterInfoType() {
+        return new ParameterInfoType();
+    }
+
+    /**
      * Create an instance of {@link ComponentEvaluationInfo }
      * 
      */
@@ -767,14 +838,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link MyString }
-     * 
-     */
-    public MyString createMyString() {
-        return new MyString();
-    }
-
-    /**
      * Create an instance of {@link DateCombination }
      * 
      */
@@ -791,51 +854,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PublicationIdentifier }
-     * 
-     */
-    public PublicationIdentifier createPublicationIdentifier() {
-        return new PublicationIdentifier();
-    }
-
-    /**
-     * Create an instance of {@link JournalIdentifier }
-     * 
-     */
-    public JournalIdentifier createJournalIdentifier() {
-        return new JournalIdentifier();
-    }
-
-    /**
      * Create an instance of {@link RepositoryIdentifier }
      * 
      */
     public RepositoryIdentifier createRepositoryIdentifier() {
         return new RepositoryIdentifier();
-    }
-
-    /**
-     * Create an instance of {@link PersonIdentifier }
-     * 
-     */
-    public PersonIdentifier createPersonIdentifier() {
-        return new PersonIdentifier();
-    }
-
-    /**
-     * Create an instance of {@link OrganizationIdentifier }
-     * 
-     */
-    public OrganizationIdentifier createOrganizationIdentifier() {
-        return new OrganizationIdentifier();
-    }
-
-    /**
-     * Create an instance of {@link ProjectIdentifier }
-     * 
-     */
-    public ProjectIdentifier createProjectIdentifier() {
-        return new ProjectIdentifier();
     }
 
     /**
@@ -918,6 +941,29 @@ public class ObjectFactory {
         return new JournalTitle();
     }
 
+    /**
+     * Create an instance of {@link PublicationIdentifiers }
+     * 
+     */
+    public PublicationIdentifiers createPublicationIdentifiers() {
+        return new PublicationIdentifiers();
+    }
+
+    /**
+     * Create an instance of {@link ProjectNames }
+     * 
+     */
+    public ProjectNames createProjectNames() {
+        return new ProjectNames();
+    }
+
+    /**
+     * Create an instance of {@link ProjectIdentifiers }
+     * 
+     */
+    public ProjectIdentifiers createProjectIdentifiers() {
+        return new ProjectIdentifiers();
+    }
 
     /**
      * Create an instance of {@link ProjectName }
@@ -935,6 +981,21 @@ public class ObjectFactory {
         return new GroupName();
     }
 
+    /**
+     * Create an instance of {@link OrganizationNames }
+     * 
+     */
+    public OrganizationNames createOrganizationNames() {
+        return new OrganizationNames();
+    }
+
+    /**
+     * Create an instance of {@link OrganizationIdentifiers }
+     * 
+     */
+    public OrganizationIdentifiers createOrganizationIdentifiers() {
+        return new OrganizationIdentifiers();
+    }
 
     /**
      * Create an instance of {@link OrganizationName }
@@ -944,6 +1005,21 @@ public class ObjectFactory {
         return new OrganizationName();
     }
 
+    /**
+     * Create an instance of {@link PersonNames }
+     * 
+     */
+    public PersonNames createPersonNames() {
+        return new PersonNames();
+    }
+
+    /**
+     * Create an instance of {@link PersonIdentifiers }
+     * 
+     */
+    public PersonIdentifiers createPersonIdentifiers() {
+        return new PersonIdentifiers();
+    }
 
     /**
      * Create an instance of {@link PersonName }
@@ -953,6 +1029,21 @@ public class ObjectFactory {
         return new PersonName();
     }
 
+    /**
+     * Create an instance of {@link RepositoryNames }
+     * 
+     */
+    public RepositoryNames createRepositoryNames() {
+        return new RepositoryNames();
+    }
+
+    /**
+     * Create an instance of {@link RepositoryIdentifiers }
+     * 
+     */
+    public RepositoryIdentifiers createRepositoryIdentifiers() {
+        return new RepositoryIdentifiers();
+    }
 
     /**
      * Create an instance of {@link RepositoryName }
@@ -960,6 +1051,14 @@ public class ObjectFactory {
      */
     public RepositoryName createRepositoryName() {
         return new RepositoryName();
+    }
+
+    /**
+     * Create an instance of {@link JournalIdentifiers }
+     * 
+     */
+    public JournalIdentifiers createJournalIdentifiers() {
+        return new JournalIdentifiers();
     }
 
     /**
@@ -1068,6 +1167,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Description }
+     * 
+     */
+    public Description createDescription() {
+        return new Description();
+    }
+
+    /**
      * Create an instance of {@link ComponentDependencies }
      * 
      */
@@ -1075,13 +1182,20 @@ public class ObjectFactory {
         return new ComponentDependencies();
     }
 
-
     /**
-     * Create an instance of {@link ResourceName }
+     * Create an instance of {@link ResourceIdentifiers }
      * 
      */
-    public ResourceName createResourceName() {
-        return new ResourceName();
+    public ResourceIdentifiers createResourceIdentifiers() {
+        return new ResourceIdentifiers();
+    }
+
+    /**
+     * Create an instance of {@link ResourceNames }
+     * 
+     */
+    public ResourceNames createResourceNames() {
+        return new ResourceNames();
     }
 
     /**
@@ -1091,15 +1205,6 @@ public class ObjectFactory {
     public ResourceShortName createResourceShortName() {
         return new ResourceShortName();
     }
-
-    /**
-     * Create an instance of {@link Description }
-     * 
-     */
-    public Description createDescription() {
-        return new Description();
-    }
-
 
     /**
      * Create an instance of {@link LicenceInfos }
@@ -1149,7 +1254,6 @@ public class ObjectFactory {
         return new ProjectShortName();
     }
 
-
     /**
      * Create an instance of {@link DepartmentName }
      * 
@@ -1166,7 +1270,6 @@ public class ObjectFactory {
         return new OrganizationAlternativeName();
     }
 
-
     /**
      * Create an instance of {@link PostalAddress }
      * 
@@ -1175,6 +1278,29 @@ public class ObjectFactory {
         return new PostalAddress();
     }
 
+    /**
+     * Create an instance of {@link Surnames }
+     * 
+     */
+    public Surnames createSurnames() {
+        return new Surnames();
+    }
+
+    /**
+     * Create an instance of {@link GivenNames }
+     * 
+     */
+    public GivenNames createGivenNames() {
+        return new GivenNames();
+    }
+
+    /**
+     * Create an instance of {@link Names }
+     * 
+     */
+    public Names createNames() {
+        return new Names();
+    }
 
     /**
      * Create an instance of {@link Affiliation }
@@ -1267,6 +1393,51 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "metadataHeaderInfo")
     public JAXBElement<MetadataHeaderInfo> createMetadataHeaderInfo(MetadataHeaderInfo value) {
         return new JAXBElement<MetadataHeaderInfo>(_MetadataHeaderInfo_QNAME, MetadataHeaderInfo.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link OrganizationIdentifier }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "organizationIdentifier")
+    public JAXBElement<OrganizationIdentifier> createOrganizationIdentifier(OrganizationIdentifier value) {
+        return new JAXBElement<OrganizationIdentifier>(_OrganizationIdentifier_QNAME, OrganizationIdentifier.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PersonIdentifier }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "personIdentifier")
+    public JAXBElement<PersonIdentifier> createPersonIdentifier(PersonIdentifier value) {
+        return new JAXBElement<PersonIdentifier>(_PersonIdentifier_QNAME, PersonIdentifier.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PublicationIdentifier }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "publicationIdentifier")
+    public JAXBElement<PublicationIdentifier> createPublicationIdentifier(PublicationIdentifier value) {
+        return new JAXBElement<PublicationIdentifier>(_PublicationIdentifier_QNAME, PublicationIdentifier.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ProjectIdentifier }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "projectIdentifier")
+    public JAXBElement<ProjectIdentifier> createProjectIdentifier(ProjectIdentifier value) {
+        return new JAXBElement<ProjectIdentifier>(_ProjectIdentifier_QNAME, ProjectIdentifier.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link JournalIdentifier }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "journalIdentifier")
+    public JAXBElement<JournalIdentifier> createJournalIdentifier(JournalIdentifier value) {
+        return new JAXBElement<JournalIdentifier>(_JournalIdentifier_QNAME, JournalIdentifier.class, null, value);
     }
 
     /**
@@ -1792,12 +1963,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RequiresHardwareEnum }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "requiresHardware")
+    public JAXBElement<RequiresHardwareEnum> createRequiresHardware(RequiresHardwareEnum value) {
+        return new JAXBElement<RequiresHardwareEnum>(_RequiresHardware_QNAME, RequiresHardwareEnum.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ComponentInfo }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "componentInfo")
     public JAXBElement<ComponentInfo> createComponentInfo(ComponentInfo value) {
         return new JAXBElement<ComponentInfo>(_ComponentInfo_QNAME, ComponentInfo.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ParameterInfoType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema", name = "parameterInfo")
+    public JAXBElement<ParameterInfoType> createParameterInfo(ParameterInfoType value) {
+        return new JAXBElement<ParameterInfoType>(_ParameterInfo_QNAME, ParameterInfoType.class, null, value);
     }
 
     /**

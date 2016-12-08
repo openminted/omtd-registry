@@ -20,7 +20,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="mustBeCitedWith" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedDocumentInfoType" minOccurs="0"/&gt;
+ *         &lt;element name="citations" minOccurs="0"&gt;
+ *           &lt;complexType&gt;
+ *             &lt;complexContent&gt;
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                 &lt;sequence&gt;
+ *                   &lt;element name="mustBeCitedWith" type="{http://www.meta-share.org/OMTD-SHARE_XMLSchema}relatedDocumentInfoType" maxOccurs="unbounded"/&gt;
+ *                 &lt;/sequence&gt;
+ *               &lt;/restriction&gt;
+ *             &lt;/complexContent&gt;
+ *           &lt;/complexType&gt;
+ *         &lt;/element&gt;
  *         &lt;element name="documentationPublications" minOccurs="0"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
@@ -53,13 +63,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "resourceDocumentationInfoType", propOrder = {
-    "mustBeCitedWith",
+    "citations",
     "documentationPublications",
     "samplesLocations"
 })
 public class ResourceDocumentationInfo {
 
-    protected RelatedDocumentInfo mustBeCitedWith;
+    @XmlElementWrapper
+    @XmlElement(name = "mustBeCitedWith", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
+    protected List<RelatedDocumentInfo> citations;
     @XmlElementWrapper
     @XmlElement(name = "isDocumentedIn", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<RelatedDocumentInfo> documentationPublications;
@@ -67,28 +79,15 @@ public class ResourceDocumentationInfo {
     @XmlElement(name = "samplesLocation", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<String> samplesLocations;
 
-    /**
-     * Gets the value of the mustBeCitedWith property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RelatedDocumentInfo }
-     *     
-     */
-    public RelatedDocumentInfo getMustBeCitedWith() {
-        return mustBeCitedWith;
+    public List<RelatedDocumentInfo> getCitations() {
+        if (citations == null) {
+            citations = new ArrayList<RelatedDocumentInfo>();
+        }
+        return citations;
     }
 
-    /**
-     * Sets the value of the mustBeCitedWith property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link RelatedDocumentInfo }
-     *     
-     */
-    public void setMustBeCitedWith(RelatedDocumentInfo value) {
-        this.mustBeCitedWith = value;
+    public void setCitations(List<RelatedDocumentInfo> citations) {
+        this.citations = citations;
     }
 
     public List<RelatedDocumentInfo> getDocumentationPublications() {

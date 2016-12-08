@@ -59,6 +59,7 @@ import javax.xml.bind.annotation.XmlType;
  *               &lt;enumeration value="LGPL"/&gt;
  *               &lt;enumeration value="MIT"/&gt;
  *               &lt;enumeration value="Princeton_Wordnet"/&gt;
+ *               &lt;enumeration value="EPL"/&gt;
  *               &lt;enumeration value="proprietary"/&gt;
  *               &lt;enumeration value="underNegotiation"/&gt;
  *               &lt;enumeration value="nonStandardLicenceTerms"/&gt;
