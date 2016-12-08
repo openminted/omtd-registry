@@ -192,7 +192,7 @@ public class DocumentDistributionInfo {
     @XmlElementWrapper
     @XmlElement(name = "sizeInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<SizeInfo> sizes;
-    @XmlElementWrapper(required = true)
+    @XmlElement(required = true)
     protected RightsInfo rightsInfo;
     @XmlElementWrapper
     @XmlElement(name = "copyrightStatement", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
