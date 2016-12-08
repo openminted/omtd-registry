@@ -193,11 +193,7 @@ public class DocumentDistributionInfo {
     @XmlElement(name = "sizeInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<SizeInfo> sizes;
     @XmlElementWrapper(required = true)
-    @XmlElements({
-        @XmlElement(name = "licenceInfos", type = LicenceInfos.class, namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema"),
-        @XmlElement(name = "rightsStatementInfo", type = RightsStatementInfo.class, namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
-    })
-    protected List<Object> rightsInfo;
+    protected RightsInfo rightsInfo;
     @XmlElementWrapper
     @XmlElement(name = "copyrightStatement", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<CopyrightStatement> copyrightStatements;
@@ -378,14 +374,11 @@ public class DocumentDistributionInfo {
         this.sizes = sizes;
     }
 
-    public List<Object> getRightsInfo() {
-        if (rightsInfo == null) {
-            rightsInfo = new ArrayList<Object>();
-        }
+    public RightsInfo getRightsInfo() {
         return rightsInfo;
     }
 
-    public void setRightsInfo(List<Object> rightsInfo) {
+    public void setRightsInfo(RightsInfo rightsInfo) {
         this.rightsInfo = rightsInfo;
     }
 
