@@ -3,6 +3,13 @@
 
 	<display-name>omtd-registry</display-name>
 
+	<!--<context-param>-->
+		<!--<param-name>contextConfigLocation</param-name>-->
+		<!--<param-value>-->
+			<!--classpath*:/META-INF/securityContext.xml-->
+		<!--</param-value>-->
+	<!--</context-param>-->
+
 	<servlet>
 		<servlet-name>springrest</servlet-name>
 		<servlet-class>
@@ -27,6 +34,16 @@
         <param-value>GET, POST, PUT, DELETE, OPTIONS, HEAD</param-value>
     </init-param>
     </filter>
+
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
 
 	
 	<filter-mapping>
