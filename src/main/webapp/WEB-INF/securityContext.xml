@@ -13,8 +13,19 @@
     <context:component-scan base-package="org.springframework.security.saml"/>
 
     <!-- Secured pages with SAML as entry point -->
-    <security:http entry-point-ref="samlEntryPoint" use-expressions="false">
-        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+    <security:http entry-point-ref="samlEntryPoint" use-expressions="true">
+        <!-- Unsecured pages -->
+        <security:intercept-url pattern="/request/**" access="permitAll"/>
+        <security:intercept-url pattern="/search/**" access="permitAll"/>
+        <security:intercept-url pattern="/resources/**" access="permitAll"/>
+        <security:intercept-url pattern="/resourceType/**" access="permitAll"/>
+        <security:intercept-url pattern="/occurencies/**" access="permitAll"/>
+
+        <!-- Secure pages -->
+        <security:intercept-url pattern="/**" access="isFullyAuthenticated()"/>
+
+
+
         <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
         <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
     </security:http>
