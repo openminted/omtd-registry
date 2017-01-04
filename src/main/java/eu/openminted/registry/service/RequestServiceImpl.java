@@ -27,7 +27,7 @@ public class RequestServiceImpl implements RequestService {
 
     private static Map<String, String> labels = new HashMap<>();
     private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype", "dataformatspecific",
-            "licence", "resourceType"};
+            "license", "resourceType"};
 
     static {
         labels.put("language", "Language");
