@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import com.google.common.collect.Lists;
 import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
@@ -25,18 +26,18 @@ public class RequestServiceImpl implements RequestService {
 
     private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
-    private static Map<String, String> labels = new HashMap<>();
-    private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype", "dataformatspecific",
-            "licence", "resourceType"};
+    private static Map<String, String> labels = new LinkedHashMap<>();
+    private static String[] facets = new String[]{"resourceType","language", "mediatype", "rights", "mimetype", "dataformatspecific",
+            "license"};
 
     static {
+        labels.put("resourceType", "Resource Type");
+        labels.put("license", "License");
         labels.put("language", "Language");
         labels.put("mediatype", "Media Type");
         labels.put("rights", "Rights");
         labels.put("mimetype", "Mime Type");
         labels.put("dataformatspecific", "Data format specific");
-        labels.put("license", "License");
-        labels.put("resourceType", "Resource Type");
     }
 
     public ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
@@ -125,15 +126,15 @@ public class RequestServiceImpl implements RequestService {
 
         List<Facet> facetsCollection = new ArrayList<>();
 
-        for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
+        for (String label : labels.keySet()) {
+        //for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
             Facet singleFacet = new Facet();
 
-            singleFacet.setField(pair.getKey() + "");
-            singleFacet.setLabel(labels.get(pair.getKey()));
+            singleFacet.setField(label + "");
+            singleFacet.setLabel(labels.get(label));
 
             List<Value> values = new ArrayList<>();
-            Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
-
+            Map<String, Integer> subMap = overall.getValues().get(label);
             for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
                 Value value = new Value();
 
@@ -150,6 +151,7 @@ public class RequestServiceImpl implements RequestService {
             if (singleFacet.getValues().size() > 0)
                 facetsCollection.add(singleFacet);
         }
+
         Browsing browsing = new Browsing(totalNumber, from, from + result.getTotal(), result, facetsCollection);
         return new ResponseEntity<>(Utils.objToJson(browsing), HttpStatus.OK);
 

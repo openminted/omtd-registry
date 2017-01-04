@@ -14,13 +14,13 @@
 
     <!-- Secured pages with SAML as entry point -->
     <security:http entry-point-ref="samlEntryPoint" use-expressions="true">
+
         <!-- Unsecured pages -->
         <security:intercept-url pattern="/request/**" access="permitAll"/>
         <security:intercept-url pattern="/search/**" access="permitAll"/>
         <security:intercept-url pattern="/resources/**" access="permitAll"/>
         <security:intercept-url pattern="/resourceType/**" access="permitAll"/>
         <security:intercept-url pattern="/occurencies/**" access="permitAll"/>
-
         <!-- Secure pages -->
         <security:intercept-url pattern="/**" access="isFullyAuthenticated()"/>
 
@@ -79,7 +79,9 @@
     </security:authentication-manager>
 
     <!-- Logger for SAML messages and events -->
-    <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
+    <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger">
+        <property name="logMessages" value="true" />
+    </bean>
 
     <!-- Central storage of cryptographic keys -->
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
