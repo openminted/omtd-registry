@@ -42,7 +42,7 @@ public class RequestServiceImpl implements RequestService {
 
     public ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
                                                               String[] mediaType, String[] rights, String[] mimeType,
-                                                              String[] dataFormatSpecific, String[] license,
+                                                              String[] dataFormatSpecific, String[] license,boolean advanced,
                                                               int from, int to) {
 
         ResponseEntity<String> responseEntity = null;
@@ -80,6 +80,12 @@ public class RequestServiceImpl implements RequestService {
             qBuilder.must(QueryBuilders.matchQuery("payload", keyword));
         } else {
             qBuilder.must(QueryBuilders.matchAllQuery());
+        }
+
+        if(advanced) {
+            //TODO filter components only
+        } else {
+
         }
         Occurencies overall = new Occurencies();
 
