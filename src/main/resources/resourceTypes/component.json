@@ -1,5 +1,4 @@
 {
-  "id": "3",
   "indexFields": [
     {
       "name": "omtdid",
@@ -58,5 +57,5 @@
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
   "name": "component",
   "payloadType": "xml",
-  "schemaUrl": "http://194.177.192.223/openminted/schema/OMTD-SHARE-Component.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v101%20XSD/OMTD-SHARE-Component.xsd"
 }

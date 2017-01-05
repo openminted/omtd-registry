@@ -7,6 +7,8 @@
 
  <mvc:annotation-driven/>
  
-<context:component-scan base-package="eu.openminted.registry" />
+ <context:component-scan base-package="eu.openminted.registry" />
+
+ <bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean"/>
 </beans>
 
