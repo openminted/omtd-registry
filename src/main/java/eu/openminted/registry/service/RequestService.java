@@ -6,7 +6,7 @@ public interface RequestService {
 
 	ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
 													   String[] mediaType, String[] rights, String[] mimeType,
-													   String[] dataFormatSpecific, String[] license,
+													   String[] dataFormatSpecific, String[] license,boolean advanced,
 													   int from, int to);
 
 }
