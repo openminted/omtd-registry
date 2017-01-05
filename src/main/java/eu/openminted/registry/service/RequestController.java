@@ -14,20 +14,6 @@ import java.util.Map;
 @RestController
 public class RequestController {
 
-    private static Map<String, String> labels = new HashMap<>();
-    private static String[] facets = new String[]{"language", "mediatype", "rights", "mimetype",
-            "dataformatspecific", "license", "resourceType"};
-
-    static {
-        labels.put("language", "Language");
-        labels.put("mediatype", "Media Type");
-        labels.put("rights", "Rights");
-        labels.put("mimetype", "Mime Type");
-        labels.put("dataformatspecific", "Data format specific");
-        labels.put("license", "License");
-        labels.put("resourcetype", "Resource Type");
-    }
-
     @Autowired
     ResourceService resourceService;
 
@@ -45,11 +31,13 @@ public class RequestController {
             @RequestParam(value = "mimetype", required = false, defaultValue = "") String[] mimeType,
             @RequestParam(value = "dataFormatSpecific", required = false, defaultValue = "") String[]
 					dataFormatSpecific,
+            @RequestParam(value = "advanced", required = false, defaultValue = "true") boolean advanced,
             @RequestParam(value = "license", required = false, defaultValue = "") String[] license,
             @RequestParam(value = "from", required = false, defaultValue = "0") int from,
             @RequestParam(value = "to", required = false, defaultValue = "-1") int to) {
 
-        return requestService.getResponseByFiltersElastic(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, from, to);
+        //ResponseE
+        return requestService.getResponseByFiltersElastic(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, advanced, from, to);
 
     }
 
