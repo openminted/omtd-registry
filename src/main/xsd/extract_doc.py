@@ -6,6 +6,8 @@ import re
 import json
 import codecs
 from enum import Rename
+import datetime
+
 
 
 def parseElements(filename, namespace, types) :
@@ -105,24 +107,37 @@ def parseEnums(filename,namespace,types):
 			
 	return types
 
-def printEnums(filename, types):
-	with codecs.open(filename,'w',"utf-8") as f:
-		f.write('''
-class EnumValues {
-	[key: string]: string;
-}
+def printKey(left,right):
+	leftTmp = Rename.rename(left)
+	rightTmp = right.replace('"','\\"')
+	return u'key : "{}", value : "{}"'.format(leftTmp,rightTmp)
 
+def printEnums(filename, types):
+
+	with codecs.open(filename,'w',"utf-8") as f:
+		today = datetime.date.today()
+		f.write('''
+/**
+ * Generated at {:%d/%b/%Y}
+ */
+'''.format(today))
+		f.write(
+'''
+export class EnumValues {
+    key : string;
+    value : string;
+}
 ''')
 		for name in types:
 
-			f.write("export var " + name + "Enum = {\n")
+			f.write("export var " + name + "Enum = [\n")
+			f.write("\t{key : \"\", value : \"None Selected\"},\n")
 			for val in types[name][:-1]:
 				left,right = val
-				f.write("\t" + Rename.rename(left) +" : \"" + right.replace('"','\\"') +"\",\n")
-
+				f.write("\t{" + printKey(left,right) + "},\n")
 			left,right = types[name][-1]
-			f.write("\t" + Rename.rename(left) +" : \"" + right.replace('"','\\"') +"\"\n")
-			f.write("}\n\n")
+			f.write("\t{" + printKey(left,right) + "}\n")
+			f.write("]\n\n")
 		# f.write(json.dumps(finalDoc))
 		f.close()
 

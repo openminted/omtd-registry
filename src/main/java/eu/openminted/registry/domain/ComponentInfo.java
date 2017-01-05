@@ -128,6 +128,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent&gt;
  *           &lt;/complexType&gt;
  *         &lt;/element&gt;
+ *         &lt;element name="application" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
  *         &lt;element name="distributionInfos"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
@@ -219,6 +220,7 @@ import javax.xml.bind.annotation.XmlType;
     "resourceDocumentationInfo",
     "resourceCreationInfo",
     "componentTypes",
+    "application",
     "distributionInfos",
     "parameterInfos",
     "inputContentResourceInfo",
@@ -246,6 +248,7 @@ public class ComponentInfo {
     @XmlElementWrapper(required = true)
     @XmlElement(name = "componentType", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<ComponentTypeEnum> componentTypes;
+    protected Boolean application;
     @XmlElementWrapper(required = true)
     @XmlElement(name = "componentDistributionInfo", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<ComponentDistributionInfo> distributionInfos;
@@ -425,6 +428,30 @@ public class ComponentInfo {
      */
     public void setResourceCreationInfo(ResourceCreationInfo value) {
         this.resourceCreationInfo = value;
+    }
+
+    /**
+     * Gets the value of the application property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the value of the application property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setApplication(Boolean value) {
+        this.application = value;
     }
 
     /**
