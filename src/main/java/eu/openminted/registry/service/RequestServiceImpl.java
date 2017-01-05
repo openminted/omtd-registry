@@ -135,6 +135,8 @@ public class RequestServiceImpl implements RequestService {
 
             List<Value> values = new ArrayList<>();
             Map<String, Integer> subMap = overall.getValues().get(label);
+            if (subMap == null)
+                continue;
             for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
                 Value value = new Value();
 

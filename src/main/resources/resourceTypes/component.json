@@ -52,6 +52,12 @@
       "name": "componentdistributionmedium",
       "path": "//*[local-name()='componentDistributionMedium']/text()",
       "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "application",
+      "path": "//*[local-name()='application']/text()",
+      "type": "java.lang.Boolean"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
