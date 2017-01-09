@@ -9,6 +9,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,10 +84,9 @@ public class RequestServiceImpl implements RequestService {
         }
 
         if(advanced) {
-            //TODO filter components only
-        } else {
-
+            qBuilder.must(QueryBuilders.termsQuery("application",true));
         }
+
         Occurencies overall = new Occurencies();
 
         try {

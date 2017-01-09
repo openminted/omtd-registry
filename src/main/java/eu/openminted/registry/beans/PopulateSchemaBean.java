@@ -3,6 +3,7 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.core.service.ResourceTypeService;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -20,7 +21,7 @@ import java.util.Date;
  * Created by stefanos on 5/1/2017.
  */
 
-public class PopulateSchemaBean implements InitializingBean {
+public class PopulateSchemaBean implements InitializingBean,DisposableBean {
     @Autowired
     ResourceTypeService resourceTypeService;
 
@@ -55,4 +56,8 @@ public class PopulateSchemaBean implements InitializingBean {
         }
     }
 
+    @Override
+    public void destroy() throws Exception {
+        logger.info("Finished initialization");
+    }
 }

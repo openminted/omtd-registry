@@ -57,7 +57,8 @@
       "multivalued": false,
       "name": "application",
       "path": "//*[local-name()='application']/text()",
-      "type": "java.lang.Boolean"
+      "type": "java.lang.Boolean",
+      "defaultValue" : "false"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",

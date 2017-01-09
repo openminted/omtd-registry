@@ -94,6 +94,13 @@
       "name": "typesystem",
       "path": "//*[local-name()='typesystem']/text()",
       "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "application",
+      "path": null,
+      "type": "java.lang.Boolean",
+      "defaultValue" : "true"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
