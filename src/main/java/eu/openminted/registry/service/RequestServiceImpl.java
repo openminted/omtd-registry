@@ -83,7 +83,7 @@ public class RequestServiceImpl implements RequestService {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
 
-        if(advanced) {
+        if(!advanced) {
             qBuilder.must(QueryBuilders.termsQuery("application",true));
         }
 
