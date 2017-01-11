@@ -35,27 +35,27 @@
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core-api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core-rest</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-registry-api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-registry-rest</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -143,6 +143,21 @@
 				<configuration>
 					<warName>omtd-registry</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>1.0-m5.1</version>
+				<configuration>
+					<flowInitContext>
+						<developBranchName>develop</developBranchName>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+					<username>USERNAME_FOR_A_GIT_USER</username>
+					<password>PASSWORD_FOR_A_GIT_USER</password>
+					<noDeploy>true</noDeploy>
+					<squash>true</squash>
 				</configuration>
 			</plugin>
 		</plugins>
