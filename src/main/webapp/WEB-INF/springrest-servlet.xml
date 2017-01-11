@@ -9,6 +9,6 @@
  
  <context:component-scan base-package="eu.openminted.registry" />
 
- <bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean"  scope="session"/>
+ <!--<bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean"  scope="session"/>-->
 </beans>
 

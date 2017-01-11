@@ -104,6 +104,9 @@ public class RequestServiceImpl implements RequestService {
             if (paging != null) {
                 List<Order<Corpus>> corpora = new ArrayList<>();
                 List<Order<Component>> components = new ArrayList<>();
+                List<Order<Lexical>> lexica = new ArrayList<>();
+                List<Order<Model>> models = new ArrayList<>();
+                List<Order<LanguageDescription>> languages = new ArrayList<>();
                 int pos = 0;
                 for(Object resourceObj :  paging.getResults()) {
                     Resource resource = (Resource) resourceObj;
@@ -113,11 +116,23 @@ public class RequestServiceImpl implements RequestService {
                     } else if ("component".equals(resource.getResourceType())) {
                         Component temp = Utils.serialize(resource, Component.class);
                         components.add(new Order<>(pos,temp));
+                    } else if ("lexical".equals(resource.getResourceType())) {
+                        Lexical temp = Utils.serialize(resource,Lexical.class);
+                        lexica.add(new Order<>(pos,temp));
+                    } else if ("model".equals(resource.getResourceType())) {
+                        Model temp = Utils.serialize(resource,Model.class);
+                        models.add(new Order<>(pos,temp));
+                    } else if ("language".equals(resource.getResourceType())) {
+                        LanguageDescription temp = Utils.serialize(resource,LanguageDescription.class);
+                        languages.add(new Order<>(pos,temp));
                     }
                     pos++;
                 }
                 result.setComponents(components);
                 result.setCorpora(corpora);
+                result.setLexicalConceptualResources(lexica);
+                result.setLanguageDescriptions(languages);
+                result.setModels(models);
             }
 
             totalNumber += paging.getTotal();
