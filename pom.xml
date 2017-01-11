@@ -8,8 +8,21 @@
 
 	<groupId>eu.openminted</groupId>
 	<artifactId>omtd-registry</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>war</packaging>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/openminted/omtd-registry.git</connection>
+		<developerConnection>scm:git:ssh://github.com/openminted/omtd-registry.git</developerConnection>
+		<url>https://github.com/openminted/omtd-registry</url>
+	</scm>
 
 	<dependencies>
 
@@ -22,27 +35,27 @@
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core-api</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core-rest</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-registry-api</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-registry-rest</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -77,8 +90,6 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 	<distributionManagement>
 		<repository>
@@ -132,6 +143,21 @@
 				<configuration>
 					<warName>omtd-registry</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>1.0-m5.1</version>
+				<configuration>
+					<flowInitContext>
+						<developBranchName>develop</developBranchName>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+					<username>USERNAME_FOR_A_GIT_USER</username>
+					<password>PASSWORD_FOR_A_GIT_USER</password>
+					<noDeploy>true</noDeploy>
+					<squash>true</squash>
 				</configuration>
 			</plugin>
 		</plugins>

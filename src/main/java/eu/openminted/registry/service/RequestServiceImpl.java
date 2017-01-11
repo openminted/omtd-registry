@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import com.google.common.collect.Lists;
 import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
@@ -8,6 +9,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,23 +27,23 @@ public class RequestServiceImpl implements RequestService {
 
     private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
-    private static Map<String, String> labels = new HashMap<>();
-    private static String[] facets = new String[]{"language", "mediaType", "rights", "mimeType", "dataformatspecific",
-            "licence", "resourceType"};
+    private static Map<String, String> labels = new LinkedHashMap<>();
+    private static String[] facets = new String[]{"resourceType","language", "mediatype", "rights", "mimetype", "dataformatspecific",
+            "license"};
 
     static {
-        labels.put("language", "Language");
-        labels.put("mediaType", "Media Type");
-        labels.put("rights", "Rights");
-        labels.put("mimeType", "Mime Type");
-        labels.put("dataformatspecific", "Data format specific");
-        labels.put("licence", "Licence");
         labels.put("resourceType", "Resource Type");
+        labels.put("license", "License");
+        labels.put("language", "Language");
+        labels.put("mediatype", "Media Type");
+        labels.put("rights", "Rights");
+        labels.put("mimetype", "Mime Type");
+        labels.put("dataformatspecific", "Data format specific");
     }
 
     public ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
                                                               String[] mediaType, String[] rights, String[] mimeType,
-                                                              String[] dataFormatSpecific, String[] license,
+                                                              String[] dataFormatSpecific, String[] license,boolean advanced,
                                                               int from, int to) {
 
         ResponseEntity<String> responseEntity = null;
@@ -61,19 +63,19 @@ public class RequestServiceImpl implements RequestService {
             qBuilder.must(QueryBuilders.termQuery("language", language[i]));
         }
         for (int i = 0; i < mediaType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mediaType", mediaType[i]));
+            qBuilder.must(QueryBuilders.termQuery("mediatype", mediaType[i]));
         }
         for (int i = 0; i < rights.length; i++) {
             qBuilder.must(QueryBuilders.termQuery("rights", rights[i]));
         }
         for (int i = 0; i < mimeType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mimeType", mimeType[i]));
+            qBuilder.must(QueryBuilders.termQuery("mimetype", mimeType[i]));
         }
         for (int i = 0; i < dataFormatSpecific.length; i++) {
             qBuilder.must(QueryBuilders.termQuery("dataFormatSpecific", dataFormatSpecific[i]));
         }
         for (int i = 0; i < license.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("licence", license[i]));
+            qBuilder.must(QueryBuilders.termQuery("license", license[i]));
         }
         if (!keyword.equals("")) {
             qBuilder.must(QueryBuilders.matchQuery("payload", keyword));
@@ -81,7 +83,10 @@ public class RequestServiceImpl implements RequestService {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
 
-        logger.debug(qBuilder.toString());
+        if(!advanced) {
+            qBuilder.must(QueryBuilders.termsQuery("application",true));
+        }
+
         Occurencies overall = new Occurencies();
 
         try {
@@ -97,15 +102,19 @@ public class RequestServiceImpl implements RequestService {
             paging = searchService.search("resourceTypes", qBuilder, from, quantity, facets);
 
             if (paging != null) {
-                List<Corpus> corpora = new ArrayList<>();
-                List<Component> components = new ArrayList<>();
+                List<Order<Corpus>> corpora = new ArrayList<>();
+                List<Order<Component>> components = new ArrayList<>();
+                int pos = 0;
                 for(Object resourceObj :  paging.getResults()) {
                     Resource resource = (Resource) resourceObj;
                     if("corpus".equals(resource.getResourceType())) {
-                        corpora.add(Utils.serialize(resource, Corpus.class));
+                        Corpus temp = Utils.serialize(resource, Corpus.class);
+                        corpora.add(new Order<>(pos,temp));
                     } else if ("component".equals(resource.getResourceType())) {
-                        components.add(Utils.serialize(resource, Component.class));
+                        Component temp = Utils.serialize(resource, Component.class);
+                        components.add(new Order<>(pos,temp));
                     }
+                    pos++;
                 }
                 result.setComponents(components);
                 result.setCorpora(corpora);
@@ -123,15 +132,17 @@ public class RequestServiceImpl implements RequestService {
 
         List<Facet> facetsCollection = new ArrayList<>();
 
-        for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
+        for (String label : labels.keySet()) {
+        //for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
             Facet singleFacet = new Facet();
 
-            singleFacet.setField(pair.getKey() + "");
-            singleFacet.setLabel(labels.get(pair.getKey()));
+            singleFacet.setField(label + "");
+            singleFacet.setLabel(labels.get(label));
 
             List<Value> values = new ArrayList<>();
-            Map<String, Integer> subMap = overall.getValues().get(pair.getKey());
-
+            Map<String, Integer> subMap = overall.getValues().get(label);
+            if (subMap == null)
+                continue;
             for (Map.Entry<String, Integer> pair2 : subMap.entrySet()) {
                 Value value = new Value();
 
@@ -148,6 +159,7 @@ public class RequestServiceImpl implements RequestService {
             if (singleFacet.getValues().size() > 0)
                 facetsCollection.add(singleFacet);
         }
+
         Browsing browsing = new Browsing(totalNumber, from, from + result.getTotal(), result, facetsCollection);
         return new ResponseEntity<>(Utils.objToJson(browsing), HttpStatus.OK);
 
