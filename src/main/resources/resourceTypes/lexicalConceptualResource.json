@@ -52,7 +52,7 @@
       "name": "application",
       "path": null,
       "type": "java.lang.Boolean",
-      "defaultValue" : "true"
+      "defaultValue" : "false"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
