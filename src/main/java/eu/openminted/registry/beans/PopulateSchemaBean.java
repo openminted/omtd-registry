@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.apache.log4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.Date;
 
@@ -21,7 +24,8 @@ import java.util.Date;
  * Created by stefanos on 5/1/2017.
  */
 
-public class PopulateSchemaBean implements InitializingBean,DisposableBean {
+@Component
+public class PopulateSchemaBean {
     @Autowired
     ResourceTypeService resourceTypeService;
 
@@ -32,7 +36,8 @@ public class PopulateSchemaBean implements InitializingBean,DisposableBean {
 
     private static Logger logger = Logger.getLogger(PopulateSchemaBean.class);
 
-    @Override
+    @PostConstruct
+
     public void afterPropertiesSet() throws Exception {
         ClassLoader cl = this.getClass().getClassLoader();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
@@ -56,7 +61,7 @@ public class PopulateSchemaBean implements InitializingBean,DisposableBean {
         }
     }
 
-    @Override
+    @PreDestroy
     public void destroy() throws Exception {
         logger.info("Finished initialization");
     }
