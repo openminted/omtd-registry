@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/request/corpus")
 public class CorpusController {
-
 
     @Autowired
     ResourceCRUDService<Corpus> corpusService;
@@ -25,7 +25,7 @@ public class CorpusController {
         return new ServerError(req.getRequestURL().toString(), ex);
     }
 
-    @RequestMapping(value = "/request/corpus/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Corpus> getCorpus(@PathVariable("id") String id) {
         Corpus component = corpusService.get(id);
         if(component == null)
@@ -34,14 +34,14 @@ public class CorpusController {
             return new ResponseEntity<>(component, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/request/corpus/", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
+    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
     public ResponseEntity<String> addCorpus(@RequestBody Corpus corpus) {
         corpusService.add(corpus);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/request/corpus/", method = RequestMethod.POST, headers = "Accept=application/xml")
+    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/xml")
     public ResponseEntity<String> addCorpusXml(@RequestBody Corpus corpus) {
 
         corpusService.add(corpus);
@@ -49,7 +49,7 @@ public class CorpusController {
 
     }
 
-    @RequestMapping(value = "/request/corpus/", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> updateCorpus(@RequestBody Corpus corpus) {
 
         corpusService.update(corpus);
@@ -57,7 +57,7 @@ public class CorpusController {
 
     }
 
-    @RequestMapping(value = "/request/corpus/", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, headers = "Accept=application/json")
     public ResponseEntity<String> deleteCorpus(@RequestBody Corpus corpus) {
 
         corpusService.delete(corpus);
