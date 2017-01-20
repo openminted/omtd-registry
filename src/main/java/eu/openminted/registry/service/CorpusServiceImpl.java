@@ -6,10 +6,14 @@ import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.store.restclient.StoreRESTClient;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.net.UnknownHostException;
 import java.util.Date;
 
@@ -17,7 +21,7 @@ import java.util.Date;
  * Created by stefanos on 15-Nov-16.
  */
 @Service("corpusService")
-public class CorpusServiceImpl implements ResourceCRUDService<Corpus> {
+public class CorpusServiceImpl implements CorpusService {
 
     private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
 
@@ -26,6 +30,9 @@ public class CorpusServiceImpl implements ResourceCRUDService<Corpus> {
 
     @Autowired
     ResourceService resourceService;
+
+    @Autowired
+    Environment environment;
 
     @Override
     public Corpus get(String id) {
@@ -117,5 +124,49 @@ public class CorpusServiceImpl implements ResourceCRUDService<Corpus> {
             logger.fatal(e);
             throw new ServiceException(e);
         }
+    }
+
+
+
+    @Override
+    public String uploadCorpus(String filename, InputStream inputStream) {
+        String archiveId = null;
+
+        try {
+            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
+            File temp = File.createTempFile("copr", "tmp");
+            FileOutputStream fos = new FileOutputStream(temp);
+            archiveId = storeClient.createArchive();
+
+            IOUtils.copyLarge(inputStream, new BufferedOutputStream(fos));
+            fos.close();
+
+
+            storeClient.updload(temp, archiveId, filename);
+
+            temp.delete();
+
+        } catch (IOException e) {
+            logger.error("Error uploading corpus", e);
+        }
+
+        return archiveId;
+    }
+
+    @Override
+    public InputStream downloadCorpus(String archiveId) {
+        try {
+            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
+            File temp = File.createTempFile("cor", "tmp");
+
+            temp.deleteOnExit();
+            storeClient.downloadArchive(archiveId, temp.getAbsolutePath());
+
+            return new FileInputStream(temp);
+        } catch (Exception e) {
+            logger.error("error downloaing file", e);
+        }
+
+        return null;
     }
 }
