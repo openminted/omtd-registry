@@ -9,6 +9,10 @@
  
  <context:component-scan base-package="eu.openminted.registry" />
 
+ <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  <property name="maxUploadSize" value="268435456"/>
+ </bean>
+
  <!--<bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean"  scope="session"/>-->
 </beans>
 

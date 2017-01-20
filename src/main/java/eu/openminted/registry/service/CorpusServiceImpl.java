@@ -143,6 +143,7 @@ public class CorpusServiceImpl implements CorpusService {
 
 
             storeClient.updload(temp, archiveId, filename);
+            storeClient.finalizeArchive(archiveId);
 
             temp.delete();
 
