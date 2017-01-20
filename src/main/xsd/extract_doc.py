@@ -62,7 +62,7 @@ def printElements(filename, types):
 			f.write("export var " + name + "Desc = {\n")
 			f.write("\t" + "desc : \"" + desc.replace('"','\\"') +"\",\n")
 			f.write("\t" + "label : \"" + label.replace('"','\\"') +"\"\n")
-			f.write("}\n\n")
+			f.write("};\n\n")
 		# f.write(json.dumps(finalDoc))
 		f.close()
 
@@ -126,7 +126,7 @@ def printEnums(filename, types):
 export class EnumValues {
     key : string;
     value : string;
-}
+};
 ''')
 		for name in types:
 
@@ -137,7 +137,7 @@ export class EnumValues {
 				f.write("\t{" + printKey(left,right) + "},\n")
 			left,right = types[name][-1]
 			f.write("\t{" + printKey(left,right) + "}\n")
-			f.write("]\n\n")
+			f.write("];\n\n")
 		# f.write(json.dumps(finalDoc))
 		f.close()
 

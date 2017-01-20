@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 public class AnnotationsInfo {
 
     @XmlElement(required = true)
-    protected Object corpusSubtype;
+    protected String corpusSubtype;
     @XmlElement(required = true)
     protected RelatedResource rawCorpus;
     @XmlElement(required = true)
@@ -51,7 +51,7 @@ public class AnnotationsInfo {
      *     {@link Object }
      *     
      */
-    public Object getCorpusSubtype() {
+    public String getCorpusSubtype() {
         return corpusSubtype;
     }
 
@@ -63,7 +63,7 @@ public class AnnotationsInfo {
      *     {@link Object }
      *     
      */
-    public void setCorpusSubtype(Object value) {
+    public void setCorpusSubtype(String value) {
         this.corpusSubtype = value;
     }
 

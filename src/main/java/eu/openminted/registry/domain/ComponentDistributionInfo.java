@@ -163,7 +163,7 @@ public class ComponentDistributionInfo {
     @XmlElementWrapper
     @XmlElement(name = "accessURL", namespace = "http://www.meta-share.org/OMTD-SHARE_XMLSchema")
     protected List<String> accessURLs;
-    protected Object mavenID;
+    protected String mavenID;
     protected WebServiceTypeEnum webServiceType;
     protected List<OperatingSystemEnum> operatingSystem;
 
@@ -218,7 +218,7 @@ public class ComponentDistributionInfo {
      *     {@link Object }
      *     
      */
-    public Object getMavenID() {
+    public String getMavenID() {
         return mavenID;
     }
 
@@ -230,7 +230,7 @@ public class ComponentDistributionInfo {
      *     {@link Object }
      *     
      */
-    public void setMavenID(Object value) {
+    public void setMavenID(String value) {
         this.mavenID = value;
     }
 
