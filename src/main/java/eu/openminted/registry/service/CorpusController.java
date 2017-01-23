@@ -82,8 +82,9 @@ public class CorpusController {
     @RequestMapping(value = "download", method = RequestMethod.GET)
     @ResponseBody
     public void downloadCorpus(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String mimeType = "application/octet-stream";
-
+        String mimeType = "application/zip";
+        String filename = request.getParameter("archiveId") + ".zip";
+        response.setHeader("Content-Disposition", "attachment; filename=\""+ filename +"\"");
         response.setContentType(mimeType);
         IOUtils.copyLarge(corpusService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
     }
