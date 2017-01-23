@@ -58,7 +58,7 @@ public class CorpusServiceImpl implements CorpusService {
         }
 
         if ($corpus != null) {
-            throw new ServiceException("Component already exists");
+            throw new ServiceException("Corpus already exists");
         }
 
         Resource resource = new Resource();
@@ -74,7 +74,7 @@ public class CorpusServiceImpl implements CorpusService {
         resource.setCreationDate(new Date());
         resource.setModificationDate(new Date());
         resource.setPayloadFormat("xml");
-        resource.setResourceType("component");
+        resource.setResourceType("corpus");
         resource.setVersion("not_set");
         resource.setId("wont be saved");
 
@@ -87,14 +87,14 @@ public class CorpusServiceImpl implements CorpusService {
         Resource $resource;
         Resource resource = new Resource();
         try {
-            $resource = searchService.searchId("component", corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+            $resource = searchService.searchId("corpus", corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
         } catch (UnknownHostException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
 
         if ($resource != null) {
-            throw new ServiceException("Component already exists");
+            throw new ServiceException("Corpus already exists");
         } else {
             String serialized = Utils.unserialize(corpus, Corpus.class);
 
@@ -116,7 +116,7 @@ public class CorpusServiceImpl implements CorpusService {
         try {
             resource = searchService.searchId("corpus", corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
             if (resource != null) {
-                throw new ServiceException("Component already exists");
+                throw new ServiceException("Corpus already exists");
             } else {
                 resourceService.deleteResource(resource.getId());
             }
