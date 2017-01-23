@@ -24,13 +24,13 @@ import java.util.Date;
  * Created by stefanos on 5/1/2017.
  */
 
-@Component
+//@Component
 public class PopulateSchemaBean {
     @Autowired
     ResourceTypeService resourceTypeService;
 
-    @Autowired
-    RequestMappingHandlerAdapter adapter;
+//    @Autowired
+//    RequestMappingHandlerAdapter adapter;
 
     private static String ANTPATH = "classpath:resourceTypes/*.json";
 

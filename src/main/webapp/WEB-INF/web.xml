@@ -3,6 +3,15 @@
 
 	<display-name>omtd-registry</display-name>
 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
 	<servlet>
 		<servlet-name>springrest</servlet-name>
 		<servlet-class>
@@ -10,6 +19,8 @@
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
+
 
 	<filter>
         <filter-name>CorsFilter</filter-name>
