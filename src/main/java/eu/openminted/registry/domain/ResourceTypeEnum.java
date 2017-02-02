@@ -14,12 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;simpleType&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;maxLength value="30"/&gt;
- *     &lt;enumeration value="corpus"/&gt;
- *     &lt;enumeration value="document"/&gt;
- *     &lt;enumeration value="userInputText"/&gt;
- *     &lt;enumeration value="lexicalConceptualResource"/&gt;
- *     &lt;enumeration value="languageDescription"/&gt;
+ *     &lt;enumeration value="component"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
@@ -29,16 +24,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum ResourceTypeEnum {
 
-    @XmlEnumValue("corpus")
-    CORPUS("corpus"),
-    @XmlEnumValue("document")
-    DOCUMENT("document"),
-    @XmlEnumValue("userInputText")
-    USER_INPUT_TEXT("userInputText"),
-    @XmlEnumValue("lexicalConceptualResource")
-    LEXICAL_CONCEPTUAL_RESOURCE("lexicalConceptualResource"),
-    @XmlEnumValue("languageDescription")
-    LANGUAGE_DESCRIPTION("languageDescription");
+    @XmlEnumValue("component")
+    COMPONENT("component");
     private final String value;
 
     ResourceTypeEnum(String v) {

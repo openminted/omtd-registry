@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="text/html"/&gt;
  *     &lt;enumeration value="application/x-tex"/&gt;
  *     &lt;enumeration value="application/rtf"/&gt;
+ *     &lt;enumeration value="application/json+ld"/&gt;
  *     &lt;enumeration value="application/x-latex"/&gt;
  *     &lt;enumeration value="text/csv"/&gt;
  *     &lt;enumeration value="text/tab-separated-values"/&gt;
@@ -102,6 +103,8 @@ public enum MimeTypeEnum {
     APPLICATION_X_TEX("application/x-tex"),
     @XmlEnumValue("application/rtf")
     APPLICATION_RTF("application/rtf"),
+    @XmlEnumValue("application/json+ld")
+    APPLICATION_JSON_LD("application/json+ld"),
     @XmlEnumValue("application/x-latex")
     APPLICATION_X_LATEX("application/x-latex"),
     @XmlEnumValue("text/csv")
