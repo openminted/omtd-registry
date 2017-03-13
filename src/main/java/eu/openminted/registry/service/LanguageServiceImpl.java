@@ -10,8 +10,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by stefanos on 13/1/2017.
@@ -43,10 +47,17 @@ public class LanguageServiceImpl implements ResourceCRUDService<LanguageDescript
     @Override
     public void add(LanguageDescription language) {
         LanguageDescription $language;
+        XMLGregorianCalendar calendar;
         try {
             $language = Utils.serialize(searchService.searchId(RESOURCE_TYPE,
                     language.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), LanguageDescription.class);
-        } catch (UnknownHostException e) {
+            GregorianCalendar gregory = new GregorianCalendar();
+            gregory.setTime(new Date());
+
+            calendar = DatatypeFactory.newInstance()
+                    .newXMLGregorianCalendar(
+                            gregory);
+        } catch (UnknownHostException | DatatypeConfigurationException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
@@ -56,6 +67,9 @@ public class LanguageServiceImpl implements ResourceCRUDService<LanguageDescript
         }
 
         Resource resource = new Resource();
+
+        $language.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        $language.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(language, LanguageDescription.class);
 

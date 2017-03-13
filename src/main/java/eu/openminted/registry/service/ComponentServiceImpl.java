@@ -9,8 +9,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Service("componentService")
 public class ComponentServiceImpl implements ResourceCRUDService<Component> {
@@ -38,10 +42,17 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
     @Override
     public void add(Component component) {
         Component $component;
+        XMLGregorianCalendar calendar;
         try {
             $component = Utils.serialize(searchService.searchId("component",
                     component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), Component.class);
-        } catch (UnknownHostException e) {
+            GregorianCalendar gregory = new GregorianCalendar();
+            gregory.setTime(new Date());
+
+            calendar = DatatypeFactory.newInstance()
+                    .newXMLGregorianCalendar(
+                            gregory);
+        } catch (UnknownHostException | DatatypeConfigurationException e ) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
@@ -50,8 +61,12 @@ public class ComponentServiceImpl implements ResourceCRUDService<Component> {
             throw new ServiceException("Component already exists");
         }
 
-        Resource resource = new Resource();
 
+
+
+        Resource resource = new Resource();
+        component.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        component.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
         String serialized = Utils.unserialize(component, Component.class);
 
         if (!serialized.equals("failed")) {

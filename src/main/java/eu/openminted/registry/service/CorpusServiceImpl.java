@@ -13,9 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.*;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by stefanos on 15-Nov-16.
@@ -49,10 +53,21 @@ public class CorpusServiceImpl implements CorpusService {
     @Override
     public void add(Corpus corpus) {
         Corpus $corpus;
+        XMLGregorianCalendar calendar;
+
         try {
+
             $corpus = Utils.serialize(searchService.searchId("corpus",
                     corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), Corpus.class);
-        } catch (UnknownHostException e) {
+
+            GregorianCalendar gregory = new GregorianCalendar();
+            gregory.setTime(new Date());
+
+            calendar = DatatypeFactory.newInstance()
+                    .newXMLGregorianCalendar(
+                            gregory);
+
+        } catch (UnknownHostException | DatatypeConfigurationException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
@@ -62,6 +77,9 @@ public class CorpusServiceImpl implements CorpusService {
         }
 
         Resource resource = new Resource();
+
+        corpus.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        corpus.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(corpus, Corpus.class);
 

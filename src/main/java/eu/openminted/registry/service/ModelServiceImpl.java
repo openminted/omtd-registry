@@ -9,8 +9,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by stefanos on 13/1/2017.
@@ -42,10 +46,17 @@ public class ModelServiceImpl implements ResourceCRUDService<Model>{
     @Override
     public void add(Model model) {
         Model $model;
+        XMLGregorianCalendar calendar;
         try {
             $model = Utils.serialize(searchService.searchId(RESOURCE_TYPE,
                     model.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), Model.class);
-        } catch (UnknownHostException e) {
+            GregorianCalendar gregory = new GregorianCalendar();
+            gregory.setTime(new Date());
+
+            calendar = DatatypeFactory.newInstance()
+                    .newXMLGregorianCalendar(
+                            gregory);
+        } catch (UnknownHostException | DatatypeConfigurationException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
@@ -55,6 +66,9 @@ public class ModelServiceImpl implements ResourceCRUDService<Model>{
         }
 
         Resource resource = new Resource();
+
+        $model.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        $model.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(model, Model.class);
 
