@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.exception.ResourceNotFoundException;
 import eu.openminted.registry.exception.ServerError;
@@ -15,28 +16,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/request/corpus")
 public class CorpusController {
 
     @Autowired
-        CorpusService corpusService;
+    CorpusService corpusService;
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseBody
-    ServerError handleBadRequest(HttpServletRequest req, Exception ex) {
-        return new ServerError(req.getRequestURL().toString(), ex);
-    }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Corpus> getCorpus(@PathVariable("id") String id) {
-        Corpus component = corpusService.get(id);
+        String id_decoded = new String(Base64.getDecoder().decode(id));
+        Corpus component = corpusService.get(id_decoded);
         if(component == null)
             throw new ResourceNotFoundException();
         else
             return new ResponseEntity<>(component, HttpStatus.OK);
+
     }
 
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")

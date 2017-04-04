@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/request/component")
@@ -18,15 +19,10 @@ public class ComponentController {
     @Autowired
     ResourceCRUDService<Component> componentService;
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseBody ServerError handleBadRequest(HttpServletRequest req, Exception ex) {
-        return new ServerError(req.getRequestURL().toString(), ex);
-    }
-
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Component> getComponent(@PathVariable("id") String id) {
-        Component component = componentService.get(id);
+        String id_decoded = new String(Base64.getDecoder().decode(id));
+        Component component = componentService.get(id_decoded);
         if(component == null)
             throw new ResourceNotFoundException();
         else

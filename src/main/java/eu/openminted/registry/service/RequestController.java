@@ -37,6 +37,7 @@ public class RequestController {
             @RequestParam(value = "to", required = false, defaultValue = "-1") int to) {
 
         //ResponseE
+
         return requestService.getResponseByFiltersElastic(keyword, resourceType, language, mediaType, rights, mimeType, dataFormatSpecific, license, advanced, from, to);
 
     }

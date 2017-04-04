@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 
 /**
  * Created by stefanos on 13/1/2017.
@@ -20,16 +21,10 @@ public class ModelController {
     @Autowired
     ResourceCRUDService<Model> modelService;
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseBody
-    ServerError handleBadRequest(HttpServletRequest req, Exception ex) {
-        return new ServerError(req.getRequestURL().toString(), ex);
-    }
-
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Model> getModel(@PathVariable("id") String id) {
-        Model model = modelService.get(id);
+        String id_decoded = new String(Base64.getDecoder().decode(id));
+        Model model = modelService.get(id_decoded);
         if(model == null)
             throw new ResourceNotFoundException();
         else
