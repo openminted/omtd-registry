@@ -154,14 +154,14 @@ public class CorpusServiceImpl implements CorpusService {
             StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
             File temp = File.createTempFile("copr", "tmp");
             OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
-            archiveId = storeClient.createArchive();
+            archiveId = storeClient.createArchive().getReport();
 
             IOUtils.copyLarge(inputStream, fos);
             fos.flush();
             fos.close();
 
 
-            storeClient.updload(temp, archiveId, filename);
+            storeClient.storeFile(temp, archiveId, filename);
             storeClient.finalizeArchive(archiveId);
 
             temp.delete();
