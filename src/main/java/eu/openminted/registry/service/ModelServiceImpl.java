@@ -67,8 +67,8 @@ public class ModelServiceImpl implements ResourceCRUDService<Model>{
 
         Resource resource = new Resource();
 
-        $model.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
-        $model.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+        model.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        model.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(model, Model.class);
 

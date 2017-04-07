@@ -68,8 +68,8 @@ public class LanguageServiceImpl implements ResourceCRUDService<LanguageDescript
 
         Resource resource = new Resource();
 
-        $language.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
-        $language.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+        language.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        language.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(language, LanguageDescription.class);
 

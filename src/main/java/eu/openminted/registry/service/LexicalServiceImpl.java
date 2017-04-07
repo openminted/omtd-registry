@@ -67,8 +67,8 @@ public class LexicalServiceImpl implements ResourceCRUDService<Lexical>{
 
         Resource resource = new Resource();
 
-        $lexical.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
-        $lexical.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+        lexical.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+        lexical.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
 
         String serialized = Utils.unserialize(lexical, Lexical.class);
 
