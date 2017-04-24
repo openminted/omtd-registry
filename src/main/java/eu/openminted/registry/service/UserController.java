@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -35,6 +37,13 @@ public class UserController {
 //                                          @PathVariable("password") String password) {
 //        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
 //    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/user", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<Object> addUser() {
+        Object userInfo = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return new ResponseEntity<>(userInfo,HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> addUser(@RequestBody User user) {
