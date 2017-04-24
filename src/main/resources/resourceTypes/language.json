@@ -42,12 +42,6 @@
       "type": "java.lang.String"
     },
     {
-      "multivalued": true,
-      "name": "lexicalConceptualResourceType",
-      "path": "//*[local-name()='lexicalConceptualResourceType']/text()",
-      "type": "java.lang.String"
-    },
-    {
       "multivalued": false,
       "name": "application",
       "path": null,
@@ -56,7 +50,8 @@
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
-  "name": "lexical",
+  "name": "language",
+  "aliasGroup" : "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v101%20XSD/OMTD-SHARE-LexicalConceptualResource.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v101%20XSD/OMTD-SHARE-LanguageDescription.xsd"
 }
