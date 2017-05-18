@@ -1,11 +1,16 @@
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as dom
 import sys
 import os
 import pprint
 import re
+import argparse
 
 MAX_ENUM = 300
 verbose = False
+
+
+namespace = {'xs' : "http://www.w3.org/2001/XMLSchema" , 'ms' : "http://www.meta-share.org/OMTD-SHARE_XMLSchema"}
 
 class Rename:
 
@@ -26,7 +31,7 @@ class Rename:
 		return new_name.upper()
 
 
-def create_appInfo(node, namespace) :
+def create_appInfo(node) :
 	annotation = node.findall('./xs:annotation',namespace) 
 	if not annotation:
 		#print 'Creating xs:annotation node under ' + node.tag
@@ -46,7 +51,7 @@ def create_appInfo(node, namespace) :
 
 	return appInfo
 
-def rename_enum(n,namespace, appInfo,node) :
+def rename_enum(n, appInfo,node) :
 	enums = n.findall('./xs:restriction/xs:enumeration',namespace)
 	if len(enums) > 0 :
 		cl = ET.SubElement(appInfo,'jaxb:typesafeEnumClass')
@@ -84,66 +89,96 @@ def rename_enum(n,namespace, appInfo,node) :
 				#else:
 					#print '\tParsing <<<'+enum.attrib['value'] + '>>>'
 
-def simplify_choices(node,namespace):
-	
-	elements = node.findall(".//xs:element",namespace)
-	if 'type' in elements[0].attrib or 'ref' in elements[0].attrib:
-		element = elements[0]
-		appInfo = create_appInfo(element,namespace)
-		#ET.SubElement(appInfo,"simplify:as-reference-property")
-		#print .getpath(appInfo)
-	else:
-		appInfo = create_appInfo(node,namespace)
-		ET.SubElement(appInfo,"simplify:as-element-property")
+def simplify_choices(node):
+	appInfo = create_appInfo(node)
+	ET.SubElement(appInfo,"simplify:as-element-property")
 
+def rename_element(node,package):
+	if 'name' in node.attrib:
+		match = re.match(r'(\w+)Type$',node.attrib['name'])
+		if match is not None:
+			elemName = match.group(1)
+			print(elemName)
+			appInfo = create_appInfo(node)
+			elemName = elemName[0].capitalize() + elemName[1:]
+			name = {'name' : elemName}
+			ET.SubElement(appInfo,'jaxb:class',attrib=name)
 
-def modify(filename, namespace) :
+def modify(filename,args) :
 	ET.register_namespace("ms","http://www.meta-share.org/OMTD-SHARE_XMLSchema")
 	ET.register_namespace("xs","http://www.w3.org/2001/XMLSchema")
 	ET.register_namespace("","http://www.meta-share.org/OMTD-SHARE_XMLSchema")
 	tree = ET.parse(filename)
 	root = tree.getroot()
-	#print root.attrib
+
 	root.set('xmlns:ms',"http://www.meta-share.org/OMTD-SHARE_XMLSchema")
 	root.set('xmlns:jaxb',"http://java.sun.com/xml/ns/jaxb")
 	root.set('jaxb:version',"1.0")
-	# ".//xs:simpleType/xs:restriction/xs:enumeration"
+	root.set('xmlns:xjc',"http://java.sun.com/xml/ns/jaxb/xjc")
+	root.set('xmlns:simplify',"http://jaxb2-commons.dev.java.net/basic/simplify")
+	root.set('jaxb:extensionBindingPrefixes',"xjc simplify")
+
 	nodes = root.findall(".//xs:simpleType/xs:restriction/xs:enumeration/../../..",namespace)
 	for node in nodes :
-		#if 'name' in node.attrib :
-			#print(node.attrib['name'])
 		for n in node.findall("./xs:simpleType",namespace) :
-			appInfo = create_appInfo(n,namespace)
-			rename_enum(n,namespace,appInfo,node)
+			appInfo = create_appInfo(n)
+			rename_enum(n,appInfo,node)
 
-	# nodes = root.findall(".//xs:choice",namespace)
-	# for node in nodes :
-	# 	simplify_choices(node,namespace)
-	# if len(nodes) > 0 :
-	# 	root.set('jaxb:extensionBindingPrefixes',"simplify")			
-	# 	root.set('xmlns:simplify',"http://jaxb2-commons.dev.java.net/basic/simplify")
+	nodes = root.findall(".//xs:choice",namespace)
+	for node in nodes :
+		simplify_choices(node)
 			
+	nodes = root.findall(".//xs:complexType",namespace)
+	for node in nodes :
+		rename_element(node,args.package)
 
-	return tree
+	# nodes = root.findall(".//xs:element",namespace)
+	# for node in nodes :
+	# 	rename_element(node,args.package)
 
-if __name__ == "__main__" :
-	namespace = {'xs' : "http://www.w3.org/2001/XMLSchema" , 'ms' : "http://www.meta-share.org/OMTD-SHARE_XMLSchema"}
-	for arg in sys.argv :
-		if arg == '-v' :
-			verbose = True
-		elif arg != sys.argv[0] :
-			modfile = os.path.basename(arg)
-			original = os.path.abspath(arg)
-			if os.path.isfile(modfile) :
-				statsM = os.stat(modfile)
-				statsO = os.stat(original)		
-				if statsM.st_mtime < statsO.st_mtime :
-					print '[+] Original file modified creating ' + modfile
-					xml = modify(arg,namespace)
-					xml.write(modfile)
+	return root
+
+def write_tree(root,filename):
+	xmlstr = dom.parseString(ET.tostring(root)).toprettyxml(newl='',indent='')
+	with open(filename, 'w') as f :
+		f.write(xmlstr.encode('utf-8'))
+		f.close()
+
+
+def process_dir(dir,args):
+	print(dir)
+	for root, dirs, files in os.walk(dir):
+		for file in files:
+			print(file)
+			if file.endswith(".xsd"):
+				modfile = os.path.basename(root + file)
+				original = os.path.abspath(root + file)
+				if os.path.isfile(modfile) :
+					statsM = os.stat(modfile)
+					statsO = os.stat(original)		
+					if statsM.st_mtime < statsO.st_mtime :
+						print '[+] Original file modified creating ' + modfile
+						xml = modify(original,args)
+						write_tree(xml,modfile)
+					elif args.force:
+						print '[+] Force create ' + modfile
+						xml = modify(original,args)
+						write_tree(xml,modfile)
+					else:
+						print '[ ] Unchanged file ' + modfile
 				else:
-					print '[ ] Unchanged file ' + modfile
-			else:
-				print '[+] Creating file ' + modfile
-				xml = modify(arg,namespace)
-				xml.write(modfile)
+					print '[+] Creating file ' + modfile
+
+					xml = modify(original,args)
+					write_tree(xml,modfile)
+
+if __name__ == "__main__" :	
+	parser = argparse.ArgumentParser(description="Parses the xsd files and creates new ones with jaxb rules")
+	parser.add_argument('-d', '--directory', type=str, required=True, help = "the directory containing the xsd")
+	parser.add_argument('-p', '--package', type=str, default='eu.openminted.registry.domain',help = "The package folder of the generated classes")
+	parser.add_argument('-v', '--verbose', type=bool, help = "Toggle verbosity", default = False)
+	parser.add_argument('-f', '--force', type=bool, help = "Enforce changes", default = False)
+	args = parser.parse_args()
+	print("Parsing files in directory {}".format(args.directory))
+	verbose = args.verbose
+	process_dir(args.directory,args)

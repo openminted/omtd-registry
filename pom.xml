@@ -25,7 +25,9 @@
     </scm>
 
     <properties>
-        <jaxb2_commons.version>0.8.2</jaxb2_commons.version>
+        <jaxb2_commons.version>1.11.1</jaxb2_commons.version>
+        <rename.exec.skip>true</rename.exec.skip>
+        <typesript.exec.skip>true</typesript.exec.skip> <!-- default -->
     </properties>
     <dependencies>
 
@@ -35,17 +37,17 @@
             <version>1.0.0</version>
         </dependency>
         <!-- JAXB2 -->
-        <!--<dependency>-->
-            <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
-            <!--<artifactId>runtime</artifactId>-->
-            <!--<version>0.4.1.5</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>runtime</artifactId>
+            <version>0.4.1.5</version>
+        </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
-            <!--<artifactId>jaxb2-basics-runtime</artifactId>-->
-            <!--<version>${jaxb2_commons.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+            <version>${jaxb2_commons.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -112,7 +114,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!-- <plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
@@ -126,32 +128,20 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skip>${rename.exec.skip}</skip>
                     <executable>python</executable>
                     <workingDirectory>src/main/xsd</workingDirectory>
                     <arguments>
                         <argument>enum.py</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Actors.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Component.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Corpus.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Distributions.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-GlobalTypes.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-ISOVocabularies.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-LanguageDescription.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-LexicalConceptualResource.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Model.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Projects.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Publications.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-Relations.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-ResourceCommon.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-ResourceTypes.xsd</argument>
-                        <argument>omtd_scheme/OMTD-SHARE v101 XSD/OMTD-SHARE-TextSpecific.xsd</argument>
+                        <argument>-domtd_scheme/OMTD-SHARE v200 XSD/</argument>
+                        <argument>-peu.openminted.registry.domain</argument>
                     </arguments>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.13.1</version>
+                <version>0.13.2</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -160,7 +150,7 @@
                         </goals>
                         <configuration>
                             <verbose>false</verbose>
-                            <generateDirectory>${project.build.sourceDirectory}</generateDirectory>
+                            <!--<generateDirectory>${project.build.sourceDirectory}</generateDirectory>-->
                             <schemaDirectory>src/main/xsd</schemaDirectory>
                             <bindingDirectory>src/main/xjb</bindingDirectory>
                             <removeOldOutput>false</removeOldOutput>
@@ -168,6 +158,7 @@
                             <generatePackage>eu.openminted.registry.domain</generatePackage>
                             <extension>true</extension>
                             <args>
+                                <arg>-XfixJAXB1058</arg>
                                 <arg>-no-header</arg>
                                 <arg>-XautoNameResolution</arg>
                                 <arg>-Xsimplify</arg>
@@ -178,7 +169,7 @@
                                 <plugin>
                                     <groupId>com.github.jaxb-xew-plugin</groupId>
                                     <artifactId>jaxb-xew-plugin</artifactId>
-                                    <version>1.7</version>
+                                    <version>1.9</version>
                                 </plugin>
                                 <plugin>
                                     <groupId>org.jvnet.jaxb2_commons</groupId>
@@ -189,7 +180,15 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin> -->
+                <dependencies>
+                    <!-- This dependency is required to execute the plugin -->
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-basics-tools</artifactId>
+                        <version>0.9.4</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>cz.habarta.typescript-generator</groupId>
                 <artifactId>typescript-generator-maven-plugin</artifactId>
