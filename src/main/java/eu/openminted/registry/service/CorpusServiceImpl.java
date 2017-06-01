@@ -4,9 +4,9 @@ import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.store.restclient.StoreRESTClient;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,8 @@ import java.io.*;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by stefanos on 15-Nov-16.
@@ -28,6 +30,7 @@ import java.util.GregorianCalendar;
 public class CorpusServiceImpl implements CorpusService {
 
     private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
+    private final int BUFFER_SIZE = 4096;
 
     @Autowired
     SearchService searchService;
@@ -145,7 +148,6 @@ public class CorpusServiceImpl implements CorpusService {
     }
 
 
-
     @Override
     public String uploadCorpus(String filename, InputStream inputStream) {
         String archiveId = null;
@@ -155,16 +157,56 @@ public class CorpusServiceImpl implements CorpusService {
             File temp = File.createTempFile("copr", "tmp");
             OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
             archiveId = storeClient.createArchive().getReport();
+            storeClient.createSubArchive(archiveId, "metadata");
+            storeClient.createSubArchive(archiveId, "fullText");
+            storeClient.createSubArchive(archiveId, "abstract");
+
 
             IOUtils.copyLarge(inputStream, fos);
             fos.flush();
             fos.close();
 
+            /*
+               * unzip file
+               * iterate through its directories
+               * upload each file according to the corresponding directory
+             */
+            String destDirectory = "tmpDirectory";
 
-            storeClient.storeFile(temp, archiveId, filename);
+            File destDir = new File(destDirectory);
+            if (!destDir.exists()) {
+                destDir.mkdir();
+            }
+            ZipInputStream zipIn = new ZipInputStream(new FileInputStream(temp));
+            ZipEntry entry = zipIn.getNextEntry();
+            // iterates over entries in the zip file
+            while (entry != null) {
+                String filePath = destDirectory + File.separator + entry.getName();
+                if (!entry.isDirectory()) {
+                    // if the entry is a file, extracts it
+                    extractFile(zipIn, filePath);
+                } else {
+                    // if the entry is a directory, make the directory
+                    File dir = new File(filePath);
+                    dir.mkdir();
+                }
+                zipIn.closeEntry();
+                entry = zipIn.getNextEntry();
+            }
+            zipIn.close();
+
+
+            for (File file : destDir.listFiles()) {
+                iterateThroughDirectories(storeClient, archiveId, file, file.getParent());
+            }
+
+
+            logger.info("Done");
+
             storeClient.finalizeArchive(archiveId);
 
-            temp.delete();
+            FileDeleteStrategy.FORCE.delete(temp);
+            FileDeleteStrategy.FORCE.delete(destDir);
 
         } catch (IOException e) {
             logger.error("Error uploading corpus", e);
@@ -184,9 +226,40 @@ public class CorpusServiceImpl implements CorpusService {
 
             return new FileInputStream(temp);
         } catch (Exception e) {
-            logger.error("error downloaing file", e);
+            logger.error("error downloading file", e);
         }
 
         return null;
     }
+
+    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        byte[] bytesIn = new byte[BUFFER_SIZE];
+        int read = 0;
+        while ((read = zipIn.read(bytesIn)) != -1) {
+            bos.write(bytesIn, 0, read);
+        }
+        bos.close();
+    }
+
+    private void iterateThroughDirectories(StoreRESTClient storeClient, String archiveId, File file, String parent) throws IOException {
+        if (file.getName().contains(".DS_Store")
+                || file.getName().contains("__MACOSX")) {
+
+            FileDeleteStrategy.FORCE.delete(file);
+
+            return;
+        }
+
+        System.out.println(parent + File.separator + file.getName());
+
+        if (file.isDirectory()) {
+            for (File child : file.listFiles()) {
+                iterateThroughDirectories(storeClient, archiveId, child, file.getName());
+            }
+        } else {
+            storeClient.storeFile(file, archiveId + File.separator + parent, file.getName());
+        }
+    }
+
 }
