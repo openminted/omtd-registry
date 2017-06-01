@@ -40,8 +40,8 @@
 
     </security:http>
 
-    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <property name="loginFormUrl" value="/openid_connect_login" />
+    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" >
+        <constructor-arg type="java.lang.String" value="/openid_connect_login"/>
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
@@ -70,6 +70,9 @@
     </util:set>
 
 
+    <bean class="eu.openminted.registry.beans.FrontEndLinkURIAuthenticationSuccessHandler" id="frontEndRedirect">
+        <property name="frontEndURI" value="${webbapp.front}"/>
+    </bean>
     <!--
       -
       - The authentication filter
@@ -83,6 +86,7 @@
         <property name="clientConfigurationService" ref="staticClientConfigurationService" />
         <property name="authRequestOptionsService" ref="staticAuthRequestOptionsService" />
         <property name="authRequestUrlBuilder" ref="plainAuthRequestUrlBuilder" />
+        <property name="authenticationSuccessHandler" ref="frontEndRedirect"/>
 
     </bean>
 
@@ -120,6 +124,7 @@
                         <property name="tokenEndpointUri"	value="${oidc.issuer}token" />
                         <property name="userInfoUri" value="${oidc.issuer}userinfo" />
                         <property name="jwksUri" value="${oidc.issuer}jwk" />
+                        <property name="revocationEndpointUri" value="${oidc.issuer}revoke" />
                     </bean>
                 </entry>
             </map>
