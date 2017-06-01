@@ -60,7 +60,7 @@ class EntryParser(NodeVisitor):
 
 		for dec in declarations :
 			ret += '\t' + dec + '\n'
-		ret += "\tdesc:string;\n\tlabel:string;\n"
+		# ret += "\tdesc:string;\n\tlabel:string;\n"
 		ret += "}\n\n"
 		self.emit(ret)
 		
@@ -155,7 +155,7 @@ def process_interface(filename,types) :
 if __name__ == '__main__' :
 	parser = argparse.ArgumentParser(description="Parses the xsd files and injects code into the typescript generated file")
 	parser.add_argument('-d', '--directory', type=str, required=True, help = "the directory containt the xsd")
-	parser.add_argument('-n', '--name', type=str, required=True, help = "the name of the generated typescript", default = "sample.d.ts")
+	parser.add_argument('-n', '--name', type=str, help = "the name of the generated typescript", default = "sample.d.ts")
 	parser.add_argument('-o', '--output', type=str, help = "the name of the generated typescript", default = "injsample.d.ts")
 	args = parser.parse_args()
 

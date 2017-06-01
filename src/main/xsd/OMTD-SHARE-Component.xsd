@@ -31,16 +31,25 @@
 				</xs:simpleType>
 			</xs:element>
 			<xs:element ref="ms:identificationInfo"/>
-			<xs:element name="application" type="xs:boolean">
+			<xs:element ref="ms:versionInfo"/>
+			<xs:element ref="ms:contactInfo"/>
+			<xs:element minOccurs="0" name="validationInfos">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:validationInfo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" ref="ms:usageInfo"/>
+			<xs:element minOccurs="0" ref="ms:resourceDocumentationInfo">
 				<xs:annotation>
-					<xs:documentation>Indicates whether the component can be used as an integrated end-user application</xs:documentation>
 					<xs:appinfo>
-						<label>Application</label>
-						<label-plural>Applications</label-plural>
+						<recommended>true</recommended>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="1" name="componentType">
+			<xs:element minOccurs="0" ref="ms:resourceCreationInfo"/>
+			<xs:element name="componentType">
 				<xs:annotation>
 					<xs:documentation>Specifies the type of a component, in terms of the function/task it performs; please, note that the ontology is under revision</xs:documentation>
 					<xs:appinfo>
@@ -675,11 +684,19 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
-						
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="applicationFunction" type="ms:applicationType">
+			<xs:element name="application" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates whether the component can be used as an integrated end-user application</xs:documentation>
+					<xs:appinfo>
+						<label>Application</label>
+						<label-plural>Applications</label-plural>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="1" minOccurs="0" name="applicationFunction">
 				<xs:annotation>
 					<xs:documentation>Specifies the type of an end-user application, in terms of the function/task it performs</xs:documentation>
 					<xs:appinfo>
@@ -689,7 +706,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="workflow" type="xs:boolean">
+			<xs:element minOccurs="0" name="workflow" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Indicates whether the component is a workflow, i.e. consists of other components in a linear or branching execution</xs:documentation>
 					<xs:appinfo>
@@ -708,7 +725,6 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element ref="ms:versionInfo"/>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
@@ -716,7 +732,6 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element ref="ms:contactInfo"/>
 			<xs:element minOccurs="0" name="inputContentResourceInfo" type="ms:processingResourceInfoType">
 				<xs:annotation>
 					<xs:documentation>Groups together information on the requirements set on the input resource of a component</xs:documentation>
@@ -736,7 +751,20 @@
 			<xs:element minOccurs="0" name="componentDependencies">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element ref="ms:typesystem"/>
+						<xs:element minOccurs="0" ref="ms:typesystem">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+						<xs:element minOccurs="0" name="annotationSchema">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 						<xs:element minOccurs="0" name="annotationResources">
 							<xs:complexType>
 								<xs:sequence>
@@ -758,14 +786,6 @@
 			
 			
 			<xs:element ref="ms:componentCreationInfo">
-				<xs:annotation>
-					<xs:appinfo>
-						<recommended>true</recommended>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-			<xs:element minOccurs="0" ref="ms:resourceCreationInfo"/>
-			<xs:element minOccurs="0" ref="ms:resourceDocumentationInfo">
 				<xs:annotation>
 					<xs:appinfo>
 						<recommended>true</recommended>
@@ -824,11 +844,10 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element minOccurs="0" ref="ms:usageInfo"/>
-			<xs:element minOccurs="0" name="validationInfos">
+			<xs:element minOccurs="0" name="relations">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:validationInfo"/>
+						<xs:element minOccurs="0" ref="ms:relationInfo"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -1310,6 +1329,12 @@
 	<xs:complexType name="componentCreationInfoType">
 		<xs:annotation><xs:appinfo><jaxb:class name="ComponentCreationInfo"/></xs:appinfo></xs:annotation><xs:sequence>
 			<xs:element name="framework">
+				<xs:annotation>
+					<xs:documentation>The framework used for developing and deploying the component</xs:documentation>
+					<xs:appinfo>
+						<label>framework</label>
+					</xs:appinfo>
+				</xs:annotation>
 				<xs:simpleType>
 					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="frameworkEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 						<xs:enumeration value="UIMA"/>
@@ -1319,174 +1344,12 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element minOccurs="0" name="TDMMethod">
+			<xs:element minOccurs="0" name="formalism">
 				<xs:annotation>
-					<xs:documentation/>
+					<xs:documentation>Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
 					<xs:appinfo>
-						<recommended>true</recommended>
 						<relation>one-to-many</relation>
-						<label>TDM method</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="TDMMethodEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
-						<xs:enumeration value="ruleBased">
-							<xs:annotation>
-								<xs:documentation>A type of method that makes use of set(s) of rules to perform the relevant task.</xs:documentation>
-								<xs:appinfo>
-									<label>Rule-based</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="machineLearning">
-							<xs:annotation>
-								<xs:documentation>A method of data analysis that automates model building. Using algorithms that iteratively learn from data, machine learning allows computers to find hidden insights without being explicitly programmed where to look.</xs:documentation>
-								<xs:appinfo>
-									<label>Machine Learning</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="statisticalLearning">
-							<xs:annotation>
-								<xs:documentation>The process of using statistics and techniques related to statistics in order to understand and learn from your data so that you can predict its future.</xs:documentation>
-								<xs:appinfo>
-									<label>Statistical Learning</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="machineAndStatisticalLearning">
-							<xs:annotation>
-								<xs:documentation>Methods and techniques used either in machine learning or statistical learning</xs:documentation>
-								<xs:appinfo>
-									<label>Machine and Statistical Learning</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="regressionAnalysis">
-							<xs:annotation>
-								<xs:documentation>A statistical process for estimating the relationships among variables. It includes many techniques for modeling and analyzing several variables, when the focus is on the relationship between a dependent variable and one or more independent variables (or 'predictors').</xs:documentation>
-								<xs:appinfo>
-									<label>Regression Analysis</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>regression</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="regularisation">
-							<xs:annotation>
-								<xs:documentation>A process of introducing additional information in order to solve an ill-posed problem or to prevent overfitting.</xs:documentation>
-								<xs:appinfo>
-									<label>Regularisation</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="instanceBasedLearning">
-							<xs:annotation>
-								<xs:documentation>A family of learning algorithms that, instead of performing explicit generalization, compares new problem instances with instances seen in training, which have been stored in memory.</xs:documentation>
-								<xs:appinfo>
-									<label>Instance-based Learning</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>instance-based</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="decisionTrees">
-							<xs:annotation>
-								<xs:documentation>A non-parametric supervised learning method used for classification and regression. The goal is to create a tree-like graph or model of decisions and their possible consequences by learning simple decision rules inferred from the data features.</xs:documentation>
-								<xs:appinfo>
-									<label>Decision Trees</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="bayesian">
-							<xs:annotation>
-								<xs:documentation>A method in probability and statistics based on Bayes' theorem, mainly related to statistical inference.</xs:documentation>
-								<xs:appinfo>
-									<label>Bayesian</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="kernelMethod">
-							<xs:annotation>
-								<xs:documentation>Any method used in pattern analysis that relies on kernel functions, which enable it to operate in a high-dimensional, implicit feature space without ever computing the coordinates of the data in that space, but rather by simply computing the inner products between the images of all pairs of data in the feature space.</xs:documentation>
-								<xs:appinfo>
-									<label>Kernel Method</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>kernel methods</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="clusteringMethod">
-							<xs:annotation>
-								<xs:documentation>Any method used in clustering or cluster analysis, i.e. in grouping a set of objects in such a way that objects in the same group (cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters).</xs:documentation>
-								<xs:appinfo>
-									<label>Clustering Method</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>clustering methods</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="associationRuleLearning">
-							<xs:annotation>
-								<xs:documentation>A machine learning method used in recognising relationships among variables in databases and extracted in the form of rules.</xs:documentation>
-								<xs:appinfo>
-									<label>Association Rule Learning</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>association rules</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="artificialNeuralNetwork">
-							<xs:annotation>
-								<xs:documentation>A computational model based on a large collection of simple neural units (artificial neurons), loosely analogous to the observed behavior of a biological brain's axons. These systems are self-learning and trained, rather than explicitly programmed.</xs:documentation>
-								<xs:appinfo>
-									<label>Artificial Neural Network</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>artificial neural networks</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="deepLearning">
-							<xs:annotation>
-								<xs:documentation>A branch of machine learning based on deep neural networks. A deep neural network (DNN) is an artificial neural network (ANN) with multiple hidden layers of units between the input and output layers.</xs:documentation>
-								<xs:appinfo>
-									<label>Deep Learning</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="ensembleMethod">
-							<xs:annotation>
-								<xs:documentation>Any method that uses multiple learning algorithms in an attempt to improve predictive performance not obtainable otherwise with any of the constituent learning algorithms.</xs:documentation>
-								<xs:appinfo>
-									<label>Ensemble Method</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-									<closeMatchFoster>ensembles</closeMatchFoster>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="dimensionalityReduction">
-							<xs:annotation>
-								<xs:documentation>A method based on reducing the number of random variables under consideration, via obtaining a set of principal variables.</xs:documentation>
-								<xs:appinfo>
-									<label>Dimensionality Reduction</label>
-									<broadMatch>Machine and Statistical Learning</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element minOccurs="0" name="implementationLanguage">
-				<xs:annotation>
-					<xs:documentation>The programming languages needed for allowing user contributions, or for running the tools, in case no executables are available</xs:documentation>
-					<xs:appinfo>
-						<recommended>true</recommended>
-						<relation>one-to-many</relation>
-						<label>Implementation language</label>
+						<label>Formalism</label>
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
@@ -1495,12 +1358,14 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element minOccurs="0" name="formalism">
+			<xs:element minOccurs="0" ref="ms:TDMMethod"/>
+			<xs:element minOccurs="0" name="implementationLanguage">
 				<xs:annotation>
-					<xs:documentation>Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
+					<xs:documentation>The programming languages needed for allowing user contributions, or for running the tools, in case no executables are available</xs:documentation>
 					<xs:appinfo>
+						<recommended>true</recommended>
 						<relation>one-to-many</relation>
-						<label>Formalism</label>
+						<label>Implementation language</label>
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
@@ -1542,10 +1407,13 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ms:metadataHeaderInfo"/>
-				<xs:element ref="ms:componentInfo"/>
-			</xs:sequence>
+			<xs:complexContent>
+				<xs:extension base="ms:baseMetadataRecord">
+					<xs:sequence>
+						<xs:element ref="ms:componentInfo"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="componentInfo" type="ms:componentInfoType">

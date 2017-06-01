@@ -18,6 +18,8 @@ class Rename:
 	def rename(name):
 		if name is '':
 			name = 'BLANK'
+		elif name is 'null' :
+			name = 'null'
 		new_name = name
 		match = re.match('^[^0-9][a-zA-Z_0-9]+$',name)
 		if match is None:

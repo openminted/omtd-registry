@@ -29,6 +29,13 @@
 			<xs:element minOccurs="0" ref="ms:usageInfo"/>
 			<xs:element minOccurs="0" ref="ms:resourceDocumentationInfo"/>
 			<xs:element minOccurs="0" ref="ms:resourceCreationInfo"/>
+			<xs:element minOccurs="0" name="relations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" ref="ms:relationInfo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="distributionInfos">
 				<xs:complexType>
 					<xs:sequence>
@@ -317,10 +324,13 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ms:metadataHeaderInfo"/>
-				<xs:element ref="ms:corpusInfo"/>
-			</xs:sequence>
+			<xs:complexContent>
+				<xs:extension base="ms:baseMetadataRecord">
+					<xs:sequence>
+						<xs:element ref="ms:corpusInfo"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="corpusInfo" type="ms:corpusInfoType">

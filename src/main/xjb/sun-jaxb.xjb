@@ -11,9 +11,9 @@
     <bindings scd="tns:corpusMetadataRecord">
       <class name="Corpus"/>
     </bindings>
-    <bindings scd="tns:modelMetadataRecord">
+    <!-- <bindings scd="tns:modelMetadataRecord">
       <class name="Model"/>
-    </bindings>
+    </bindings> -->
     <bindings scd="tns:lcrMetadataRecord">
       <class name="Lexical"/>
     </bindings>

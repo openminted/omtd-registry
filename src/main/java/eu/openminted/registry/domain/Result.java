@@ -7,7 +7,7 @@ public class Result {
     private List<Order<Corpus>> corpora;
     private List<Order<Component>> components;
     private List<Order<Lexical>> lexicalConceptualResources;
-    private List<Order<Model>> models;
+//    private List<Order<Model>> models;
     private List<Order<LanguageDescription>> languageDescriptions;
 
     public List<Order<Corpus>> getCorpora() {
@@ -38,13 +38,13 @@ public class Result {
         this.lexicalConceptualResources = lexicalConceptualResources;
     }
 
-    public List<Order<Model>> getModels() {
-        return models;
-    }
-
-    public void setModels(List<Order<Model>> models) {
-        this.models = models;
-    }
+//    public List<Order<Model>> getModels() {
+//        return models;
+//    }
+//
+//    public void setModels(List<Order<Model>> models) {
+//        this.models = models;
+//    }
 
     public List<Order<LanguageDescription>> getLanguageDescriptions() {
         return languageDescriptions;

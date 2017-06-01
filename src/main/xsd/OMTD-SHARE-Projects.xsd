@@ -61,10 +61,16 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="projectIdentifiers">
+			<xs:element minOccurs="0" name="projectIdentifiers">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element maxOccurs="unbounded" ref="ms:projectIdentifier"/>
+						<xs:element maxOccurs="unbounded" ref="ms:projectIdentifier">
+							<xs:annotation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -77,6 +83,24 @@
 								<xs:appinfo>
 									<relation>one-to-many</relation>
 									<label>Webpage</label>
+									<recommended>true</recommended>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="funders">
+				<xs:complexType>
+					<xs:sequence>
+						
+						<xs:element maxOccurs="unbounded" name="funder" type="ms:organizationInfoType">
+							<xs:annotation>
+								<xs:documentation>Funder of the project (e.g. EC for European Commission); preferred format is the registration through fundref</xs:documentation>
+								<xs:appinfo>
+									<recommended>true</recommended>
+									<relation>one-to-many</relation>
+									<label>Funder</label>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -119,23 +143,6 @@
 									</xs:enumeration>
 								</xs:restriction>
 							</xs:simpleType>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element minOccurs="0" name="funders">
-				<xs:complexType>
-					<xs:sequence>
-						
-						<xs:element maxOccurs="unbounded" minOccurs="0" name="funder" type="ms:organizationInfoType">
-							<xs:annotation>
-								<xs:documentation>Funder of the project (e.g. EC for European Commission); preferred format is the registration through fundref</xs:documentation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-									<relation>one-to-many</relation>
-									<label>Funder</label>
-								</xs:appinfo>
-							</xs:annotation>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>

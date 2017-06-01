@@ -27,7 +27,7 @@
     <properties>
         <jaxb2_commons.version>1.11.1</jaxb2_commons.version>
         <rename.exec.skip>true</rename.exec.skip>
-        <typesript.exec.skip>true</typesript.exec.skip> <!-- default -->
+        <typescript.exec.skip>true</typescript.exec.skip>
     </properties>
     <dependencies>
 

@@ -18,7 +18,14 @@
 			</xs:element>
 			<xs:element ref="ms:identificationInfo"/>
 			<xs:element maxOccurs="1" ref="ms:contactInfo"/>
-			<xs:element minOccurs="0" ref="ms:versionInfo"/>
+			<xs:element ref="ms:versionInfo"/>
+			<xs:element name="distributionInfos">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" ref="ms:datasetDistributionInfo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element minOccurs="0" name="validationInfos">
 				<xs:complexType>
 					<xs:sequence>
@@ -29,13 +36,6 @@
 			<xs:element minOccurs="0" ref="ms:usageInfo"/>
 			<xs:element minOccurs="0" ref="ms:resourceDocumentationInfo"/>
 			<xs:element minOccurs="0" ref="ms:resourceCreationInfo"/>
-			<xs:element name="distributionInfos">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" ref="ms:datasetDistributionInfo"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="lexicalConceptualResourceType">
 				<xs:annotation>
 					<xs:documentation>Specifies the subtype of lexicalConceptualResource</xs:documentation>
@@ -46,23 +46,128 @@
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="lexicalConceptualResourceTypeEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
-						<xs:enumeration value="wordList"/>
-						<xs:enumeration value="computationalLexicon"/>
-						<xs:enumeration value="ontology"/>
-						<xs:enumeration value="wordnet"/>
-						<xs:enumeration value="thesaurus"/>
-						<xs:enumeration value="framenet"/>
-						<xs:enumeration value="terminologicalResource"/>
-						<xs:enumeration value="machineReadableDictionary"/>
-						<xs:enumeration value="lexicon"/>
-						<xs:enumeration value="typesystem"/>
-						<xs:enumeration value="tagset"/>
-						<xs:enumeration value="mappingOfResources"/>
-						<xs:enumeration value="other"/>
+						<xs:enumeration value="wordList">
+							<xs:annotation>
+								<xs:documentation>For simple lists of words without any information, gazeteers etc.</xs:documentation>
+								<xs:appinfo>
+									<label>Word list</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="computationalLexicon">
+							<xs:annotation>
+								<xs:documentation>For lexical resources that are meant to be used mainly in NLP systems</xs:documentation>
+								<xs:appinfo>
+									<label>Computational lexicon</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="ontology">
+							<xs:annotation>
+								<xs:documentation>For resources consisting of concepts and categories meant to conceptualise a specific domain</xs:documentation>
+								<xs:appinfo>
+									<label>Ontology</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="wordnet">
+							<xs:annotation>
+								<xs:documentation>For resources constructed following the wordnet model</xs:documentation>
+								<xs:appinfo>
+									<label>Wordnet</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="thesaurus">
+							<xs:annotation>
+								<xs:documentation>For lexical resources that list words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms)</xs:documentation>
+								<xs:appinfo>
+									<label>Thesaurus</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="framenet">
+							<xs:annotation>
+								<xs:documentation>For lexical resources constructed according to the framenet model</xs:documentation>
+								<xs:appinfo>
+									<label>Framenet</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="terminologicalResource">
+							<xs:annotation>
+								<xs:documentation>For lexical resources that list and concepts pertaining to a specific domain</xs:documentation>
+								<xs:appinfo>
+									<label>Terminological dictionary</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="machineReadableDictionary">
+							<xs:annotation>
+								<xs:documentation>For dictionaries that are meant mainly for human use available in machine readable format</xs:documentation>
+								<xs:appinfo>
+									<label>Machine Readable Dictionary</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="lexicon">
+							<xs:annotation>
+								<xs:documentation>General term for lexical resources</xs:documentation>
+								<xs:appinfo>
+									<label>Lexicon</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="typesystem">
+							<xs:annotation>
+								<xs:documentation>A set of elements designed to annotate data. It typically contains only a list of annotation types, i.e. specific labels that are used for the annotation (e.g. part-of-speech, person, organization, etc.), and is usually inbuilt in the annotation software.</xs:documentation>
+								<xs:appinfo>
+									<label>Typesystem</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="tagset">
+							<xs:annotation>
+								<xs:documentation>A flat list of valid values (tags) designed to annotate data. It usually corresponds to a specific annotation type or set of annotation types</xs:documentation>
+								<xs:appinfo>
+									<label>Tagset</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="annotationScheme">
+							<xs:annotation>
+								<xs:documentation>A set of elements and values designed to annotate data. It usually consists in a formal representation. It aims to represent a specific level of information, such as morphological features of words, syntactic dependency relations between phrases, discourse level information etc. It can consist of a flat structure of elements and values (e.g. part-of-speech tags) or it can be more complex with interrelated elements (e.g. specific morphological features to be used for each part-of-speech).</xs:documentation>
+								<xs:appinfo>
+									<label>Annotation scheme</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="mappingOfResources">
+							<xs:annotation>
+								<xs:documentation>A resource consisting of mapping values and/or rules between two resources.</xs:documentation>
+								<xs:appinfo>
+									<label>Mapping of resources</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="other">
+							<xs:annotation>
+								<xs:documentation>Value for lcrType, to be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:appinfo>
+									<label>Other</label>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:enumeration>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element minOccurs="0" ref="ms:lexicalConceptualResourceEncodingInfo"/>
+			<xs:element minOccurs="0" ref="ms:lexicalConceptualResourceEncodingInfo">
+				<xs:annotation>
+					<xs:appinfo>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="lexicalConceptualResourceMediaType">
 				<xs:annotation>
 					<xs:documentation>Restriction of mediaType for lexicalConceptualResources</xs:documentation>
@@ -77,20 +182,28 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element minOccurs="0" name="relations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:relationInfo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="lexicalConceptualResourceEncodingInfoType">
 		<xs:annotation><xs:appinfo><jaxb:class name="LexicalConceptualResourceEncodingInfo"/></xs:appinfo></xs:annotation><xs:sequence>
-			<xs:element maxOccurs="unbounded" ref="ms:encodingLevel"/>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="linguisticInformation">
+			
+			<xs:element maxOccurs="unbounded" name="contentTypes">
 				<xs:annotation>
-					<xs:documentation>A more detailed account of the linguistic information contained in the lexicalConceptualResource</xs:documentation>
+					<xs:documentation>A more detailed account of the information contained in the lexicalConceptualResource</xs:documentation>
 					<xs:appinfo>
 						<label>Linguistic information</label>
+						<recommended>true</recommended>
 					</xs:appinfo>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="linguisticInformationEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="contentTypesEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 						<xs:maxLength value="50"/>
 						<xs:enumeration value="accentuation"/>
 						<xs:enumeration value="lemma"/>
@@ -132,7 +245,6 @@
 						<xs:enumeration value="usage-Notes"/>
 						<xs:enumeration value="definition/gloss"/>
 						<xs:enumeration value="translationEquivalent"/>
-						<xs:enumeration value="phonetics-Transcription"/>
 						<xs:enumeration value="semantics-Domain"/>
 						<xs:enumeration value="semantics-EventType"/>
 						<xs:enumeration value="semantics-SemanticRoles"/>
@@ -141,6 +253,7 @@
 						<xs:enumeration value="semantics-QualiaStructure"/>
 						<xs:enumeration value="syntacticoSemanticLinks"/>
 						<xs:enumeration value="other"/>
+						
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -166,45 +279,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="extratextualInformation">
-				<xs:annotation>
-					<xs:documentation>An indication of the extratextual information contained in the lexicalConceptualResouce; can be used as an alternative to audio, image, videos etc. for cases where these are not considered an important part of the lcr</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Extratextual information</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="extratextualInformationEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="images"/>
-						<xs:enumeration value="videos"/>
-						<xs:enumeration value="soundRecordings"/>
-						<xs:enumeration value="other"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element maxOccurs="unbounded" minOccurs="0" name="extraTextualInformationUnit">
-				<xs:annotation>
-					<xs:documentation>The unit of the extratextual information contained in the lexical conceptual resource</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Extratextual information unit</label>
-					</xs:appinfo>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="extraTextualInformationUnitEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
-						<xs:maxLength value="30"/>
-						<xs:enumeration value="word"/>
-						<xs:enumeration value="lemma"/>
-						<xs:enumeration value="semantics"/>
-						<xs:enumeration value="example"/>
-						<xs:enumeration value="syntax"/>
-						<xs:enumeration value="lexicalUnit"/>
-						<xs:enumeration value="other"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="lexicalConceptualResourceTextInfoType">
@@ -232,13 +307,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element minOccurs="0" name="modalities">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:modalityInfo"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			
 			<xs:element name="sizes">
 				<xs:complexType>
 					<xs:sequence>
@@ -278,10 +347,13 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="ms:metadataHeaderInfo"/>
-				<xs:element ref="ms:lexicalConceptualResourceInfo"/>
-			</xs:sequence>
+			<xs:complexContent>
+				<xs:extension base="ms:baseMetadataRecord">
+					<xs:sequence>
+						<xs:element ref="ms:lexicalConceptualResourceInfo"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="lexicalConceptualResourceInfo" type="ms:lexicalConceptualResourceInfoType">

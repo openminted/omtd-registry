@@ -59,7 +59,7 @@
 				<xs:simpleType>
 					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="publicationTypeEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 						<xs:maxLength value="30"/>
-						<xs:enumeration value="jouralArticle">
+						<xs:enumeration value="journalArticle">
 							<xs:annotation>
 								<xs:documentation>An article on a particular topic and published in a journal issue. (adapted from fabio)</xs:documentation>
 								<xs:appinfo>
@@ -704,19 +704,18 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element minOccurs="0" name="fundingProjects">
+			<xs:element minOccurs="0" name="fullText">
+				<xs:annotation>
+					<xs:documentation>The full text of the publication in simple text format</xs:documentation>
+					<xs:appinfo>
+						<label>Full text</label>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
 				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingProject" type="ms:projectInfoType">
-							<xs:annotation>
-								<xs:documentation>The project that has been responsible for the creation of the publication</xs:documentation>
-								<xs:appinfo>
-									<label>Funding project</label>
-									<broadMatch>dct:relation</broadMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
+					<xs:simpleContent>
+						<xs:restriction base="ms:myString"/>
+					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
 			<xs:element minOccurs="0" name="abstracts">
@@ -747,6 +746,21 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element minOccurs="0" name="fundingProjects">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="fundingProject" type="ms:projectInfoType">
+							<xs:annotation>
+								<xs:documentation>The project that has been responsible for the creation of the publication</xs:documentation>
+								<xs:appinfo>
+									<label>Funding project</label>
+									<broadMatch>dct:relation</broadMatch>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element minOccurs="0" name="sizes">
 				<xs:complexType>
 					<xs:sequence>
@@ -758,6 +772,13 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="relations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" ref="ms:relationInfo"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -781,8 +802,9 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ms:baseMetadataRecord">
 			<xs:sequence>
-				<xs:element ref="ms:metadataHeaderInfo"/>
 				<xs:element name="document">
 					<xs:annotation>
 						<xs:documentation>Root element for documents (single files); choice among raw publications and annotated publications</xs:documentation>
@@ -797,7 +819,9 @@
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
-			</xs:sequence>
+				</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="publication" type="ms:documentInfoType">
@@ -834,7 +858,12 @@
 	</xs:element>
 	<xs:attribute name="contributorType">
 		<xs:simpleType>
-			<xs:annotation><xs:appinfo></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:appinfo>
+					<!-- <jaxb:typesafeEnumClass name="contributorTypeEnum"/> -->
+				</xs:appinfo>
+			</xs:annotation>
+			<xs:restriction base="xs:string">
 				<xs:enumeration value="editor"/>
 				<xs:enumeration value="translator"/>
 				<xs:enumeration value="other"/>

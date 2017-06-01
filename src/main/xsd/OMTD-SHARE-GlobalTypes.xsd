@@ -1380,6 +1380,12 @@
 		</xs:choice>
 	</xs:complexType>
 	
+	<xs:complexType name="baseMetadataRecord">
+		<xs:sequence>
+			<xs:element name="metadataHeaderInfo" type="ms:metadataHeaderInfoType">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="metadataHeaderInfoType">
 		<xs:annotation>
 			<xs:documentation>Base type for metadata header</xs:documentation>
@@ -1615,8 +1621,8 @@
 				<xs:label>Resource name</xs:label>
 				<xs:label-plural>Resource names</xs:label-plural>
 				
-			<usage-ugc>To be created automatically with the following text: &quot;OpenMinTeD subset of [CORE, OpenAIRE, ...] publications&quot;</usage-ugc>
-			<change>true</change>
+				<usage-ugc>To be created automatically with the following text: &quot;OpenMinTeD subset of [CORE, OpenAIRE, ...] publications&quot;</usage-ugc>
+				<change>true</change>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>

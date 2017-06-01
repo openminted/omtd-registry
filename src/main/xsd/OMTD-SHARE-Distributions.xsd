@@ -3,6 +3,23 @@
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-TextSpecific.xsd"/>
 	
+	<xs:element name="distributionLoc">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ms:distributionMedium"/>
+				<xs:element minOccurs="0" ref="ms:distributionURL">
+					<xs:annotation>
+						<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
+						<xs:appinfo>
+							<relation>one-to-many</relation>
+							<label>Distribution URL</label>
+							<broader>dcat:downloadURL</broader>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:complexType name="documentDistributionInfoType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -10,24 +27,7 @@
 			<jaxb:class name="DocumentDistributionInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="distributionMediums">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" ref="ms:distributionMedium">
-							<xs:annotation>
-								<xs:documentation>Specifies the medium (channel) used for delivery or providing access to the resource</xs:documentation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-									<relation>one-to-many</relation>
-									<label>Distribution medium</label>
-									<default_publications>downloadable</default_publications>
-									<change_publications>false</change_publications>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:element ref="ms:distributionLoc"/>
 			<xs:element name="hashkey" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Specifies the hashkey for indexing and downloading the publication</xs:documentation>
@@ -37,38 +37,6 @@
 						<label>Hashkey</label>
 					</xs:appinfo>
 				</xs:annotation>
-			</xs:element>
-			<xs:element minOccurs="0" name="downloadURLs">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:downloadURL">
-							<xs:annotation>
-								<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
-								<xs:appinfo>
-									<relation>one-to-many</relation>
-									<label>Download URL</label>
-									<sameAs>dcat:downloadURL</sameAs>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element minOccurs="0" name="accessURLs">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:accessURL">
-							<xs:annotation>
-								<xs:documentation>A landing page, feed, SPARQL endpoint etc. that gives access to the resource or where the web service/workflow is executed; please use for resources that are &quot;accessibleThroughInterface&quot; or &quot;webExecutable&quot;</xs:documentation>
-								<xs:appinfo>
-									<relation>one-to-many</relation>
-									<label>Access URL</label>
-									<closeMatch>dcat:accessURL</closeMatch>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element minOccurs="0" name="fullText">
 				<xs:annotation>
@@ -83,19 +51,19 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element minOccurs="0" name="dataFormats">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:dataFormatInfo"/>
-					</xs:sequence>
-				</xs:complexType>
+			<xs:element minOccurs="0" ref="ms:dataFormatInfo">
+				<xs:annotation>
+					<xs:appinfo>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
 			</xs:element>
-			<xs:element minOccurs="0" name="characterEncodings">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:characterEncoding"/>
-					</xs:sequence>
-				</xs:complexType>
+			<xs:element maxOccurs="1" minOccurs="0" ref="ms:characterEncoding">
+				<xs:annotation>
+					<xs:appinfo>
+						<recommended>true</recommended>
+					</xs:appinfo>
+				</xs:annotation>
 			</xs:element>
 			<xs:element minOccurs="0" name="sizes">
 				<xs:complexType>
@@ -202,73 +170,54 @@
 			<jaxb:class name="ComponentDistributionInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="componentDistributionForm">
-				<xs:annotation>
-					<xs:documentation>Specifies the form of distribution of the component (e.g. as source code, executable programme etc.)</xs:documentation>
-				</xs:annotation>
-				<xs:simpleType>
-					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="componentDistributionFormEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
-						<xs:enumeration value="webService">
-							<xs:annotation>
-								<xs:documentation>A component accessible through remote invocation typically using some REST-style APIs or SOAP protocols.</xs:documentation>
-								<xs:appinfo>
-									<label>web service</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="sourceCode">
-							<xs:annotation>
-								<xs:documentation>The distributable (delivery) form of a component containing the source code</xs:documentation>
-								<xs:appinfo>
-									<label>source code</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="executableCode">
-							<xs:annotation>
-								<xs:documentation>The distributable (delivery) form of a component with the executable code, i.e. that can be run on computer</xs:documentation>
-								<xs:appinfo>
-									<label>executable code</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="sourceAndExecutableCode">
-							<xs:annotation>
-								<xs:documentation>The distributable (delivery) form of a component that contains both the source and the executable codes</xs:documentation>
-								<xs:appinfo>
-									<label>source and executable code</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
 			
-			<xs:element minOccurs="0" name="downloadURLs">
+			<xs:element name="componentLoc">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:downloadURL">
+						<xs:element name="componentDistributionForm">
 							<xs:annotation>
-								<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
-								<xs:appinfo>
-									<relation>one-to-many</relation>
-									<label>Download URL</label>
-									<sameAs>dcat:downloadURL</sameAs>
-								</xs:appinfo>
+								<xs:documentation>Specifies the form of distribution of the component (e.g. as source code, executable programme etc.)</xs:documentation>
 							</xs:annotation>
+							<xs:simpleType>
+								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="componentDistributionFormEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+									<xs:enumeration value="webService">
+										<xs:annotation>
+											<xs:documentation>A component accessible through remote invocation typically using some REST-style APIs or SOAP protocols.</xs:documentation>
+											<xs:appinfo>
+												<label>web service</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="sourceCode">
+										<xs:annotation>
+											<xs:documentation>The distributable (delivery) form of a component containing the source code</xs:documentation>
+											<xs:appinfo>
+												<label>source code</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="executableCode">
+										<xs:annotation>
+											<xs:documentation>The distributable (delivery) form of a component with the executable code, i.e. that can be run on computer</xs:documentation>
+											<xs:appinfo>
+												<label>executable code</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="sourceAndExecutableCode">
+										<xs:annotation>
+											<xs:documentation>The distributable (delivery) form of a component that contains both the source and the executable codes</xs:documentation>
+											<xs:appinfo>
+												<label>source and executable code</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
 						</xs:element>
+						<xs:element ref="ms:distributionURL"/>
 					</xs:sequence>
 				</xs:complexType>
-			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" ref="ms:accessURL">
-				<xs:annotation>
-					<xs:documentation>A landing page, feed, SPARQL endpoint etc. that gives access to the resource or where the web service/workflow is executed</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Access URL</label>
-						<closeMatch>dcat:accessURL</closeMatch>
-					</xs:appinfo>
-				</xs:annotation>
 			</xs:element>
 			<xs:element maxOccurs="1" minOccurs="0" name="command">
 				<xs:annotation>
@@ -509,47 +458,7 @@
 			<jaxb:class name="DatasetDistributionInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="distributionMediums">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element maxOccurs="unbounded" ref="ms:distributionMedium">
-							<xs:annotation>
-								<xs:documentation>Specifies the medium (channel) used for delivery or providing access to the resource</xs:documentation>
-								<xs:appinfo>
-									<recommended>true</recommended>
-									<relation>one-to-many</relation>
-									<label>Distribution medium</label>
-									<default-ugc>downloadable</default-ugc>
-									<change-ugc>false</change-ugc>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element minOccurs="0" ref="ms:downloadURL">
-				<xs:annotation>
-					<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Download URL</label>
-						<sameAs>dcat:downloadURL</sameAs>
-						<usage>Mandatory if distributionMedium=downloadable</usage>
-						<usage-ugc>To be created automatically by system with the URL from where the corpus can be downloaded when made publicly available</usage-ugc>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-			<xs:element minOccurs="0" ref="ms:accessURL">
-				<xs:annotation>
-					<xs:documentation>A landing page, feed, SPARQL endpoint etc. that gives access to the resource or where the web service/workflow is executed; please use for resources that are &quot;accessibleThroughInterface&quot; or &quot;webExecutable&quot;</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Access URL</label>
-						<closeMatch>dcat:accessURL</closeMatch>
-						<usage>Mandatory if distributionMedium=webExecutable or accessibleThroughInterface</usage>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
+			<xs:element ref="ms:distributionLoc"/>
 			<xs:element minOccurs="0" name="textFormats">
 				<xs:complexType>
 					<xs:sequence>
@@ -1106,15 +1015,6 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="embargoedAccess">
-					<xs:annotation>
-						<xs:documentation>The resource is with Closed Access, until released for Open Access on a certain date, which can be specified elsewhere in the metadata.</xs:documentation>
-						<xs:appinfo>
-							<label>Embargoed Access</label>
-							<closeMatch>info:eu-repo/semantics/embargoedAccess</closeMatch>
-						</xs:appinfo>
-					</xs:annotation>
-				</xs:enumeration>
 				<xs:enumeration value="restrictedAccess">
 					<xs:annotation>
 						<xs:documentation>Access is subject to restrictions or controls regarding users (e.g. limited to researchers or members of a specific group) or use (e.g. for research only, noncommercial use etc.); subscription or registration may also be required and access may incur financial costs.</xs:documentation>
@@ -1125,6 +1025,7 @@
 						</xs:appinfo>
 					</xs:annotation>
 				</xs:enumeration>
+				
 				
 			</xs:restriction>
 		</xs:simpleType>
@@ -1248,28 +1149,18 @@
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
-	<xs:element name="downloadURL" type="ms:httpURI">
+	<xs:element name="distributionURL" type="ms:httpURI">
 		<xs:annotation>
-			<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is downloadable and you have not uploaded the resource in the repository</xs:documentation>
+			<xs:documentation>Any url where the resource can be accessed from, either in a downloadable form or as a web executable command etc.</xs:documentation>
 			<xs:appinfo>
 				<relation>one-to-many</relation>
 				<label>Download URL</label>
-				<sameAs>dcat:downloadURL</sameAs>
-				<usage>Mandatory if distributionMedium=downloadable</usage>
+				<broader>dcat:downloadURL</broader>
+				<recommended>true</recommended>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="accessURL" type="ms:httpURI">
-		<xs:annotation>
-			<xs:documentation>A landing page, feed, SPARQL endpoint etc. that gives access to the resource or where the web service/workflow is executed; please use for resources that are &quot;accessibleThroughInterface&quot; or &quot;webExecutable&quot;</xs:documentation>
-			<xs:appinfo>
-				<relation>one-to-many</relation>
-				<label>Access URL</label>
-				<closeMatch>dcat:accessURL</closeMatch>
-				<usage>Mandatory if distributionMedium=accessibleThroughInterface or webExecutable</usage>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
+	
 	<xs:element name="copyrightStatement">
 		<xs:annotation>
 			<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute to specify the language.</xs:documentation>
