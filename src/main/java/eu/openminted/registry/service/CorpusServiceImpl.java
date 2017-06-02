@@ -156,11 +156,10 @@ public class CorpusServiceImpl implements CorpusService {
             StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
             File temp = File.createTempFile("copr", "tmp");
             OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
-            archiveId = storeClient.createArchive().getReport();
+            archiveId = storeClient.createArchive().getResponse();
             storeClient.createSubArchive(archiveId, "metadata");
-            storeClient.createSubArchive(archiveId, "fullText");
+            storeClient.createSubArchive(archiveId, "fulltext");
             storeClient.createSubArchive(archiveId, "abstract");
-
 
             IOUtils.copyLarge(inputStream, fos);
             fos.flush();
@@ -195,13 +194,13 @@ public class CorpusServiceImpl implements CorpusService {
             }
             zipIn.close();
 
+            if (destDir.listFiles() != null)
+                for (File file : destDir.listFiles()) {
+                    iterateThroughDirectories(storeClient, archiveId, file, file.getParent());
+                }
 
-            for (File file : destDir.listFiles()) {
-                iterateThroughDirectories(storeClient, archiveId, file, file.getParent());
-            }
 
-
-            logger.info("Done");
+            logger.info("Done uploading files");
 
             storeClient.finalizeArchive(archiveId);
 
@@ -243,22 +242,27 @@ public class CorpusServiceImpl implements CorpusService {
     }
 
     private void iterateThroughDirectories(StoreRESTClient storeClient, String archiveId, File file, String parent) throws IOException {
-        if (file.getName().contains(".DS_Store")
-                || file.getName().contains("__MACOSX")) {
+        if (file.getName().matches("^\\.[_|A-Z|a-z|0-9].*")
+                || file.getName().matches(".*[M|m][A|a][C|c][O|o][S|s][X|x].*")) {
 
             FileDeleteStrategy.FORCE.delete(file);
 
             return;
         }
 
-        System.out.println(parent + File.separator + file.getName());
-
         if (file.isDirectory()) {
+            if (file.listFiles() == null) return;
             for (File child : file.listFiles()) {
+                if (child == null) continue;
                 iterateThroughDirectories(storeClient, archiveId, child, file.getName());
             }
         } else {
-            storeClient.storeFile(file, archiveId + File.separator + parent, file.getName());
+            if (parent.equalsIgnoreCase("metadata")
+                    || parent.equalsIgnoreCase("fulltext")
+                    || parent.equalsIgnoreCase("abstract")) {
+                storeClient.storeFile(file, archiveId + File.separator + parent, file.getName());
+                logger.info("Uploading " + archiveId + File.separator + parent + File.separator + file.getName());
+            }
         }
     }
 
