@@ -174,7 +174,7 @@ public class CorpusServiceImpl implements CorpusService {
                * upload each file according to the corresponding directory
              */
 
-            String destDirectory = "tmpDirectory";
+            String destDirectory = archiveId;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdirs();
