@@ -156,38 +156,45 @@ public class CorpusServiceImpl implements CorpusService {
             StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
             File temp = File.createTempFile("copr", "tmp");
             OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
-            archiveId = storeClient.createArchive().getResponse();
-            storeClient.createSubArchive(archiveId, "metadata");
-            storeClient.createSubArchive(archiveId, "fulltext");
-            storeClient.createSubArchive(archiveId, "abstract");
 
             IOUtils.copyLarge(inputStream, fos);
             fos.flush();
             fos.close();
+
+            archiveId = storeClient.createArchive().getResponse();
+
+            logger.info("Creating archiveId " + archiveId);
+            logger.info("Creating subarchive " + storeClient.createSubArchive(archiveId, "metadata").getResponse());
+            logger.info("Creating subarchive " + storeClient.createSubArchive(archiveId, "fulltext").getResponse());
+            logger.info("Creating subarchive " + storeClient.createSubArchive(archiveId, "abstract").getResponse());
 
             /*
                * unzip file
                * iterate through its directories
                * upload each file according to the corresponding directory
              */
-            String destDirectory = "tmpDirectory";
 
+            String destDirectory = "tmpDirectory";
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
-                destDir.mkdir();
+                destDir.mkdirs();
             }
+
             ZipInputStream zipIn = new ZipInputStream(new FileInputStream(temp));
             ZipEntry entry = zipIn.getNextEntry();
             // iterates over entries in the zip file
             while (entry != null) {
                 String filePath = destDirectory + File.separator + entry.getName();
+                File unzippedFile = new File(filePath);
+
                 if (!entry.isDirectory()) {
+                    new File(unzippedFile.getParent()).mkdirs();
+                    unzippedFile.createNewFile();
                     // if the entry is a file, extracts it
-                    extractFile(zipIn, filePath);
+                    extractFile(zipIn, unzippedFile);
                 } else {
                     // if the entry is a directory, make the directory
-                    File dir = new File(filePath);
-                    dir.mkdir();
+                    unzippedFile.mkdirs();
                 }
                 zipIn.closeEntry();
                 entry = zipIn.getNextEntry();
@@ -198,7 +205,6 @@ public class CorpusServiceImpl implements CorpusService {
                 for (File file : destDir.listFiles()) {
                     iterateThroughDirectories(storeClient, archiveId, file, file.getParent());
                 }
-
 
             logger.info("Done uploading files");
 
@@ -231,14 +237,19 @@ public class CorpusServiceImpl implements CorpusService {
         return null;
     }
 
-    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-        byte[] bytesIn = new byte[BUFFER_SIZE];
-        int read = 0;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
+    private void extractFile(ZipInputStream zipIn, File file) throws IOException {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
+            byte[] bytesIn = new byte[BUFFER_SIZE];
+            int read = 0;
+            while ((read = zipIn.read(bytesIn)) != -1) {
+                bos.write(bytesIn, 0, read);
+            }
+            bos.close();
+        } catch (FileNotFoundException e) {
+            logger.error("Error reading file while unzipping", e);
         }
-        bos.close();
     }
 
     private void iterateThroughDirectories(StoreRESTClient storeClient, String archiveId, File file, String parent) throws IOException {
