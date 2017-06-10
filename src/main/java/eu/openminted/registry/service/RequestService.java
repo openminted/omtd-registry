@@ -1,12 +1,12 @@
 package eu.openminted.registry.service;
 
-import org.springframework.http.ResponseEntity;
+import eu.openminted.registry.core.domain.FacetFilter;
+import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.domain.Browsing;
+
 
 public interface RequestService {
 
-	ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
-													   String[] mediaType, String[] rights, String[] mimeType,
-													   String[] dataFormatSpecific, String[] license,boolean advanced,
-													   int from, int to);
+	Browsing getResponseByFiltersElastic(FacetFilter filter) throws ServiceException;
 
 }
