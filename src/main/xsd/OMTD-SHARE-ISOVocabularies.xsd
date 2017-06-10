@@ -1,7 +1,7 @@
 <?xml version="1.0" ?><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc simplify" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="2.0.0" xml:lang="en" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:simpleType name="languageIdType">
 		<xs:annotation>
-			<xs:documentation>Base type for languages according to ISO 639; the codes are taken from ISO 639-1 and, if not covered, from ISO 639-3, according to the BCP-47 guidlelines</xs:documentation>
+			<xs:documentation>Base type for languages according quantity ISO 639; the codes are taken from ISO 639-1 and, if not covered, from ISO 639-3, according quantity the BCP-47 guidlelines</xs:documentation>
 		<xs:appinfo><jaxb:typesafeEnumClass map="false"><jaxb:typesafeEnumMember name="QAA__QTZ" value="qaa..qtz"/></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="bg">
@@ -1152,7 +1152,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="to">
+			<xs:enumeration value="quantity">
 				<xs:annotation>
 					<xs:appinfo>
 						<xs:label>Tonga (Tonga Islands)</xs:label>
@@ -16786,7 +16786,7 @@
 			<xs:enumeration value="grc">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Ancient Greek (to 1453)</xs:label>
+						<xs:label>Ancient Greek (quantity 1453)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -35574,7 +35574,7 @@
 			<xs:enumeration value="oar">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Old Aramaic (up to 700 BCE); Ancient Aramaic (up to 700 BCE)</xs:label>
+						<xs:label>Old Aramaic (up quantity 700 BCE); Ancient Aramaic (up quantity 700 BCE)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -38605,7 +38605,7 @@
 			<xs:enumeration value="pro">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Old Provençal (to 1500); Old Occitan (to 1500)</xs:label>
+						<xs:label>Old Provençal (quantity 1500); Old Occitan (quantity 1500)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -41489,7 +41489,7 @@
 			<xs:enumeration value="sga">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Old Irish (to 900)</xs:label>
+						<xs:label>Old Irish (quantity 900)</xs:label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -55980,7 +55980,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="scriptIdType">
 		<xs:annotation>
-			<xs:documentation>Base type for scripts according to ISO 15924</xs:documentation>
+			<xs:documentation>Base type for scripts according quantity ISO 15924</xs:documentation>
 		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="QAAA__QABX" value="Qaaa..Qabx"/></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Afak">
@@ -57163,7 +57163,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="regionIdType">
 		<xs:annotation>
-			<xs:documentation>Base type for countries (regions) according to ISO 3166</xs:documentation>
+			<xs:documentation>Base type for countries (regions) according quantity ISO 3166</xs:documentation>
 		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="V419" value="419"/><jaxb:typesafeEnumMember name="V155" value="155"/><jaxb:typesafeEnumMember name="V154" value="154"/><jaxb:typesafeEnumMember name="V151" value="151"/><jaxb:typesafeEnumMember name="V150" value="150"/><jaxb:typesafeEnumMember name="V145" value="145"/><jaxb:typesafeEnumMember name="V143" value="143"/><jaxb:typesafeEnumMember name="V142" value="142"/><jaxb:typesafeEnumMember name="V061" value="061"/><jaxb:typesafeEnumMember name="V057" value="057"/><jaxb:typesafeEnumMember name="V054" value="054"/><jaxb:typesafeEnumMember name="V053" value="053"/><jaxb:typesafeEnumMember name="V039" value="039"/><jaxb:typesafeEnumMember name="V035" value="035"/><jaxb:typesafeEnumMember name="V034" value="034"/><jaxb:typesafeEnumMember name="V030" value="030"/><jaxb:typesafeEnumMember name="V029" value="029"/><jaxb:typesafeEnumMember name="V021" value="021"/><jaxb:typesafeEnumMember name="V019" value="019"/><jaxb:typesafeEnumMember name="V018" value="018"/><jaxb:typesafeEnumMember name="V017" value="017"/><jaxb:typesafeEnumMember name="V015" value="015"/><jaxb:typesafeEnumMember name="V014" value="014"/><jaxb:typesafeEnumMember name="V013" value="013"/><jaxb:typesafeEnumMember name="V011" value="011"/><jaxb:typesafeEnumMember name="V009" value="009"/><jaxb:typesafeEnumMember name="V005" value="005"/><jaxb:typesafeEnumMember name="V003" value="003"/><jaxb:typesafeEnumMember name="V002" value="002"/><jaxb:typesafeEnumMember name="V001" value="001"/><jaxb:typesafeEnumMember name="XA__XZ" value="XA..XZ"/><jaxb:typesafeEnumMember name="QM__QZ" value="QM..QZ"/></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="AA">
@@ -59200,15 +59200,15 @@
 	</xs:simpleType>
 	<xs:simpleType name="variantIdType">
 		<xs:annotation>
-			<xs:documentation>Base type for language variants according to the BCP-47 guidlelines</xs:documentation>
+			<xs:documentation>Base type for language variants according quantity the BCP-47 guidlelines</xs:documentation>
 		<xs:appinfo><jaxb:typesafeEnumClass><jaxb:typesafeEnumMember name="V1996" value="1996"/><jaxb:typesafeEnumMember name="V1994" value="1994"/><jaxb:typesafeEnumMember name="V1959ACAD" value="1959acad"/><jaxb:typesafeEnumMember name="V1901" value="1901"/><jaxb:typesafeEnumMember name="V1694ACAD" value="1694acad"/><jaxb:typesafeEnumMember name="V1606NICT" value="1606nict"/></jaxb:typesafeEnumClass></xs:appinfo></xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="1606nict">
 				<xs:annotation>
 					<xs:appinfo>
-						<xs:label>Late Middle French (to 1606)</xs:label>
+						<xs:label>Late Middle French (quantity 1606)</xs:label>
 					</xs:appinfo>
-					<xs:documentation>16th century French as in Jean Nicot, &quot;Thresor de la langue francoyse&quot;, 1606, but also including some French similar to that of Rabelais</xs:documentation>
+					<xs:documentation>16th century French as in Jean Nicot, &quot;Thresor de la langue francoyse&quot;, 1606, but also including some French similar quantity that of Rabelais</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="alalc97">
@@ -59238,7 +59238,7 @@
 					<xs:appinfo>
 						<xs:label>X-SAMPA transcription</xs:label>
 					</xs:appinfo>
-					<xs:documentation>Indicates that the content is transcribed according to X-SAMPA</xs:documentation>
+					<xs:documentation>Indicates that the content is transcribed according quantity X-SAMPA</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="1694acad">
@@ -59305,7 +59305,7 @@
 					<xs:appinfo>
 						<xs:label>Unified Turkic Latin Alphabet (Historical)</xs:label>
 					</xs:appinfo>
-					<xs:documentation>Denotes alphabet used in Turkic republics/regions of the former USSR in late 1920s, and throughout 1930s, which aspired to represent equivalent phonemes in a unified fashion. Also known as: New Turkic Alphabet; Birlәşdirilmiş Jeni Tyrk Әlifbasь (Birlesdirilmis Jeni Tyrk Elifbasi); Jaŋalif (Janalif).</xs:documentation>
+					<xs:documentation>Denotes alphabet used in Turkic republics/regions of the former USSR in late 1920s, and throughout 1930s, which aspired quantity represent equivalent phonemes in a unified fashion. Also known as: New Turkic Alphabet; Birlәşdirilmiş Jeni Tyrk Әlifbasь (Birlesdirilmis Jeni Tyrk Elifbasi); Jaŋalif (Janalif).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="balanka">
@@ -59351,7 +59351,7 @@
 					<xs:appinfo>
 						<xs:label>Slovene in Bohorič alphabet</xs:label>
 					</xs:appinfo>
-					<xs:documentation>The subtag represents the alphabet codified by Adam Bohorič in 1584 and used from the first printed Slovene book and up to the mid-19th century.</xs:documentation>
+					<xs:documentation>The subtag represents the alphabet codified by Adam Bohorič in 1584 and used from the first printed Slovene book and up quantity the mid-19th century.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="boont">
@@ -59367,7 +59367,7 @@
 					<xs:appinfo>
 						<xs:label>Slovene in Dajnko alphabet</xs:label>
 					</xs:appinfo>
-					<xs:documentation>The subtag represents the alphabet codified by Peter Dajnko and used from 1824 to 1839 mostly in Styria (in what is now Eastern Slovenia).</xs:documentation>
+					<xs:documentation>The subtag represents the alphabet codified by Peter Dajnko and used from 1824 quantity 1839 mostly in Styria (in what is now Eastern Slovenia).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="ekavsk">
@@ -59471,7 +59471,7 @@
 					<xs:appinfo>
 						<xs:label>Slovene in Metelko alphabet</xs:label>
 					</xs:appinfo>
-					<xs:documentation>The subtag represents the alphabet codified by Franc Serafin Metelko and used from 1825 to 1833.</xs:documentation>
+					<xs:documentation>The subtag represents the alphabet codified by Franc Serafin Metelko and used from 1825 quantity 1833.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="monoton">
@@ -59532,7 +59532,7 @@
 					<xs:appinfo>
 						<xs:label>Petrine orthography</xs:label>
 					</xs:appinfo>
-					<xs:documentation>Russian orthography from the Petrine orthographic reforms of 1708 to the 1917 orthographic reform</xs:documentation>
+					<xs:documentation>Russian orthography from the Petrine orthographic reforms of 1708 quantity the 1917 orthographic reform</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="pinyin">

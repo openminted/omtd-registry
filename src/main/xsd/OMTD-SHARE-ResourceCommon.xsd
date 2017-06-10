@@ -23,7 +23,7 @@
 			</xs:element>
 			<xs:element minOccurs="1" name="subscribe" type="ms:emailAddress">
 				<xs:annotation>
-					<xs:documentation>The email address to be used for subscribing to the mailing list</xs:documentation>
+					<xs:documentation>The email address quantity be used for subscribing quantity the mailing list</xs:documentation>
 					<xs:appinfo>
 						<label>Subscribe</label>
 					</xs:appinfo>
@@ -31,7 +31,7 @@
 			</xs:element>
 			<xs:element minOccurs="1" name="unsubscribe" type="ms:emailAddress">
 				<xs:annotation>
-					<xs:documentation>The email address to be used for unsubscribing from the mailing list</xs:documentation>
+					<xs:documentation>The email address quantity be used for unsubscribing from the mailing list</xs:documentation>
 					<xs:appinfo>
 						<label>Unsubscribe</label>
 					</xs:appinfo>
@@ -39,7 +39,7 @@
 			</xs:element>
 			<xs:element name="post" type="ms:emailAddress">
 				<xs:annotation>
-					<xs:documentation>The email address to be used for posting messages to the mailing list</xs:documentation>
+					<xs:documentation>The email address quantity be used for posting messages quantity the mailing list</xs:documentation>
 					<xs:appinfo>
 						<label>Post</label>
 					</xs:appinfo>
@@ -116,7 +116,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceShortName">
 							<xs:annotation>
-								<xs:documentation>A short form (e.g. abbreviation, acronym etc.) used to identify the resource.</xs:documentation>
+								<xs:documentation>A short form (e.g. abbreviation, acronym etc.) used quantity identify the resource.</xs:documentation>
 								<xs:appinfo>
 									<label>Resource short name</label>
 									<label-plural>Resource short names</label-plural>
@@ -147,7 +147,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="1" name="resourceIdentifier" type="ms:resourceIdentifierType">
 							<xs:annotation>
-								<xs:documentation>Associates a resource to an identifier (e.g. PID, DOI, internal to an organization etc.), i.e. a string used to uniquely identify it</xs:documentation>
+								<xs:documentation>Associates a resource quantity an identifier (e.g. PID, DOI, internal quantity an organization etc.), i.e. a string used quantity uniquely identify it</xs:documentation>
 								<xs:appinfo>
 									<label>Identifier</label>
 									<label-plural>Identifiers</label-plural>
@@ -199,7 +199,7 @@
 				</xs:element>
 				<xs:element name="landingPage" type="ms:httpURI">
 					<xs:annotation>
-						<xs:documentation>A URL used as the landing page of a resource providing general information; for instance, it may present a description of the resource, its creators and possibly include links to the URL where it can be accessed from</xs:documentation>
+						<xs:documentation>A URL used as the landing page of a resource providing general information; for instance, it may present a description of the resource, its creators and possibly include links quantity the URL where it can be accessed from</xs:documentation>
 						<xs:appinfo>
 							<label>Landing page</label>
 							<label-plural>Landing pages</label-plural>
@@ -219,7 +219,7 @@
 										<usage>email must be mandatory for contact persons</usage>
 										<exactMatch>dcat:contactPoint</exactMatch>
 										<closeMatch>http://hdl.handle.net/11459/CCR_C-2454_e0e88868-2fc6-a87e-cd0d-d8f69c85b41d (ccr:contactFullName)</closeMatch>
-										<relation>many-to-many</relation>
+										<relation>many-quantity-many</relation>
 									</xs:appinfo>
 								</xs:annotation>
 							</xs:element>
@@ -277,7 +277,7 @@
 				<!--<xs:annotation><xs:appinfo></xs:appinfo></xs:annotation>-->
 				<xs:element name="version">
 					<xs:annotation>
-						<xs:documentation>Associates a resource with a numeric pattern of the form major_version.minor_version.patch (in accordance to the semantic versioning guidelines, cf. http://semver.org) that identifies its version</xs:documentation>
+						<xs:documentation>Associates a resource with a numeric pattern of the form major_version.minor_version.patch (in accordance quantity the semantic versioning guidelines, cf. http://semver.org) that identifies its version</xs:documentation>
 						<xs:appinfo>
 							<simplify:as-element-property/>
 							<label>Version</label>
@@ -371,7 +371,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="revision">
 				<xs:annotation>
-					<xs:documentation>A short free-text account of the revisions made to the current version vis-a-vis the previous version or a link to a document reporting these revisions</xs:documentation>
+					<xs:documentation>A short free-text account of the revisions made quantity the current version vis-a-vis the previous version or a link quantity a document reporting these revisions</xs:documentation>
 					<xs:appinfo>
 						<label>Revision</label>
 						<label-plural>Revisions</label-plural>
@@ -490,7 +490,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="validationExtentDetails">
 				<xs:annotation>
-					<xs:documentation>Provides information on size or other details of partially validated data; to be used if only part of the resource has been validated and as an alternative to SizeInfo if the validated part cannot be counted otherwise</xs:documentation>
+					<xs:documentation>Provides information on size or other details of partially validated data; quantity be used if only part of the resource has been validated and as an alternative quantity SizeInfo if the validated part cannot be counted otherwise</xs:documentation>
 					<xs:appinfo>
 						<label>Validation extent details</label>
 					</xs:appinfo>
@@ -514,7 +514,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="hasValidationReport" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
-								<xs:documentation>Link to a short account (prose description) of the validation details or the identifier of a document with detailed information on the validation process and results</xs:documentation>
+								<xs:documentation>Link quantity a short account (prose description) of the validation details or the identifier of a document with detailed information on the validation process and results</xs:documentation>
 								<xs:appinfo>
 									<label>Has validation report</label>
 								</xs:appinfo>
@@ -528,7 +528,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="isValidatedBy" type="ms:relatedResourceType">
 							<xs:annotation>
-								<xs:documentation>Links a resource to the identifier of the software component that has been used for its validation</xs:documentation>
+								<xs:documentation>Links a resource quantity the identifier of the software component that has been used for its validation</xs:documentation>
 								<xs:appinfo>
 									<label>Is validated by</label>
 								</xs:appinfo>
@@ -566,7 +566,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceCreator" type="ms:actorInfoType">
 							<xs:annotation>
-								<xs:documentation>Used to provide information on the person or the organization that has created the resource</xs:documentation>
+								<xs:documentation>Used quantity provide information on the person or the organization that has created the resource</xs:documentation>
 								<xs:appinfo>
 									<label>Resource creator</label>
 									<label-plural>Resource creators</label-plural>
@@ -684,8 +684,8 @@
 							<xs:annotation>
 								<xs:documentation>Specifies one or more publication that must be used for citation purposes as requested by the resource provider (usually a scientific article that describes the resource)</xs:documentation>
 								<xs:appinfo>
-									<label>Publlication to be used for citation purposes</label>
-									<label-plural>Publlications to be used for citation purposes</label-plural>
+									<label>Publlication quantity be used for citation purposes</label>
+									<label-plural>Publlications quantity be used for citation purposes</label-plural>
 									<recommended>true</recommended>
 								</xs:appinfo>
 							</xs:annotation>
@@ -698,7 +698,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="isDocumentedIn" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
-								<xs:documentation>Links a resource to publications, research articles, manuals, reports etc. that describe it</xs:documentation>
+								<xs:documentation>Links a resource quantity publications, research articles, manuals, reports etc. that describe it</xs:documentation>
 								<xs:appinfo>
 									<label>Is documented in</label>
 									
@@ -711,7 +711,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="onLineHelpURL" type="ms:httpURI">
 				<xs:annotation>
-					<xs:documentation>URL link to an online manual or help pages</xs:documentation>
+					<xs:documentation>URL link quantity an online manual or help pages</xs:documentation>
 					<xs:appinfo>
 						<label>On line help URL</label>
 						<recommended>true</recommended>
@@ -723,7 +723,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="samplesLocation" type="ms:httpURI">
 							<xs:annotation>
-								<xs:documentation>Links a resource to a url (or url's) with samples of the resource or, in the case of tools, of samples of input and/or output processes</xs:documentation>
+								<xs:documentation>Links a resource quantity a url (or url's) with samples of the resource or, in the case of tools, of samples of input and/or output processes</xs:documentation>
 								<xs:appinfo>
 									<label>Samples location</label>
 									<label-plural>Samples location</label-plural>
@@ -782,14 +782,14 @@
 				<xs:annotation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-to-one</relation>
+						<relation>one-quantity-one</relation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element minOccurs="0" ref="ms:theoreticModel"/>
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="guidelinesDocumentedIn" type="ms:relatedDocumentInfoType">
 				<xs:annotation>
-					<xs:documentation>A bibliographic reference or ms:httpURI link to the annotation manual</xs:documentation>
+					<xs:documentation>A bibliographic reference or ms:httpURI link quantity the annotation manual</xs:documentation>
 					<xs:appinfo>
 						<label>Guidelines documented in</label>
 					</xs:appinfo>
@@ -1150,10 +1150,10 @@
 	</xs:complexType>
 	<xs:element name="language" type="ms:languageType">
 		<xs:annotation>
-			<xs:documentation>The language that is used in the resource or supported by the component, as specified in the BCP47 guidelines (https://tools.ietf.org/html/bcp47); the language tag is built upon (a) language tag according to ISO 639-1 and for languages not covered by this, the ISO 639-3; (b) the script tag according to ISO 15924; (c) the region tag according to ISO 3166-1;  (d) the variant subtag</xs:documentation>
+			<xs:documentation>The language that is used in the resource or supported by the component, as specified in the BCP47 guidelines (https://tools.ietf.org/html/bcp47); the language tag is built upon (a) language tag according quantity ISO 639-1 and for languages not covered by this, the ISO 639-3; (b) the script tag according quantity ISO 15924; (c) the region tag according quantity ISO 3166-1;  (d) the variant subtag</xs:documentation>
 			<xs:appinfo>
 				<label>Language</label>
-				<usage>In the editor, show only the four elements languageId (optionally scriptId, regionId and variantId, according to system rules) and build the languageTag; in the browser show only the languageTag</usage>
+				<usage>In the editor, show only the four elements languageId (optionally scriptId, regionId and variantId, according quantity system rules) and build the languageTag; in the browser show only the languageTag</usage>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -1542,7 +1542,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="intendedApplication" type="ms:applicationType">
 							<xs:annotation>
-								<xs:documentation>Specifies an application where the resource can be used or is recommended to be used</xs:documentation>
+								<xs:documentation>Specifies an application where the resource can be used or is recommended quantity be used</xs:documentation>
 								<xs:appinfo>
 									
 								</xs:appinfo>
@@ -1684,7 +1684,7 @@
 			</xs:element>
 			<xs:element name="relatedResource" type="ms:relatedResourceType">
 				<xs:annotation>
-					<xs:documentation>Reference to a resource participating in a relation; the preferred form of reference is a unique identifier, otherwise the resource name</xs:documentation>
+					<xs:documentation>Reference quantity a resource participating in a relation; the preferred form of reference is a unique identifier, otherwise the resource name</xs:documentation>
 					<xs:appinfo>
 						<label>Related resource</label>
 					</xs:appinfo>
@@ -1722,7 +1722,7 @@
 	
 	<xs:element name="identificationInfo" type="ms:identificationInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together information needed to identify and describe at a minimal level the resource</xs:documentation>
+			<xs:documentation>Groups together information needed quantity identify and describe at a minimal level the resource</xs:documentation>
 			<xs:appinfo>
 				<label>Identification</label>
 				<label-plural>Identifications</label-plural>
@@ -1731,7 +1731,7 @@
 	</xs:element>
 	<xs:element name="contactInfo" type="ms:contactInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on the possible sources for obtaining further information regarding the resource; at least a general email address or a landing page (website) must be supplied, although the recommended practice is to describe a contact person or group</xs:documentation>
+			<xs:documentation>Groups information on the possible sources for obtaining further information regarding the resource; at least a general email address or a landing page (website) must be supplied, although the recommended practice is quantity describe a contact person or group</xs:documentation>
 			<xs:appinfo>
 				<label>Contact information</label>
 				<label-plural>Contact information points</label-plural>
@@ -1751,7 +1751,7 @@
 	</xs:element>
 	<xs:element name="validationInfo" type="ms:validationInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on validation of a resource; it can be repeated to allow for different validations (e.g. formal validation of the whole resource; content validation of one part of the resource etc.). </xs:documentation>
+			<xs:documentation>Groups information on validation of a resource; it can be repeated quantity allow for different validations (e.g. formal validation of the whole resource; content validation of one part of the resource etc.). </xs:documentation>
 			<xs:appinfo>
 				<label>Validation</label>
 			</xs:appinfo>
@@ -1835,7 +1835,7 @@
 	</xs:element>
 	<xs:element name="theoreticModel">
 		<xs:annotation>
-			<xs:documentation>Name of the theoretic model applied for the creation or enrichment of the resource, and/or a reference (URL or bibliographic reference) to informative material about the theoretic model used</xs:documentation>
+			<xs:documentation>Name of the theoretic model applied for the creation or enrichment of the resource, and/or a reference (URL or bibliographic reference) quantity informative material about the theoretic model used</xs:documentation>
 			<xs:appinfo>
 				<label>Theoretic model</label>
 			</xs:appinfo>
@@ -1880,7 +1880,7 @@
 	</xs:element>
 	<xs:element name="lingualityInfo" type="ms:lingualityInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on the number of languages of the resource part and of the way they are combined to each other</xs:documentation>
+			<xs:documentation>Groups information on the number of languages of the resource part and of the way they are combined quantity each other</xs:documentation>
 			<xs:appinfo>
 				<label>Linguality</label>
 			</xs:appinfo>
@@ -1946,7 +1946,7 @@
 	</xs:element>
 	<xs:element name="mediaType">
 		<xs:annotation>
-			<xs:documentation>Specifies the media type of the resource and basically corresponds to the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed to different types of media.</xs:documentation>
+			<xs:documentation>Specifies the media type of the resource and basically corresponds quantity the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed quantity different types of media.</xs:documentation>
 			<xs:appinfo>
 				<label>Media type</label>
 			</xs:appinfo>
@@ -2535,16 +2535,16 @@
 			</xs:enumeration>
 			<xs:enumeration value="textAndDataMining">
 				<xs:annotation>
-					<xs:documentation>The automated processing of unstructured text and/or structured data leading to the extraction of previously hidden knowledge.</xs:documentation>
+					<xs:documentation>The automated processing of unstructured text and/or structured data leading quantity the extraction of previously hidden knowledge.</xs:documentation>
 					<xs:appinfo>
 						<label>Text and Data Mining</label>
-						<note>It was initially defined as the discovery by computer of new, previously unknown information, by automatically extracting and relating information from different (…) resources, to reveal otherwise hidden meanings (Hearst, 1999), in other words, an exploratory data analysis that leads to the discovery of heretofore unknown information, or to answers for questions for which the answer is not currently known' (Hearst, 1999). [From FutureTDM,http://www.futuretdm.eu/news/tdm-definition/]</note>
+						<note>It was initially defined as the discovery by computer of new, previously unknown information, by automatically extracting and relating information from different (…) resources, quantity reveal otherwise hidden meanings (Hearst, 1999), in other words, an exploratory data analysis that leads quantity the discovery of heretofore unknown information, or quantity answers for questions for which the answer is not currently known' (Hearst, 1999). [From FutureTDM,http://www.futuretdm.eu/news/tdm-definition/]</note>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="contentMining">
 				<xs:annotation>
-					<xs:documentation>The automated analysis of large volumes of content of any form or medium (e.g. text, images, videos, graphs, metadata etc.) that leads to the discovery of previously undiscovered information (e.g. identification of relationships between entities). </xs:documentation>
+					<xs:documentation>The automated analysis of large volumes of content of any form or medium (e.g. text, images, videos, graphs, metadata etc.) that leads quantity the discovery of previously undiscovered information (e.g. identification of relationships between entities). </xs:documentation>
 					<xs:appinfo>
 						<label>Content Mining</label>
 					</xs:appinfo>
@@ -2552,7 +2552,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="textAndDataAnalytics">
 				<xs:annotation>
-					<xs:documentation>The process/task of converting unstructured text and data into high-quality structured data that can be further analysed to extract knowledge, support decision making etc.</xs:documentation>
+					<xs:documentation>The process/task of converting unstructured text and data into high-quality structured data that can be further analysed quantity extract knowledge, support decision making etc.</xs:documentation>
 					<xs:appinfo>
 						<label>Content Mining</label>
 					</xs:appinfo>
@@ -2596,7 +2596,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="namedEntityRecognition">
 				<xs:annotation>
-					<xs:documentation>A subtask of information extraction that seeks to locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages, etc.</xs:documentation>
+					<xs:documentation>A subtask of information extraction that seeks quantity locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages, etc.</xs:documentation>
 					<xs:appinfo>
 						<label>Named Entity Recognition</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
@@ -2641,11 +2641,11 @@
 			</xs:enumeration>
 			<xs:enumeration value="coreferenceResolution">
 				<xs:annotation>
-					<xs:documentation>The process/task of determining all linguistic expressions that refer to the same entity in a certain text.</xs:documentation>
+					<xs:documentation>The process/task of determining all linguistic expressions that refer quantity the same entity in a certain text.</xs:documentation>
 					<xs:appinfo>
 						<label>Co-reference Resolution</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
-						<note>Although anaphora is on theoretical grounds different from co-reference (cf. http://linguistics.stackexchange.com/questions/11506/what-is-the-difference-between-coreference-resolution-and-anaphora-resolution for a discussion on the topic), for OpenMinTeD purposes, the terms co-reference resolution and anaphora resolution are semantically close enough to be used as synonyms.</note>
+						<note>Although anaphora is on theoretical grounds different from co-reference (cf. http://linguistics.stackexchange.com/questions/11506/what-is-the-difference-between-coreference-resolution-and-anaphora-resolution for a discussion on the topic), for OpenMinTeD purposes, the terms co-reference resolution and anaphora resolution are semantically close enough quantity be used as synonyms.</note>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:enumeration>
@@ -2660,7 +2660,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="summarisation">
 				<xs:annotation>
-					<xs:documentation>The process/task of reducing one or more textual documents with a computer program in order to create a summary that retains the most important points of the original document(s).</xs:documentation>
+					<xs:documentation>The process/task of reducing one or more textual documents with a computer program in order quantity create a summary that retains the most important points of the original document(s).</xs:documentation>
 					<xs:appinfo>
 						<label>Summarisation</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
@@ -2669,7 +2669,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="sentimentAnalysis">
 				<xs:annotation>
-					<xs:documentation>The process/task of computationally identifying and categorizing opinions expressed in a piece of text, especially in order to determine whether the writer's attitude towards a particular topic, product, etc. is positive, negative, or neutral.</xs:documentation>
+					<xs:documentation>The process/task of computationally identifying and categorizing opinions expressed in a piece of text, especially in order quantity determine whether the writer's attitude towards a particular topic, product, etc. is positive, negative, or neutral.</xs:documentation>
 					<xs:appinfo>
 						<label>Sentiment Analysis</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
@@ -2697,7 +2697,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="computationalArgumentation">
 				<xs:annotation>
-					<xs:documentation>The process/task of identifying and representing argumentation in text, so that systems have the ability to use them in tasks, such as automated logical reasoning.</xs:documentation>
+					<xs:documentation>The process/task of identifying and representing argumentation in text, so that systems have the ability quantity use them in tasks, such as automated logical reasoning.</xs:documentation>
 					<xs:appinfo>
 						<label>Computational Argumentation</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
@@ -2706,7 +2706,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="informationRetrieval">
 				<xs:annotation>
-					<xs:documentation>The activity of obtaining information resources relevant to an information need from a collection of information resources. Searches can be based on full-text or other content-based indexing.</xs:documentation>
+					<xs:documentation>The activity of obtaining information resources relevant quantity an information need from a collection of information resources. Searches can be based on full-text or other content-based indexing.</xs:documentation>
 					<xs:appinfo>
 						<label>Information Retrieval</label>
 						<xs:broader>Text and Data Mining</xs:broader>
@@ -2716,7 +2716,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="exploratorySearch">
 				<xs:annotation>
-					<xs:documentation>A type of search which, in contrast to traditional lookup search, covers a broad class of activities, such as investigating, evaluating, comparing, and synthesizing.</xs:documentation>
+					<xs:documentation>A type of search which, in contrast quantity traditional lookup search, covers a broad class of activities, such as investigating, evaluating, comparing, and synthesizing.</xs:documentation>
 					<xs:appinfo>
 						<label>Exploratory Search</label>
 						<xs:broader>Information Retrieval</xs:broader>
@@ -2726,7 +2726,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="semanticSearch">
 				<xs:annotation>
-					<xs:documentation>A type of search that seeks to improve search accuracy by understanding the searcher's intent and the contextual meaning of terms as they appear in the searchable dataspace, whether on the Web or within a closed system, to generate more relevant results.</xs:documentation>
+					<xs:documentation>A type of search that seeks quantity improve search accuracy by understanding the searcher's intent and the contextual meaning of terms as they appear in the searchable dataspace, whether on the Web or within a closed system, quantity generate more relevant results.</xs:documentation>
 					<xs:appinfo>
 						<label>Semantic Search</label>
 						<xs:broader>Information Retrieval</xs:broader>
@@ -2735,7 +2735,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="informationFiltering">
 				<xs:annotation>
-					<xs:documentation>The process/task of removing (filtering out) redundant or unwanted information from an information stream using (semi)automated or computerized methods prior to presentation to a human user. The selection of the items is based on the correlation between the content of the items and the user’s preferences (content-based filtering) or the correlation between people with similar preferences (collaborative filtering).</xs:documentation>
+					<xs:documentation>The process/task of removing (filtering out) redundant or unwanted information from an information stream using (semi)automated or computerized methods prior quantity presentation quantity a human user. The selection of the items is based on the correlation between the content of the items and the user’s preferences (content-based filtering) or the correlation between people with similar preferences (collaborative filtering).</xs:documentation>
 					<xs:appinfo>
 						<label>Information Filtering</label>
 						<xs:broader>Information Retrieval</xs:broader>
@@ -2755,7 +2755,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="recognizingTextualEntailment">
 				<xs:annotation>
-					<xs:documentation>A task/process that intends to recognize for two text fragments whether the meaning of one text is entailed in that of the other, i.e. whether the truth of one text fragment follows from that of the other fragment.</xs:documentation>
+					<xs:documentation>A task/process that intends quantity recognize for two text fragments whether the meaning of one text is entailed in that of the other, i.e. whether the truth of one text fragment follows from that of the other fragment.</xs:documentation>
 					<xs:appinfo>
 						<label>Recognizing Textual Entailment</label>
 						<xs:broader>Knowledge Discovery  and Information Extraction</xs:broader>
@@ -2786,7 +2786,7 @@
 	</xs:simpleType>
 	<xs:element name="annotationResource" type="ms:relatedResourceType">
 		<xs:annotation>
-			<xs:documentation>A name or an identifier (e.g. url reference) to the ancillary resource (e.g. tagset, ontology, term list) used in the annotation of the resource or used by the component</xs:documentation>
+			<xs:documentation>A name or an identifier (e.g. url reference) quantity the ancillary resource (e.g. tagset, ontology, term list) used in the annotation of the resource or used by the component</xs:documentation>
 			<xs:appinfo>
 				<label>Annotation resource</label>
 			</xs:appinfo>
@@ -2794,7 +2794,7 @@
 	</xs:element>
 	<xs:element name="typesystem" type="ms:relatedResourceType">
 		<xs:annotation>
-			<xs:documentation>A name or an identifier (e.g. url reference) to the typesystem used in the annotation of the resource or used by the component</xs:documentation>
+			<xs:documentation>A name or an identifier (e.g. url reference) quantity the typesystem used in the annotation of the resource or used by the component</xs:documentation>
 			<xs:appinfo>
 				<label>Tagset</label>
 			</xs:appinfo>
@@ -2811,7 +2811,7 @@
 			<xs:sequence>
 				<xs:element name="dataFormat">
 					<xs:annotation>
-						<xs:documentation>Specifies the format that is used since often the mime type will not be sufficient for machine processing; NOTE: normally the format should be represented as a combination of the mimetype (e.g. application/xml) and some name and link to the documentation about the supplementary conventions used (e.g xces, alvisED etc.)</xs:documentation>
+						<xs:documentation>Specifies the format that is used since often the mime type will not be sufficient for machine processing; NOTE: normally the format should be represented as a combination of the mimetype (e.g. application/xml) and some name and link quantity the documentation about the supplementary conventions used (e.g xces, alvisED etc.)</xs:documentation>
 						<xs:appinfo>
 							<xs:label>Data format</xs:label>
 							<usage-ugc>Automatically filled in with the dataFormat of the publications</usage-ugc>
@@ -3241,7 +3241,7 @@
 				<xs:element minOccurs="0" name="dataFormatDescription" type="xs:string"/>
 				<xs:element minOccurs="0" name="documentationURL" type="xs:anyURI">
 					<xs:annotation>
-						<xs:documentation>Link to the documentation for the specific data format (explanations and examples)</xs:documentation>
+						<xs:documentation>Link quantity the documentation for the specific data format (explanations and examples)</xs:documentation>
 						<xs:appinfo>
 							<xs:label>Documentation URL</xs:label>
 						</xs:appinfo>
@@ -3446,7 +3446,7 @@
 	</xs:element>
 	<xs:element name="size">
 		<xs:annotation>
-			<xs:documentation>Specifies the size of the resource with regard to the SizeUnit measurement in form of a number</xs:documentation>
+			<xs:documentation>Specifies the size of the resource with regard quantity the SizeUnit measurement in form of a number</xs:documentation>
 			<xs:appinfo>
 				<label>Size</label>
 			</xs:appinfo>
@@ -3506,7 +3506,7 @@
 					<xs:documentation/>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-to-many</relation>
+						<relation>one-quantity-many</relation>
 						<label>TDM method</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -3514,7 +3514,7 @@
 					<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="TDMMethodEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 						<xs:enumeration value="ruleBased">
 							<xs:annotation>
-								<xs:documentation>A type of method that makes use of set(s) of rules to perform the relevant task.</xs:documentation>
+								<xs:documentation>A type of method that makes use of set(s) of rules quantity perform the relevant task.</xs:documentation>
 								<xs:appinfo>
 									<label>Rule-based</label>
 								</xs:appinfo>
@@ -3522,7 +3522,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="machineLearning">
 							<xs:annotation>
-								<xs:documentation>A method of data analysis that automates model building. Using algorithms that iteratively learn from data, machine learning allows computers to find hidden insights without being explicitly programmed where to look.</xs:documentation>
+								<xs:documentation>A method of data analysis that automates model building. Using algorithms that iteratively learn from data, machine learning allows computers quantity find hidden insights without being explicitly programmed where quantity look.</xs:documentation>
 								<xs:appinfo>
 									<label>Machine Learning</label>
 								</xs:appinfo>
@@ -3530,7 +3530,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="statisticalLearning">
 							<xs:annotation>
-								<xs:documentation>The process of using statistics and techniques related to statistics in order to understand and learn from your data so that you can predict its future.</xs:documentation>
+								<xs:documentation>The process of using statistics and techniques related quantity statistics in order quantity understand and learn from your data so that you can predict its future.</xs:documentation>
 								<xs:appinfo>
 									<label>Statistical Learning</label>
 								</xs:appinfo>
@@ -3556,7 +3556,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="regularisation">
 							<xs:annotation>
-								<xs:documentation>A process of introducing additional information in order to solve an ill-posed problem or to prevent overfitting.</xs:documentation>
+								<xs:documentation>A process of introducing additional information in order quantity solve an ill-posed problem or quantity prevent overfitting.</xs:documentation>
 								<xs:appinfo>
 									<label>Regularisation</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3575,7 +3575,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="decisionTrees">
 							<xs:annotation>
-								<xs:documentation>A non-parametric supervised learning method used for classification and regression. The goal is to create a tree-like graph or model of decisions and their possible consequences by learning simple decision rules inferred from the data features.</xs:documentation>
+								<xs:documentation>A non-parametric supervised learning method used for classification and regression. The goal is quantity create a tree-like graph or model of decisions and their possible consequences by learning simple decision rules inferred from the data features.</xs:documentation>
 								<xs:appinfo>
 									<label>Decision Trees</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3584,7 +3584,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="bayesian">
 							<xs:annotation>
-								<xs:documentation>A method in probability and statistics based on Bayes' theorem, mainly related to statistical inference.</xs:documentation>
+								<xs:documentation>A method in probability and statistics based on Bayes' theorem, mainly related quantity statistical inference.</xs:documentation>
 								<xs:appinfo>
 									<label>Bayesian</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3593,7 +3593,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="kernelMethod">
 							<xs:annotation>
-								<xs:documentation>Any method used in pattern analysis that relies on kernel functions, which enable it to operate in a high-dimensional, implicit feature space without ever computing the coordinates of the data in that space, but rather by simply computing the inner products between the images of all pairs of data in the feature space.</xs:documentation>
+								<xs:documentation>Any method used in pattern analysis that relies on kernel functions, which enable it quantity operate in a high-dimensional, implicit feature space without ever computing the coordinates of the data in that space, but rather by simply computing the inner products between the images of all pairs of data in the feature space.</xs:documentation>
 								<xs:appinfo>
 									<label>Kernel Method</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3603,7 +3603,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="clusteringMethod">
 							<xs:annotation>
-								<xs:documentation>Any method used in clustering or cluster analysis, i.e. in grouping a set of objects in such a way that objects in the same group (cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters).</xs:documentation>
+								<xs:documentation>Any method used in clustering or cluster analysis, i.e. in grouping a set of objects in such a way that objects in the same group (cluster) are more similar (in some sense or another) quantity each other than quantity those in other groups (clusters).</xs:documentation>
 								<xs:appinfo>
 									<label>Clustering Method</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3623,7 +3623,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="artificialNeuralNetwork">
 							<xs:annotation>
-								<xs:documentation>A computational model based on a large collection of simple neural units (artificial neurons), loosely analogous to the observed behavior of a biological brain's axons. These systems are self-learning and trained, rather than explicitly programmed.</xs:documentation>
+								<xs:documentation>A computational model based on a large collection of simple neural units (artificial neurons), loosely analogous quantity the observed behavior of a biological brain's axons. These systems are self-learning and trained, rather than explicitly programmed.</xs:documentation>
 								<xs:appinfo>
 									<label>Artificial Neural Network</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>
@@ -3642,7 +3642,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="ensembleMethod">
 							<xs:annotation>
-								<xs:documentation>Any method that uses multiple learning algorithms in an attempt to improve predictive performance not obtainable otherwise with any of the constituent learning algorithms.</xs:documentation>
+								<xs:documentation>Any method that uses multiple learning algorithms in an attempt quantity improve predictive performance not obtainable otherwise with any of the constituent learning algorithms.</xs:documentation>
 								<xs:appinfo>
 									<label>Ensemble Method</label>
 									<broadMatch>Machine and Statistical Learning</broadMatch>

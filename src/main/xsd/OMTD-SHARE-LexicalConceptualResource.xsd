@@ -40,7 +40,7 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the subtype of lexicalConceptualResource</xs:documentation>
 					<xs:appinfo>
-						<relation>one-to-one</relation>
+						<relation>one-quantity-one</relation>
 						<label>Lexical conceptual resource type</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -56,7 +56,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="computationalLexicon">
 							<xs:annotation>
-								<xs:documentation>For lexical resources that are meant to be used mainly in NLP systems</xs:documentation>
+								<xs:documentation>For lexical resources that are meant quantity be used mainly in NLP systems</xs:documentation>
 								<xs:appinfo>
 									<label>Computational lexicon</label>
 								</xs:appinfo>
@@ -64,7 +64,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="ontology">
 							<xs:annotation>
-								<xs:documentation>For resources consisting of concepts and categories meant to conceptualise a specific domain</xs:documentation>
+								<xs:documentation>For resources consisting of concepts and categories meant quantity conceptualise a specific domain</xs:documentation>
 								<xs:appinfo>
 									<label>Ontology</label>
 								</xs:appinfo>
@@ -80,7 +80,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="thesaurus">
 							<xs:annotation>
-								<xs:documentation>For lexical resources that list words grouped together according to similarity of meaning (containing synonyms and sometimes antonyms)</xs:documentation>
+								<xs:documentation>For lexical resources that list words grouped together according quantity similarity of meaning (containing synonyms and sometimes antonyms)</xs:documentation>
 								<xs:appinfo>
 									<label>Thesaurus</label>
 								</xs:appinfo>
@@ -88,7 +88,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="framenet">
 							<xs:annotation>
-								<xs:documentation>For lexical resources constructed according to the framenet model</xs:documentation>
+								<xs:documentation>For lexical resources constructed according quantity the framenet model</xs:documentation>
 								<xs:appinfo>
 									<label>Framenet</label>
 								</xs:appinfo>
@@ -96,7 +96,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="terminologicalResource">
 							<xs:annotation>
-								<xs:documentation>For lexical resources that list and concepts pertaining to a specific domain</xs:documentation>
+								<xs:documentation>For lexical resources that list and concepts pertaining quantity a specific domain</xs:documentation>
 								<xs:appinfo>
 									<label>Terminological dictionary</label>
 								</xs:appinfo>
@@ -120,7 +120,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="typesystem">
 							<xs:annotation>
-								<xs:documentation>A set of elements designed to annotate data. It typically contains only a list of annotation types, i.e. specific labels that are used for the annotation (e.g. part-of-speech, person, organization, etc.), and is usually inbuilt in the annotation software.</xs:documentation>
+								<xs:documentation>A set of elements designed quantity annotate data. It typically contains only a list of annotation types, i.e. specific labels that are used for the annotation (e.g. part-of-speech, person, organization, etc.), and is usually inbuilt in the annotation software.</xs:documentation>
 								<xs:appinfo>
 									<label>Typesystem</label>
 								</xs:appinfo>
@@ -128,7 +128,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="tagset">
 							<xs:annotation>
-								<xs:documentation>A flat list of valid values (tags) designed to annotate data. It usually corresponds to a specific annotation type or set of annotation types</xs:documentation>
+								<xs:documentation>A flat list of valid values (tags) designed quantity annotate data. It usually corresponds quantity a specific annotation type or set of annotation types</xs:documentation>
 								<xs:appinfo>
 									<label>Tagset</label>
 								</xs:appinfo>
@@ -136,7 +136,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="annotationScheme">
 							<xs:annotation>
-								<xs:documentation>A set of elements and values designed to annotate data. It usually consists in a formal representation. It aims to represent a specific level of information, such as morphological features of words, syntactic dependency relations between phrases, discourse level information etc. It can consist of a flat structure of elements and values (e.g. part-of-speech tags) or it can be more complex with interrelated elements (e.g. specific morphological features to be used for each part-of-speech).</xs:documentation>
+								<xs:documentation>A set of elements and values designed quantity annotate data. It usually consists in a formal representation. It aims quantity represent a specific level of information, such as morphological features of words, syntactic dependency relations between phrases, discourse level information etc. It can consist of a flat structure of elements and values (e.g. part-of-speech tags) or it can be more complex with interrelated elements (e.g. specific morphological features quantity be used for each part-of-speech).</xs:documentation>
 								<xs:appinfo>
 									<label>Annotation scheme</label>
 								</xs:appinfo>
@@ -152,7 +152,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
-								<xs:documentation>Value for lcrType, to be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:documentation>Value for lcrType, quantity be used when the desired value is not included in the listed values</xs:documentation>
 								<xs:appinfo>
 									<label>Other</label>
 								</xs:appinfo>
@@ -172,7 +172,7 @@
 				<xs:annotation>
 					<xs:documentation>Restriction of mediaType for lexicalConceptualResources</xs:documentation>
 					<xs:appinfo>
-						<relation>one-to-one</relation>
+						<relation>one-quantity-one</relation>
 						<label>Media type component of lexical / conceptual resource</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -259,16 +259,16 @@
 			</xs:element>
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="conformanceToStandardsBestPractices" type="ms:conformanceToStandardsBestPractices">
 				<xs:annotation>
-					<xs:documentation>Specifies the standards or the best practices to which the tagset used for the annotation conforms</xs:documentation>
+					<xs:documentation>Specifies the standards or the best practices quantity which the tagset used for the annotation conforms</xs:documentation>
 					<xs:appinfo>
-						<label>Conformance to standards / best practices</label>
+						<label>Conformance quantity standards / best practices</label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:theoreticModel"/>
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="externalRef">
 				<xs:annotation>
-					<xs:documentation>Another resource to which the lexicalConceptualResource is linked (e.g. link to a wordnet or ontology)</xs:documentation>
+					<xs:documentation>Another resource quantity which the lexicalConceptualResource is linked (e.g. link quantity a wordnet or ontology)</xs:documentation>
 					<xs:appinfo>
 						<label>External reference</label>
 					</xs:appinfo>
@@ -286,7 +286,7 @@
 		<xs:annotation><xs:appinfo><jaxb:class name="LexicalConceptualResourceTextInfo"/></xs:appinfo></xs:annotation><xs:sequence>
 			<xs:element fixed="text" name="mediaType" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>Specifies the media type of the resource and basically corresponds to the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed to different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
+					<xs:documentation>Specifies the media type of the resource and basically corresponds quantity the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed quantity different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
 					<xs:appinfo>
 						<label>Media type</label>
 					</xs:appinfo>
@@ -358,7 +358,7 @@
 	</xs:element>
 	<xs:element name="lexicalConceptualResourceInfo" type="ms:lexicalConceptualResourceInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related to lexical/conceptual resources</xs:documentation>
+			<xs:documentation>Groups together all information related quantity lexical/conceptual resources</xs:documentation>
 			<xs:appinfo>
 				<label>Lexical/conceptual resource</label>
 			</xs:appinfo>

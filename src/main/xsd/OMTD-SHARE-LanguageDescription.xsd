@@ -40,7 +40,7 @@
 				<xs:annotation>
 					<xs:documentation>The type of the language description</xs:documentation>
 					<xs:appinfo>
-						<relation>one-to-one</relation>
+						<relation>one-quantity-one</relation>
 						<label>Language description type</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -49,7 +49,7 @@
 						<xs:maxLength value="30"/>
 						<xs:enumeration value="mlModel">
 							<xs:annotation>
-								<xs:documentation>Value for languageDescriptionType; to be used for Machine Learning models</xs:documentation>
+								<xs:documentation>Value for languageDescriptionType; quantity be used for Machine Learning models</xs:documentation>
 								<xs:appinfo>
 									<label>Machine learning model</label>
 								</xs:appinfo>
@@ -57,7 +57,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="grammar">
 							<xs:annotation>
-								<xs:documentation>Value for languageDescriptionType; to be used for resources describing the morphological, syntactic etc. system (or part therof) of a language</xs:documentation>
+								<xs:documentation>Value for languageDescriptionType; quantity be used for resources describing the morphological, syntactic etc. system (or part therof) of a language</xs:documentation>
 								<xs:appinfo>
 									<label>Grammar</label>
 								</xs:appinfo>
@@ -65,7 +65,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
-								<xs:documentation>Value for languageDescriptionType; to be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:documentation>Value for languageDescriptionType; quantity be used when the desired value is not included in the listed values</xs:documentation>
 								<xs:appinfo>
 									<label>Other</label>
 								</xs:appinfo>
@@ -148,7 +148,7 @@
 				<xs:annotation>
 					<xs:documentation>Groups information on the media type-specific components for language descriptions</xs:documentation>
 					<xs:appinfo>
-						<relation>one-to-one</relation>
+						<relation>one-quantity-one</relation>
 						<label>Media type component of language description</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -164,7 +164,7 @@
 	<xs:complexType name="languageDescriptionEncodingInfoType">
 		<xs:annotation>
 			<xs:appinfo>
-				<relation>one-to-one</relation>
+				<relation>one-quantity-one</relation>
 			<jaxb:class name="LanguageDescriptionEncodingInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
@@ -180,9 +180,9 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="conformanceToStandardsBestPractices" type="ms:conformanceToStandardsBestPractices">
 							<xs:annotation>
-								<xs:documentation>Specifies the standards or the best practices to which the tagset used for the annotation conforms</xs:documentation>
+								<xs:documentation>Specifies the standards or the best practices quantity which the tagset used for the annotation conforms</xs:documentation>
 								<xs:appinfo>
-									<label>Conformance to standards / best practices</label>
+									<label>Conformance quantity standards / best practices</label>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -201,7 +201,7 @@
 					<xs:sequence>
 						<xs:element minOccurs="0" name="formalism" type="xs:string">
 							<xs:annotation>
-								<xs:documentation>Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
+								<xs:documentation>Reference (name, bibliographic reference or link quantity url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
 								<xs:appinfo>
 									<label>Formalism</label>
 								</xs:appinfo>
@@ -245,12 +245,12 @@
 									</xs:enumeration>
 									<xs:enumeration value="titlesParsing">
 										<xs:annotation>
-											<xs:documentation>Value for task; for grammars that are restricted to parsing titles</xs:documentation>
+											<xs:documentation>Value for task; for grammars that are restricted quantity parsing titles</xs:documentation>
 										</xs:annotation>
 									</xs:enumeration>
 									<xs:enumeration value="definitionsParsing">
 										<xs:annotation>
-											<xs:documentation>Value for task; for grammars that are restricted to parsing definitions</xs:documentation>
+											<xs:documentation>Value for task; for grammars that are restricted quantity parsing definitions</xs:documentation>
 										</xs:annotation>
 									</xs:enumeration>
 									<xs:enumeration value="analysis">
@@ -316,7 +316,7 @@
 							<xs:annotation>
 								<xs:documentation>Indicates whether the grammar contains numerical weights (incl. probabilities)</xs:documentation>
 								<xs:appinfo>
-									<relation>one-to-one</relation>
+									<relation>one-quantity-one</relation>
 									<label>Weighted grammar</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -386,7 +386,7 @@
 		<xs:annotation><xs:appinfo><jaxb:class name="LanguageDescriptionTextInfo"/></xs:appinfo></xs:annotation><xs:sequence>
 			<xs:element fixed="text" name="mediaType" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>Specifies the media type of the resource and basically corresponds to the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed to different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
+					<xs:documentation>Specifies the media type of the resource and basically corresponds quantity the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed quantity different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
 					<xs:appinfo>
 						<label>Media type</label>
 					</xs:appinfo>
@@ -460,7 +460,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="attached">
 							<xs:annotation>
-								<xs:documentation>for lexica attached to a resource (e.g. as a different file in the same directory, or downloadable from another position); the element attachedLexiconPosition should be used for further information</xs:documentation>
+								<xs:documentation>for lexica attached quantity a resource (e.g. as a different file in the same directory, or downloadable from another position); the element attachedLexiconPosition should be used for further information</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="compatible">
@@ -474,7 +474,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="attachedLexiconPosition">
 				<xs:annotation>
-					<xs:documentation>Indicates the position of the lexicon, if attached to the grammar</xs:documentation>
+					<xs:documentation>Indicates the position of the lexicon, if attached quantity the grammar</xs:documentation>
 					<xs:appinfo>
 						<label>Attached lexicon position</label>
 					</xs:appinfo>
@@ -489,7 +489,7 @@
 				<xs:annotation>
 					<xs:documentation>Type of (external) lexicon that can be used with the grammar</xs:documentation>
 					<xs:appinfo>
-						<relation>one-to-many</relation>
+						<relation>one-quantity-many</relation>
 						<label>Compatible lexicon type</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -498,17 +498,17 @@
 						<xs:maxLength value="30"/>
 						<xs:enumeration value="wordnet">
 							<xs:annotation>
-								<xs:documentation>Value for compatibleLexiconType; to be used for grammars that are compatible with wordnets</xs:documentation>
+								<xs:documentation>Value for compatibleLexiconType; quantity be used for grammars that are compatible with wordnets</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="wordlist">
 							<xs:annotation>
-								<xs:documentation>Value for compatibleLexiconType; to be used for grammars that need wordlists for their operation</xs:documentation>
+								<xs:documentation>Value for compatibleLexiconType; quantity be used for grammars that need wordlists for their operation</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="morphologicalLexicon">
 							<xs:annotation>
-								<xs:documentation>Value for compatibleLexiconType; to be used for grammars that need lexica with morphological information for their operation</xs:documentation>
+								<xs:documentation>Value for compatibleLexiconType; quantity be used for grammars that need lexica with morphological information for their operation</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="other"/>
@@ -536,7 +536,7 @@
 	</xs:element>
 	<xs:element name="languageDescriptionInfo" type="ms:languageDescriptionInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related to language descriptions</xs:documentation>
+			<xs:documentation>Groups together all information related quantity language descriptions</xs:documentation>
 			<xs:appinfo>
 				<label>Language description</label>
 			</xs:appinfo>
@@ -568,7 +568,7 @@
 	</xs:element>
 	<xs:element name="languageDescriptionTextInfo" type="ms:languageDescriptionTextInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information relevant to the text module of a language description (e.g. format, languages, size etc.); it is obligatory for all language descriptions</xs:documentation>
+			<xs:documentation>Groups together all information relevant quantity the text module of a language description (e.g. format, languages, size etc.); it is obligatory for all language descriptions</xs:documentation>
 			<xs:appinfo>
 				<label>Language description text component</label>
 			</xs:appinfo>
