@@ -195,6 +195,7 @@
                                 <arg>-no-header</arg>
                                 <arg>-XautoNameResolution</arg>
                                 <arg>-Xsimplify</arg>
+                                <arg>-Xsetters</arg>
                                 <arg>-Xxew</arg>
                                 <arg>-Xxew:instantiate lazy</arg>
                             </args>
