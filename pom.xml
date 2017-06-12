@@ -20,6 +20,10 @@
         </license>
     </licenses>
 
+    <properties>
+        <registry.core.version>1.2.0-SNAPSHOT</registry.core.version>
+    </properties>
+
     <scm>
         <connection>scm:git:git://github.com/antleb/omtd-registry-rest.git</connection>
         <developerConnection>scm:git:ssh://github.com/antleb/omtd-registry-rest.git</developerConnection>
@@ -29,7 +33,7 @@
         <dependency>
             <groupId>eu.openminted</groupId>
             <artifactId>registry-core-api</artifactId>
-            <version>${project.version}</version>
+            <version>${registry.core.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.openminted</groupId>
@@ -39,7 +43,7 @@
         <dependency>
             <groupId>eu.openminted</groupId>
             <artifactId>registry-core-rest</artifactId>
-            <version>${project.version}</version>
+            <version>${registry.core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
