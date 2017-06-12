@@ -1,6 +1,9 @@
 package eu.openminted.registry;
 
+import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
+import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -8,11 +11,12 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class TestUnzip {
+public class TestCorpusService {
 
     private static final int BUFFER_SIZE = 4096;
 
     @Test
+    @Ignore
     public void unzipFolder() throws Exception {
 
         ClassLoader classLoader = getClass().getClassLoader();
@@ -53,6 +57,23 @@ public class TestUnzip {
             }
         }
         System.out.println("Done");
+    }
+
+    @Test
+    @Ignore
+    public void testStoreClient() throws Exception {
+        InputStream inputStream = null;
+        String archiveId = null;
+        StoreRESTClient storeClient = new StoreRESTClient("http://83.212.101.85:8090");
+        File temp = File.createTempFile("copr", "tmp");
+        OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
+        archiveId = storeClient.createArchive().getReport();
+        storeClient.createSubArchive(archiveId, "metadata");
+        storeClient.createSubArchive(archiveId, "fullText");
+        storeClient.createSubArchive(archiveId, "abstract");
+        IOUtils.copyLarge(inputStream, fos);
+        fos.flush();
+        fos.close();
     }
 
 
