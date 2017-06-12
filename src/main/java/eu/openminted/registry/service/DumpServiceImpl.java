@@ -16,10 +16,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -105,12 +102,13 @@ public class DumpServiceImpl implements DumpService {
 
     public File bringAll() {
 
-
-        String parentName = "/home/user/tmp/dump-testCase";
-        File masterDirectory = new File(parentName);
+        Path masterDirectory = null;
 
         try {
-            Files.createDirectory(masterDirectory.toPath(), PERMISSIONS);
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd") ;
+            masterDirectory = Files.createTempDirectory(dateFormat.format(today.getTime()),PERMISSIONS);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -122,9 +120,9 @@ public class DumpServiceImpl implements DumpService {
         for (int i = 0; i < resourceTypes.size(); i++) {
             if (!resourceTypes.get(i).getName().equals("user")) {
                 resources = resourceService.getResource(resourceTypes.get(i).getName());
-                createDirectory(parentName + "/" + resourceTypes.get(i).getName(), resources);
+                createDirectory(masterDirectory.toAbsolutePath().toString() + "/" + resourceTypes.get(i).getName(), resources);
                 try {
-                    File tempFile = new File(parentName + "/" + resourceTypes.get(i).getName() + ".json");
+                    File tempFile = new File(masterDirectory + "/" + resourceTypes.get(i).getName() + ".json");
                     Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
                     FileWriter file = new FileWriter(filePath.toFile());
                     file.write(Utils.objToJson(resourceTypes.get(i)));
@@ -135,15 +133,15 @@ public class DumpServiceImpl implements DumpService {
                 }
             }
         }
-        File tempDir = new File(parentName);
+        File tempDir = masterDirectory.toFile();
         getAllFiles(tempDir, fileList);
-        File masterZip = new File(parentName + "/final.zip");
+        File masterZip = new File(masterDirectory + "/final.zip");
         writeZipFile(masterZip, fileList);
         try {
-            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
+            File tempFile = new File(masterDirectory + "/dump-" + getCurrentDate() + ".zip");
             Files.createFile(tempFile.toPath(), PERMISSIONS);
             masterZip.renameTo(tempFile);
-//			return tempFile;
+			return tempFile;
         } catch (IOException e1) {
 
         }

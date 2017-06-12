@@ -13,13 +13,13 @@
     },
     {
       "multivalued": true,
-      "name": "mediatype",
+      "name": "mediaType",
       "path": "//*[local-name()='mediaType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "license",
+      "name": "licence",
       "path": "//*[local-name()='licence']/text()",
       "type": "java.lang.String"
     },
@@ -31,13 +31,13 @@
     },
     {
       "multivalued": true,
-      "name": "multilingualitytype",
+      "name": "multilingualityType",
       "path": "//*[local-name()='multilingualityType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "mimetype",
+      "name": "mimeType",
       "path": "//*[local-name()='mimeType']/text()",
       "type": "java.lang.String"
     },
@@ -49,13 +49,13 @@
     },
     {
       "multivalued": true,
-      "name": "corpussubtype",
+      "name": "corpusSubtype",
       "path": "//*[local-name()='corpusSubType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "annotationlevel",
+      "name": "annotationLevel",
       "path": "//*[local-name()='annotationLevel']/text()",
       "type": "java.lang.String"
     },
@@ -73,13 +73,13 @@
     },
     {
       "multivalued": true,
-      "name": "rightsstmtname",
+      "name": "rightsStmtName",
       "path": "//*[local-name()='rightsStmtName']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "dataformatspecific",
+      "name": "dataFormatSpecific",
       "path": "//*[local-name()='dataFormatSpecific']/text()",
       "type": "java.lang.String"
     },
@@ -91,7 +91,7 @@
     },
     {
       "multivalued": true,
-      "name": "typesystem",
+      "name": "typeSystem",
       "path": "//*[local-name()='typesystem']/text()",
       "type": "java.lang.String"
     },
@@ -105,6 +105,7 @@
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
   "name": "corpus",
+  "aliasGroup" : "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v101%20XSD/OMTD-SHARE-Corpus.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v200%20XSD/OMTD-SHARE-Corpus.xsd"
 }
