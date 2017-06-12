@@ -1,6 +1,6 @@
 package eu.openminted.registry.service;
 
-import com.google.common.collect.Lists;
+import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
@@ -8,12 +8,8 @@ import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.apache.log4j.Logger;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
@@ -27,128 +23,62 @@ public class RequestServiceImpl implements RequestService {
 
     private Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
+    final private static String RESOURCE_ALIAS = "resourceTypes";
+
     private static Map<String, String> labels = new LinkedHashMap<>();
-    private static String[] facets = new String[]{"resourceType","language", "mediatype", "rights", "mimetype", "dataformatspecific",
-            "license"};
+    private static String[] facets = new String[]{
+            "resourceType", "mediaType", "rights",
+            "mimeType", "dataFormatSpecific", "licence"
+    };
 
     static {
         labels.put("resourceType", "Resource Type");
-        labels.put("license", "License");
+        labels.put("licence", "Licence");
         labels.put("language", "Language");
-        labels.put("mediatype", "Media Type");
+        labels.put("mediaType", "Media Type");
         labels.put("rights", "Rights");
-        labels.put("mimetype", "Mime Type");
-        labels.put("dataformatspecific", "Data format specific");
+        labels.put("mimeType", "Mime Type");
+        labels.put("dataFormatSpecific", "Data format specific");
     }
 
-    public ResponseEntity<String> getResponseByFiltersElastic(String keyword, String[] resourceType, String[] language,
-                                                              String[] mediaType, String[] rights, String[] mimeType,
-                                                              String[] dataFormatSpecific, String[] license,boolean advanced,
-                                                              int from, int to) {
+    public Browsing getResponseByFiltersElastic(FacetFilter filter) {
 
-        ResponseEntity<String> responseEntity = null;
-
-        Result result = new Result();
-        result.setComponents(new ArrayList<>());
-        result.setCorpora(new ArrayList<>());
-
-        BoolQueryBuilder qBuilder = new BoolQueryBuilder();
-
+        List<Order<BaseMetadataRecord>> result = new ArrayList<>();
 
         int totalNumber = 0;
-        for (int i = 0; i < resourceType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("resourceType", resourceType[i]));
-        }
-        for (int i = 0; i < language.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("language", language[i]));
-        }
-        for (int i = 0; i < mediaType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mediatype", mediaType[i]));
-        }
-        for (int i = 0; i < rights.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("rights", rights[i]));
-        }
-        for (int i = 0; i < mimeType.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("mimetype", mimeType[i]));
-        }
-        for (int i = 0; i < dataFormatSpecific.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("dataFormatSpecific", dataFormatSpecific[i]));
-        }
-        for (int i = 0; i < license.length; i++) {
-            qBuilder.must(QueryBuilders.termQuery("license", license[i]));
-        }
-        if (!keyword.equals("")) {
-            qBuilder.must(QueryBuilders.matchQuery("payload", keyword));
-        } else {
-            qBuilder.must(QueryBuilders.matchAllQuery());
-        }
 
-        if(!advanced) {
-            qBuilder.must(QueryBuilders.termsQuery("application",true));
-        }
-
+        filter.setResourceType(RESOURCE_ALIAS);
+        filter.setBrowseBy(Arrays.asList(facets));
         Occurencies overall = new Occurencies();
 
         try {
-            Paging paging = null;
-            int quantity = 10;
-            if (to == -1) {
-                //quantity = 10
-                to = from + 10;
-            } else {
-                quantity = to - from;
-            }
-
-            paging = searchService.search("resourceTypes", qBuilder, from, quantity, facets);
-
-            if (paging != null) {
-                List<Order<Corpus>> corpora = new ArrayList<>();
-                List<Order<Component>> components = new ArrayList<>();
-                List<Order<Lexical>> lexica = new ArrayList<>();
-                List<Order<Model>> models = new ArrayList<>();
-                List<Order<LanguageDescription>> languages = new ArrayList<>();
-                int pos = 0;
-                for(Object resourceObj :  paging.getResults()) {
-                    Resource resource = (Resource) resourceObj;
-                    if("corpus".equals(resource.getResourceType())) {
-                        Corpus temp = Utils.serialize(resource, Corpus.class);
-                        corpora.add(new Order<>(pos,temp));
-                    } else if ("component".equals(resource.getResourceType())) {
-                        Component temp = Utils.serialize(resource, Component.class);
-                        components.add(new Order<>(pos,temp));
-                    } else if ("lexical".equals(resource.getResourceType())) {
-                        Lexical temp = Utils.serialize(resource,Lexical.class);
-                        lexica.add(new Order<>(pos,temp));
-                    } else if ("model".equals(resource.getResourceType())) {
-                        Model temp = Utils.serialize(resource,Model.class);
-                        models.add(new Order<>(pos,temp));
-                    } else if ("language".equals(resource.getResourceType())) {
-                        LanguageDescription temp = Utils.serialize(resource,LanguageDescription.class);
-                        languages.add(new Order<>(pos,temp));
-                    }
-                    pos++;
-                }
-                result.setComponents(components);
-                result.setCorpora(corpora);
-                result.setLexicalConceptualResources(lexica);
-                result.setLanguageDescriptions(languages);
-                result.setModels(models);
-            }
-
+            Paging paging = searchService.search(filter);
+            result = createResults(paging);
             totalNumber += paging.getTotal();
-
             overall = paging.getOccurencies();
 
         } catch (ServiceException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ServiceException(e.getMessage());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
+        List<Facet> facetsCollection = createFacetCollection(overall);
+
+        Browsing browsing = new Browsing(totalNumber, filter.getFrom(), filter.getFrom() + result.size(), result, facetsCollection);
+        return browsing;
+
+    }
+
+    /**
+     * Counts the total number of Documents per Facet
+     * @param overall
+     * @return a List of facets.
+     */
+    private List<Facet> createFacetCollection(Occurencies overall) {
         List<Facet> facetsCollection = new ArrayList<>();
 
         for (String label : labels.keySet()) {
-        //for (Map.Entry<String, Map<String, Integer>> pair : overall.getValues().entrySet()) {
             Facet singleFacet = new Facet();
 
             singleFacet.setField(label + "");
@@ -174,10 +104,33 @@ public class RequestServiceImpl implements RequestService {
             if (singleFacet.getValues().size() > 0)
                 facetsCollection.add(singleFacet);
         }
-
-        Browsing browsing = new Browsing(totalNumber, from, from + result.getTotal(), result, facetsCollection);
-        return new ResponseEntity<>(Utils.objToJson(browsing), HttpStatus.OK);
-
+        return facetsCollection;
     }
 
+
+    /**
+     * Deserializes according to resourceType the results from the indexer.
+     * @param paging the indexer result object
+     * @return a Result object
+     */
+    private List<Order<BaseMetadataRecord>> createResults(Paging paging) {
+        List<Order<BaseMetadataRecord>> parsedXML = new ArrayList<>();
+        if (paging != null) {
+            int pos = 0;
+            for(Object resourceObj :  paging.getResults()) {
+                Resource resource = (Resource) resourceObj;
+                BaseMetadataRecord temp = null;
+                switch (resource.getResourceType()) {
+                    case "corpus": temp = Utils.serialize(resource, Corpus.class); break;
+                    case "component":temp = Utils.serialize(resource, Component.class); break;
+                    case "lexical": temp = Utils.serialize(resource,Lexical.class); break;
+                    case "language": temp = Utils.serialize(resource,LanguageDescription.class); break;
+                    default : logger.warn("Unsupported resourceType [" + resource.getResourceType()+"]");
+                }
+                parsedXML.add(new Order<>(pos,temp));
+                pos++;
+            }
+        }
+        return parsedXML;
+    }
 }

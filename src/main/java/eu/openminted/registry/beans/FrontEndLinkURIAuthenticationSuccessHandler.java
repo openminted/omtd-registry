@@ -22,8 +22,9 @@ public class FrontEndLinkURIAuthenticationSuccessHandler implements Authenticati
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OIDCAuthenticationToken authOIDC = (OIDCAuthenticationToken) authentication;
         System.out.println(authOIDC.getUserInfo().getName().replace(' ',';'));
-        Cookie sessionCookie = new Cookie("name", URLEncoder.encode(authOIDC.getUserInfo().getName()));
+        Cookie sessionCookie = new Cookie("name", URLEncoder.encode(authOIDC.getUserInfo().getName(),"UTF-8"));
         sessionCookie.setPath("/");
+        sessionCookie.setSecure(true);
         response.addCookie(sessionCookie);
         response.sendRedirect(frontEndURI);
     }

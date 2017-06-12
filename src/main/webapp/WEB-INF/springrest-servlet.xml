@@ -58,7 +58,7 @@
 
     <util:set id="namedAdmins" value-type="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
         <!--
-            This is an example of how to set up a user as an administrator: they'll be given ROLE_ADMIN in addition to ROLE_USER.
+            This is an example of how quantity set up a user as an administrator: they'll be given ROLE_ADMIN in addition quantity ROLE_USER.
             Note that having an administrator role on the IdP doesn't grant administrator access on this client.
 
             These are values from the demo "openid-connect-server-webapp" project of MITREid Connect.
@@ -71,7 +71,7 @@
 
 
     <bean class="eu.openminted.registry.beans.FrontEndLinkURIAuthenticationSuccessHandler" id="frontEndRedirect">
-        <property name="frontEndURI" value="${webbapp.front}"/>
+        <property name="frontEndURI" value="${webapp.front}"/>
     </bean>
     <!--
       -
@@ -108,7 +108,7 @@
 
     <bean class="org.mitre.openid.connect.client.service.impl.HybridIssuerService" id="hybridIssuerService">
         <property name="loginPageUrl" value="login" />
-        <property name="forceHttps" value="false" /> <!-- this default property forces the webfinger issuer URL to be HTTPS, turn off for development work -->
+        <property name="forceHttps" value="false" /> <!-- this default property forces the webfinger issuer URL quantity be HTTPS, turn off for development work -->
     </bean>
 
     <!--
@@ -151,7 +151,7 @@
                         <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
                         <property name="redirectUris">
                             <set>
-                                <value>${webbapp.home}</value>
+                                <value>${webapp.home}</value>
                             </set>
                         </property>
                     </bean>
@@ -169,7 +169,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticAuthRequestOptionsService" id="staticAuthRequestOptionsService">
         <property name="options">
             <map>
-                <!-- Entries in this map are sent as key-value parameters to the auth request -->
+                <!-- Entries in this map are sent as key-value parameters quantity the auth request -->
                 <!--
                 <entry key="display" value="page" />
                 <entry key="max_age" value="30" />
@@ -181,7 +181,7 @@
 
     <!--
 	  -
-	  - Authorization URL Builders: create the URL to redirect the user to for authorization.
+	  - Authorization URL Builders: create the URL quantity redirect the user quantity for authorization.
 	  -
 	  -->
 

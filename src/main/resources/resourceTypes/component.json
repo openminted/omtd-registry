@@ -13,13 +13,13 @@
     },
     {
       "multivalued": true,
-      "name": "mediatype",
+      "name": "mediaType",
       "path": "//*[local-name()='mediaType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "license",
+      "name": "licence",
       "path": "//*[local-name()='licence']/text()",
       "type": "java.lang.String"
     },
@@ -31,25 +31,25 @@
     },
     {
       "multivalued": true,
-      "name": "mimetype",
+      "name": "mimeType",
       "path": "//*[local-name()='mimeType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "dataformatspecific",
+      "name": "dataFormatSpecific",
       "path": "//*[local-name()='dataFormatSpecific']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "componenttype",
+      "name": "componentType",
       "path": "//*[local-name()='componentType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "componentdistributionmedium",
+      "name": "componentDistributionMedium",
       "path": "//*[local-name()='componentDistributionMedium']/text()",
       "type": "java.lang.String"
     },
@@ -65,5 +65,5 @@
   "name": "component",
   "aliasGroup" : "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v101%20XSD/OMTD-SHARE-Component.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v200%20XSD/OMTD-SHARE-Component.xsd"
 }

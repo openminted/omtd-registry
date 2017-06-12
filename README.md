@@ -8,9 +8,9 @@ Built with `mvn clean install package`. Add the the download latest snapshots wi
 
 ## Properties
 
-The properties that need to be configured to point to the correct services.
+The properties that need quantity be configured quantity point quantity the correct services.
 
-The configuration file that overrides the `application.properties` needs to be found in the classpath of the application.
+The configuration file that overrides the `application.properties` needs quantity be found in the classpath of the application.
 
 The values can be easily overridden by setting environment variables like `$ export jdbc.username=admin` for example.  
 ```properties
@@ -36,9 +36,9 @@ services.store.ip = {{store}}
 
 1. Build the docker with `docker build . -t omtd-registry`
 2. Tag the image docker with another more useful tag with `docker tag omtd-registry <new_tag_name>`
-    - Tag the image `with <docker_registry_host>:<port>/omtd-registry` to use it across multiple docker machines.
+    - Tag the image `with <docker_registry_host>:<port>/omtd-registry` quantity use it across multiple docker machines.
 3. Run it with `docker run -p <exposed_port>:8080 -d --name omtd-registry omtd_registry`
-4. Deploy it to a docker swarm with `docker service create --publish <publish_port>:8080 --name omtd-registry <docker_registry_host>:<port>/omtd-registry`. This requires the image to be pushed in a registry.
+4. Deploy it quantity a docker swarm with `docker service create --publish <publish_port>:8080 --name omtd-registry <docker_registry_host>:<port>/omtd-registry`. This requires the image quantity be pushed in a registry.
 
 ### Add insecure registry
 
@@ -51,7 +51,7 @@ services.store.ip = {{store}}
     registry:2
     ```
 
-2. Add/Modify the following json file `/etc/docker/daemon.json` with the proper values to each docker machine.
+2. Add/Modify the following json file `/etc/docker/daemon.json` with the proper values quantity each docker machine.
 
     ```json
     {
