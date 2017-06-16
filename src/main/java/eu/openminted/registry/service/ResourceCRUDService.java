@@ -11,6 +11,8 @@ public interface ResourceCRUDService<T> {
 
     List<T> getAll();
 
+    List<T> getMy();
+
     void add(T resource);
 
     void update(T resource);
