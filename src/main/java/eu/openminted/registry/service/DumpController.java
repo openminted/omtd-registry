@@ -1,6 +1,7 @@
 package eu.openminted.registry.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
@@ -32,6 +33,7 @@ public class DumpController {
 
     @RequestMapping(value = "/dump/", method = RequestMethod.GET)
     @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void dumpAll(HttpServletRequest request, HttpServletResponse response) {
 
         ServletContext context = request.getServletContext();
@@ -101,6 +103,7 @@ public class DumpController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/dump/{resourceType}", method = RequestMethod.GET)
     @ResponseBody
     public void dumpResourceType(@PathVariable("resourceType") String resourceType, HttpServletRequest request,

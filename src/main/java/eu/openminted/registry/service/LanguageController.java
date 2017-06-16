@@ -6,11 +6,14 @@ import eu.openminted.registry.exception.ResourceNotFoundException;
 import eu.openminted.registry.exception.ServerError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Created by stefanos on 13/1/2017.
@@ -63,5 +66,16 @@ public class LanguageController {
         languageService.delete(language);
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "all",method = RequestMethod.GET, headers = "charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<LanguageDescription>> getAllComponents() {
+        return new ResponseEntity<>(languageService.getAll(),HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "my",method = RequestMethod.GET, headers = "charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<LanguageDescription>> getMyComponents() {
+        return new ResponseEntity<>(languageService.getMy(),HttpStatus.OK);
     }
 } 

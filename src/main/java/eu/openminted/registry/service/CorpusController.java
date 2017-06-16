@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("/request/corpus")
@@ -67,13 +69,24 @@ public class CorpusController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "all",method = RequestMethod.GET, headers = "charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Corpus>> getAllCorpora() {
+        return new ResponseEntity<>(corpusService.getAll(),HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "my",method = RequestMethod.GET, headers = "charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Corpus>> getMyCorpora() {
+        return new ResponseEntity<>(corpusService.getMy(),HttpStatus.OK);
+    }
+
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     public ResponseEntity<String> uploadCorpus(@RequestParam("filename") String filename, @RequestParam("file") MultipartFile file) {
 
         try {
-            return new ResponseEntity<String>(corpusService.uploadCorpus(filename, file.getInputStream()), HttpStatus.OK);
+            return new ResponseEntity<>(corpusService.uploadCorpus(filename, file.getInputStream()), HttpStatus.OK);
         } catch (IOException e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
