@@ -198,6 +198,7 @@
                                 <arg>-Xsetters</arg>
                                 <arg>-Xxew</arg>
                                 <arg>-Xxew:instantiate lazy</arg>
+                                <arg>-Xfixed-value</arg>
                             </args>
                             <plugins>
                                 <plugin>
@@ -209,6 +210,11 @@
                                     <groupId>org.jvnet.jaxb2_commons</groupId>
                                     <artifactId>jaxb2-basics</artifactId>
                                     <version>${jaxb2_commons.version}</version>
+                                </plugin>
+                                <plugin>
+                                    <groupId>com.github.fbdo</groupId>
+                                    <artifactId>jaxb2-fixed-value</artifactId>
+                                    <version>1.2</version>
                                 </plugin>
                             </plugins>
                         </configuration>
