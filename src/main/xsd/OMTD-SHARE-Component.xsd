@@ -53,7 +53,7 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the type of a component, in terms of the function/task it performs; please, note that the ontology is under revision</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Type of component</label>
 						<label-plural>Types of component</label-plural>
 					</xs:appinfo>
@@ -63,7 +63,7 @@
 						<xs:maxLength value="100"/>
 						<xs:enumeration value="accessComponent">
 							<xs:annotation>
-								<xs:documentation>A component used for providing access quantity data resources</xs:documentation>
+								<xs:documentation>A component used for providing access to data resources</xs:documentation>
 								<xs:appinfo>
 									<label>Access component</label>
 								</xs:appinfo>
@@ -89,7 +89,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="supportComponent">
 							<xs:annotation>
-								<xs:documentation>A component that provides support quantity developers</xs:documentation>
+								<xs:documentation>A component that provides support to developers</xs:documentation>
 								<xs:appinfo>
 									<label>Support component</label>
 									<xs:exactMatch>helper</xs:exactMatch>
@@ -116,7 +116,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="validator">
 							<xs:annotation>
-								<xs:documentation>A component used quantity confirm that a system/resource meets the specifications and fulfills its intended purpose</xs:documentation>
+								<xs:documentation>A component used to confirm that a system/resource meets the specifications and fulfills its intended purpose</xs:documentation>
 								<xs:appinfo>
 									<label>Validator</label>
 									<xs:broader>supportComponent</xs:broader>
@@ -125,7 +125,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="viewer">
 							<xs:annotation>
-								<xs:documentation>A component that provides access quantity the contents of a resource but intended only for access by humans</xs:documentation>
+								<xs:documentation>A component that provides access to the contents of a resource but intended only for access by humans</xs:documentation>
 								<xs:appinfo>
 									<label>Viewer</label>
 									<xs:broader>supportComponent</xs:broader>
@@ -134,7 +134,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="corpusViewer">
 							<xs:annotation>
-								<xs:documentation>A component that provides access quantity the contents of a corpus but intended only for access by humans</xs:documentation>
+								<xs:documentation>A component that provides access to the contents of a corpus but intended only for access by humans</xs:documentation>
 								<xs:appinfo>
 									<label>Corpus viewer</label>
 									<xs:broader>viewer</xs:broader>
@@ -143,7 +143,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="lexiconViewer">
 							<xs:annotation>
-								<xs:documentation>A component that provides access quantity the contents of a lexical/conceptual resoruces but intended only for access by humans</xs:documentation>
+								<xs:documentation>A component that provides access to the contents of a lexical/conceptual resoruces but intended only for access by humans</xs:documentation>
 								<xs:appinfo>
 									<label>Lexicon viewer</label>
 									<xs:broader>viewer</xs:broader>
@@ -152,7 +152,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="editor">
 							<xs:annotation>
-								<xs:documentation>A component that allows humans quantity edit the contents of a resource</xs:documentation>
+								<xs:documentation>A component that allows humans to edit the contents of a resource</xs:documentation>
 								<xs:appinfo>
 									<label>Editor</label>
 									<xs:broader>supportComponent</xs:broader>
@@ -322,7 +322,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="annotator">
 							<xs:annotation>
-								<xs:documentation>A component that annotates any language data (text, video, audio etc.), i.e. adds any descriptive or analytic notations (structural, linguistic, etc) quantity raw language data</xs:documentation>
+								<xs:documentation>A component that annotates any language data (text, video, audio etc.), i.e. adds any descriptive or analytic notations (structural, linguistic, etc) to raw language data</xs:documentation>
 								<xs:appinfo>
 									<label>Annotator</label>
 									<xs:broader>processor</xs:broader>
@@ -385,7 +385,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="coreferenceAnnotator">
 							<xs:annotation>
-								<xs:documentation>A component that annotates tokens of a text with coreference information, i.e. annotating expressions that refer quantity the same entity in the text</xs:documentation>
+								<xs:documentation>A component that annotates tokens of a text with coreference information, i.e. annotating expressions that refer to the same entity in the text</xs:documentation>
 								<xs:appinfo>
 									<label>Co-reference annotator</label>
 									<xs:broader>annotator</xs:broader>
@@ -394,7 +394,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="namedEntityRecognizer">
 							<xs:annotation>
-								<xs:documentation>A component that seeks quantity locate and classify elements in a text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, etc.</xs:documentation>
+								<xs:documentation>A component that seeks to locate and classify elements in a text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, etc.</xs:documentation>
 								<xs:appinfo>
 									<label>Named entitity recognizer</label>
 									<xs:broader>annotator</xs:broader>
@@ -466,7 +466,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="preOrPostProcessingComponent">
 							<xs:annotation>
-								<xs:documentation>A component that is used at pre- or post-processing stages in order quantity normalize input/output</xs:documentation>
+								<xs:documentation>A component that is used at pre- or post-processing stages in order to normalize input/output</xs:documentation>
 								<xs:appinfo>
 									<label>Pre- or post-processing component</label>
 								</xs:appinfo>
@@ -510,7 +510,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="analyzer">
 							<xs:annotation>
-								<xs:documentation>A component that is used for analysing an input text in order quantity perform extraction of features/information (e.g. word list), or characterization of the whole text</xs:documentation>
+								<xs:documentation>A component that is used for analysing an input text in order to perform extraction of features/information (e.g. word list), or characterization of the whole text</xs:documentation>
 								<xs:appinfo>
 									<label>Analyzer</label>
 									<xs:closeMatch>extractor</xs:closeMatch>
@@ -528,7 +528,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="documentClassifier">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity classify a document into one or more categories</xs:documentation>
+								<xs:documentation>A component that tries to classify a document into one or more categories</xs:documentation>
 								<xs:appinfo>
 									<label>Document classifier</label>
 									<xs:broader>analyzer</xs:broader>
@@ -546,7 +546,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="sentimentAnalyzer">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity identify sentences that express the author’s negative or positive feelings on something; (Sentiment analysis (also known as opinion mining) refers quantity the use of natural language processing, text analysis and computational linguistics quantity identify and extract subjective information in source materials (wikipedia) )</xs:documentation>
+								<xs:documentation>A component that tries to identify sentences that express the author’s negative or positive feelings on something; (Sentiment analysis (also known as opinion mining) refers to the use of natural language processing, text analysis and computational linguistics to identify and extract subjective information in source materials (wikipedia) )</xs:documentation>
 								<xs:appinfo>
 									<xs:closeMatch>opinionMiningTool</xs:closeMatch>
 									<label>Sentiment analyzer</label>
@@ -556,7 +556,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="emotionRecognizer">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity recognize and annotate emotions (e.g. fear, anger, happiness etc.) from text, video, audio and image</xs:documentation>
+								<xs:documentation>A component that tries to recognize and annotate emotions (e.g. fear, anger, happiness etc.) from text, video, audio and image</xs:documentation>
 								<xs:appinfo>
 									<label>Emotion recognizer</label>
 									<xs:broader>analyzer</xs:broader>
@@ -565,7 +565,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="keywordsExtractor">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity extract keywords from a given text</xs:documentation>
+								<xs:documentation>A component that tries to extract keywords from a given text</xs:documentation>
 								<xs:appinfo>
 									<label>Keyword extractor</label>
 									<xs:broader>analyzer</xs:broader>
@@ -574,7 +574,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="termExtractor">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity extract terms from a corpus</xs:documentation>
+								<xs:documentation>A component that tries to extract terms from a corpus</xs:documentation>
 								<xs:appinfo>
 									<label>Term extractor</label>
 									<xs:broader>analyzer</xs:broader>
@@ -583,7 +583,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="contradictionDetector">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity automatically recognise elements that reveal contradiction in a text</xs:documentation>
+								<xs:documentation>A component that tries to automatically recognise elements that reveal contradiction in a text</xs:documentation>
 								<xs:appinfo>
 									<xs:broader>analyzer</xs:broader>
 									<label>Contradiction detector</label>
@@ -592,7 +592,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="eventExtractor">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity extract information related quantity incidents referred quantity in a text</xs:documentation>
+								<xs:documentation>A component that tries to extract information related to incidents referred to in a text</xs:documentation>
 								<xs:appinfo>
 									<xs:broader>analyzer</xs:broader>
 									<label>Event extractor</label>
@@ -601,7 +601,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="persuasiveExpressionMiner">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity identify persuasive expressions in a given text</xs:documentation>
+								<xs:documentation>A component that tries to identify persuasive expressions in a given text</xs:documentation>
 								<xs:appinfo>
 									<label>Persuasive expression miner</label>
 									<xs:broader>analyzer</xs:broader>
@@ -637,7 +637,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="wordSenseDisambiguator">
 							<xs:annotation>
-								<xs:documentation>A component that tries quantity identify which sense of a word (i.e. meaning) is used in a sentence, when the word has multiple meanings (Source: wikipedia)</xs:documentation>
+								<xs:documentation>A component that tries to identify which sense of a word (i.e. meaning) is used in a sentence, when the word has multiple meanings (Source: wikipedia)</xs:documentation>
 								<xs:appinfo>
 									<xs:broader>analyzer</xs:broader>
 									<label>Word sense disambiguator</label>
@@ -678,7 +678,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
-								<xs:documentation>Value for componentType, quantity be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:documentation>Value for componentType, to be used when the desired value is not included in the listed values</xs:documentation>
 								<xs:appinfo>
 									<label>Other</label>
 								</xs:appinfo>
@@ -696,11 +696,11 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="applicationFunction">
+			<xs:element maxOccurs="1" minOccurs="0" name="applicationFunction" type="ms:applicationType">
 				<xs:annotation>
 					<xs:documentation>Specifies the type of an end-user application, in terms of the function/task it performs</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Type of application</label>
 						<usage>Show if application=yes; mandatory for applications</usage>
 					</xs:appinfo>
@@ -758,7 +758,7 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
-						<xs:element minOccurs="0" name="annotationSchema">
+						<xs:element minOccurs="0" ref="ms:annotationSchema">
 							<xs:annotation>
 								<xs:appinfo>
 									<recommended>true</recommended>
@@ -804,7 +804,7 @@
 					<xs:sequence>
 						<xs:element name="connection" type="xs:string">
 							<xs:annotation>
-								<xs:documentation>The source control management system URL that describes the repository and how quantity connect quantity the repository.</xs:documentation>
+								<xs:documentation>The source control management system URL that describes the repository and how to connect to the repository.</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 						<xs:element minOccurs="0" name="developerConnection" type="xs:string">
@@ -814,12 +814,12 @@
 						</xs:element>
 						<xs:element default="HEAD" minOccurs="0" name="tag" type="xs:string">
 							<xs:annotation>
-								<xs:documentation>The tag of current code. By default, it's set quantity HEAD during development.</xs:documentation>
+								<xs:documentation>The tag of current code. By default, it's set to HEAD during development.</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 						<xs:element minOccurs="0" name="url" type="xs:string">
 							<xs:annotation>
-								<xs:documentation>The URL quantity the project's browsable SCM repository, such as ViewVC or Fisheye.</xs:documentation>
+								<xs:documentation>The URL to the project's browsable SCM repository, such as ViewVC or Fisheye.</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 					</xs:sequence>
@@ -827,7 +827,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="issueManagementInfo">
 				<xs:annotation>
-					<xs:documentation>Information about the issue tracking (or bug tracking) system used quantity manage the resource.</xs:documentation>
+					<xs:documentation>Information about the issue tracking (or bug tracking) system used to manage the resource.</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
@@ -847,7 +847,7 @@
 			<xs:element minOccurs="0" name="relations">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element minOccurs="0" ref="ms:relationInfo"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:relationInfo"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -858,7 +858,7 @@
 		<xs:annotation><xs:appinfo><jaxb:class name="ParameterInfo"/></xs:appinfo></xs:annotation><xs:sequence>
 			<xs:element name="parameterName" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>A name used quantity identify the parameter</xs:documentation>
+					<xs:documentation>A name used to identify the parameter</xs:documentation>
 					<xs:appinfo>
 						<label>Parameter name</label>
 						<label-plural>Parameter names</label-plural>
@@ -867,7 +867,7 @@
 			</xs:element>
 			<xs:element name="parameterLabel" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>A label used quantity show quantity the user for the parameter</xs:documentation>
+					<xs:documentation>A label used to show to the user for the parameter</xs:documentation>
 					<xs:appinfo>
 						<label>Parameter label</label>
 						<label-plural>Parameter labels</label-plural>
@@ -885,7 +885,7 @@
 			</xs:element>
 			<xs:element name="parameterType">
 				<xs:annotation>
-					<xs:documentation>Classifies the parameter according quantity a specific (not yet standardised) typing system (e.g. whether it's boolean, string, integer, a document, mapping etc.)</xs:documentation>
+					<xs:documentation>Classifies the parameter according to a specific (not yet standardised) typing system (e.g. whether it's boolean, string, integer, a document, mapping etc.)</xs:documentation>
 					<xs:appinfo>
 						<label>Parameter type</label>
 						<label-plural>Parameter types</label-plural>
@@ -928,7 +928,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
-								<xs:documentation>Value for parameter type;  quantity be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:documentation>Value for parameter type;  to be used when the desired value is not included in the listed values</xs:documentation>
 								<xs:appinfo>
 									<label>other</label>
 								</xs:appinfo>
@@ -939,7 +939,7 @@
 			</xs:element>
 			<xs:element default="true" name="optional" type="xs:boolean">
 				<xs:annotation>
-					<xs:documentation>Specifies whether the parameter is mandatory or optional; the default value is set quantity true</xs:documentation>
+					<xs:documentation>Specifies whether the parameter is mandatory or optional; the default value is set to true</xs:documentation>
 					<xs:appinfo>
 						<label>Optional</label>
 					</xs:appinfo>
@@ -947,7 +947,7 @@
 			</xs:element>
 			<xs:element default="false" name="multiValue" type="xs:boolean">
 				<xs:annotation>
-					<xs:documentation>Specifies whether the parameter takes a list of values; the default value is set quantity false</xs:documentation>
+					<xs:documentation>Specifies whether the parameter takes a list of values; the default value is set to false</xs:documentation>
 					<xs:appinfo>
 						<label>Multi-value</label>
 					</xs:appinfo>
@@ -955,7 +955,7 @@
 			</xs:element>
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="defaultValue" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>Used for parameters that take a list of values in order quantity indicate the default value(s)</xs:documentation>
+					<xs:documentation>Used for parameters that take a list of values in order to indicate the default value(s)</xs:documentation>
 					<xs:appinfo>
 						<label>Parameter default value</label>
 						<label-plural>Parameter default values</label-plural>
@@ -973,7 +973,7 @@
 							<xs:annotation>
 								<xs:documentation>The type of the resource that a component takes as input or produces as output</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Processing resource type</label>
 									<label-plural>Processing resource types</label-plural>
 									<default>document</default>
@@ -1009,7 +1009,7 @@
 									</xs:enumeration>
 									<xs:enumeration value="lexicalConceptualResource">
 										<xs:annotation>
-											<xs:documentation>For components that take as input a lexical or conceptual resource (e.g. lexicon, term list, ontology etc.) in order quantity perform operations on it (and not use it as an ancillary/reference resource, e.g. for annotating a document)</xs:documentation>
+											<xs:documentation>For components that take as input a lexical or conceptual resource (e.g. lexicon, term list, ontology etc.) in order to perform operations on it (and not use it as an ancillary/reference resource, e.g. for annotating a document)</xs:documentation>
 											<xs:appinfo>
 												<label>Lexical/Conceptual resource</label>
 											</xs:appinfo>
@@ -1017,7 +1017,7 @@
 									</xs:enumeration>
 									<xs:enumeration value="languageDescription">
 										<xs:annotation>
-											<xs:documentation>For components that take as input a language description (e.g. a grammar) in order quantity perform operations on it (and not use it as an ancillary/reference resource, e.g. for parsing a document)</xs:documentation>
+											<xs:documentation>For components that take as input a language description (e.g. a grammar) in order to perform operations on it (and not use it as an ancillary/reference resource, e.g. for parsing a document)</xs:documentation>
 											<xs:appinfo>
 												<label>Language description</label>
 											</xs:appinfo>
@@ -1076,7 +1076,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element minOccurs="0" name="annotationSchema" type="ms:relatedResourceType"/>
+			<xs:element minOccurs="0" ref="ms:annotationSchema"/>
 			<xs:element minOccurs="0" name="annotationLevels">
 				<xs:complexType>
 					<xs:sequence>
@@ -1139,7 +1139,7 @@
 				<xs:annotation>
 					<xs:documentation>Indicates whether the component has been evaluated</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Evaluated</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1151,7 +1151,7 @@
 							<xs:annotation>
 								<xs:documentation>Indicates the evaluation level</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Evaluation level</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1175,7 +1175,7 @@
 							<xs:annotation>
 								<xs:documentation>Indicates the evaluation type</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Evaluation type</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1197,7 +1197,7 @@
 							<xs:annotation>
 								<xs:documentation>Defines the criteria of the evaluation of a tool</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Evaluation criteria</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1219,7 +1219,7 @@
 							<xs:annotation>
 								<xs:documentation>Defines whether the evaluation measure is human or automatic</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Evaluation measure</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1239,10 +1239,10 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="hasEvaluationReport" type="ms:relatedDocumentInfoType">
 							<xs:annotation>
-								<xs:documentation>A bibliographical record of or link quantity a report describing the evaluation process, tool, method etc. of the component</xs:documentation>
+								<xs:documentation>A bibliographical record of or link to a report describing the evaluation process, tool, method etc. of the component</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Evaluation report</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1258,7 +1258,7 @@
 								<xs:documentation>The identifier of the component used for the evaluation of the component being described</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Is evaluated by</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1271,7 +1271,7 @@
 					<xs:documentation>Provides further information on the evaluation process of a component</xs:documentation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Evaluation details</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1288,7 +1288,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups information on person or organization that evaluated the component</xs:documentation>
 								<xs:appinfo>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Evaluator</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1305,7 +1305,7 @@
 					<xs:documentation>Groups together information on the running environment of a tool or a language description</xs:documentation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Running environment</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1314,7 +1314,7 @@
 				<xs:annotation>
 					<xs:documentation>Gives information on the running time of a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Running time</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1346,9 +1346,9 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="formalism">
 				<xs:annotation>
-					<xs:documentation>Reference (name, bibliographic reference or link quantity url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
+					<xs:documentation>Reference (name, bibliographic reference or link to url) for the formalism used for the creation/enrichment of the resource (grammar or tool/service)</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Formalism</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1364,7 +1364,7 @@
 					<xs:documentation>The programming languages needed for allowing user contributions, or for running the tools, in case no executables are available</xs:documentation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Implementation language</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1378,7 +1378,7 @@
 				<xs:annotation>
 					<xs:documentation>The name, the identifier or the url of thethe original resources that were at the base of the creation process of the resource</xs:documentation>
 					<xs:appinfo>
-						<relation>many-quantity-many</relation>
+						<relation>many-to-many</relation>
 						<label>Original source</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1387,7 +1387,7 @@
 				<xs:annotation>
 					<xs:documentation>Provides additional information on the creation of a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Creation details</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -1418,7 +1418,7 @@
 	</xs:element>
 	<xs:element name="componentInfo" type="ms:componentInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related quantity software components</xs:documentation>
+			<xs:documentation>Groups together all information related to software components</xs:documentation>
 			<xs:appinfo>
 				<label>Component</label>
 			</xs:appinfo>

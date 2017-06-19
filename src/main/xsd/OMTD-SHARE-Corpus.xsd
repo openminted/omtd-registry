@@ -32,7 +32,7 @@
 			<xs:element minOccurs="0" name="relations">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element minOccurs="0" ref="ms:relationInfo"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:relationInfo"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -56,16 +56,16 @@
 	</xs:complexType>
 	<xs:complexType name="rawCorpusInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related quantity raw corpora</xs:documentation>
+			<xs:documentation>Groups together all information related to raw corpora</xs:documentation>
 		<xs:appinfo><jaxb:class name="RawCorpusInfo"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
-			<xs:element fixed="rawCorpus" name="corpusSubtype"/>
+			<xs:element fixed="rawCorpus" name="corpusSubtype" type="xs:string"/>
 			
 			<xs:element name="corpusMediaPartsType">
 				<xs:annotation>
-					<xs:documentation>Used quantity specify the media type specific quantity corpora and group together the relevant information</xs:documentation>
+					<xs:documentation>Used to specify the media type specific to corpora and group together the relevant information</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Media type component of corpus</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -79,7 +79,7 @@
 											<xs:documentation>Groups together information on the text component of a resource</xs:documentation>
 											<xs:appinfo>
 												<recommended>true</recommended>
-												<relation>one-quantity-many</relation>
+												<relation>one-to-many</relation>
 												<label>Corpus text part</label>
 											</xs:appinfo>
 										</xs:annotation>
@@ -94,16 +94,16 @@
 	</xs:complexType>
 	<xs:complexType name="annotatedCorpusInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related quantity annotated corpora</xs:documentation>
+			<xs:documentation>Groups together all information related to annotated corpora</xs:documentation>
 		<xs:appinfo><jaxb:class name="AnnotatedCorpusInfo"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
-			<xs:element fixed="annotatedCorpus" name="corpusSubtype"/>
+			<xs:element fixed="annotatedCorpus" name="corpusSubtype" type="xs:string"/>
 			
 			<xs:element name="corpusMediaParts">
 				<xs:annotation>
-					<xs:documentation>Used quantity specify the media type specific quantity corpora and group together the relevant information</xs:documentation>
+					<xs:documentation>Used to specify the media type specific to corpora and group together the relevant information</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Media type parts of corpus</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -117,7 +117,7 @@
 											<xs:documentation>Groups together information on the text component of a resource</xs:documentation>
 											<xs:appinfo>
 												<recommended>true</recommended>
-												<relation>one-quantity-many</relation>
+												<relation>one-to-many</relation>
 												<label>Corpus text part</label>
 											</xs:appinfo>
 										</xs:annotation>
@@ -146,7 +146,7 @@
 		<xs:sequence>
 			<xs:element fixed="text" name="mediaType" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>Specifies the media type of the resource and basically corresponds quantity the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed quantity different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
+					<xs:documentation>Specifies the media type of the resource and basically corresponds to the physical medium of the content representation. Each media type is described through a distinctive set of features. A resource may consist of parts attributed to different types of media. A tool/service may take as input/output more than one different media types.</xs:documentation>
 					<xs:appinfo>
 						<label>Media type</label>
 					</xs:appinfo>
@@ -154,9 +154,9 @@
 			</xs:element>
 			<xs:element ref="ms:lingualityInfo">
 				<xs:annotation>
-					<xs:documentation>Groups information on the number of languages of the resource part and of the way they are combined quantity each other</xs:documentation>
+					<xs:documentation>Groups information on the number of languages of the resource part and of the way they are combined to each other</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Linguality</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -168,7 +168,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups information on the languages represented in the resource</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Language</label>
 									<recommended>true</recommended>
 									<usage-ugc>To be created automatically by the system; create one for each language of the publications</usage-ugc>
@@ -186,7 +186,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups information on the size of the resource or of resource parts</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Size</label>
 									<recommended>true</recommended>
@@ -205,7 +205,7 @@
 								<xs:documentation>Groups information on the text format(s) of a resource</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Text format</label>
 								</xs:appinfo>
@@ -222,7 +222,7 @@
 								<xs:documentation>Groups together information on character encoding of the resource</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Character encoding</label>
 								</xs:appinfo>
@@ -239,7 +239,7 @@
 								<xs:documentation>Groups together information on domains represented in the resource; can be repeated for parts of the resource with distinct domain</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Domain</label>
 								</xs:appinfo>
@@ -255,7 +255,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups together information on text type/genre of the resource</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Text classification</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -271,7 +271,7 @@
 								<xs:documentation>Groups together information on time classification of the resource</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Time coverage</label>
 								</xs:appinfo>
@@ -288,7 +288,7 @@
 								<xs:documentation>Groups information on geographic classification of the resource</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<inline-type>tabular</inline-type>
 									<label>Geographic coverage</label>
 								</xs:appinfo>
@@ -302,7 +302,7 @@
 					<xs:documentation>Groups together information on the resource creation (e.g. for corpora, selection of texts/audio files/ video files etc.; for lexica, construction of lemma list etc.)</xs:documentation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Creation</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -311,7 +311,7 @@
 	</xs:complexType>
 	<xs:complexType name="annotationsInfoType">
 		<xs:annotation><xs:appinfo><jaxb:class name="AnnotationsInfo"/></xs:appinfo></xs:annotation><xs:sequence>
-			<xs:element fixed="annotations" name="corpusSubtype"/>
+			<xs:element fixed="annotations" name="corpusSubtype" type="xs:string"/>
 			<xs:element name="rawCorpus" type="ms:relatedResourceType"/>
 			<xs:element ref="ms:annotationInfo"/>
 		</xs:sequence>
@@ -335,7 +335,7 @@
 	</xs:element>
 	<xs:element name="corpusInfo" type="ms:corpusInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups together all information related quantity corpora</xs:documentation>
+			<xs:documentation>Groups together all information related to corpora</xs:documentation>
 			<xs:appinfo>
 				<label>Corpus</label>
 			</xs:appinfo>

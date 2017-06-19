@@ -7,8 +7,8 @@
 			<xs:element ref="ms:dataFormatInfo">
 				<xs:annotation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
-						<usage-ugc>To be created automatically by the system using the dataFormat of the publications; the element is quantity be repeated for each different dataFormat, if applicable</usage-ugc>
+						<relation>one-to-one</relation>
+						<usage-ugc>To be created automatically by the system using the dataFormat of the publications; the element is to be repeated for each different dataFormat, if applicable</usage-ugc>
 						<change-ugc>false</change-ugc>
 					</xs:appinfo>
 				</xs:annotation>
@@ -17,7 +17,7 @@
 				<xs:annotation>
 					<xs:documentation>Provides information on the size of the resource parts with different format</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<inline-type>tabular</inline-type>
 						<label>Size per text format</label>
 					</xs:appinfo>
@@ -32,7 +32,7 @@
 				<xs:annotation>
 					<xs:documentation>Information on whether the structure of the corpus documents is formally encoded and the scheme used for this</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Structural encoding</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -57,7 +57,7 @@
 				<xs:annotation>
 					<xs:documentation>Provides information on the size of the resource parts with different format</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<inline-type>tabular</inline-type>
 						<label>Size per text format</label>
 					</xs:appinfo>
@@ -77,7 +77,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" ref="ms:textType">
 				<xs:annotation>
-					<xs:documentation>Specifies the type of the text according quantity a text type classification</xs:documentation>
+					<xs:documentation>Specifies the type of the text according to a text type classification</xs:documentation>
 					<xs:appinfo>
 						<label>Text type</label>
 					</xs:appinfo>
@@ -118,7 +118,7 @@
 				<xs:annotation>
 					<xs:documentation>Provides information on size of resource parts with different text classification</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<inline-type>tabular</inline-type>
 						<label>Size per text classification</label>
 					</xs:appinfo>
@@ -161,7 +161,7 @@
 	</xs:element>
 	<xs:element name="textType">
 		<xs:annotation>
-			<xs:documentation>Specifies the type of the text according quantity a text type classification</xs:documentation>
+			<xs:documentation>Specifies the type of the text according to a text type classification</xs:documentation>
 			<xs:appinfo>
 				<label>Text type</label>
 			</xs:appinfo>

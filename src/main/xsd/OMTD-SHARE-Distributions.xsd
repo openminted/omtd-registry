@@ -11,7 +11,7 @@
 					<xs:annotation>
 						<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
 						<xs:appinfo>
-							<relation>one-quantity-many</relation>
+							<relation>one-to-many</relation>
 							<label>Distribution URL</label>
 							<broader>dcat:downloadURL</broader>
 						</xs:appinfo>
@@ -33,7 +33,7 @@
 					<xs:documentation>Specifies the hashkey for indexing and downloading the publication</xs:documentation>
 					<xs:appinfo>
 						<recommended>true</recommended>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Hashkey</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -78,7 +78,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:copyrightStatement">
 							<xs:annotation>
-								<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute quantity specify the language.</xs:documentation>
+								<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
 									<label>Copyright statement</label>
 									<broadMatch>dct:rights</broadMatch>
@@ -95,7 +95,7 @@
 							<xs:annotation>
 								<xs:documentation>The text that must be quoted for attribution purposes when using a resource - for cases where a resource is provided with a restriction on attribution; you can use a standard text such as &quot;Resource A by Resource Creator/Owner B used under licence C as accessed at D&quot;</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Attribution text</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -108,9 +108,9 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:rightsHolder">
 							<xs:annotation>
-								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights quantity another person or organization (e.g. an author as a creator assigns her rights quantity the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) quantity distribute the work.</xs:documentation>
+								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights to another person or organization (e.g. an author as a creator assigns her rights to the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) to distribute the work.</xs:documentation>
 								<xs:appinfo>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Rights holder</label>
 									<broadMatch>dct:rightsHolder</broadMatch>
 								</xs:appinfo>
@@ -123,7 +123,7 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability start date</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -132,16 +132,16 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability end date</label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element minOccurs="0" ref="ms:fee">
 				<xs:annotation>
-					<xs:documentation>Specifies the costs that are required quantity access the resource, a fragment of the resource or quantity use a component</xs:documentation>
+					<xs:documentation>Specifies the costs that are required to access the resource, a fragment of the resource or to use a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Fee</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -153,7 +153,7 @@
 							<xs:annotation>
 								<xs:documentation>The conditions imposed by the user type (for instance, use may be allowed only for academic users or the fee may vary depending on the user type)</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>User type</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -219,11 +219,11 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="command">
+			<xs:element maxOccurs="1" minOccurs="0" name="command" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>A command line used for the execution of a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Command</label>
 						<usage>To show if componentDistributionForm=webService</usage>
 					</xs:appinfo>
@@ -258,7 +258,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
-								<xs:documentation>Value for webServiceType, quantity be used when the desired value is not included in the listed values</xs:documentation>
+								<xs:documentation>Value for webServiceType, to be used when the desired value is not included in the listed values</xs:documentation>
 								<xs:appinfo>
 									<label>other</label>
 								</xs:appinfo>
@@ -274,7 +274,7 @@
 							<xs:annotation>
 								<xs:documentation>The operating system on which the tool can run</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Operating system</label>
 									<label-plural>Operating systems</label-plural>
 								</xs:appinfo>
@@ -348,7 +348,7 @@
 									</xs:enumeration>
 									<xs:enumeration value="other">
 										<xs:annotation>
-											<xs:documentation>Value for operatingSystem, quantity be used when the desired value is not included in the listed values</xs:documentation>
+											<xs:documentation>Value for operatingSystem, to be used when the desired value is not included in the listed values</xs:documentation>
 											<xs:appinfo>
 												<label>Other</label>
 											</xs:appinfo>
@@ -383,7 +383,7 @@
 							<xs:annotation>
 								<xs:documentation>The text that must be quoted for attribution purposes when using a resource - for cases where a resource is provided with a restriction on attribution; you can use a standard text such as &quot;Resource A by Resource Creator/Owner B used under licence C as accessed at D&quot;</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Attribution text</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -396,9 +396,9 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:rightsHolder">
 							<xs:annotation>
-								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights quantity another person or organization (e.g. an author as a creator assigns her rights quantity the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) quantity distribute the work.</xs:documentation>
+								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights to another person or organization (e.g. an author as a creator assigns her rights to the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) to distribute the work.</xs:documentation>
 								<xs:appinfo>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Rights holder</label>
 									<broadMatch>dct:rightsHolder</broadMatch>
 								</xs:appinfo>
@@ -411,7 +411,7 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability start date</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -420,16 +420,16 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability end date</label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element minOccurs="0" ref="ms:fee">
 				<xs:annotation>
-					<xs:documentation>Specifies the costs that are required quantity access the resource, a fragment of the resource or quantity use a component</xs:documentation>
+					<xs:documentation>Specifies the costs that are required to access the resource, a fragment of the resource or to use a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Fee</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -441,7 +441,7 @@
 							<xs:annotation>
 								<xs:documentation>The conditions imposed by the user type (for instance, use may be allowed only for academic users or the fee may vary depending on the user type)</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>User type</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -458,7 +458,7 @@
 			<jaxb:class name="DatasetDistributionInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="ms:distributionLoc"/>
+			<xs:element maxOccurs="unbounded" ref="ms:distributionLoc"/>
 			<xs:element minOccurs="0" name="textFormats">
 				<xs:complexType>
 					<xs:sequence>
@@ -497,7 +497,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:copyrightStatement">
 							<xs:annotation>
-								<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute quantity specify the language.</xs:documentation>
+								<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
 									<label>Copyright statement</label>
 									<broadMatch>dct:rights</broadMatch>
@@ -514,7 +514,7 @@
 							<xs:annotation>
 								<xs:documentation>The text that must be quoted for attribution purposes when using a resource - for cases where a resource is provided with a restriction on attribution; you can use a standard text such as &quot;Resource A by Resource Creator/Owner B used under licence C as accessed at D&quot;</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>Attribution text</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -527,9 +527,9 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:rightsHolder">
 							<xs:annotation>
-								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights quantity another person or organization (e.g. an author as a creator assigns her rights quantity the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) quantity distribute the work.</xs:documentation>
+								<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights to another person or organization (e.g. an author as a creator assigns her rights to the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) to distribute the work.</xs:documentation>
 								<xs:appinfo>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Rights holder</label>
 									<broadMatch>dct:rightsHolder</broadMatch>
 								</xs:appinfo>
@@ -542,7 +542,7 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability start date</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -551,16 +551,16 @@
 				<xs:annotation>
 					<xs:documentation>Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Availability end date</label>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element minOccurs="0" ref="ms:fee">
 				<xs:annotation>
-					<xs:documentation>Specifies the costs that are required quantity access the resource, a fragment of the resource or quantity use a component</xs:documentation>
+					<xs:documentation>Specifies the costs that are required to access the resource, a fragment of the resource or to use a component</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Fee</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -572,7 +572,7 @@
 							<xs:annotation>
 								<xs:documentation>The conditions imposed by the user type (for instance, use may be allowed only for academic users or the fee may vary depending on the user type)</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-many</relation>
+									<relation>one-to-many</relation>
 									<label>User type</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -586,7 +586,7 @@
 		<xs:annotation>
 			<xs:appinfo>
 				<render-short>{licence} {restrictionsOfUse}</render-short>
-				<userTip>You can provide information on the rights of accessing and using a resource in one of the following ways, in order of preference: (a) use the element &quot;licence&quot; and select one of the recommended licences; (b)  if the licence you use is not included in the list, you can use the &quot;nonStandardLicenceTerms&quot; or the &quot;proprietary&quot; values and give further information on your licence in the elements: &quot;nonStandardLicenceName&quot;, &quot;nonStandardLicenceTermsURL&quot; and &quot;nonStandardLicenceTermsText&quot;; (c) you can also use the &quot;rightsStatementName&quot; and the &quot;rightsStatementURL&quot; (with a link quantity a URL with more explanations on its usage) if the resource is provided with a general statement of use and not an official licence document; please, note that this is an option used mainly quantity facilitate end-users in accessing your resource, while you are strongly advised quantity properly license your resource.</userTip>
+				<userTip>You can provide information on the rights of accessing and using a resource in one of the following ways, in order of preference: (a) use the element &quot;licence&quot; and select one of the recommended licences; (b)  if the licence you use is not included in the list, you can use the &quot;nonStandardLicenceTerms&quot; or the &quot;proprietary&quot; values and give further information on your licence in the elements: &quot;nonStandardLicenceName&quot;, &quot;nonStandardLicenceTermsURL&quot; and &quot;nonStandardLicenceTermsText&quot;; (c) you can also use the &quot;rightsStatementName&quot; and the &quot;rightsStatementURL&quot; (with a link to a URL with more explanations on its usage) if the resource is provided with a general statement of use and not an official licence document; please, note that this is an option used mainly to facilitate end-users in accessing your resource, while you are strongly advised to properly license your resource.</userTip>
 			<jaxb:class name="LicenceInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
@@ -594,7 +594,7 @@
 				<xs:annotation>
 					<xs:documentation>The licence of use for the resource</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Licence</label>
 					</xs:appinfo>
 				</xs:annotation>
@@ -873,7 +873,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="proprietary">
 							<xs:annotation>
-								<xs:documentation>Value for &quot;licence&quot;; quantity be used for licences that have a proprietary status</xs:documentation>
+								<xs:documentation>Value for &quot;licence&quot;; to be used for licences that have a proprietary status</xs:documentation>
 								<xs:appinfo>
 									<label>Proprietary</label>
 								</xs:appinfo>
@@ -881,7 +881,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="underNegotiation">
 							<xs:annotation>
-								<xs:documentation>Value for &quot;licence&quot;; quantity be used for resources whose distribution status is still under negotiation</xs:documentation>
+								<xs:documentation>Value for &quot;licence&quot;; to be used for resources whose distribution status is still under negotiation</xs:documentation>
 								<xs:appinfo>
 									<label>Under negotiation</label>
 								</xs:appinfo>
@@ -889,7 +889,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="nonStandardLicenceTerms">
 							<xs:annotation>
-								<xs:documentation>Value for &quot;licence&quot;; quantity be used for resources that are licensed with a licence not included in the OMTD list of licences; more information on the licence must be provided in the relevant metadata elements</xs:documentation>
+								<xs:documentation>Value for &quot;licence&quot;; to be used for resources that are licensed with a licence not included in the OMTD list of licences; more information on the licence must be provided in the relevant metadata elements</xs:documentation>
 								<xs:appinfo>
 									<label>Non standard Licence or Terms of use</label>
 								</xs:appinfo>
@@ -903,7 +903,7 @@
 			
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="nonStandardLicenceName">
 				<xs:annotation>
-					<xs:documentation>The name with which a licence is known; quantity be used for licences not included in the pre-defined list of licences</xs:documentation>
+					<xs:documentation>The name with which a licence is known; to be used for licences not included in the pre-defined list of licences</xs:documentation>
 					<xs:appinfo>
 						<label>Name (for non-standard licences / terms of use)</label>
 						<label-plural>Names (for non-standard licences / terms of use)</label-plural>
@@ -924,7 +924,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="nonStandardLicenceTermsURL" type="ms:httpURI">
 				<xs:annotation>
-					<xs:documentation>Used quantity provide a hyperlink quantity a URL containing the text of a licence not included in the predefined list or describing the terms of use for a language resource or terms of service for web services</xs:documentation>
+					<xs:documentation>Used to provide a hyperlink to a URL containing the text of a licence not included in the predefined list or describing the terms of use for a language resource or terms of service for web services</xs:documentation>
 					<xs:appinfo>
 						<label>URL for non-standard licences / terms of use / terms of service</label>
 						<label-plural>URLs for non-standard licences / terms of use / terms of service</label-plural>
@@ -955,9 +955,9 @@
 			</xs:element>
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="conditionOfUse">
 				<xs:annotation>
-					<xs:documentation>Specifies the conditions and terms of use imposed by the licence. It is an optional element and only quantity be taken as providing brief human readable information on the fact that the LR is provided under a specific set of conditions. These correspond quantity the most frequently used conditions imposed by the licensor of the LR (via the specified licence). The proper exposition of all conditions and possible exceptions is quantity be found inside the licence text. LR depositors should, hence, carefully choose the values of this field quantity match the licence chosen and users should carefully read that licence before using the LR.</xs:documentation>
+					<xs:documentation>Specifies the conditions and terms of use imposed by the licence. It is an optional element and only to be taken as providing brief human readable information on the fact that the LR is provided under a specific set of conditions. These correspond to the most frequently used conditions imposed by the licensor of the LR (via the specified licence). The proper exposition of all conditions and possible exceptions is to be found inside the licence text. LR depositors should, hence, carefully choose the values of this field to match the licence chosen and users should carefully read that licence before using the LR.</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-many</relation>
+						<relation>one-to-many</relation>
 						<label>Condition of use</label>
 						<label-plural>Conditions of use</label-plural>
 					</xs:appinfo>
@@ -997,7 +997,7 @@
 	
 	<xs:element name="rightsStatement">
 		<xs:annotation>
-			<xs:documentation>The name (identifier) of a formal statement indicative of licensing terms for the use of a resource (e.g. open access, free quantity read etc.); its semantics should be clear, preferrably formally expressed and stored at a URL</xs:documentation>
+			<xs:documentation>The name (identifier) of a formal statement indicative of licensing terms for the use of a resource (e.g. open access, free to read etc.); its semantics should be clear, preferrably formally expressed and stored at a URL</xs:documentation>
 			<xs:appinfo>
 				<label>Rights statement</label>
 				<label-plural>Rights statements</label-plural>
@@ -1007,7 +1007,7 @@
 			<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="rightsStatementEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 				<xs:enumeration value="openAccess">
 					<xs:annotation>
-						<xs:documentation>The free and online availability of literature, which allows quantity read, download, copy, distribute, print, search, or link quantity the ful text, crawl articles for indexing, pass them as data quantity software, or use them for any other useful purpose. An availability that is granted without financial, legal, or technical barriers other than those inseparable from gaining access quantity the internet itself, and those related quantity giving authors control over the integrity of their work and the right quantity be properly acknowledged and cited.</xs:documentation>
+						<xs:documentation>The free and online availability of literature, which allows to read, download, copy, distribute, print, search, or link to the ful text, crawl articles for indexing, pass them as data to software, or use them for any other useful purpose. An availability that is granted without financial, legal, or technical barriers other than those inseparable from gaining access to the internet itself, and those related to giving authors control over the integrity of their work and the right to be properly acknowledged and cited.</xs:documentation>
 						<xs:appinfo>
 							<label>Open Access</label>
 							<closeMatch>info:eu-repo/semantics/openAccess</closeMatch>
@@ -1017,7 +1017,7 @@
 				</xs:enumeration>
 				<xs:enumeration value="restrictedAccess">
 					<xs:annotation>
-						<xs:documentation>Access is subject quantity restrictions or controls regarding users (e.g. limited quantity researchers or members of a specific group) or use (e.g. for research only, noncommercial use etc.); subscription or registration may also be required and access may incur financial costs.</xs:documentation>
+						<xs:documentation>Access is subject to restrictions or controls regarding users (e.g. limited to researchers or members of a specific group) or use (e.g. for research only, noncommercial use etc.); subscription or registration may also be required and access may incur financial costs.</xs:documentation>
 						<xs:appinfo>
 							<label>Restricted Access</label>
 							<closeMatch>info:eu-repo/semantics/restrictedAccess</closeMatch>
@@ -1036,7 +1036,7 @@
 		<xs:annotation>
 			<xs:documentation>Groups information on the distribution of a document (single file)</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Document distribution</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1045,7 +1045,7 @@
 		<xs:annotation>
 			<xs:documentation>Groups information on the distribution of a dataset resource (multiple files)</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Document distribution</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1054,14 +1054,14 @@
 		<xs:annotation>
 			<xs:documentation>Groups information on the distributable form of a component (e.g. as a software code, an executable programme, a web service etc.)</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Document distribution</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="licenceInfo" type="ms:licenceInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on licences for the resource; can be repeated quantity allow for different modes of access and restrictions of use (e.g. free for academic use, on-a-fee basis for commercial use, download of a sample for free use etc.)</xs:documentation>
+			<xs:documentation>Groups information on licences for the resource; can be repeated to allow for different modes of access and restrictions of use (e.g. free for academic use, on-a-fee basis for commercial use, download of a sample for free use etc.)</xs:documentation>
 			<xs:appinfo>
 				<label>Licence</label>
 			</xs:appinfo>
@@ -1083,9 +1083,9 @@
 							<xs:sequence>
 								<xs:element maxOccurs="unbounded" ref="ms:licenceInfo">
 									<xs:annotation>
-										<xs:documentation>Groups information on licences for the resource; can be repeated quantity allow for different modes of access and restrictions of use (e.g. free for academic use, on-a-fee basis for commercial use, download of a sample for free use etc.)</xs:documentation>
+										<xs:documentation>Groups information on licences for the resource; can be repeated to allow for different modes of access and restrictions of use (e.g. free for academic use, on-a-fee basis for commercial use, download of a sample for free use etc.)</xs:documentation>
 										<xs:appinfo>
-											<relation>many-quantity-many</relation>
+											<relation>many-to-many</relation>
 											<label>Licence</label>
 										</xs:appinfo>
 									</xs:annotation>
@@ -1103,10 +1103,10 @@
 	
 	<xs:element name="distributionMedium">
 		<xs:annotation>
-			<xs:documentation>Specifies the medium (channel) used for delivery or providing access quantity the resource</xs:documentation>
+			<xs:documentation>Specifies the medium (channel) used for delivery or providing access to the resource</xs:documentation>
 			<xs:appinfo>
 				<recommended>true</recommended>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Distribution medium</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1139,7 +1139,7 @@
 				</xs:enumeration>
 				<xs:enumeration value="other">
 					<xs:annotation>
-						<xs:documentation>Value for distributionMedium; quantity be used when the desired value is not included in the listed values</xs:documentation>
+						<xs:documentation>Value for distributionMedium; to be used when the desired value is not included in the listed values</xs:documentation>
 						<xs:appinfo>
 							<label>Other</label>
 						</xs:appinfo>
@@ -1153,7 +1153,7 @@
 		<xs:annotation>
 			<xs:documentation>Any url where the resource can be accessed from, either in a downloadable form or as a web executable command etc.</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Download URL</label>
 				<broader>dcat:downloadURL</broader>
 				<recommended>true</recommended>
@@ -1163,7 +1163,7 @@
 	
 	<xs:element name="copyrightStatement">
 		<xs:annotation>
-			<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute quantity specify the language.</xs:documentation>
+			<xs:documentation>A free text statement that may be included with the resource, usually containing the name(s) of copyright holders and licensing terms (intended for resources that already have such a statement); the element can be repeated for the different language versions using the &quot;lang&quot; attribute to specify the language.</xs:documentation>
 			<xs:appinfo>
 				<label>Copyright statement</label>
 				<broadMatch>dct:rights</broadMatch>
@@ -1185,7 +1185,7 @@
 		<xs:annotation>
 			<xs:documentation>The text that must be quoted for attribution purposes when using a resource - for cases where a resource is provided with a restriction on attribution; you can use a standard text such as &quot;Resource A by Resource Creator/Owner B used under licence C as accessed at D&quot;</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>Attribution text</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1203,9 +1203,9 @@
 	</xs:element>
 	<xs:element name="rightsHolder" type="ms:actorInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights quantity another person or organization (e.g. an author as a creator assigns her rights quantity the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) quantity distribute the work.</xs:documentation>
+			<xs:documentation>Groups information on a person or an organization who holds the Copyright and SGDB rights that subsist in the resource. The rights holder could be different from the creator that may have assigned the rights to another person or organization (e.g. an author as a creator assigns her rights to the publisher who is the rights holder) and the distributor that holds a specific licence (i.e. a permission) to distribute the work.</xs:documentation>
 			<xs:appinfo>
-				<relation>many-quantity-many</relation>
+				<relation>many-to-many</relation>
 				<label>Rights holder</label>
 				<broadMatch>dct:rightsHolder</broadMatch>
 			</xs:appinfo>
@@ -1215,7 +1215,7 @@
 		<xs:annotation>
 			<xs:documentation>Specifies the start date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-one</relation>
+				<relation>one-to-one</relation>
 				<label>Availability start date</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1224,16 +1224,16 @@
 		<xs:annotation>
 			<xs:documentation>Specifies the end date of availability of a resource - only for cases where a resource is available for a restricted time period.</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-one</relation>
+				<relation>one-to-one</relation>
 				<label>Availability end date</label>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="fee">
 		<xs:annotation>
-			<xs:documentation>Specifies the costs that are required quantity access the resource, a fragment of the resource or quantity use a component</xs:documentation>
+			<xs:documentation>Specifies the costs that are required to access the resource, a fragment of the resource or to use a component</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-one</relation>
+				<relation>one-to-one</relation>
 				<label>Fee</label>
 			</xs:appinfo>
 		</xs:annotation>
@@ -1247,7 +1247,7 @@
 		<xs:annotation>
 			<xs:documentation>The conditions imposed by the user type (for instance, use may be allowed only for academic users or the fee may vary depending on the user type)</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-many</relation>
+				<relation>one-to-many</relation>
 				<label>User type</label>
 			</xs:appinfo>
 		</xs:annotation>

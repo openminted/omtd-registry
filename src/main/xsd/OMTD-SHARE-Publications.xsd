@@ -11,9 +11,9 @@
 		<xs:sequence>
 			<xs:element name="documentType">
 				<xs:annotation>
-					<xs:documentation>Specifies whether the record includes direct access quantity the full text, the abstract in txt format (inside the record) or serves only as a bibliographic record (includes only metadata)</xs:documentation>
+					<xs:documentation>Specifies whether the record includes direct access to the full text, the abstract in txt format (inside the record) or serves only as a bibliographic record (includes only metadata)</xs:documentation>
 					<xs:appinfo>
-						<usage>This should be automatically calculated if possible from the repository quantity indicate the status of the publication; in OpenMinTeD we should normally not include in the queries those that have documentType=bibliographicRecordOnly</usage>
+						<usage>This should be automatically calculated if possible from the repository to indicate the status of the publication; in OpenMinTeD we should normally not include in the queries those that have documentType=bibliographicRecordOnly</usage>
 					</xs:appinfo>
 					<xs:appinfo>
 						<label>Document type</label>
@@ -50,7 +50,7 @@
 			</xs:element>
 			<xs:element name="publicationType">
 				<xs:annotation>
-					<xs:documentation>Specifies the type of the publication; the list takes values from the COAR Controlled Vocabulary for Resource Type Genres (restricted quantity concepts under &quot;text&quot; that can be used for publications)</xs:documentation>
+					<xs:documentation>Specifies the type of the publication; the list takes values from the COAR Controlled Vocabulary for Resource Type Genres (restricted to concepts under &quot;text&quot; that can be used for publications)</xs:documentation>
 					<xs:appinfo>
 						<label>Publication type</label>
 						<exactMatch>dct:type</exactMatch>
@@ -70,7 +70,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="bachelorThesis">
 							<xs:annotation>
-								<xs:documentation>A thesis reporting a research project undertaken as part of an undergraduate course of education leading quantity a bachelor's degree.</xs:documentation>
+								<xs:documentation>A thesis reporting a research project undertaken as part of an undergraduate course of education leading to a bachelor's degree.</xs:documentation>
 								<xs:appinfo>
 									<label>Bachelor thesis</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_7a1f</exactMatch>
@@ -79,7 +79,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="masterThesis">
 							<xs:annotation>
-								<xs:documentation>A thesis reporting a research project undertaken as part of a graduate course of education leading quantity a master's degree.</xs:documentation>
+								<xs:documentation>A thesis reporting a research project undertaken as part of a graduate course of education leading to a master's degree.</xs:documentation>
 								<xs:appinfo>
 									<label>Master's thesis</label>
 									<exactMatch>ms:mastersThesis</exactMatch>
@@ -89,7 +89,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="doctoralThesis">
 							<xs:annotation>
-								<xs:documentation>A thesis reporting the research undertaken during a period of graduate study leading quantity a doctoral degree.</xs:documentation>
+								<xs:documentation>A thesis reporting the research undertaken during a period of graduate study leading to a doctoral degree.</xs:documentation>
 								<xs:appinfo>
 									<label>Doctoral thesis</label>
 									<exactMatch>ms:phDThesis</exactMatch>
@@ -127,7 +127,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferenceObject">
 							<xs:annotation>
-								<xs:documentation>All kind of digital resources contributed quantity a conference, like conference presentation (slides), conference report, conference lecture, abstracts, demonstrations. For conference papers, posters or proceedings the specific concepts should be used..</xs:documentation>
+								<xs:documentation>All kind of digital resources contributed to a conference, like conference presentation (slides), conference report, conference lecture, abstracts, demonstrations. For conference papers, posters or proceedings the specific concepts should be used..</xs:documentation>
 								<xs:appinfo>
 									<label>Conference object</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_c94f</exactMatch>
@@ -154,7 +154,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="prePrint">
 							<xs:annotation>
-								<xs:documentation>Pre-print describes the first draft of the article - before peer-review, even before any contact with a publisher. This use is common amongst academics for whom the key modification of an article is the peer-review process. Another use of the term pre-print is for the finished article, reviewed and amended, ready and accepted for publication - but separate from the version that is type-set or formatted by the publisher. This use is more common amongst publishers, for whom the final and significant stage of modification quantity an article is the arrangement of the material for putting quantity print.</xs:documentation>
+								<xs:documentation>Pre-print describes the first draft of the article - before peer-review, even before any contact with a publisher. This use is common amongst academics for whom the key modification of an article is the peer-review process. Another use of the term pre-print is for the finished article, reviewed and amended, ready and accepted for publication - but separate from the version that is type-set or formatted by the publisher. This use is more common amongst publishers, for whom the final and significant stage of modification to an article is the arrangement of the material for putting to print.</xs:documentation>
 								<xs:appinfo>
 									<label>Preprint</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_816b</exactMatch>
@@ -163,7 +163,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="report">
 							<xs:annotation>
-								<xs:documentation>A report is a separately published record of research findings, research still in progress, or other technical findings, usually bearing a report number and sometimes a grant number assigned by the funding agency. Also, an official record of the activities of a committee or corporate entity, the proceedings of a government body, or an investigation by an agency, whether published or private, usually archived or submitted quantity a higher authority, voluntarily or under mandate. In a more general sense, any formal account of facts or information related quantity a specific event or phenomenon, sometimes given at regular intervals.</xs:documentation>
+								<xs:documentation>A report is a separately published record of research findings, research still in progress, or other technical findings, usually bearing a report number and sometimes a grant number assigned by the funding agency. Also, an official record of the activities of a committee or corporate entity, the proceedings of a government body, or an investigation by an agency, whether published or private, usually archived or submitted to a higher authority, voluntarily or under mandate. In a more general sense, any formal account of facts or information related to a specific event or phenomenon, sometimes given at regular intervals.</xs:documentation>
 								<xs:appinfo>
 									<label>Report</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_93fc</exactMatch>
@@ -175,16 +175,16 @@
 								<xs:documentation>An annotation in the sense of a legal note is a legally explanatory comment on a decision handed down by a court or arbitral tribunal.</xs:documentation>
 								<xs:appinfo>
 									<label>Annotation</label>
-									<userTip>This is quantity be used only for annotations of the scholarly or legal type described in the definition, and not for the annotated versions of the document that are output of annotation tools</userTip>
+									<userTip>This is to be used only for annotations of the scholarly or legal type described in the definition, and not for the annotated versions of the document that are output of annotation tools</userTip>
 									<exactMatch>http://purl.org/coar/resource_type/c_1162</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="contributionToJournal">
 							<xs:annotation>
-								<xs:documentation>A contribution quantity a journal denotes a work published in a journal. If applicable sub-terms should be chosen.</xs:documentation>
+								<xs:documentation>A contribution to a journal denotes a work published in a journal. If applicable sub-terms should be chosen.</xs:documentation>
 								<xs:appinfo>
-									<label>Contribution quantity journal</label>
+									<label>Contribution to journal</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_3e5a</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
@@ -200,7 +200,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferencePaper">
 							<xs:annotation>
-								<xs:documentation>A conference paper that is submitted quantity a conference and presented quantity the audience. The conference paper is published in proceedings.</xs:documentation>
+								<xs:documentation>A conference paper that is submitted to a conference and presented to the audience. The conference paper is published in proceedings.</xs:documentation>
 								<xs:appinfo>
 									<label>Conference paper</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_5794</exactMatch>
@@ -209,7 +209,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferencePoster">
 							<xs:annotation>
-								<xs:documentation>A conference poster that is submitted quantity a conference and presented there at a poster presentation. The conference poster is published in proceedings.</xs:documentation>
+								<xs:documentation>A conference poster that is submitted to a conference and presented there at a poster presentation. The conference poster is published in proceedings.</xs:documentation>
 								<xs:appinfo>
 									<label>Conference poster</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_6670</exactMatch>
@@ -218,7 +218,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="technicalDocumentation">
 							<xs:annotation>
-								<xs:documentation>Technical documentation refers quantity any type of documentation that describes handling, functionality and architecture of a technical product or a product under development or use.</xs:documentation>
+								<xs:documentation>Technical documentation refers to any type of documentation that describes handling, functionality and architecture of a technical product or a product under development or use.</xs:documentation>
 								<xs:appinfo>
 									<label>Technical documentation</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_71bd</exactMatch>
@@ -245,7 +245,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferenceProceedings">
 							<xs:annotation>
-								<xs:documentation>Conference proceedings is the official record of a conference meeting. It is a collection of documents which corresponds quantity the presentations given at the conference. It may include additional content.</xs:documentation>
+								<xs:documentation>Conference proceedings is the official record of a conference meeting. It is a collection of documents which corresponds to the presentations given at the conference. It may include additional content.</xs:documentation>
 								<xs:appinfo>
 									<label>Conference proceedings</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_f744</exactMatch>
@@ -255,7 +255,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferencePaperNotInProceedings">
 							<xs:annotation>
-								<xs:documentation>A conference paper that is submitted quantity a conference and presented quantity the audience. The conference paper is not published in proceedings.</xs:documentation>
+								<xs:documentation>A conference paper that is submitted to a conference and presented to the audience. The conference paper is not published in proceedings.</xs:documentation>
 								<xs:appinfo>
 									<label>Conference paper not in proceedings</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18cp</exactMatch>
@@ -264,7 +264,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="conferencePosterNotInProceedings">
 							<xs:annotation>
-								<xs:documentation>A conference poster that is submitted quantity a conference and presented there at a poster presentation. The conference poster is not published in proceedings.</xs:documentation>
+								<xs:documentation>A conference poster that is submitted to a conference and presented there at a poster presentation. The conference poster is not published in proceedings.</xs:documentation>
 								<xs:appinfo>
 									<label>Conference poster not in proceedings</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18co</exactMatch>
@@ -309,7 +309,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="editorial">
 							<xs:annotation>
-								<xs:documentation>A brief essay expressing the opinion or position of the chief editor(s) of a (academic) journal with respect quantity a current political, social, cultural, or professional issue. Adapted from ODLIS</xs:documentation>
+								<xs:documentation>A brief essay expressing the opinion or position of the chief editor(s) of a (academic) journal with respect to a current political, social, cultural, or professional issue. Adapted from ODLIS</xs:documentation>
 								<xs:appinfo>
 									<label>Editorial</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_b239</exactMatch>
@@ -318,7 +318,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="dataPaper">
 							<xs:annotation>
-								<xs:documentation>A data paper is a scholarly publication describing a particular dataset or group of dataset, published in the form of a peer-reviewed article in a scholarly journal. The main purpose of a data paper is quantity describe data, the circumstances of their collection, and information related quantity data features, access and potential reuse. Adapted from https://en.wikipedia.org/wiki/Data_paper and http://www.gbif.org/publishing-data/data-papers</xs:documentation>
+								<xs:documentation>A data paper is a scholarly publication describing a particular dataset or group of dataset, published in the form of a peer-reviewed article in a scholarly journal. The main purpose of a data paper is to describe data, the circumstances of their collection, and information related to data features, access and potential reuse. Adapted from https://en.wikipedia.org/wiki/Data_paper and http://www.gbif.org/publishing-data/data-papers</xs:documentation>
 								<xs:appinfo>
 									<label>Data paper</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_beb9</exactMatch>
@@ -327,9 +327,9 @@
 						</xs:enumeration>
 						<xs:enumeration value="letterToTheEditor">
 							<xs:annotation>
-								<xs:documentation>A letter quantity the editor is a letter sent quantity a periodical about issues of concern from its readers. (adapted from Wikipedia)</xs:documentation>
+								<xs:documentation>A letter to the editor is a letter sent to a periodical about issues of concern from its readers. (adapted from Wikipedia)</xs:documentation>
 								<xs:appinfo>
-									<label>Letter quantity the editor</label>
+									<label>Letter to the editor</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_545b</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
@@ -354,7 +354,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="internalReport">
 							<xs:annotation>
-								<xs:documentation>An internal report is a record of findings collected for internal use. It is not designed quantity be made public and may include confidential or proprietary information.</xs:documentation>
+								<xs:documentation>An internal report is a record of findings collected for internal use. It is not designed to be made public and may include confidential or proprietary information.</xs:documentation>
 								<xs:appinfo>
 									<label>Internal report</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18ww</exactMatch>
@@ -363,7 +363,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="memorandum">
 							<xs:annotation>
-								<xs:documentation>It is a note, document or other communication that helps the memory by recording events or observations on a topic. A memorandum can have only a certain number of formats; it may have a format specific quantity an office or institution.</xs:documentation>
+								<xs:documentation>It is a note, document or other communication that helps the memory by recording events or observations on a topic. A memorandum can have only a certain number of formats; it may have a format specific to an office or institution.</xs:documentation>
 								<xs:appinfo>
 									<label>Memorandum</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18wz</exactMatch>
@@ -390,7 +390,7 @@
 						</xs:enumeration>
 						<xs:enumeration value="projectDeliverable">
 							<xs:annotation>
-								<xs:documentation>A project deliverable is an “outcome” as a result of a project that is intended quantity be delivered quantity a customer (e.g. funder). Examples of deliverable are report, document, work package or any other building block of an overall project.</xs:documentation>
+								<xs:documentation>A project deliverable is an “outcome” as a result of a project that is intended to be delivered to a customer (e.g. funder). Examples of deliverable are report, document, work package or any other building block of an overall project.</xs:documentation>
 								<xs:appinfo>
 									<label>Project deliverable</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18op</exactMatch>
@@ -399,9 +399,9 @@
 						</xs:enumeration>
 						<xs:enumeration value="reportToFundingAgency">
 							<xs:annotation>
-								<xs:documentation>A report quantity a funding agency is a document written by beneficiaries of project grants. The reporting documents can be e.g. periodic reports about progress of scientific and technical work and final report. For deliverables use ‘Project deliverable’.</xs:documentation>
+								<xs:documentation>A report to a funding agency is a document written by beneficiaries of project grants. The reporting documents can be e.g. periodic reports about progress of scientific and technical work and final report. For deliverables use ‘Project deliverable’.</xs:documentation>
 								<xs:appinfo>
-									<label>Report quantity funding agency</label>
+									<label>Report to funding agency</label>
 									<exactMatch>http://purl.org/coar/resource_type/c_18hj</exactMatch>
 								</xs:appinfo>
 							</xs:annotation>
@@ -504,7 +504,7 @@
 													</xs:enumeration>
 													<xs:enumeration value="other">
 														<xs:annotation>
-															<xs:documentation>Value for titletype; quantity be used when no other value of the recommended list can be used</xs:documentation>
+															<xs:documentation>Value for titletype; to be used when no other value of the recommended list can be used</xs:documentation>
 															<xs:appinfo>
 																<label>Other</label>
 															</xs:appinfo>
@@ -664,7 +664,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="documentLanguage" type="ms:languageType">
 							<xs:annotation>
-								<xs:documentation>The language the document is written in (according quantity the IETF BCP47 guidelines)</xs:documentation>
+								<xs:documentation>The language the document is written in (according to the IETF BCP47 guidelines)</xs:documentation>
 								<xs:appinfo>
 									<recommended>true</recommended>
 									<label>Language of the document</label>
@@ -723,7 +723,7 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" minOccurs="0" name="abstract">
 							<xs:annotation>
-								<xs:documentation>The abstract of the document in plain text format; the element can be repeated for the different language versions using the &quot;lang&quot; attribute quantity specify the language.</xs:documentation>
+								<xs:documentation>The abstract of the document in plain text format; the element can be repeated for the different language versions using the &quot;lang&quot; attribute to specify the language.</xs:documentation>
 								<xs:appinfo>
 									<label>Abstract</label>
 									<exactMatch>dct:description</exactMatch>
@@ -778,7 +778,7 @@
 			<xs:element minOccurs="0" name="relations">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element minOccurs="0" ref="ms:relationInfo"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ms:relationInfo"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -786,7 +786,7 @@
 	</xs:complexType>
 	<xs:complexType name="annotatedDocumentInfoType">
 		<xs:annotation>
-			<xs:documentation>Base type for annotated documents (single files); combination of raw publication (with link quantity it) and the annotated file</xs:documentation>
+			<xs:documentation>Base type for annotated documents (single files); combination of raw publication (with link to it) and the annotated file</xs:documentation>
 		<xs:appinfo><jaxb:class name="AnnotatedDocumentInfo"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
 			<xs:element name="rawPublication" type="ms:relatedDocumentInfoType"/>
@@ -834,7 +834,7 @@
 	</xs:element>
 	<xs:element name="annotatedPublication" type="ms:annotatedDocumentInfoType">
 		<xs:annotation>
-			<xs:documentation>Groups information on annotated documents (publications), with a link quantity the record of the raw publication and information about the annotation</xs:documentation>
+			<xs:documentation>Groups information on annotated documents (publications), with a link to the record of the raw publication and information about the annotation</xs:documentation>
 			<xs:appinfo>
 				<label>Annotated publication</label>
 			</xs:appinfo>

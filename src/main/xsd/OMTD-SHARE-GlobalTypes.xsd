@@ -5,7 +5,7 @@
 	
 	<xs:simpleType name="httpURI">
 		<xs:annotation>
-			<xs:documentation>Base type quantity be used for url's, ftp's, secure url's</xs:documentation>
+			<xs:documentation>Base type to be used for url's, ftp's, secure url's</xs:documentation>
 		<xs:appinfo/></xs:annotation>
 		<xs:restriction base="xs:anyURI">
 			<xs:pattern value="http://.*"/>
@@ -153,7 +153,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="other">
 				<xs:annotation>
-					<xs:documentation>Value for classificationSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+					<xs:documentation>Value for classificationSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 					<xs:appinfo>
 						<label>Other</label>
 					</xs:appinfo>
@@ -251,7 +251,7 @@
 	</xs:complexType>
 	<xs:complexType name="dateType">
 		<xs:annotation>
-			<xs:documentation>Base type quantity be used for dates, allowing optional day and month</xs:documentation>
+			<xs:documentation>Base type to be used for dates, allowing optional day and month</xs:documentation>
 		<xs:appinfo><jaxb:class name="Date"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
 			<xs:element minOccurs="0" name="day">
@@ -271,7 +271,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="month">
 				<xs:annotation>
-					<xs:documentation>Optional month; quantity be used in two-digit format</xs:documentation>
+					<xs:documentation>Optional month; to be used in two-digit format</xs:documentation>
 					<xs:appinfo>
 						<label>Month</label>
 					</xs:appinfo>
@@ -286,7 +286,7 @@
 			</xs:element>
 			<xs:element minOccurs="1" name="year">
 				<xs:annotation>
-					<xs:documentation>for year; quantity be used with four digits always</xs:documentation>
+					<xs:documentation>for year; to be used with four digits always</xs:documentation>
 					<xs:appinfo>
 						<label>Year</label>
 					</xs:appinfo>
@@ -303,7 +303,7 @@
 	</xs:complexType>
 	<xs:complexType name="dateRangeType">
 		<xs:annotation>
-			<xs:documentation>Base type quantity be used for range of dates (time periods)</xs:documentation>
+			<xs:documentation>Base type to be used for range of dates (time periods)</xs:documentation>
 		<xs:appinfo><jaxb:class name="DateRange"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
 			<xs:element ref="ms:startDate"/>
@@ -312,7 +312,7 @@
 	</xs:complexType>
 	<xs:complexType name="dateCombinationType">
 		<xs:annotation>
-			<xs:documentation>Base type quantity be used for choice betwwen range of dates and exact date</xs:documentation>
+			<xs:documentation>Base type to be used for choice betwwen range of dates and exact date</xs:documentation>
 		<xs:appinfo><jaxb:class name="DateCombination"/></xs:appinfo></xs:annotation>
 		<xs:choice>
 			<xs:annotation><xs:appinfo><simplify:as-element-property/></xs:appinfo></xs:annotation><xs:element ref="ms:date"/>
@@ -321,15 +321,15 @@
 	</xs:complexType>
 	<xs:complexType name="languageType">
 		<xs:annotation>
-			<xs:documentation>The container for the language elements (i.e. identifier according quantity BCP47 guidelines and all the elements that produce this id)</xs:documentation>
+			<xs:documentation>The container for the language elements (i.e. identifier according to BCP47 guidelines and all the elements that produce this id)</xs:documentation>
 		<xs:appinfo><jaxb:class name="Language"/></xs:appinfo></xs:annotation>
 		<xs:sequence>
 			<xs:element name="languageTag">
 				<xs:annotation>
-					<xs:documentation>The identifier of the language that is included in the resource or supported by the component, according quantity the IETF BCP47 guidelines</xs:documentation>
+					<xs:documentation>The identifier of the language that is included in the resource or supported by the component, according to the IETF BCP47 guidelines</xs:documentation>
 					<xs:appinfo>
 						<label>Language</label>
-						<usage>in the XSD there is no validation as quantity the validity of the id, but the system validates the input metadata and the editor produces the correct id on the basis of the subelements (language, script, region and variant)</usage>
+						<usage>in the XSD there is no validation as to the validity of the id, but the system validates the input metadata and the editor produces the correct id on the basis of the subelements (language, script, region and variant)</usage>
 						<sameAs>dct:language</sameAs>
 					</xs:appinfo>
 				</xs:annotation>
@@ -342,7 +342,7 @@
 			<xs:sequence minOccurs="0">
 				<xs:element name="languageId" type="ms:languageIdType">
 					<xs:annotation>
-						<xs:documentation>The identifier of the language subelement according quantity the IETF BCP47 guidelines (i.e. ISO 639-3 codes when existing supplemented with ISO 639-3 codes for new entries)</xs:documentation>
+						<xs:documentation>The identifier of the language subelement according to the IETF BCP47 guidelines (i.e. ISO 639-3 codes when existing supplemented with ISO 639-3 codes for new entries)</xs:documentation>
 						<xs:appinfo>
 							<label>Language identifier</label>
 						</xs:appinfo>
@@ -350,7 +350,7 @@
 				</xs:element>
 				<xs:element minOccurs="0" name="scriptId" type="ms:scriptIdType">
 					<xs:annotation>
-						<xs:documentation>The identifier of the script subelement according quantity the IETF BCP47 guidelines (i.e. ISO 15924 codes)</xs:documentation>
+						<xs:documentation>The identifier of the script subelement according to the IETF BCP47 guidelines (i.e. ISO 15924 codes)</xs:documentation>
 						<xs:appinfo>
 							<label>Script identifier</label>
 						</xs:appinfo>
@@ -358,7 +358,7 @@
 				</xs:element>
 				<xs:element minOccurs="0" name="regiontId" type="ms:regionIdType">
 					<xs:annotation>
-						<xs:documentation>The identifier of the region subelement according quantity the IETF BCP47 guidelines (i.e. ISO 3166 codes)</xs:documentation>
+						<xs:documentation>The identifier of the region subelement according to the IETF BCP47 guidelines (i.e. ISO 3166 codes)</xs:documentation>
 						<xs:appinfo>
 							<label>Region identifier</label>
 						</xs:appinfo>
@@ -366,7 +366,7 @@
 				</xs:element>
 				<xs:element minOccurs="0" name="variantId" type="ms:variantIdType">
 					<xs:annotation>
-						<xs:documentation>The identifier of the variant subelement according quantity the IETF BCP47 guidelines</xs:documentation>
+						<xs:documentation>The identifier of the variant subelement according to the IETF BCP47 guidelines</xs:documentation>
 						<xs:appinfo>
 							<label>Variant identifier</label>
 						</xs:appinfo>
@@ -384,7 +384,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="metadataIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the metadata record identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the metadata record identifier is assigned by the authority that issues it</xs:documentation>
 						<xs:appinfo>
 							<label>Metadata identifier scheme name</label>
 							<label-plural>Metadata identifier scheme names</label-plural>
@@ -395,7 +395,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="metadataIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="Handle">
 								<xs:annotation>
-									<xs:documentation>Value for metadataIdentifierSchemeName, referring quantity the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
 									<xs:appinfo>
 										<label>Handle identifier</label>
 									</xs:appinfo>
@@ -403,7 +403,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PURL">
 								<xs:annotation>
-									<xs:documentation>Value for metadataIdentifierSchemeName, referring quantity PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
 									<xs:appinfo>
 										<label>PURL (Persistent URL)</label>
 									</xs:appinfo>
@@ -411,7 +411,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URL">
 								<xs:annotation>
-									<xs:documentation>Value for metadataIdentifierSchemeName, referring quantity the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
 									<xs:appinfo>
 										<label>URL (Uniform Resource Locator)</label>
 									</xs:appinfo>
@@ -419,7 +419,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URN">
 								<xs:annotation>
-									<xs:documentation>Value for metadataIdentifierSchemeName, referring quantity the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
 									<xs:appinfo>
 										<label>URN (Uniform Resource Name)</label>
 									</xs:appinfo>
@@ -427,7 +427,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for metadataIdentifierSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for metadataIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -448,7 +448,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="resourceIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the resource identifier is assigned by the authority that issues it (e.g. DOI, ISLRN etc.)</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the resource identifier is assigned by the authority that issues it (e.g. DOI, ISLRN etc.)</xs:documentation>
 						<xs:appinfo>
 							<label>Resource identifier scheme name</label>
 							<label-plural>Resource identifier scheme names</label-plural>
@@ -462,7 +462,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="resourceIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="DOI">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>DOI (Digital Object Identifier)</label>
 									</xs:appinfo>
@@ -470,7 +470,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISLRN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity ISLRN (International Standard Language Resource Number, http://www.islrn.org/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to ISLRN (International Standard Language Resource Number, http://www.islrn.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISLRN (International Standard Language Resource Number)</label>
 									</xs:appinfo>
@@ -478,7 +478,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="Handle">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
 									<xs:appinfo>
 										<label>Handle identifier</label>
 									</xs:appinfo>
@@ -486,7 +486,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ARK">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
 									<xs:appinfo>
 										<label>ARK (Archival Resource Key)</label>
 									</xs:appinfo>
@@ -494,7 +494,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="arXiv">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>arXiv identifier</label>
 									</xs:appinfo>
@@ -502,7 +502,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="bibcode">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
 									<xs:appinfo>
 										<label>bibcode</label>
 									</xs:appinfo>
@@ -510,7 +510,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="EAN13">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity EAN (International Article Number, also known as European Article Number) and more specifically quantity the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to EAN (International Article Number, also known as European Article Number) and more specifically to the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
 									<xs:appinfo>
 										<label>EAN 13 (European Article Number 13 standard)</label>
 									</xs:appinfo>
@@ -518,7 +518,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="EISSN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
 									<xs:appinfo>
 										<label>e-ISSN</label>
 									</xs:appinfo>
@@ -526,7 +526,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISBN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
 									<xs:appinfo>
 										<label>ISBN (International Standard Book Number)</label>
 									</xs:appinfo>
@@ -534,7 +534,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISSN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISSN (International Standard Serial Number)</label>
 									</xs:appinfo>
@@ -542,7 +542,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISTC">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISTC (International Standard Text Code)</label>
 									</xs:appinfo>
@@ -550,7 +550,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="LISSN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the linking ISSN or ISSN-L</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the linking ISSN or ISSN-L</xs:documentation>
 									<xs:appinfo>
 										<label>LISSN (ISSN-L)</label>
 									</xs:appinfo>
@@ -558,7 +558,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="LSID">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
 									<xs:appinfo>
 										<label>LSID (Life Sciences Identifier)</label>
 									</xs:appinfo>
@@ -566,7 +566,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PURL">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
 									<xs:appinfo>
 										<label>PURL (Persistent URL)</label>
 									</xs:appinfo>
@@ -574,7 +574,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="UPC">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
 									<xs:appinfo>
 										<label>UPC (Universal Product Number)</label>
 									</xs:appinfo>
@@ -582,7 +582,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URL">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
 									<xs:appinfo>
 										<label>URL (Uniform Resource Locator)</label>
 									</xs:appinfo>
@@ -590,7 +590,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URN">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
 									<xs:appinfo>
 										<label>URN (Uniform Resource Name)</label>
 									</xs:appinfo>
@@ -598,7 +598,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="OAI">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
 									<xs:appinfo>
 										<label>OAI identifier</label>
 									</xs:appinfo>
@@ -606,7 +606,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PMCID">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
 									<xs:appinfo>
 										<label>PMCID (PubMed Central Identifier)</label>
 									</xs:appinfo>
@@ -614,7 +614,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PMID">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
 									<xs:appinfo>
 										<label>PMID (PubMed Identifier)</label>
 									</xs:appinfo>
@@ -622,7 +622,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="maven">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the Maven coordinates (cf. Maven POM, https://maven.apache.org/pom.html#Maven_Coordinates)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Maven coordinates (cf. Maven POM, https://maven.apache.org/pom.html#Maven_Coordinates)</xs:documentation>
 									<xs:appinfo>
 										<label>Maven id</label>
 									</xs:appinfo>
@@ -630,7 +630,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="docker">
 								<xs:annotation>
-									<xs:documentation>Value for resourceIdentifierSchemeName, referring quantity the Docker (https://hub.docker.com/help/)</xs:documentation>
+									<xs:documentation>Value for resourceIdentifierSchemeName, referring to the Docker (https://hub.docker.com/help/)</xs:documentation>
 									<xs:appinfo>
 										<label>Docker id</label>
 									</xs:appinfo>
@@ -638,7 +638,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for resourceSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for resourceSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -663,7 +663,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="publicationIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the publication identifier is assigned by the authority that issues it (e.g. DOI, PubMed Central etc.)</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the publication identifier is assigned by the authority that issues it (e.g. DOI, PubMed Central etc.)</xs:documentation>
 						<xs:appinfo>
 							<label>Publication identifier scheme name</label>
 							<label-plural>Publication identifier scheme names</label-plural>
@@ -677,7 +677,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="publicationIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="DOI">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>DOI (Digital Object Identifier)</label>
 									</xs:appinfo>
@@ -685,7 +685,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="Handle">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
 									<xs:appinfo>
 										<label>Handle identifier</label>
 									</xs:appinfo>
@@ -693,7 +693,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ARK">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the Archival Resource Key identifiers (https://confluence.ucop.edu/display/Curation/ARK)</xs:documentation>
 									<xs:appinfo>
 										<label>ARK (Archival Resource Key)</label>
 									</xs:appinfo>
@@ -701,7 +701,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="arXiv">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the identifiers issued by arXiv (https://arxiv.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>arXiv identifier</label>
 									</xs:appinfo>
@@ -709,7 +709,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="bibcode">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to bibcode identifiers, i.e. a type of identifier used for literature references by astronomical data systems (Bibliographic Code, http://adsabs.harvard.edu/abs_doc/help_pages/data.html)</xs:documentation>
 									<xs:appinfo>
 										<label>bibcode</label>
 									</xs:appinfo>
@@ -717,7 +717,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="EAN13">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity EAN (International Article Number, also known as European Article Number) and more specifically quantity the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to EAN (International Article Number, also known as European Article Number) and more specifically to the EAN 13 standard (cf. https://en.wikipedia.org/wiki/International_Article_Number)</xs:documentation>
 									<xs:appinfo>
 										<label>EAN 13 (European Article Number 13 standard)</label>
 									</xs:appinfo>
@@ -725,7 +725,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="EISSN">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the e-ISSN (electronic International Standard Serial Number, https://en.wikipedia.org/wiki/International_Standard_Serial_Number)</xs:documentation>
 									<xs:appinfo>
 										<label>e-ISSN</label>
 									</xs:appinfo>
@@ -733,7 +733,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISBN">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISBN (International Standard Book Number, https://www.isbn-international.org/content/what-isbn)</xs:documentation>
 									<xs:appinfo>
 										<label>ISBN (International Standard Book Number)</label>
 									</xs:appinfo>
@@ -741,7 +741,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISSN">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISSN (International Standard Serial Number)</label>
 									</xs:appinfo>
@@ -749,7 +749,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISTC">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the ISTC (International Standard Text Code, http://www.istc-international.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISTC (International Standard Text Code)</label>
 									</xs:appinfo>
@@ -757,7 +757,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="LISSN">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the linking ISSN or ISSN-L</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the linking ISSN or ISSN-L</xs:documentation>
 									<xs:appinfo>
 										<label>LISSN (ISSN-L)</label>
 									</xs:appinfo>
@@ -765,7 +765,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="LSID">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the LSID (Life Sciences Identifier, http://www.webcitation.org/getfile?fileid=27fcd073ea70199946ace15c6868520be2cab2ab)</xs:documentation>
 									<xs:appinfo>
 										<label>LSID (Life Sciences Identifier)</label>
 									</xs:appinfo>
@@ -773,7 +773,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PURL">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to PURL (Persistent URL, https://archive.org/services/purl/help)</xs:documentation>
 									<xs:appinfo>
 										<label>PURL (Persistent URL)</label>
 									</xs:appinfo>
@@ -781,7 +781,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="UPC">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to UPC (Universal Product Number, http://www.gtin.info/upc/)</xs:documentation>
 									<xs:appinfo>
 										<label>UPC (Universal Product Number)</label>
 									</xs:appinfo>
@@ -789,7 +789,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URL">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
 									<xs:appinfo>
 										<label>URL (Uniform Resource Locator)</label>
 									</xs:appinfo>
@@ -797,7 +797,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URN">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the URN (Uniform Resource Name, https://en.wikipedia.org/wiki/Uniform_Resource_Name)</xs:documentation>
 									<xs:appinfo>
 										<label>URN (Uniform Resource Name)</label>
 									</xs:appinfo>
@@ -805,7 +805,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="OAI">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
 									<xs:appinfo>
 										<label>OAI identifier</label>
 									</xs:appinfo>
@@ -813,7 +813,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PMCID">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the PMCID (PubMed Central Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
 									<xs:appinfo>
 										<label>PMCID (PubMed Central Identifier)</label>
 									</xs:appinfo>
@@ -821,7 +821,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="PMID">
 								<xs:annotation>
-									<xs:documentation>Value for publicationIdentifierSchemeName, referring quantity the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
+									<xs:documentation>Value for publicationIdentifierSchemeName, referring to the PMID (PubMed Identifier, https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/)</xs:documentation>
 									<xs:appinfo>
 										<label>PMID (PubMed Identifier)</label>
 									</xs:appinfo>
@@ -829,7 +829,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for resourceSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for resourceSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -851,7 +851,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="journalIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the journal identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the journal identifier is assigned by the authority that issues it</xs:documentation>
 						<xs:appinfo>
 							<label>Journal identifier scheme name</label>
 							<label-plural>Journal identifier scheme names</label-plural>
@@ -865,7 +865,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="journalIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="DOI">
 								<xs:annotation>
-									<xs:documentation>Value for journalIdentifierSchemeName, referring quantity the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>DOI (Digital Object Identifier)</label>
 									</xs:appinfo>
@@ -873,7 +873,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="Handle">
 								<xs:annotation>
-									<xs:documentation>Value for journalIdentifierSchemeName, referring quantity the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
 									<xs:appinfo>
 										<label>Handle identifier</label>
 									</xs:appinfo>
@@ -881,7 +881,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISSN">
 								<xs:annotation>
-									<xs:documentation>Value for journalIdentifierSchemeName, referring quantity the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
+									<xs:documentation>Value for journalIdentifierSchemeName, referring to the ISSN (International Standard Serial Number, http://www.issn.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISSN (International Standard Serial Number)</label>
 									</xs:appinfo>
@@ -889,7 +889,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for journalIdentifierSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for journalIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -913,7 +913,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="repositoryIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="DOI">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the DOI system (Digital Object Identifier, https://www.doi.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>DOI (Digital Object Identifier)</label>
 									</xs:appinfo>
@@ -921,7 +921,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="Handle">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the Handle system for identifiers (https://www.handle.net/)</xs:documentation>
 									<xs:appinfo>
 										<label>Handle identifier</label>
 									</xs:appinfo>
@@ -929,7 +929,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="URL">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the URL (Uniform Resource Locator, https://en.wikipedia.org/wiki/URL)</xs:documentation>
 									<xs:appinfo>
 										<label>URL (Uniform Resource Locator)</label>
 									</xs:appinfo>
@@ -937,7 +937,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="OAI">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the OAI identifier (Open Archives Initiative, http://www.openarchives.org/OAI/2.0/guidelines-oai-identifier.htm)</xs:documentation>
 									<xs:appinfo>
 										<label>OAI identifier</label>
 									</xs:appinfo>
@@ -945,7 +945,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="OpenDOAR">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the OpenDOAR identifier (Directory of Open Access Repositories, http://www.opendoar.org/)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the OpenDOAR identifier (Directory of Open Access Repositories, http://www.opendoar.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>OpenDOAR</label>
 									</xs:appinfo>
@@ -953,7 +953,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="re3data">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the re3data identifier (Registry of Research Data Repositories, http://www.re3data.org/)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the re3data identifier (Registry of Research Data Repositories, http://www.re3data.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>re3data</label>
 									</xs:appinfo>
@@ -961,7 +961,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ROAR">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, referring quantity the ROAR identifier (Registry of Open Access Repositories, http://roar.eprints.org/)</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, referring to the ROAR identifier (Registry of Open Access Repositories, http://roar.eprints.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ROAR</label>
 									</xs:appinfo>
@@ -969,7 +969,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for repositoryIdentifierSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for repositoryIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -990,7 +990,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="personIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the person identifier is assigned by the authority that issues it (e.g. ORCID, ScopusId, ResearcherID etc.)</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the person identifier is assigned by the authority that issues it (e.g. ORCID, ScopusId, ResearcherID etc.)</xs:documentation>
 						<xs:appinfo>
 							<label>Person identifier scheme name</label>
 							<label-plural>Person identifier scheme names</label-plural>
@@ -1003,7 +1003,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="personIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="ORCID">
 								<xs:annotation>
-									<xs:documentation>Value for personIdentifierSchemeName, referring quantity the ORCID identifier for researchers (https://orcid.org/)</xs:documentation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ORCID identifier for researchers (https://orcid.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ORCID</label>
 									</xs:appinfo>
@@ -1011,7 +1011,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="ISNI">
 								<xs:annotation>
-									<xs:documentation>Value for personIdentifierSchemeName, referring quantity the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISNI (International Standard Name Identifier)</label>
 									</xs:appinfo>
@@ -1019,7 +1019,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="researcherId">
 								<xs:annotation>
-									<xs:documentation>Value for personIdentifierSchemeName, referring quantity the ResearcherID identifier for researchers (http://www.researcherid.com/)</xs:documentation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the ResearcherID identifier for researchers (http://www.researcherid.com/)</xs:documentation>
 									<xs:appinfo>
 										<label>ResearcherID</label>
 									</xs:appinfo>
@@ -1027,7 +1027,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="scopusId">
 								<xs:annotation>
-									<xs:documentation>Value for personIdentifierSchemeName, referring quantity the Scopus identifier for authors (https://www.scopus.com)</xs:documentation>
+									<xs:documentation>Value for personIdentifierSchemeName, referring to the Scopus identifier for authors (https://www.scopus.com)</xs:documentation>
 									<xs:appinfo>
 										<label>ScopusID</label>
 									</xs:appinfo>
@@ -1035,7 +1035,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for personIdentifierSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for personIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>Other</label>
 									</xs:appinfo>
@@ -1056,7 +1056,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="organizationIdentifierSchemeName" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the organization identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the organization identifier is assigned by the authority that issues it</xs:documentation>
 						<xs:appinfo>
 							<label>Organization identifier scheme name</label>
 							<label-plural>Organization identifier scheme names</label-plural>
@@ -1068,7 +1068,7 @@
 						<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="organizationIdentifierSchemeNameEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
 							<xs:enumeration value="ISNI">
 								<xs:annotation>
-									<xs:documentation>Value for organizationIdentifierSchemeName, referring quantity the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the ISNI authority (International Standard Name Identifier, http://www.isni.org/)</xs:documentation>
 									<xs:appinfo>
 										<label>ISNI (International Standard Name Identifier)</label>
 									</xs:appinfo>
@@ -1076,7 +1076,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="GRID">
 								<xs:annotation>
-									<xs:documentation>Value for organizationIdentifierSchemeName, referring quantity the GRID (Global Research Identifier Database, https://www.grid.ac/)</xs:documentation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the GRID (Global Research Identifier Database, https://www.grid.ac/)</xs:documentation>
 									<xs:appinfo>
 										<label>GRID (Global Research Identifier Database)</label>
 									</xs:appinfo>
@@ -1084,7 +1084,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="FundRef">
 								<xs:annotation>
-									<xs:documentation>Value for organizationIdentifierSchemeName, referring quantity the CrossRef Funder ID (https://www.crossref.org/services/funder-registry/)</xs:documentation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, referring to the CrossRef Funder ID (https://www.crossref.org/services/funder-registry/)</xs:documentation>
 									<xs:appinfo>
 										<label>CrossRef Funder ID</label>
 									</xs:appinfo>
@@ -1092,7 +1092,7 @@
 							</xs:enumeration>
 							<xs:enumeration value="other">
 								<xs:annotation>
-									<xs:documentation>Value for organizationIdentifierSchemeName, quantity be used when the desired value is not included in the listed values</xs:documentation>
+									<xs:documentation>Value for organizationIdentifierSchemeName, to be used when the desired value is not included in the listed values</xs:documentation>
 									<xs:appinfo>
 										<label>other</label>
 									</xs:appinfo>
@@ -1113,7 +1113,7 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="projectIdentifierSchemeName" type="xs:string" use="required">
 					<xs:annotation>
-						<xs:documentation>Specifies the name of the scheme according quantity which the project identifier is assigned by the authority that issues it</xs:documentation>
+						<xs:documentation>Specifies the name of the scheme according to which the project identifier is assigned by the authority that issues it</xs:documentation>
 						<xs:appinfo>
 							<label>Project identifier scheme name</label>
 							<label-plural>Project identifier scheme names</label-plural>
@@ -1129,28 +1129,28 @@
 		<xs:annotation>
 			<xs:documentation>Base type for actors/agents; choice between person and organization</xs:documentation>
 			<xs:appinfo>
-				<relation>one-quantity-one</relation>
+				<relation>one-to-one</relation>
 			<jaxb:class name="ActorInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:choice>
 			<xs:annotation><xs:appinfo><simplify:as-element-property/></xs:appinfo></xs:annotation><xs:element name="relatedPerson" type="ms:personInfoType">
 				<xs:annotation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="relatedGroup" type="ms:groupInfoType">
 				<xs:annotation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="relatedOrganization" type="ms:organizationInfoType">
 				<xs:annotation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
@@ -1189,9 +1189,9 @@
 			</xs:element>
 			<xs:element name="affiliatedOrganization" type="ms:organizationInfoType">
 				<xs:annotation>
-					<xs:documentation>The organization quantity which the group is affiliated</xs:documentation>
+					<xs:documentation>The organization to which the group is affiliated</xs:documentation>
 					<xs:appinfo>
-						<relation>one-quantity-one</relation>
+						<relation>one-to-one</relation>
 						<label>Affiliated organization</label>
 						<label-plural>Affiliated organizations</label-plural>
 						<recommended>true</recommended>
@@ -1307,9 +1307,9 @@
 					<xs:sequence>
 						<xs:element maxOccurs="unbounded" name="repositoryIdentifier" type="ms:repositoryIdentifierType">
 							<xs:annotation>
-								<xs:documentation>Reference quantity the identifier used for repositories, archives etc.</xs:documentation>
+								<xs:documentation>Reference to the identifier used for repositories, archives etc.</xs:documentation>
 								<xs:appinfo>
-									<relation>one-quantity-one</relation>
+									<relation>one-to-one</relation>
 									<label>Repository identifier</label>
 								</xs:appinfo>
 							</xs:annotation>
@@ -1340,7 +1340,7 @@
 						<xs:element maxOccurs="unbounded" name="resourceIdentifier" type="ms:resourceIdentifierType">
 							<xs:annotation>
 								<xs:appinfo>
-									<relation>one-quantity-one</relation>
+									<relation>one-to-one</relation>
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:element>
@@ -1352,7 +1352,7 @@
 	<xs:complexType name="relatedDocumentInfoType">
 		<xs:annotation>
 			<xs:appinfo>
-				<tip>The preferred practice is quantity provide DOI's or URL links quantity the relevant documents in the &quot;publicationIdentifier&quot; or a bibtex record in the &quot;unstructured document&quot; field; in this way, automatic linking quantity the relevant information will be possible</tip>
+				<tip>The preferred practice is to provide DOI's or URL links to the relevant documents in the &quot;publicationIdentifier&quot; or a bibtex record in the &quot;unstructured document&quot; field; in this way, automatic linking to the relevant information will be possible</tip>
 			<jaxb:class name="RelatedDocumentInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:choice>
@@ -1365,7 +1365,7 @@
 			</xs:element>
 			<xs:element name="documentUnstructured">
 				<xs:annotation>
-					<xs:documentation>Used quantity encode a bibliographic record, preferrably in the form of a bibtex record or as a free text description</xs:documentation>
+					<xs:documentation>Used to encode a bibliographic record, preferrably in the form of a bibtex record or as a free text description</xs:documentation>
 					<xs:appinfo>
 						<label>Unstructured document</label>
 						<label-plural>Unstructured documents</label-plural>
@@ -1416,7 +1416,7 @@
 							<xs:annotation>
 								<xs:documentation>Groups information on the person that has created the metadata record (for records manually edited)</xs:documentation>
 								<xs:appinfo>
-									<relation>many-quantity-many</relation>
+									<relation>many-to-many</relation>
 									<label>Metadata creator</label>
 									<usage>Until the user authentication system is integrated, use &quot;John Foufoutos&quot; as the default value</usage>
 									<usage_ugc>when the authentication system works, use for this the credentials of the person that made the query for creating the corpora</usage_ugc>
@@ -1428,7 +1428,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="sourceOfMetadataRecord">
 				<xs:annotation>
-					<xs:documentation>Refers quantity the catalog or repository from which the metadata record has been originated (for harvested records)</xs:documentation>
+					<xs:documentation>Refers to the catalog or repository from which the metadata record has been originated (for harvested records)</xs:documentation>
 					<xs:appinfo>
 						<label>Source of metadata record</label>
 					</xs:appinfo>
@@ -1437,7 +1437,7 @@
 					<xs:sequence>
 						<xs:element name="collectedFrom" type="ms:repositoryInfoType">
 							<xs:annotation>
-								<xs:documentation>Refers quantity the entity (repository, aggregator etc.) from which the metadata record has been harvested</xs:documentation>
+								<xs:documentation>Refers to the entity (repository, aggregator etc.) from which the metadata record has been harvested</xs:documentation>
 								<xs:appinfo>
 									<label>Source repository</label>
 								</xs:appinfo>
@@ -1445,7 +1445,7 @@
 						</xs:element>
 						<xs:element name="sourceMetadataLink" type="ms:httpURI">
 							<xs:annotation>
-								<xs:documentation>A link quantity the original metadata record, in cases of harvesting</xs:documentation>
+								<xs:documentation>A link to the original metadata record, in cases of harvesting</xs:documentation>
 								<xs:appinfo>
 									<label>Original metadata record link</label>
 								</xs:appinfo>
@@ -1453,7 +1453,7 @@
 						</xs:element>
 						<xs:element minOccurs="0" name="relatedMetadataScheme">
 							<xs:annotation>
-								<xs:documentation>Refers quantity the metadata schema originally used for the description of the resource</xs:documentation>
+								<xs:documentation>Refers to the metadata schema originally used for the description of the resource</xs:documentation>
 								<xs:appinfo>
 									<label>Original metadata scheme</label>
 								</xs:appinfo>
@@ -1466,7 +1466,7 @@
 						</xs:element>
 						<xs:element minOccurs="0" name="originalDataProviderInfo">
 							<xs:annotation>
-								<xs:documentation>Refers quantity the original data provider, in case the metadata record carries information taken from previous repositories/journals/publishers (e.g. in case the record's last source is an aggregator)</xs:documentation>
+								<xs:documentation>Refers to the original data provider, in case the metadata record carries information taken from previous repositories/journals/publishers (e.g. in case the record's last source is an aggregator)</xs:documentation>
 								<xs:appinfo>
 									<label>Original data provider</label>
 								</xs:appinfo>
@@ -1475,7 +1475,7 @@
 								<xs:sequence>
 									<xs:element minOccurs="1" name="originalDataProviderType">
 										<xs:annotation>
-											<xs:documentation>Refers quantity the type of the original data provider (repository/journal/publisher/aggregator etc.)</xs:documentation>
+											<xs:documentation>Refers to the type of the original data provider (repository/journal/publisher/aggregator etc.)</xs:documentation>
 											<xs:appinfo>
 												<label>Original data provider type</label>
 											</xs:appinfo>
@@ -1542,7 +1542,7 @@
 			</xs:element>
 			<xs:element minOccurs="0" name="revision">
 				<xs:annotation>
-					<xs:documentation>Provides an account of the revisions in free text or a link quantity a document with revisions</xs:documentation>
+					<xs:documentation>Provides an account of the revisions in free text or a link to a document with revisions</xs:documentation>
 					<xs:appinfo>
 						<label>Revision</label>
 					</xs:appinfo>
@@ -1639,7 +1639,7 @@
 	</xs:element>
 	<xs:element name="organizationIdentifier" type="ms:organizationIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Associates an organizationto an identifier, i.e. a string used quantity uniquely identify it</xs:documentation>
+			<xs:documentation>Associates an organizationto an identifier, i.e. a string used to uniquely identify it</xs:documentation>
 			<xs:appinfo>
 				<label>Organization identifier</label>
 				<label-plural>Organization identifiers</label-plural>
@@ -1652,7 +1652,7 @@
 	</xs:element>
 	<xs:element name="personIdentifier" type="ms:personIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Associates a person quantity an identifier (e.g. ORCID, LinkedIn etc.), i.e. a string used quantity uniquely identify it</xs:documentation>
+			<xs:documentation>Associates a person to an identifier (e.g. ORCID, LinkedIn etc.), i.e. a string used to uniquely identify it</xs:documentation>
 			<xs:appinfo>
 				<label>Person identifier</label>
 				<label-plural>Person identifiers</label-plural>
@@ -1665,7 +1665,7 @@
 	</xs:element>
 	<xs:element name="publicationIdentifier" type="ms:publicationIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Reference quantity a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
+			<xs:documentation>Reference to a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
 			<xs:appinfo>
 				<label>Publication identifier</label>
 				<sameAs>dct:identifier</sameAs>
@@ -1691,7 +1691,7 @@
 	</xs:element>
 	<xs:element name="journalIdentifier" type="ms:journalIdentifierType">
 		<xs:annotation>
-			<xs:documentation>Reference quantity a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
+			<xs:documentation>Reference to a DOI (recommended) or any kind of identifier used for the publication</xs:documentation>
 			<xs:appinfo>
 				<label>Journal Identifier</label>
 				<sameAs>dct:identifier</sameAs>
@@ -1704,11 +1704,11 @@
 	</xs:element>
 	<xs:attribute name="schemeURI" type="xs:anyURI">
 		<xs:annotation>
-			<xs:documentation>Specifies the URI of the scheme according quantity which the resource identifier is assigned by the authority that issues it</xs:documentation>
+			<xs:documentation>Specifies the URI of the scheme according to which the resource identifier is assigned by the authority that issues it</xs:documentation>
 			<xs:appinfo>
 				<label>URI for scheme</label>
 				<label-plural>URI for schemes</label-plural>
-				<userTip>If the scheme name is not included in the listed values for resource or other identifiers, please use &quot;other&quot; and use the &quot;schemeURI&quot; attribute quantity provide a link quantity information about the scheme</userTip>
+				<userTip>If the scheme name is not included in the listed values for resource or other identifiers, please use &quot;other&quot; and use the &quot;schemeURI&quot; attribute to provide a link to information about the scheme</userTip>
 				<conditions>Show in editor only if resourceIdentifierSchemeName=other or personIdentifierSchemeName=other</conditions>
 			</xs:appinfo>
 		</xs:annotation>
