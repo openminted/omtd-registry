@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.apache.log4j.Logger;
 
@@ -37,8 +39,8 @@ public class PopulateSchemaBean {
     private static Logger logger = Logger.getLogger(PopulateSchemaBean.class);
 
     @PostConstruct
-
     public void afterPropertiesSet() throws Exception {
+        logger.info("Initializing schema");
         ClassLoader cl = this.getClass().getClassLoader();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
         Resource[] resources = resolver.getResources(ANTPATH) ;

@@ -18,7 +18,7 @@
     <mvc:annotation-driven/>
 
     <context:component-scan base-package="eu.openminted.registry.service"/>
-    <context:component-scan base-package="eu.openminted.registry.core.controllers"/>
+    <!--<context:component-scan base-package="eu.openminted.registry.core.controllers"/>-->
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="268435456"/>
@@ -36,7 +36,7 @@
 
         <security:custom-filter before="PRE_AUTH_FILTER" ref="openIdConnectAuthenticationFilter" />
 
-        <security:logout />
+        <security:logout logout-url="/openid_logout" invalidate-session="true"/>
 
     </security:http>
 
@@ -64,7 +64,7 @@
             These are values from the demo "openid-connect-server-webapp" project of MITREid Connect.
         -->
         <bean class="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
-            <constructor-arg name="subject" value="90342.ASDFJWFA" />
+            <constructor-arg name="subject" value="0931731331613278@openminted.eu" />
             <constructor-arg name="issuer" value="${oidc.issuer}" />
         </bean>
     </util:set>

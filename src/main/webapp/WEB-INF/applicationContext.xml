@@ -8,7 +8,7 @@
        default-autowire="byType">
 
     <context:component-scan base-package="eu.openminted.registry">
-        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <!--<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>-->
     </context:component-scan>
 
     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true"
@@ -18,5 +18,11 @@
 
     <bean id="webexpressionHandler"
           class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+    <bean class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
+        <constructor-arg name="host" value="${redis.host}"/>
+        <constructor-arg name="port" value="${redis.port}"/>
+    </bean>
 </beans>
 
