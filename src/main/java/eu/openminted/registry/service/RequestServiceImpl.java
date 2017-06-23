@@ -21,7 +21,7 @@ public class RequestServiceImpl implements RequestService {
     @Autowired
     SearchService searchService;
 
-    private Logger logger = Logger.getLogger(RequestServiceImpl.class);
+    final private static Logger logger = Logger.getLogger(RequestServiceImpl.class);
 
     final private static String RESOURCE_ALIAS = "resourceTypes";
 
@@ -75,7 +75,7 @@ public class RequestServiceImpl implements RequestService {
      * @param overall
      * @return a List of facets.
      */
-    private List<Facet> createFacetCollection(Occurencies overall) {
+    static List<Facet> createFacetCollection(Occurencies overall) {
         List<Facet> facetsCollection = new ArrayList<>();
 
         for (String label : labels.keySet()) {
@@ -113,7 +113,7 @@ public class RequestServiceImpl implements RequestService {
      * @param paging the indexer result object
      * @return a Result object
      */
-    private List<Order<BaseMetadataRecord>> createResults(Paging paging) {
+    static List<Order<BaseMetadataRecord>> createResults(Paging paging) {
         List<Order<BaseMetadataRecord>> parsedXML = new ArrayList<>();
         if (paging != null) {
             int pos = 0;

@@ -1,6 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.controllers.Utils;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.core.service.ResourceService;
