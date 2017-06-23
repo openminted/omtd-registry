@@ -1,5 +1,8 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.domain.FacetFilter;
+import eu.openminted.registry.domain.Browsing;
+
 import java.util.List;
 
 /**
@@ -9,9 +12,9 @@ public interface ResourceCRUDService<T> {
 
     T get(String id);
 
-    List<T> getAll();
+    Browsing getAll(FacetFilter filter);
 
-    List<T> getMy();
+    Browsing getMy(FacetFilter filter);
 
     void add(T resource);
 

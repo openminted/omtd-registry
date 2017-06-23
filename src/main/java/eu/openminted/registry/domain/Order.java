@@ -3,7 +3,7 @@ package eu.openminted.registry.domain;
 /**
  * Created by stefanos on 29/11/2016.
  */
-public class Order<T> {
+public class Order<T extends BaseMetadataRecord> {
     private int order;
     private T resource;
 

@@ -2,15 +2,15 @@ package eu.openminted.registry.domain;
 
 import java.util.List;
 
-public class Browsing {
+public class Browsing<T extends BaseMetadataRecord> {
 
     int total;
     int from;
     int to;
-    List<Order<BaseMetadataRecord>> results;
+    List<Order<T>> results;
     List<Facet> facets;
 
-    public Browsing(int total, int from, int to, List<Order<BaseMetadataRecord>> results, List<Facet> facets) {
+    public Browsing(int total, int from, int to, List<Order<T>> results, List<Facet> facets) {
         this.total = total;
         this.from = from;
         this.to = to;
@@ -42,11 +42,11 @@ public class Browsing {
         this.to = to;
     }
 
-    public List<Order<BaseMetadataRecord>> getResults() {
+    public List<Order<T>> getResults() {
         return results;
     }
 
-    public void setResults(List<Order<BaseMetadataRecord>> results) {
+    public void setResults(List<Order<T>> results) {
         this.results = results;
     }
 
