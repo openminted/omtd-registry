@@ -1,24 +1,22 @@
 package eu.openminted.registry.service;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.Scanner;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.domain.ObjectFactory;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.Scanner;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import eu.openminted.registry.domain.ObjectFactory;
-import org.apache.log4j.Logger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import eu.openminted.registry.core.domain.Resource;
-
-import static javax.xml.bind.JAXBContext.*;
+import static javax.xml.bind.JAXBContext.newInstance;
 
 
 public class Utils {

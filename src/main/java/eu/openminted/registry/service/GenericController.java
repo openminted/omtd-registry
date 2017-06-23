@@ -44,7 +44,7 @@ public class GenericController {
     }
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     ServerError defaultException(HttpServletRequest req, Exception ex) {
