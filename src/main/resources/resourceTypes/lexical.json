@@ -6,6 +6,16 @@
       "type": "java.lang.String"
     },
     {
+      "name": "public",
+      "path": "//*[local-name()='public']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "personIdentifier",
+      "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
+      "type": "java.lang.String"
+    },
+    {
       "multivalued": true,
       "name": "language",
       "path": "//*[local-name()='languageTag']/text()",
