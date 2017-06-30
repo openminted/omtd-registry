@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 /**
  * Created by stefanos on 14/6/2017.
@@ -29,5 +31,14 @@ public class Config {
     public LettuceConnectionFactory connectionFactory() {
         logger.info(String.format("Redis connection listens to %s:%s",host,port));
         return new LettuceConnectionFactory(host,Integer.parseInt(port));
+    }
+
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("SESSION"); // <1>
+        serializer.setCookiePath("/"); // <2>
+        // serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$"); // <3>
+        return serializer;
     }
 }

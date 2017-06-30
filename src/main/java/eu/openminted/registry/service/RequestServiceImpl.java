@@ -39,10 +39,14 @@ public class RequestServiceImpl implements RequestService {
         labels.put("rights", "Rights");
         labels.put("mimeType", "Mime Type");
         labels.put("dataFormatSpecific", "Data format specific");
+        labels.put("componentType", "Component Type");
+        labels.put("componentDistributionForm", "Component Distribution");
+        labels.put("application", "Application");
     }
 
     public Browsing getResponseByFiltersElastic(FacetFilter filter) {
 
+        filter.addFilter("public",true);
         List<Order<BaseMetadataRecord>> result = new ArrayList<>();
 
         int totalNumber = 0;

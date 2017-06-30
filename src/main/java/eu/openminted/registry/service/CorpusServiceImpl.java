@@ -11,6 +11,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -25,6 +28,28 @@ public class CorpusServiceImpl extends AbstractGenericService<Corpus> implements
 
     private final int BUFFER_SIZE = 4096;
 
+    private static final List<String> FACETS;
+
+    static {
+        List<String> facets = new ArrayList<>();
+        facets.add("language");
+        facets.add("mediaType");
+        facets.add("licence");
+        facets.add("lingualityType");
+        facets.add("multilingualityType");
+        facets.add("mimeType");
+        facets.add("domain");
+        facets.add("corpusSubtype");
+        facets.add("annotationLevel");
+        facets.add("tagset");
+        facets.add("rights");
+        facets.add("rightsStmtName");
+        facets.add("dataFormatSpecific");
+        facets.add("subject");
+        facets.add("typeSystem");
+        FACETS = Collections.unmodifiableList(facets);
+    }
+
     @Autowired
     Environment environment;
 
@@ -37,6 +62,10 @@ public class CorpusServiceImpl extends AbstractGenericService<Corpus> implements
         return "corpus";
     }
 
+    @Override
+    public List<String> getFacets() {
+        return FACETS;
+    }
 
     @Override
     public String uploadCorpus(String filename, InputStream inputStream) {

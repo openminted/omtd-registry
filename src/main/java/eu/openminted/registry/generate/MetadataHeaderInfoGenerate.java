@@ -1,5 +1,6 @@
 package eu.openminted.registry.generate;
 
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.slf4j.Logger;
@@ -51,7 +52,12 @@ public class MetadataHeaderInfoGenerate {
         // Set metadata creator
         //
         //TODO check if anonymous user
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        OIDCAuthenticationToken authentication;
+        try {
+             authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        } catch (ClassCastException e) {
+            throw new ServiceException("User is not authenticated in order to generate metadata");
+        }
 
         PersonInfo personInfo = new PersonInfo();
         SeparateNames name = new SeparateNames();

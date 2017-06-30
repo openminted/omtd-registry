@@ -8,9 +8,10 @@
     {
       "name": "public",
       "path": "//*[local-name()='public']/text()",
-      "type": "java.lang.String"
+      "type": "java.lang.Boolean"
     },
     {
+      "multivalued": true,
       "name": "personIdentifier",
       "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
       "type": "java.lang.String"
@@ -60,7 +61,7 @@
     {
       "multivalued": true,
       "name": "componentDistributionMedium",
-      "path": "//*[local-name()='componentDistributionMedium']/text()",
+      "path": "//*[local-name()='componentDistributionForm']/text()",
       "type": "java.lang.String"
     },
     {

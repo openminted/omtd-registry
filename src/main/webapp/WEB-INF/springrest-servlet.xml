@@ -37,7 +37,7 @@
 
     <context:property-placeholder location="classpath:application.properties" />
 
-    <bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean" scope="session"/>
+    <!--<bean id="populateSchemaBean" class="eu.openminted.registry.beans.PopulateSchemaBean" scope="session"/>-->
 
     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true" authentication-manager-ref="authenticationManager"/>
 

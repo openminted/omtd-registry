@@ -36,6 +36,11 @@
 			<artifactId>registry-core-api</artifactId>
 			<version>${registry.core.version}</version>
 		</dependency>
+		<!-- <dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>registry-core-rest</artifactId>
+			<version>${registry.core.version}</version>
+		</dependency> -->
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core</artifactId>

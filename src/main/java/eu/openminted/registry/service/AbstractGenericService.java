@@ -1,16 +1,15 @@
 package eu.openminted.registry.service;
 
 import eu.openminted.registry.core.domain.FacetFilter;
+import eu.openminted.registry.core.domain.Occurencies;
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.domain.Browsing;
-import eu.openminted.registry.domain.MetadataHeaderInfo;
-import eu.openminted.registry.domain.Order;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
+import eu.openminted.registry.parser.ParserPool;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by stefanos on 20/6/2017.
@@ -43,7 +44,12 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
     @Autowired
     ResourceService resourceService;
 
+    @Autowired
+    ParserPool parserPool;
+
     public abstract String getResourceType();
+
+    public abstract List<String> getFacets();
 
     final private Class<T> typeParameterClass;
 
@@ -65,7 +71,10 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
 
     @Override
     public Browsing getAll(FacetFilter filter) {
-//        filter.addFilter("public",true);
+        filter.addFilter("public",true);
+
+        filter.setBrowseBy(getFacets());
+
         return getResults(filter);
     }
 
@@ -78,48 +87,43 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
 
     @Override
     public void add(T resource) {
-        T $component;
-        XMLGregorianCalendar calendar;
-        try {
-            $component = Utils.serialize(searchService.searchId(getResourceType(),
-                    resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()), typeParameterClass);
-            GregorianCalendar gregory = new GregorianCalendar();
-            gregory.setTime(new Date());
+        if(resource.getMetadataHeaderInfo() == null) {
+            logger.info("Auto-generate metadata header info for " + getResourceType());
+            resource.setMetadataHeaderInfo(MetadataHeaderInfoGenerate.generate());
+        }
 
-            calendar = DatatypeFactory.newInstance()
-                    .newXMLGregorianCalendar(
-                            gregory);
-        } catch (UnknownHostException | DatatypeConfigurationException e ) {
+        String insertionId = resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+        Resource checkResource;
+
+        try {
+            //Check existence if resource
+            checkResource = searchService.searchId(getResourceType(), insertionId);
+        } catch (UnknownHostException e ) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
 
-        if ($component != null) {
-            throw new ServiceException(getResourceType() + " already exists");
+        if (checkResource != null) {
+            throw new ServiceException(String.format("%s with id [%s] already exists",getResourceType(),insertionId));
         }
-
 
 
 
         Resource resourceDb = new Resource();
-        resource.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
-        resource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
-        String serialized = Utils.unserialize(resource, BaseMetadataRecord.class);
 
-        if (!serialized.equals("failed")) {
-            resourceDb.setPayload(serialized);
-        } else {
-            throw new ServiceException("Serialization failed");
+
+        Future<String> serialized = parserPool.unserialize(resource, typeParameterClass);
+        try {
+            resourceDb.setCreationDate(new Date());
+            resourceDb.setModificationDate(new Date());
+            resourceDb.setPayloadFormat("xml");
+            resourceDb.setResourceType(getResourceType());
+            resourceDb.setVersion("not_set");
+            resourceDb.setId(insertionId);
+            resourceDb.setPayload(serialized.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ServiceException(e);
         }
-
-        resourceDb.setCreationDate(new Date());
-        resourceDb.setModificationDate(new Date());
-        resourceDb.setPayloadFormat("xml");
-        resourceDb.setResourceType(getResourceType());
-        resourceDb.setVersion("not_set");
-        resourceDb.setId("wont be saved");
-
-
         resourceService.addResource(resourceDb);
     }
 
@@ -136,8 +140,8 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
 
         Resource resource = new Resource();
 
-        if ($resource != null) {
-            throw new ServiceException(getResourceType() + " already exists");
+        if ($resource == null) {
+            throw new ServiceException(getResourceType() + " does not exists");
         } else {
             String serialized = Utils.unserialize(resources, typeParameterClass);
 
@@ -158,8 +162,8 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
         Resource resource;
         try {
             resource = searchService.searchId(getResourceType(), component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
-            if (resource != null) {
-                throw new ServiceException(getResourceType() + " already exists");
+            if (resource == null) {
+                throw new ServiceException(getResourceType() + " does not exists");
             } else {
                 resourceService.deleteResource(resource.getId());
             }
@@ -169,25 +173,34 @@ abstract public class AbstractGenericService<T extends BaseMetadataRecord> imple
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Browsing<T> getResults(FacetFilter filter) {
         List<Order<T>> result = new ArrayList<>();
+        List<Future<T>> futureResults;
         Paging paging;
         filter.setResourceType(getResourceType());
         Browsing<T> browsing;
+        Occurencies overall;
+        List<Facet> facetsCollection;
         try {
             paging = searchService.search(filter);
+            futureResults = new ArrayList<>(paging.getResults().size());
             int index = 0;
             for(Object res : paging.getResults()) {
                 Resource resource = (Resource) res;
-                T resourceSpecific = Utils.serialize(resource,typeParameterClass);
-                result.add(new Order(index,resourceSpecific));
+                futureResults.add(index,parserPool.serialize(resource,typeParameterClass));
                 index++;
             }
-        } catch (UnknownHostException e ) {
+            overall = paging.getOccurencies();
+            facetsCollection = RequestServiceImpl.createFacetCollection(overall);
+            for(Future<T> res : futureResults) {
+                result.add(new Order(index,res.get()));
+            }
+        } catch (UnknownHostException | InterruptedException | ExecutionException e ) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
-        browsing = new Browsing(paging.getTotal(), filter.getFrom(), filter.getFrom() + result.size(), result, null);
+        browsing = new Browsing(paging.getTotal(), filter.getFrom(), filter.getFrom() + result.size(), result, facetsCollection);
         return browsing;
     }
 }
