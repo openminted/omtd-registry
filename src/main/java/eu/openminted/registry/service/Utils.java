@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.ObjectFactory;
 import org.apache.log4j.Logger;
 
@@ -34,58 +35,48 @@ public class Utils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T serialize(Resource resource, Class<T> returnType){
+    static <T> T serialize(Resource resource, Class<T> returnType) {
         T type;
         if (resource == null) {
-            return null;
+            throw new ServiceException("null resource");
         }
         try {
             Unmarshaller unmarshaller = JAXBCONTEXT.createUnmarshaller();
-
             type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
         } catch (JAXBException je) {
-            type = null;
+            throw new ServiceException(je);
         }
         return type;
     }
 
-    public static <T> String objToJson(T paging){
-
+    public static <T> String objToJson(T paging) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try {
             return mapper.writeValueAsString(paging);
         } catch (JsonProcessingException e) {
-//			logger.error("Error serializing object to json", e);
-            return e.getMessage();
-//			return null;
+            throw new ServiceException(e);
         }
     }
 
 
     public static String getText(String url) throws Exception {
-
         String out = new Scanner(new URL(url).openStream(), "UTF-8").useDelimiter("\\A").next();
-
-
-        if(out==null || out.isEmpty()){
+        if (out == null || out.isEmpty()) {
             return null;
-        }else{
+        } else {
             return out;
         }
     }
 
-    public static <T> String unserialize(T component,Class<T> returnType){
-
+    public static <T> String unserialize(T component, Class<T> returnType) throws ServiceException {
         try {
             Marshaller marshaller = JAXBCONTEXT.createMarshaller();
-
             StringWriter sw = new StringWriter();
             marshaller.marshal(component, sw);
             return sw.toString();
-
         } catch (JAXBException je) {
-            return "failed";
+            throw new ServiceException((je));
         }
     }
 
