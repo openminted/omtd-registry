@@ -1,12 +1,12 @@
 import re
-import sys;
+import sys
 import pprint
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 from parsimonious.expressions import (Literal, Regex, Sequence, OneOf,
 	Lookahead, Optional, ZeroOrMore, OneOrMore, Not, TokenMatcher,
 	expression)
-import extract_doc as ed;
+import extract_doc as ed
 import argparse
 
 

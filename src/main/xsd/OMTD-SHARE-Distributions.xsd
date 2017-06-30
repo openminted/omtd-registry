@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc simplify" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="2.0.0" xml:lang="en" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc simplify" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="2.0.1" xml:lang="en" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:include schemaLocation="./OMTD-SHARE-Actors.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-TextSpecific.xsd"/>
@@ -7,7 +7,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="ms:distributionMedium"/>
-				<xs:element minOccurs="0" ref="ms:distributionURL">
+				<xs:element minOccurs="0" ref="ms:distributionLocation">
 					<xs:annotation>
 						<xs:documentation>Any url where the resource can be downloaded from; please, use if the resource is &quot;downloadable&quot; and you have not uploaded the resource in the repository</xs:documentation>
 						<xs:appinfo>
@@ -167,16 +167,26 @@
 		<xs:annotation>
 			<xs:appinfo>
 				<render-short>{componentDistributionForm}, licensing terms: {licenceInfo}</render-short>
+				<label>Component distribution</label>
 			<jaxb:class name="ComponentDistributionInfo"/></xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			
 			<xs:element name="componentLoc">
+				<xs:annotation>
+					<xs:documentation>Information on how to access/download and invoke a component</xs:documentation>
+					<xs:appinfo>
+						<label>Component access information</label>
+					</xs:appinfo>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="componentDistributionForm">
 							<xs:annotation>
 								<xs:documentation>Specifies the form of distribution of the component (e.g. as source code, executable programme etc.)</xs:documentation>
+								<xs:appinfo>
+									<label>Component distribution form</label>
+								</xs:appinfo>
 							</xs:annotation>
 							<xs:simpleType>
 								<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="componentDistributionFormEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
@@ -212,22 +222,54 @@
 											</xs:appinfo>
 										</xs:annotation>
 									</xs:enumeration>
+									<xs:enumeration value="dockerImage">
+										<xs:annotation>
+											<xs:documentation>For components delivered as docker images</xs:documentation>
+											<xs:appinfo>
+												<label>Docker image</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="wrappedInGalaxy">
+										<xs:annotation>
+											<xs:documentation>For forms of components that are delivered wrapped in the Galaxy workflow system</xs:documentation>
+											<xs:appinfo>
+												<label>Wrapped in Galaxy</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="workflowFile">
+										<xs:annotation>
+											<xs:documentation>A workflow description file following a standard language, such as a CWL</xs:documentation>
+											<xs:appinfo>
+												<label>Workflow file</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="other">
+										<xs:annotation>
+											<xs:documentation>Value to be used when none of the enumerated values applies</xs:documentation>
+											<xs:appinfo>
+												<label>Other</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:enumeration>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:element>
-						<xs:element ref="ms:distributionURL"/>
+						<xs:element ref="ms:distributionLocation"/>
+						<xs:element minOccurs="0" name="command" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>A command line used for the execution of a component</xs:documentation>
+								<xs:appinfo>
+									<relation>one-to-many</relation>
+									<label>Command</label>
+									<usage>To show if componentDistributionForm=webService</usage>
+								</xs:appinfo>
+							</xs:annotation>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
-			</xs:element>
-			<xs:element maxOccurs="1" minOccurs="0" name="command" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>A command line used for the execution of a component</xs:documentation>
-					<xs:appinfo>
-						<relation>one-to-many</relation>
-						<label>Command</label>
-						<usage>To show if componentDistributionForm=webService</usage>
-					</xs:appinfo>
-				</xs:annotation>
 			</xs:element>
 			
 			<xs:element minOccurs="0" name="webServiceType">
@@ -1149,12 +1191,12 @@
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:element>
-	<xs:element name="distributionURL" type="ms:httpURI">
+	<xs:element name="distributionLocation" type="xs:string">
 		<xs:annotation>
-			<xs:documentation>Any url where the resource can be accessed from, either in a downloadable form or as a web executable command etc.</xs:documentation>
+			<xs:documentation>Any location (e.g. URL, repository, etc.) where the resource can be accessed from, either in a downloadable form or as a web executable command etc.</xs:documentation>
 			<xs:appinfo>
 				<relation>one-to-many</relation>
-				<label>Download URL</label>
+				<label>Distribution location</label>
 				<broader>dcat:downloadURL</broader>
 				<recommended>true</recommended>
 			</xs:appinfo>

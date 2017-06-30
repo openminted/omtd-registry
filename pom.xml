@@ -27,6 +27,7 @@
     <properties>
         <jaxb2_commons.version>0.11.1</jaxb2_commons.version>
         <rename.exec.skip>true</rename.exec.skip>
+        <description.exec.skip>true</description.exec.skip>
         <typescript.exec.skip>true</typescript.exec.skip>
     </properties>
     <dependencies>
@@ -158,18 +159,34 @@
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <skip>${rename.exec.skip}</skip>
+                            <executable>python</executable>
+                            <workingDirectory>src/main/xsd</workingDirectory>
+                            <arguments>
+                                <argument>enum.py</argument>
+                                <argument>-domtd_scheme/OMTD-SHARE v200 XSD/</argument>
+                                <argument>-peu.openminted.registry.domain</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>description-generation</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${description.exec.skip}</skip>
+                            <executable>python</executable>
+                            <workingDirectory>src/main/xsd</workingDirectory>
+                            <arguments>
+                                <argument>extract_doc.py</argument>
+                                <argument>.</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <skip>${rename.exec.skip}</skip>
-                    <executable>python</executable>
-                    <workingDirectory>src/main/xsd</workingDirectory>
-                    <arguments>
-                        <argument>enum.py</argument>
-                        <argument>-domtd_scheme/OMTD-SHARE v200 XSD/</argument>
-                        <argument>-peu.openminted.registry.domain</argument>
-                    </arguments>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
@@ -230,21 +247,56 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>cz.habarta.typescript-generator</groupId>
-                <artifactId>typescript-generator-maven-plugin</artifactId>
-                <version>1.10.220</version>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>0.4.37</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/jsonSchema</sourceDirectory>
+                    <targetPackage>${project.groupId}.registry.domain.operation</targetPackage>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>1.27.339</version>
+                <executions>
+                    <execution>
+                        <id>generate1</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <jsonLibrary>jackson2</jsonLibrary>
+                            <outputFileType>implementationFile</outputFileType>
+                            <mapEnum>asEnum</mapEnum>
+                            <mapClasses>asClasses</mapClasses>
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.*</pattern>
                             </classPatterns>
-                            <outputFile>target/sample.d.ts</outputFile>
+                            <outputFile>target/openminted-model.ts</outputFile>
+                            <outputKind>module</outputKind>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate2</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <jsonLibrary>jackson2</jsonLibrary>
+                            <outputFileType>implementationFile</outputFileType>
+                            <mapClasses>asClasses</mapClasses>
+                            <classPatterns>
+                                <pattern>eu.openminted.registry.domain.operation.*</pattern>
+                            </classPatterns>
+                            <outputFile>target/operation.ts</outputFile>
                             <outputKind>module</outputKind>
                         </configuration>
                     </execution>

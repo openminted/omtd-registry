@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc simplify" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="2.0.0" xml:lang="en" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc simplify" jaxb:version="1.0" targetNamespace="http://www.meta-share.org/OMTD-SHARE_XMLSchema" version="2.0.1" xml:lang="en" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:ms="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:include schemaLocation="./OMTD-SHARE-GlobalTypes.xsd"/>
 	<xs:include schemaLocation="./OMTD-SHARE-ResourceCommon.xsd"/>
 	<xs:complexType name="componentInfoType">
@@ -644,38 +644,6 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
-						<xs:enumeration value="platform">
-							<xs:annotation>
-								<xs:documentation>A technology that eases the development of new tools and services in the NLP field</xs:documentation>
-								<xs:appinfo>
-									<label>Platform</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="infrastructure">
-							<xs:annotation>
-								<xs:documentation>The basic structures and facilities required for the operation of a system</xs:documentation>
-								<xs:appinfo>
-									<label>Infrastructure</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="architecture">
-							<xs:annotation>
-								<xs:documentation>A technology that supports the flexible development of NLP applications, together with all the requested resources</xs:documentation>
-								<xs:appinfo>
-									<label>Architecture</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
-						<xs:enumeration value="nlpDevelopmentEnvironment">
-							<xs:annotation>
-								<xs:documentation>A technology that supports the development of data resources, like lexicons, grammars, corpora, etc.; it can be included in an Architecture or in a Platform</xs:documentation>
-								<xs:appinfo>
-									<label>NLP development environment</label>
-								</xs:appinfo>
-							</xs:annotation>
-						</xs:enumeration>
 						<xs:enumeration value="other">
 							<xs:annotation>
 								<xs:documentation>Value for componentType, to be used when the desired value is not included in the listed values</xs:documentation>
@@ -684,6 +652,7 @@
 								</xs:appinfo>
 							</xs:annotation>
 						</xs:enumeration>
+						
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1131,6 +1100,7 @@
 				</xs:complexType>
 			</xs:element>
 			
+			<xs:element minOccurs="0" ref="ms:samplesLocation"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="componentEvaluationInfoType">
@@ -1230,6 +1200,110 @@
 									<xs:enumeration value="automatic"/>
 								</xs:restriction>
 							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="goldStandardLocation" type="ms:httpURI">
+				<xs:annotation>
+					<xs:documentation>Link to the location of a Gold Standard dataset that can be used for evaluating the component</xs:documentation>
+					<xs:appinfo>
+						<label>Gold Standard Location</label>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="performanceIndicators">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="performanceIndicatorInfo">
+							<xs:annotation>
+								<xs:documentation>Information on metrics that can be used as performance indicators of the component</xs:documentation>
+								<xs:appinfo>
+									<label>Performance indicator</label>
+								</xs:appinfo>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="metric">
+										<xs:simpleType>
+											<xs:annotation><xs:appinfo><jaxb:typesafeEnumClass name="metricEnum"/></xs:appinfo></xs:annotation><xs:restriction base="xs:string">
+												<xs:enumeration value="MAD">
+													<xs:annotation>
+														<xs:documentation>Mean annotations per document</xs:documentation>
+														<xs:appinfo>
+															<label>Mean annotations per document</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="MTDV">
+													<xs:annotation>
+														<xs:documentation>Mean time per document volume</xs:documentation>
+														<xs:appinfo>
+															<label>Mean time per document volume</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="MTSA">
+													<xs:annotation>
+														<xs:documentation>Mean time seek annotations</xs:documentation>
+														<xs:appinfo>
+															<label>Mean time seek annotations</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="ART">
+													<xs:annotation>
+														<xs:documentation>Average response time</xs:documentation>
+														<xs:appinfo>
+															<label>Average response time</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="MTBF">
+													<xs:annotation>
+														<xs:documentation>Mean time between failures</xs:documentation>
+														<xs:appinfo>
+															<label>Mean time between failures</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="MTTR">
+													<xs:annotation>
+														<xs:documentation>Mean time to repair</xs:documentation>
+														<xs:appinfo>
+															<label>Mean time to repair</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="other">
+													<xs:annotation>
+														<xs:documentation>Value to be used when no other value is applicable</xs:documentation>
+														<xs:appinfo>
+															<label>Other</label>
+														</xs:appinfo>
+													</xs:annotation>
+												</xs:enumeration>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="measure" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>The measure calculated for the metric</xs:documentation>
+											<xs:appinfo>
+												<label>Measure</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:element>
+									<xs:element minOccurs="0" name="unit" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Unit of measure for the metric</xs:documentation>
+											<xs:appinfo>
+												<label>Unit</label>
+											</xs:appinfo>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
