@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "id" : {
+            "description": "The id of the operation (UUID)",
+            "title": "ID",
+            "type": "string"
+        },
+        "component": {
+            "description": "The id of the application component that was executed.",
+            "title": "Component ID",
+            "type": "string"
+        },
+        "corpus": {
+            "properties": {
+                "input": {
+                    "description": "The id of the input corpus.",
+                    "title": "Input Corpus ID",
+                    "type": "string"
+                },
+                "output": {
+                    "description": "The id of the result corpus.",
+                    "title": "Output Corpus ID",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "input"
+            ],
+            "type": "object"
+        },
+        "errors": {
+            "type": "object"
+        },
+        "job": {
+            "description": "The ID from Galaxy for the workflow.",
+            "title": "Galaxy ID",
+            "type": "string"
+        },
+        "person": {
+            "description": "The sub field from OIDC representing the user.",
+            "title": "Person ID",
+            "type": "string"
+        },
+        "date": {
+            "properties": {
+                "finished": {
+                    "description": "When the workflow was finished.",
+                    "title": "Finished Date",
+                    "type": "integer"
+                },
+                "started": {
+                    "description": "When the workflow was started.",
+                    "title": "Started Date",
+                    "type": "integer"
+                },
+                "submitted": {
+                    "description": "When the workflow was submitted.",
+                    "title": "Submitted Date",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "started"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "id",
+        "component",
+        "person",
+        "job",
+        "date",
+        "corpus"
+    ],
+    "type": "object"
+}
+
