@@ -1,8 +1,5 @@
 package eu.openminted.registry.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.domain.User;

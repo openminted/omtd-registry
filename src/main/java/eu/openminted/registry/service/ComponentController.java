@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

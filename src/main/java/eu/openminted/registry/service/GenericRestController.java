@@ -1,9 +1,9 @@
 package eu.openminted.registry.service;
 
 import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.domain.Browsing;
-import eu.openminted.registry.exception.ResourceNotFoundException;
+import eu.openminted.registry.core.domain.Browsing;
+import eu.openminted.registry.core.exception.ResourceNotFoundException;
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Base64;
  * Created by stefanos on 20/6/2017.
  */
 
-public class GenericRestController<T extends BaseMetadataRecord> {
+public class GenericRestController<T> {
 
     final protected ResourceCRUDService<T> service;
 
@@ -26,7 +26,7 @@ public class GenericRestController<T extends BaseMetadataRecord> {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<T> getComponent(@PathVariable("id") String id) {
-        String id_decoded = new String(Base64.getDecoder().decode(id));
+        String id_decoded = id; //new String(Base64.getDecoder().decode(id));
         T component = service.get(id_decoded);
         if (component == null)
             throw new ResourceNotFoundException();
@@ -35,14 +35,14 @@ public class GenericRestController<T extends BaseMetadataRecord> {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> addComponentJson(@RequestBody T component) {
         service.add(component);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/xml; charset=utf-8")
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> addComponentXml(@RequestBody T component) {
         service.add(component);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -63,7 +63,7 @@ public class GenericRestController<T extends BaseMetadataRecord> {
 
     }
 
-    @RequestMapping(path = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Browsing> getAllComponents(
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(value = "from", required = false, defaultValue = "0") int from,
@@ -77,7 +77,7 @@ public class GenericRestController<T extends BaseMetadataRecord> {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(path = "my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Browsing> getMyComponents(
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(value = "from", required = false, defaultValue = "0") int from,

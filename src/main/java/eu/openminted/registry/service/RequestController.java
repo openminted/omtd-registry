@@ -2,7 +2,7 @@ package eu.openminted.registry.service;
 
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.ResourceService;
-import eu.openminted.registry.domain.Browsing;
+import eu.openminted.registry.core.domain.Browsing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
