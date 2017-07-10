@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Corpus;
 
 import java.io.InputStream;
@@ -15,7 +16,7 @@ public interface CorpusService extends ResourceCRUDService<Corpus> {
      * @param inputStream
      * @return
      */
-    public String uploadCorpus(String filename, InputStream inputStream);
+    String uploadCorpus(String filename, InputStream inputStream);
 
     /**
      * Download the corpus.
@@ -23,6 +24,6 @@ public interface CorpusService extends ResourceCRUDService<Corpus> {
      * @param archiveId
      * @return
      */
-    public InputStream downloadCorpus(String archiveId);
+    InputStream downloadCorpus(String archiveId);
 
 }
