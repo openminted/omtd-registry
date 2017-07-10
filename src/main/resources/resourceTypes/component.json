@@ -3,10 +3,12 @@
     {
       "name": "omtdid",
       "path": "//*[local-name()='metadataHeaderInfo']/*[local-name()='metadataRecordIdentifier']/text()",
-      "type": "java.lang.String"
+      "type": "java.lang.String",
+      "primaryKey" : true
     },
     {
       "name": "public",
+      "label" : "Public",
       "path": "//*[local-name()='public']/text()",
       "type": "java.lang.Boolean"
     },
@@ -19,62 +21,71 @@
     {
       "multivalued": true,
       "name": "language",
+      "label": "Language",
       "path": "//*[local-name()='languageTag']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "mediaType",
+      "label": "Media Type",
       "path": "//*[local-name()='mediaType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "licence",
+      "label": "Licence",
       "path": "//*[local-name()='licence']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "rights",
+      "label": "Rights",
       "path": "//*[local-name()='rightsStmtName']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "mimeType",
+      "label": "Mime Type",
       "path": "//*[local-name()='mimeType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "dataFormatSpecific",
+      "label": "Data Format Specific",
       "path": "//*[local-name()='dataFormatSpecific']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "componentType",
+      "label": "Component Type",
       "path": "//*[local-name()='componentType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
       "name": "componentDistributionMedium",
+      "label": "Component Distribution Medium",
       "path": "//*[local-name()='componentDistributionForm']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": false,
       "name": "application",
+      "label": "Application",
       "path": "//*[local-name()='application']/text()",
       "type": "java.lang.Boolean",
-      "defaultValue" : "false"
+      "defaultValue": "false"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
   "name": "component",
-  "aliasGroup" : "resourceTypes",
+  "aliasGroup": "resourceTypes",
   "payloadType": "xml",
   "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v200%20XSD/OMTD-SHARE-Component.xsd"
 }

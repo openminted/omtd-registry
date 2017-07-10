@@ -13,20 +13,7 @@ import java.util.List;
  */
 @Service("lexicalService")
 @Primary
-public class LexicalServiceImpl extends AbstractGenericService<Lexical>{
-
-    private static final List<String> FACETS;
-
-    static {
-        List<String> facets = new ArrayList<>();
-        facets.add("language");
-        facets.add("mediaType");
-        facets.add("licence");
-        facets.add("rights");
-        facets.add("mimeType");
-        facets.add("dataFormatSpecific");
-        FACETS = Collections.unmodifiableList(facets);
-    }
+public class LexicalServiceImpl extends OmtdGenericService<Lexical>{
 
     public LexicalServiceImpl() {
         super(Lexical.class);
@@ -37,8 +24,4 @@ public class LexicalServiceImpl extends AbstractGenericService<Lexical>{
         return "lexical";
     }
 
-    @Override
-    public List<String> getFacets() {
-        return FACETS;
-    }
 }

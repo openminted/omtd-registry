@@ -2,9 +2,11 @@ package eu.openminted.registry.service;
 
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.domain.ResourceType;
+import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.ResourceTypeService;
 import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.domain.BaseMetadataRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,9 @@ public class DumpServiceImpl implements DumpService {
 
     @Autowired
     ResourceTypeService resourceTypeService;
+
+    @Autowired
+    public ParserService parserPool;
 
     static void writeZipFile(File directoryToZip, List<File> fileList) {
 
@@ -124,11 +129,11 @@ public class DumpServiceImpl implements DumpService {
                     File tempFile = new File(masterDirectory + "/" + resourceTypes.get(i).getName() + ".json");
                     Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
                     FileWriter file = new FileWriter(filePath.toFile());
-                    file.write(Utils.objToJson(resourceTypes.get(i)));
+                    file.write(parserPool.deserialize(resourceTypes.get(i), ParserService.ParserServiceTypes.JSON).get());
                     file.flush();
                     file.close();
-                } catch (IOException e) {
-                    new ServiceException("Failed to create schema-file for " + resourceTypes.get(i).getName());
+                } catch (Exception e) {
+                    throw new ServiceException("Failed to create schema-file for " + resourceTypes.get(i).getName());
                 }
             }
         }
@@ -170,11 +175,11 @@ public class DumpServiceImpl implements DumpService {
                 File tempFile = new File(parentName + "/" + resourceTypes.getName() + ".json");
                 Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
                 FileWriter file = new FileWriter(filePath.toFile());
-                file.write(Utils.objToJson(resourceTypes));
+                file.write(parserPool.deserialize(resourceTypes, ParserService.ParserServiceTypes.JSON).get());
                 file.flush();
                 file.close();
-            } catch (IOException e) {
-                new ServiceException("Failed to create schema-file for " + resourceTypes.getName());
+            } catch (Exception e) {
+                throw new ServiceException("Failed to create schema-file for " + resourceTypes.getName());
             }
         }
         File tempDir = new File(parentName);
@@ -207,12 +212,11 @@ public class DumpServiceImpl implements DumpService {
                 File openFile = new File(name + "/" + resources.get(i).getId() + ".json");
                 Path filePath = Files.createFile(openFile.toPath(), PERMISSIONS);
                 FileWriter file = new FileWriter(filePath.toFile());
-                file.write(Utils.objToJson(resources.get(i)));
+                file.write(parserPool.deserialize(resources.get(i), ParserService.ParserServiceTypes.JSON).get());
                 file.flush();
                 file.close();
-            } catch (IOException e) {
-//				new ServiceException("Failed to create file(s) for "+ name);
-                e.printStackTrace();
+            } catch (Exception e) {
+				throw new ServiceException("Failed to create file(s) for "+ name);
             }
         }
 

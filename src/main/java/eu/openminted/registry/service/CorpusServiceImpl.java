@@ -22,33 +22,11 @@ import java.util.zip.ZipInputStream;
  */
 @Service("corpusService")
 @Primary
-public class CorpusServiceImpl extends AbstractGenericService<Corpus> implements CorpusService {
+public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements CorpusService {
 
     private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
 
     private final int BUFFER_SIZE = 4096;
-
-    private static final List<String> FACETS;
-
-    static {
-        List<String> facets = new ArrayList<>();
-        facets.add("language");
-        facets.add("mediaType");
-        facets.add("licence");
-        facets.add("lingualityType");
-        facets.add("multilingualityType");
-        facets.add("mimeType");
-        facets.add("domain");
-        facets.add("corpusSubtype");
-        facets.add("annotationLevel");
-        facets.add("tagset");
-        facets.add("rights");
-        facets.add("rightsStmtName");
-        facets.add("dataFormatSpecific");
-        facets.add("subject");
-        facets.add("typeSystem");
-        FACETS = Collections.unmodifiableList(facets);
-    }
 
     @Autowired
     Environment environment;
@@ -60,11 +38,6 @@ public class CorpusServiceImpl extends AbstractGenericService<Corpus> implements
     @Override
     public String getResourceType() {
         return "corpus";
-    }
-
-    @Override
-    public List<String> getFacets() {
-        return FACETS;
     }
 
     @Override

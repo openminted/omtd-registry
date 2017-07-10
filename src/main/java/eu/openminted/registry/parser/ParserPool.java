@@ -1,9 +1,12 @@
 package eu.openminted.registry.parser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.ObjectFactory;
 import org.apache.log4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
@@ -22,7 +25,7 @@ import static javax.xml.bind.JAXBContext.newInstance;
  * Created by stefanos on 26/6/2017.
  */
 @Component("parserPool")
-public class ParserPool {
+public class ParserPool implements ParserService{
 
     private ExecutorService executor;
 
@@ -47,8 +50,15 @@ public class ParserPool {
                 throw new ServiceException("null resource");
             }
             try {
-                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-                type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
+                if(resource.getPayloadFormat().equals("xml")) {
+                    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                    type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
+                } else if (resource.getPayloadFormat().equals("json")){
+                    ObjectMapper mapper = new ObjectMapper();
+                    type = mapper.readValue(resource.getPayload(),returnType);
+                } else {
+                    throw new ServiceException("Unsupported media type");
+                }
             } catch (JAXBException je) {
                 throw new ServiceException(je);
             }
@@ -58,12 +68,19 @@ public class ParserPool {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Future<String> unserialize(T resource, Class<T> returnType) {
+    public Future<String> deserialize(Object resource, ParserServiceTypes mediaType) {
         return executor.submit(() -> {
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            StringWriter sw = new StringWriter();
-            marshaller.marshal(resource, sw);
-            return sw.toString();
+            if(mediaType == ParserServiceTypes.XML) {
+                Marshaller marshaller = jaxbContext.createMarshaller();
+                StringWriter sw = new StringWriter();
+                marshaller.marshal(resource, sw);
+                return sw.toString();
+            } else if (mediaType == ParserServiceTypes.JSON) {
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.writeValueAsString(resource);
+            } else {
+                throw new ServiceException("Unsupported media type");
+            }
         });
     }
 }

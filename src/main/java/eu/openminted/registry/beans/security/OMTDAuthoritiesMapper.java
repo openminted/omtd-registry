@@ -33,13 +33,15 @@ public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
     public Collection<? extends GrantedAuthority> mapAuthorities(JWT idToken, UserInfo userInfo) {
         Set<GrantedAuthority> out = new HashSet<>();
         out.add(new SimpleGrantedAuthority("ROLE_USER"));
-        userInfo.getSource().getAsJsonArray(ROLE_CLAIMS).forEach(role -> {
-            SimpleGrantedAuthority authority = userRolesMap.get(role.getAsString());
-            if(authority != null) {
-                logger.debug("Role mapped " + role);
-                out.add(authority);
-            }
-        });
+        if(userInfo.getSource().getAsJsonArray(ROLE_CLAIMS) != null) {
+            userInfo.getSource().getAsJsonArray(ROLE_CLAIMS).forEach(role -> {
+                SimpleGrantedAuthority authority = userRolesMap.get(role.getAsString());
+                if (authority != null) {
+                    logger.debug("Role mapped " + role);
+                    out.add(authority);
+                }
+            });
+        }
         return out;
     }
 }

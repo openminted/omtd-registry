@@ -1,0 +1,20 @@
+{
+  "indexFields": [
+    {
+      "name": "personIdentifier",
+      "path": "$.person",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "id",
+      "path": "$.id",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "operation",
+  "aliasGroup" : null,
+  "payloadType": "json",
+  "schema": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"properties\": {\n        \"id\" : {\n            \"description\": \"The id of the operation (UUID)\",\n            \"title\": \"ID\",\n            \"type\": \"string\"\n        },\n        \"component\": {\n            \"description\": \"The id of the application component that was executed.\",\n            \"title\": \"Component ID\",\n            \"type\": \"string\"\n        },\n        \"corpus\": {\n            \"properties\": {\n                \"input\": {\n                    \"description\": \"The id of the input corpus.\",\n                    \"title\": \"Input Corpus ID\",\n                    \"type\": \"string\"\n                },\n                \"output\": {\n                    \"description\": \"The id of the result corpus.\",\n                    \"title\": \"Output Corpus ID\",\n                    \"type\": \"string\"\n                }\n            },\n            \"required\": [\n                \"input\"\n            ],\n            \"type\": \"object\"\n        },\n        \"errors\": {\n            \"type\": \"object\"\n        },\n        \"job\": {\n            \"description\": \"The ID from Galaxy for the workflow.\",\n            \"title\": \"Galaxy ID\",\n            \"type\": \"string\"\n        },\n        \"person\": {\n            \"description\": \"The sub field from OIDC representing the user.\",\n            \"title\": \"Person ID\",\n            \"type\": \"string\"\n        },\n        \"date\": {\n            \"properties\": {\n                \"finished\": {\n                    \"description\": \"When the workflow was finished.\",\n                    \"title\": \"Finished Date\",\n                    \"type\": \"integer\"\n                },\n                \"started\": {\n                    \"description\": \"When the workflow was started.\",\n                    \"title\": \"Started Date\",\n                    \"type\": \"integer\"\n                },\n                \"submitted\": {\n                    \"description\": \"When the workflow was submitted.\",\n                    \"title\": \"Submitted Date\",\n                    \"type\": \"integer\"\n                }\n            },\n            \"required\": [\n                \"started\"\n            ],\n            \"type\": \"object\"\n        }\n    },\n    \"required\": [\n        \"id\",\n        \"component\",\n        \"person\",\n        \"job\",\n        \"date\",\n        \"corpus\"\n    ],\n    \"type\": \"object\"\n}\n\n"
+}
