@@ -50,9 +50,9 @@ public class GenericRestController<T> {
     }
 
     @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json; charset=utf-8")
-    public ResponseEntity<String> updateComponent(@RequestBody T component) {
+    public ResponseEntity<T> updateComponent(@RequestBody T component) {
         service.update(component);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(component,HttpStatus.OK);
 
     }
 

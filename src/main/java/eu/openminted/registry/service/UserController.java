@@ -37,7 +37,11 @@ public class UserController {
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Map<String,Object> body = new HashMap<>();
         body.put("sub",authentication.getSub());
-        body.put("name",authentication.getUserInfo().getName());
+        if(authentication.getUserInfo().getName() == null || authentication.getUserInfo().getName().equals("")) {
+            body.put("name",authentication.getUserInfo().getGivenName() + " " + authentication.getUserInfo().getFamilyName());
+        } else {
+            body.put("name",authentication.getUserInfo().getName());
+        }
         body.put("email",authentication.getUserInfo().getEmail());
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
