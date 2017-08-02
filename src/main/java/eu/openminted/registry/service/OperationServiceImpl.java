@@ -29,7 +29,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
     private static final String OPERATION_ID = "id";
 
-    private Logger logger = Logger.getLogger(OmtdGenericService.class);
+    private Logger logger = Logger.getLogger(OperationServiceImpl.class);
 
     public OperationServiceImpl() {
         super(Operation.class);
@@ -64,11 +64,12 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     }
 
     @Override
-    public void add(Operation resource) {
+    public void add(Operation resource) {    	
         String insertionId = UUID.randomUUID().toString();
         resource.setId(insertionId);
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         resource.setPerson(authentication.getSub());
+        logger.info("Adding Operation :: " + resource.toString());
         Resource resourceDb = new Resource();
         Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
         try {
