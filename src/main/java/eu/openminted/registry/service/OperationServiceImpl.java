@@ -65,10 +65,10 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
     @Override
     public void add(Operation resource) {    	
-        String insertionId = UUID.randomUUID().toString();
-        resource.setId(insertionId);
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        resource.setPerson(authentication.getSub());
+      //  String insertionId = UUID.randomUUID().toString();
+      //  resource.setId(insertionId);
+      //  OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+      //  resource.setPerson(authentication.getSub());
         logger.info("Adding Operation :: " + resource.toString());
         Resource resourceDb = new Resource();
         Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
@@ -78,7 +78,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             resourceDb.setPayloadFormat("json");
             resourceDb.setResourceType(getResourceType());
             resourceDb.setVersion("not_set");
-            resourceDb.setId(insertionId);
+            resourceDb.setId(resource.getId());
             resourceDb.setPayload(serialized.get());
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
