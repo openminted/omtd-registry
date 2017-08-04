@@ -29,7 +29,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
     private static final String OPERATION_ID = "id";
 
-    private Logger logger = Logger.getLogger(OmtdGenericService.class);
+    private Logger logger = Logger.getLogger(OperationServiceImpl.class);
 
     public OperationServiceImpl() {
         super(Operation.class);
@@ -64,25 +64,41 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     }
 
     @Override
-    public void add(Operation resource) {
-        String insertionId = UUID.randomUUID().toString();
-        resource.setId(insertionId);
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        resource.setPerson(authentication.getSub());
+    public void add(Operation resource) {    	
+      //  String insertionId = UUID.randomUUID().toString();
+      //  resource.setId(insertionId);
+      //  OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+      //  resource.setPerson(authentication.getSub());
+        logger.info("Adding Operation :: " + resource.toString());
         Resource resourceDb = new Resource();
         Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
         try {
+        	logger.info(serialized.get());
+        	logger.info("Create creation Date in DB");
             resourceDb.setCreationDate(new Date());
+            logger.info("Create modification Date in DB");
             resourceDb.setModificationDate(new Date());
+            logger.info("Set PaylogadFormat in DB");
             resourceDb.setPayloadFormat("json");
+            logger.info("Set resource type in DB " + getResourceType());
             resourceDb.setResourceType(getResourceType());
+            logger.info("Set version in DB");
             resourceDb.setVersion("not_set");
-            resourceDb.setId(insertionId);
+            logger.info("Set id in DB" + resource.getId());
+            resourceDb.setId(resource.getId());
+            logger.info("Set payload in DB");
             resourceDb.setPayload(serialized.get());
         } catch (InterruptedException | ExecutionException e) {
+            logger.info("serializer exception",e);
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
+        try {
+        	logger.info("Add resource in DB" + resourceDb.toString());
+        	resourceService.addResource(resourceDb);
+        }catch(Exception e){
+	    	logger.info("add operation",e);	    	
+	    }
+        
     }
 
     @Override
