@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by stefanos on 20/6/2017.
@@ -64,29 +66,41 @@ public class GenericRestController<T> {
     }
 
     @RequestMapping(path = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getAllComponents(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam(value = "from", required = false, defaultValue = "0") int from,
-            @RequestParam(value = "quantity", required = false, defaultValue = "10") int quantity
-    ) {
+    public ResponseEntity<Browsing> getAllComponents(@RequestParam Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
-        filter.setFrom(from);
-        filter.setQuantity(quantity);
-        filter.setKeyword(keyword);
+        filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
+        filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
+        filter.setQuantity(allRequestParams.get("quantity") != null ? Integer.parseInt((String)allRequestParams.remove("quantity")) : 10);
+        Map<String,Object> sort = new HashMap<>();
+        Map<String,Object> order = new HashMap<>();
+        String orderDirection = allRequestParams.get("order") != null ? (String)allRequestParams.remove("order") : "asc";
+        String orderField = allRequestParams.get("orderField") != null ? (String)allRequestParams.remove("orderField") : null;
+        if (orderField != null) {
+            order.put("order",orderDirection);
+            sort.put(orderField, order);
+            filter.setOrderBy(sort);
+        }
+        filter.setFilter(allRequestParams);
         return new ResponseEntity<>(service.getAll(filter), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getMyComponents(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam(value = "from", required = false, defaultValue = "0") int from,
-            @RequestParam(value = "quantity", required = false, defaultValue = "10") int quantity
-    ) {
+    public ResponseEntity<Browsing> getMyComponents(@RequestParam Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
-        filter.setFrom(from);
-        filter.setQuantity(quantity);
-        filter.setKeyword(keyword);
+        filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
+        filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
+        filter.setQuantity(allRequestParams.get("quantity") != null ? Integer.parseInt((String)allRequestParams.remove("quantity")) : 10);
+        Map<String,Object> sort = new HashMap<>();
+        Map<String,Object> order = new HashMap<>();
+        String orderDirection = allRequestParams.get("order") != null ? (String)allRequestParams.remove("order") : "asc";
+        String orderField = allRequestParams.get("orderField") != null ? (String)allRequestParams.remove("orderField") : null;
+        if (orderField != null) {
+            order.put("order",orderDirection);
+            sort.put(orderField, order);
+            filter.setOrderBy(sort);
+        }
+        filter.setFilter(allRequestParams);
         return new ResponseEntity<>(service.getMy(filter), HttpStatus.OK);
     }
 }

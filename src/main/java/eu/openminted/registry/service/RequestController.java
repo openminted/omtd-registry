@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class RequestController {
 
@@ -22,35 +26,39 @@ public class RequestController {
 
 
     @RequestMapping(value = "/request", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<Browsing> getResourceTypeByFilters(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam(value = "resourceType", required = false, defaultValue = "") String resourceType,
-            @RequestParam(value = "language", required = false, defaultValue = "") String language,
-            @RequestParam(value = "mediaType", required = false, defaultValue = "") String mediaType,
-            @RequestParam(value = "rights", required = false, defaultValue = "") String rights,
-            @RequestParam(value = "mimeType", required = false, defaultValue = "") String mimeType,
-            @RequestParam(value = "dataFormatSpecific", required = false, defaultValue = "") String dataFormatSpecific,
-            @RequestParam(value = "licence", required = false, defaultValue = "") String licence,
-            @RequestParam(value = "advanced", required = false, defaultValue = "true") boolean advanced,
-            @RequestParam(value = "from", required = false, defaultValue = "0") int from,
-            @RequestParam(value = "quantity", required = false, defaultValue = "10") int quantity) {
+    public ResponseEntity<Browsing> getResourceTypeByFilters(@RequestParam Map<String,Object> allRequestParams) {
 
         FacetFilter facetFilter = new FacetFilter();
-        facetFilter.addFilter("resourceType",resourceType);
-        facetFilter.addFilter("language",language);
-        facetFilter.addFilter("mediaType",mediaType);
-        facetFilter.addFilter("rights",rights);
-        facetFilter.addFilter("mimeType",mimeType);
-        facetFilter.addFilter("dataFormatSpecific",dataFormatSpecific);
-        facetFilter.addFilter("licence",licence);
-        facetFilter.addFilter("application",advanced);
-        facetFilter.setKeyword(keyword);
-        facetFilter.setFrom(from);
-        facetFilter.setQuantity(quantity);
+        facetFilter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
+        facetFilter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
+        facetFilter.setQuantity(allRequestParams.get("quantity") != null ? Integer.parseInt((String)allRequestParams.remove("quantity")) : 10);
+        facetFilter.setFilter(allRequestParams);
+        Map<String,Object> sort = new HashMap<>();
+        Map<String,Object> order = new HashMap<>();
+        String orderDirection = allRequestParams.get("order") != null ? (String)allRequestParams.remove("order") : "asc";
+        String orderField = allRequestParams.get("orderField") != null ? (String)allRequestParams.remove("orderField") : null;
+        if (orderField != null) {
+            order.put("order",orderDirection);
+            sort.put(orderField, order);
+            facetFilter.setOrderBy(sort);
+        }
         Browsing browsing = requestService.getResponseByFiltersElastic(facetFilter);
         return new ResponseEntity<>(browsing, HttpStatus.OK);
 
     }
 
+    @RequestMapping(value = "/request/grouped", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public ResponseEntity<Map<String,List<?>>> getResourceTypeByFiltersGrouped(@RequestParam Map<String,Object> allRequestParams) {
+
+        FacetFilter facetFilter = new FacetFilter();
+        facetFilter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
+        facetFilter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
+        facetFilter.setQuantity(allRequestParams.get("quantity") != null ? Integer.parseInt((String)allRequestParams.remove("quantity")) : 10);
+        String groupBy = allRequestParams.get("group") != null ? (String)allRequestParams.remove("group") : "";
+        facetFilter.setFilter(allRequestParams);
+        Map<String,List<?>> browsing = requestService.getResourceGroupedElastic(facetFilter,groupBy);
+        return new ResponseEntity<>(browsing, HttpStatus.OK);
+
+    }
 
 }
