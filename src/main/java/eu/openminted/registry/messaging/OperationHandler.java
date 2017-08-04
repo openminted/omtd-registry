@@ -12,19 +12,28 @@ import eu.openminted.messageservice.connector.MessagesHandler;
 //import eu.openminted.messageservice.messages.GSON;
 import com.google.gson.Gson;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
 import eu.openminted.registry.domain.operation.Operation;
-//import eu.openminted.registry.service.OperationServiceImpl;
+import eu.openminted.registry.service.OperationServiceImpl;
 
 @Component
 public class OperationHandler implements MessagesHandler {
 
 	static final Logger logger = Logger.getLogger(OperationHandler.class);
 
-	//@Autowired
-	//OperationServiceImpl operationService;
+	@Autowired
+	private OperationServiceImpl operationService;
 	
+	private String[] workflowExecutionStatus = {
+	        "PENDING",
+	        "RUNNING",
+	        "PAUSED",
+	        "FINISHED",
+	        "CANCELED",
+	        "FAILED"
+	};
 		
 	@Override
 	public void handleMessage(Message msg) {
@@ -43,7 +52,7 @@ public class OperationHandler implements MessagesHandler {
 			
 				// Generate appropriate Operation object
 				Operation operation = new Operation();
-				if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase("PENDING")) {
+				if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[0])) {
 					operation.setId(workflowExecutionMsg.getWorkflowExecutionID());					
 					operation.setJob(workflowExecutionMsg.getWorkflowExecutionID());
 					operation.setPerson(workflowExecutionMsg.getUserID());
@@ -54,7 +63,9 @@ public class OperationHandler implements MessagesHandler {
 					Date date = new Date();
 					date.setSubmitted(new Integer((int)System.currentTimeMillis()));
 					operation.setDate(date);
-					logger.info("Operation to insert ::" + operation.toString());
+					logger.debug("Operation to insert ::" + operation.toString());
+					operationService.add(operation);
+					logger.info("Operation inserted successfully");
 				}
 						      
 				
@@ -64,6 +75,9 @@ public class OperationHandler implements MessagesHandler {
 			
 			}
 		}catch(JMSException e){
+	    	logger.info(e.getMessage());	    	
+	    }
+		catch(Exception e){
 	    	logger.info(e.getMessage());	    	
 	    }
 	}

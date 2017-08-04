@@ -11,6 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import eu.openminted.messageservice.connector.MessageServiceSubscriber;
 import eu.openminted.messageservice.connector.TopicsRegistry;
 
+import eu.openminted.registry.messaging.OperationHandler;
+
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class OperationMessageConfig {
@@ -34,8 +36,9 @@ public class OperationMessageConfig {
 		
 		// Set topic handler
 		msgServiceSub.setMessagesHandler(this.operationHandler);
+		
+		
 		return  msgServiceSub;
 	}
-	
-	
+
 }
