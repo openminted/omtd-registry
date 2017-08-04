@@ -17,15 +17,14 @@
 
     <mvc:annotation-driven>
         <mvc:message-converters>
-        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-            <property name="objectMapper">
-                <bean class="com.fasterxml.jackson.databind.ObjectMapper">
-                    <property name="serializationInclusion" value="NON_NULL"/>
-                </bean>
-            </property>
-        </bean>
-    </mvc:message-converters>
-
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="serializationInclusion" value="NON_NULL"/>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
     </mvc:annotation-driven>
 
     <context:component-scan base-package="eu.openminted.registry.service"/>

@@ -13,6 +13,10 @@
         <!--</listener-class>-->
     <!--</listener>-->
 
+    <session-config>
+        <session-timeout>-1</session-timeout>
+    </session-config>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>

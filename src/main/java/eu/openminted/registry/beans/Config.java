@@ -27,10 +27,15 @@ public class Config {
     @Value("${redis.port}")
     private String port;
 
+    @Value("${redis.password:#{null}}")
+    private String password;
+
     @Bean
     public LettuceConnectionFactory connectionFactory() {
         logger.info(String.format("Redis connection listens to %s:%s",host,port));
-        return new LettuceConnectionFactory(host,Integer.parseInt(port));
+        LettuceConnectionFactory factory = new LettuceConnectionFactory(host,Integer.parseInt(port));
+        if(password != null) factory.setPassword(password);
+        return factory;
     }
 
     @Bean
@@ -41,4 +46,5 @@ public class Config {
         // serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$"); // <3>
         return serializer;
     }
+
 }

@@ -8,7 +8,6 @@
     },
     {
       "name": "public",
-      "label": "Public",
       "path": "//*[local-name()='public']/text()",
       "type": "java.lang.Boolean"
     },
