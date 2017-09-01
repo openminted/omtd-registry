@@ -12,19 +12,17 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
  * Created by me :) on 30/8/2017.
  */
-@Component("corpusBuildingStateService")
+@Service("corpusBuildingStateService")
 @Primary
 public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>{
 
@@ -37,7 +35,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
     }
 
     @Override
-    @PostAuthorize("returnObject!=null?returnObject.token==authentication.sub:true")
+//    @PostAuthorize("returnObject!=null?returnObject.token==authentication.sub:true")
     public CorpusBuildingState get(String id) {
         CorpusBuildingState resource;
         try {

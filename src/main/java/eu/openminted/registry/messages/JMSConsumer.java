@@ -103,7 +103,7 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
                     }
                 } catch (AuthenticationCredentialsNotFoundException e) {
                     if (corpusBuildingState != null)
-                        corpusBuildingStateService.update(corpusBuildingState);
+                        corpusBuildingStateService.add(corpusBuildingState);
                 } catch (IOException e) {
                     log.error(e);
                 }

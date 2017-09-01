@@ -1,6 +1,11 @@
 {
   "indexFields": [
     {
+      "name": "token",
+      "path": "$.token",
+      "type": "java.lang.String"
+    },
+    {
       "name": "id",
       "path": "$.id",
       "type": "java.lang.String",
