@@ -102,7 +102,10 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
                     throw new ServiceException("Serialization failed");
                 }
                 resource = $resource;
+                resource.setModificationDate(new Date());
+                resource.setCreationDate(new Date());
                 resource.setPayloadFormat("json");
+                resource.setId(resources.getId());
                 resource.setPayload(serialized);
                 resourceService.updateResource(resource);
             }
