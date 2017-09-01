@@ -1,6 +1,8 @@
 package eu.openminted.registry.beans;
 
+import eu.openminted.registry.messages.JMSConsumer;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by stefanos on 14/6/2017.
@@ -29,6 +33,15 @@ public class Config {
 
     @Value("${redis.password:#{null}}")
     private String password;
+
+    @Autowired
+    private JMSConsumer consumer;
+
+    @PostConstruct
+    public void initializeJMSConsumer() {
+        System.out.println("Creating consumer");
+        new Thread(() -> consumer.listen()).start();
+    }
 
     @Bean
     public LettuceConnectionFactory connectionFactory() {
