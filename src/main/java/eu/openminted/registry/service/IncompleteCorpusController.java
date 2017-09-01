@@ -13,34 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/request/corpus")
-public class CorpusController extends GenericRestController<Corpus>{
+@RequestMapping("/request/incompleteCorpus")
+public class IncompleteCorpusController extends GenericRestController<Corpus>{
 
-    final private CorpusService corpusService;
+    final private IncompleteCorpusService corpusService;
 
     @Autowired
-    CorpusController(CorpusService service) {
+    IncompleteCorpusController(IncompleteCorpusService service) {
         super(service);
         this.corpusService = service;
-    }
-
-    @RequestMapping(value = "upload", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadCorpus(@RequestParam("filename") String filename, @RequestParam("file") MultipartFile file) {
-
-        try {
-            return new ResponseEntity<>(corpusService.uploadCorpus(filename, file.getInputStream()), HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @RequestMapping(value = "download", method = RequestMethod.GET)
-    @ResponseBody
-    public void downloadCorpus(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String mimeType = "application/zip";
-        String filename = request.getParameter("archiveId") + ".zip";
-        response.setHeader("Content-Disposition", "attachment; filename=\""+ filename +"\"");
-        response.setContentType(mimeType);
-        IOUtils.copyLarge(corpusService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
     }
 }
