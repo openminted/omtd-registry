@@ -30,6 +30,6 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
 
     @Override
     public String getResourceType() {
-        return "incompleteCorpus";
+        return "incompletecorpus";
     }
 }
