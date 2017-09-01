@@ -47,23 +47,31 @@
                 "finished": {
                     "description": "When the workflow was finished.",
                     "title": "Finished Date",
-                    "type": "integer"
+                    "type": "string",
+                    "format": "date-time"
                 },
                 "started": {
                     "description": "When the workflow was started.",
                     "title": "Started Date",
-                    "type": "integer"
+                    "type": "string",
+                    "format": "date-time"
                 },
                 "submitted": {
                     "description": "When the workflow was submitted.",
                     "title": "Submitted Date",
-                    "type": "integer"
+                    "type": "string",
+                    "format": "date-time"
                 }
             },
             "required": [
                 "started"
             ],
             "type": "object"
+        },
+        "status": {
+            "description": "The status of the operation",
+            "title": "Operation status",
+            "type": "string"
         }
     },
     "required": [
@@ -72,8 +80,8 @@
         "person",
         "job",
         "date",
-        "corpus"
+        "corpus",
+        "status"
     ],
     "type": "object"
 }
-
