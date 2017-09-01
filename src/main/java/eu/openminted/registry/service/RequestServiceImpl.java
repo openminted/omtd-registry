@@ -32,7 +32,6 @@ public class RequestServiceImpl extends AbstractGenericService implements Reques
     public Browsing getResponseByFiltersElastic(FacetFilter filter) {
         filter.addFilter("public",true);
         filter.setBrowseBy(getBrowseBy());
-
         return getResults(filter);
     }
 
