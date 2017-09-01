@@ -1,0 +1,139 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdid",
+      "path": "//*[local-name()='metadataHeaderInfo']/*[local-name()='metadataRecordIdentifier']/text()",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "public",
+      "path": "//*[local-name()='public']/text()",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "multivalued": true,
+      "name": "personIdentifier",
+      "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "language",
+      "label": "Language",
+      "path": "//*[local-name()='languageTag']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "mediaType",
+      "label": "Media Type",
+      "path": "//*[local-name()='mediaType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "licence",
+      "label": "Licence",
+      "path": "//*[local-name()='licence']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "lingualityType",
+      "label": "Linguality Type",
+      "path": "//*[local-name()='lingualityType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "multilingualityType",
+      "label": "Multilinguality Type",
+      "path": "//*[local-name()='multilingualityType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "mimeType",
+      "label": "Mime Type",
+      "path": "//*[local-name()='mimeType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "domain",
+      "label": "Domain",
+      "path": "//*[local-name()='domain']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "corpusSubtype",
+      "label": "Corpus Subtype",
+      "path": "//*[local-name()='corpusSubType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "annotationLevel",
+      "label": "Annotation Level",
+      "path": "//*[local-name()='annotationLevel']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "tagset",
+      "label": "Tagset",
+      "path": "//*[local-name()='tagset']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "rights",
+      "label": "Rights",
+      "path": "//*[local-name()='rights']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "rightsStmtName",
+      "label": "Rights Statement Name",
+      "path": "//*[local-name()='rightsStmtName']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "dataFormatSpecific",
+      "label": "Data Format Specific",
+      "path": "//*[local-name()='dataFormatSpecific']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "subject",
+      "label": "Subject",
+      "path": "//*[local-name()='subject']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "typeSystem",
+      "label": "Type System",
+      "path": "//*[local-name()='typesystem']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": false,
+      "name": "application",
+      "label": "Application",
+      "path": null,
+      "type": "java.lang.Boolean",
+      "defaultValue": "true"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "incompleteCorpus",
+  "aliasGroup": "resourceTypes",
+  "payloadType": "xml",
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Corpus.xsd"
+}
