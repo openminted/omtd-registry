@@ -135,5 +135,5 @@
   "name": "corpus",
   "aliasGroup": "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v200%20XSD/OMTD-SHARE-Corpus.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Corpus.xsd"
 }
