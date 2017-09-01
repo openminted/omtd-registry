@@ -93,10 +93,11 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
             }
             zipIn.close();
 
-            if (destDir.listFiles() != null)
+            if (destDir.listFiles() != null) {
                 for (File file : destDir.listFiles()) {
                     iterateThroughDirectories(storeClient, archiveId, file, file.getParent());
                 }
+            }
 
             logger.info("Done uploading files");
 
@@ -148,7 +149,6 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
                 || file.getName().matches(".*[M|m][A|a][C|c][O|o][S|s][X|x].*")) {
 
             FileDeleteStrategy.FORCE.delete(file);
-
             return;
         }
 
