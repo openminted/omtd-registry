@@ -27,6 +27,7 @@
 	<properties>
 		<registry.core.version>1.3.1-SNAPSHOT</registry.core.version>
 		<netty.version>4.1.12.Final</netty.version>
+		<corpus.api.version>1.0.1-SNAPSHOT</corpus.api.version>
 	</properties>
 
 
@@ -56,6 +57,11 @@
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-registry-api</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-corpus-api</artifactId>
+			<version>${corpus.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
@@ -195,6 +201,11 @@
 			<artifactId>lettuce</artifactId>
 			<version>3.5.0.Final</version>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>5.14.3</version>
+        </dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>
