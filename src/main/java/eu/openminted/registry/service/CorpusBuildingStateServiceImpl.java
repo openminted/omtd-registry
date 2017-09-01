@@ -2,6 +2,7 @@ package eu.openminted.registry.service;
 
 
 import eu.openminted.corpus.CorpusBuildingState;
+import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
@@ -15,7 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -24,9 +27,11 @@ import java.util.concurrent.Future;
  */
 @Service("corpusBuildingStateService")
 @Primary
-public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>{
+public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService{
 
-    private static final String CORPUS_ID = "id";
+    private static final String CORPUS_ID = "corpus_id";
+
+    private static final String[] CONNECTORS = {"CORE", "OpenAIRE"};
 
     private Logger logger = Logger.getLogger(OmtdGenericService.class);
 
@@ -84,6 +89,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
 
     @Override
     public void update(CorpusBuildingState resources) {
+        CorpusBuildingState previous;
         Resource $resource;
         SearchService.KeyValue kv = new SearchService.KeyValue(
                 CORPUS_ID,
@@ -91,10 +97,15 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
         );
         try {
             $resource = searchService.searchId(getResourceType(), kv);
+            previous = parserPool.serialize($resource,typeParameterClass).get();
             Resource resource = new Resource();
             if ($resource == null) {
                 throw new ServiceException(getResourceType() + " does not exists");
             } else {
+                if(resources.getTotalHits() == null) resources.setTotalHits(previous.getTotalHits());
+                if(resources.getTotalRejected() == null) resources.setTotalRejected(previous.getTotalRejected());
+                if(resources.getMetadataProgress() == null) resources.setMetadataProgress(previous.getMetadataProgress());
+                if(resources.getFulltextProgress() == null) resources.setFulltextProgress(previous.getFulltextProgress());
                 String serialized = parserPool.deserialize(resources, ParserService.ParserServiceTypes.JSON).get();
                 if (!serialized.equals("failed")) {
                     resource.setPayload(serialized);
@@ -102,10 +113,10 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
                     throw new ServiceException("Serialization failed");
                 }
                 resource = $resource;
-                resource.setModificationDate(new Date());
+                //resource.setModificationDate(new Date());
                 resource.setCreationDate(new Date());
                 resource.setPayloadFormat("json");
-                resource.setId(resources.getId());
+                resource.setId($resource.getId());
                 resource.setPayload(serialized);
                 resourceService.updateResource(resource);
             }
@@ -138,5 +149,21 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
     @Override
     public String getResourceType() {
         return "corpusbuildingstate";
+    }
+
+    @Override
+    public List<CorpusBuildingState> getAggregate(String id) {
+        List<CorpusBuildingState> resource = new ArrayList<>();
+        for(String connector : CONNECTORS) {
+            try {
+                SearchService.KeyValue kv = new SearchService.KeyValue(CORPUS_ID, id+"@"+connector);
+                CorpusBuildingState tmp = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
+                resource.add(tmp);
+            } catch (UnknownHostException | ExecutionException | InterruptedException e) {
+                logger.fatal("corpusBuildingState get fatal error", e);
+                throw new ServiceException(e);
+            }
+        }
+        return resource;
     }
 }

@@ -2,6 +2,8 @@ package eu.openminted.registry.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.corpus.CorpusBuildingState;
+import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 @Component("jmsConsumer")
 public class JMSConsumer implements ExceptionListener, MessageListener {
@@ -22,6 +25,12 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
 
     @org.springframework.beans.factory.annotation.Value("${jms.host}")
     private String jmsHost;
+
+    @Autowired
+    public SearchService searchService;
+
+    @Autowired
+    public ParserService parserPool;
 
 
 //    @Autowired
@@ -68,14 +77,14 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
     }
 
     public synchronized void onException(JMSException ex) {
-        log.error("JMS Exception occurred.  Shutting down client.");
-
-        try {
-            session.close();
-            connection.close();
-        } catch (JMSException e) {
-            log.error("JMS Exception occurred while shutting down client.", e);
-        }
+//        log.error("JMS Exception occurred.  Shutting down client.");
+//
+//        try {
+//            session.close();
+//            connection.close();
+//        } catch (JMSException e) {
+//            log.error("JMS Exception occurred while shutting down client.", e);
+//        }
     }
 
     @Override
@@ -93,19 +102,18 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
                     if (messageReceived.getType().equals(CorpusBuildingState.class.toString())) {
                         corpusBuildingState = new ObjectMapper().readValue(messageReceived.getMessage(), CorpusBuildingState.class);
                         log.info("State of corpus building: " + corpusBuildingState);
-
-                        CorpusBuildingState existingCorpusBuildingState = corpusBuildingStateService.get(corpusBuildingState.getId());
-
-                        System.out.println("\n\nGoing commando existingCorpusBuildingState: " + existingCorpusBuildingState + "\n\n");
-                        if (existingCorpusBuildingState != null) {
+                        SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id",corpusBuildingState.getId());
+                        Resource resource = searchService.searchId("corpusbuildingstate", kv);
+                        //existingCorpusBuildingState = corpusBuildingStateService.get(corpusBuildingState.getId());
+                        if(resource == null) {
+                            corpusBuildingStateService.add(corpusBuildingState);
+                        } else {
                             corpusBuildingStateService.update(corpusBuildingState);
                         }
                     }
-                } catch (AuthenticationCredentialsNotFoundException e) {
-                    if (corpusBuildingState != null)
-                        corpusBuildingStateService.add(corpusBuildingState);
                 } catch (IOException e) {
-                    log.error(e);
+                    log.error("error",e);
+                    throw new ServiceException(e);
                 }
             } catch (JMSException e) {
                 log.error("Error Receiving Message", e);
