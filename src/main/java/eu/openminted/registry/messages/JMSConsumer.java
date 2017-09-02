@@ -2,19 +2,21 @@ package eu.openminted.registry.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.corpus.CorpusBuildingState;
+import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.*;
+import eu.openminted.registry.core.service.ParserService;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
+import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 @Component("jmsConsumer")
 public class JMSConsumer implements ExceptionListener, MessageListener {
@@ -32,16 +34,17 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
     @Autowired
     public ParserService parserPool;
 
-
-//    @Autowired
     private ActiveMQConnectionFactory connectionFactory;
 
     @Autowired
     CorpusBuildingStateServiceImpl corpusBuildingStateService;
 
+    @Autowired
+    IncompleteCorpusServiceImpl incompleteCorpusService;
+
     @PostConstruct
     public void init() {
-        connectionFactory =  new ActiveMQConnectionFactory(jmsHost);
+        connectionFactory = new ActiveMQConnectionFactory(jmsHost);
         connectionFactory.setConnectionIDPrefix("omtd-registry");
     }
 
@@ -53,7 +56,6 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
         try {
             // Create a Connection
             connection = connectionFactory.createConnection();
-//            connection = new ActiveMQConnectionFactory(jmsHost).createConnection();
             connection.setExceptionListener(this);
 
             // Set unique clientID to connection prior to connect
@@ -102,17 +104,28 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
                     if (messageReceived.getType().equals(CorpusBuildingState.class.toString())) {
                         corpusBuildingState = new ObjectMapper().readValue(messageReceived.getMessage(), CorpusBuildingState.class);
                         log.info("State of corpus building: " + corpusBuildingState);
-                        SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id",corpusBuildingState.getId());
+                        SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getId());
                         Resource resource = searchService.searchId("corpusbuildingstate", kv);
                         //existingCorpusBuildingState = corpusBuildingStateService.get(corpusBuildingState.getId());
-                        if(resource == null) {
+                        if (resource == null) {
                             corpusBuildingStateService.add(corpusBuildingState);
                         } else {
                             corpusBuildingStateService.update(corpusBuildingState);
                         }
+
+                        if (corpusBuildingState.getCurrentStatus().equalsIgnoreCase(CorpusStatus.CREATED.toString())) {
+                            // get corpus Id from corpusBuildingState
+                            String corpusId = corpusBuildingState.getId().split("@")[0];
+
+                            SearchService.KeyValue corpusKeyValue = new SearchService.KeyValue("omtdid", corpusId);
+                            Resource incompleteCorpusResource = searchService.searchId("incompletecorpus", corpusKeyValue);
+                            if (incompleteCorpusResource != null) {
+//                                incompleteCorpusService.delete(something that must be like corpus i guess);
+                            }
+                        }
                     }
                 } catch (IOException e) {
-                    log.error("error",e);
+                    log.error("error", e);
                     throw new ServiceException(e);
                 }
             } catch (JMSException e) {
