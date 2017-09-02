@@ -39,9 +39,6 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
     @Autowired
     CorpusBuildingStateServiceImpl corpusBuildingStateService;
 
-    @Autowired
-    IncompleteCorpusServiceImpl incompleteCorpusService;
-
     @PostConstruct
     public void init() {
         connectionFactory = new ActiveMQConnectionFactory(jmsHost);
@@ -111,17 +108,6 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
                             corpusBuildingStateService.add(corpusBuildingState);
                         } else {
                             corpusBuildingStateService.update(corpusBuildingState);
-                        }
-
-                        if (corpusBuildingState.getCurrentStatus().equalsIgnoreCase(CorpusStatus.CREATED.toString())) {
-                            // get corpus Id from corpusBuildingState
-                            String corpusId = corpusBuildingState.getId().split("@")[0];
-
-                            SearchService.KeyValue corpusKeyValue = new SearchService.KeyValue("omtdid", corpusId);
-                            Resource incompleteCorpusResource = searchService.searchId("incompletecorpus", corpusKeyValue);
-                            if (incompleteCorpusResource != null) {
-//                                incompleteCorpusService.delete(something that must be like corpus i guess);
-                            }
                         }
                     }
                 } catch (IOException e) {
