@@ -23,4 +23,9 @@ public class IncompleteCorpusController extends GenericRestController<Corpus>{
         super(service);
         this.corpusService = service;
     }
+
+    @RequestMapping(value = "/move/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public void move(@PathVariable("id") String corpusId) {
+        corpusService.move(corpusId);
+    }
 }
