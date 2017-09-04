@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.jms.*;
 import java.io.IOException;
 
@@ -47,6 +48,16 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
     public void init() {
         connectionFactory = new ActiveMQConnectionFactory(jmsHost);
         connectionFactory.setConnectionIDPrefix("omtd-registry");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            session.close();
+            connection.close();
+        } catch (JMSException e) {
+            log.error("JMS Exception occurred while shutting down client.", e);
+        }
     }
 
     private Connection connection;
