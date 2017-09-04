@@ -7,6 +7,7 @@ import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -38,6 +39,9 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
 
     @Autowired
     CorpusBuildingStateServiceImpl corpusBuildingStateService;
+
+    @Autowired
+    IncompleteCorpusServiceImpl incompleteCorpusService;
 
     @PostConstruct
     public void init() {
@@ -108,6 +112,15 @@ public class JMSConsumer implements ExceptionListener, MessageListener {
                             corpusBuildingStateService.add(corpusBuildingState);
                         } else {
                             corpusBuildingStateService.update(corpusBuildingState);
+                        }
+
+                        if (corpusBuildingState.getCurrentStatus().equalsIgnoreCase(CorpusStatus.CREATED.toString())) {
+                            String corpusId = corpusBuildingState.getId().split("@")[0];
+
+                            Corpus incompletedCorpus = incompleteCorpusService.get(corpusId);
+                            if (incompletedCorpus != null) {
+                                incompleteCorpusService.move(corpusId);
+                            }
                         }
                     }
                 } catch (IOException e) {
