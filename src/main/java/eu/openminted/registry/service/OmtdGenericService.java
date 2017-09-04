@@ -5,6 +5,7 @@ import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.domain.MetadataHeaderInfo;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -61,21 +62,18 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public void add(T resource) {
-        if(resource.getMetadataHeaderInfo() == null) {
-            logger.info("Auto-generate metadata header info for " + getResourceType());
-            resource.setMetadataHeaderInfo(MetadataHeaderInfoGenerate.generate());
-        } else {
-            try {
-                GregorianCalendar gregory = new GregorianCalendar();
-                gregory.setTime(new Date());
-                XMLGregorianCalendar calendar;
-                calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-                resource.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
-                resource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
-            } catch(DatatypeConfigurationException e) {
-                throw new ServiceException(e);
-            }
+        resource.setMetadataHeaderInfo(MetadataHeaderInfoGenerate.generate(resource.getMetadataHeaderInfo()));
+        try {
+            GregorianCalendar gregory = new GregorianCalendar();
+            gregory.setTime(new Date());
+            XMLGregorianCalendar calendar;
+            calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
+            resource.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
+            resource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+        } catch(DatatypeConfigurationException e) {
+            throw new ServiceException(e);
         }
+
 
         String insertionId = resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
         Resource checkResource;

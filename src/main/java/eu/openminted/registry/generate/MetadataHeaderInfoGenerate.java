@@ -23,8 +23,10 @@ public class MetadataHeaderInfoGenerate {
 
     private static Logger logger = LoggerFactory.getLogger(MetadataHeaderInfoGenerate.class);
 
-    static public MetadataHeaderInfo generate(){
-        MetadataHeaderInfo info = new MetadataHeaderInfo();
+    static public MetadataHeaderInfo generate(MetadataHeaderInfo info){
+        if(info == null) {
+            info = new MetadataHeaderInfo();
+        }
 
         //
         // Set creation date and last date updated
@@ -43,10 +45,12 @@ public class MetadataHeaderInfoGenerate {
         //
         // Set metadata record identifier
         //
-        MetadataIdentifier identifier = new MetadataIdentifier();
-        identifier.setValue(UUID.randomUUID().toString());
-        identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OTHER);
-        info.setMetadataRecordIdentifier(identifier);
+        if(info.getMetadataRecordIdentifier() == null) {
+            MetadataIdentifier identifier = new MetadataIdentifier();
+            identifier.setValue(UUID.randomUUID().toString());
+            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OTHER);
+            info.setMetadataRecordIdentifier(identifier);
+        }
 
         //
         // Set metadata creator
