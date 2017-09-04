@@ -1,10 +1,8 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.corpus.CorpusBuildingState;
-import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.domain.Corpus;
 
-import java.io.InputStream;
+import eu.openminted.corpus.CorpusBuildingState;
+
 import java.util.List;
 
 /**
