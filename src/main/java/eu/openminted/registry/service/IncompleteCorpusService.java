@@ -9,5 +9,5 @@ import java.io.InputStream;
  * Created by antleb on 1/19/17.
  */
 public interface IncompleteCorpusService extends ResourceCRUDService<Corpus> {
-
+    void move(String corpusId);
 }
