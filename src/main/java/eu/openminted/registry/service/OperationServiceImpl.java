@@ -1,6 +1,10 @@
 package eu.openminted.registry.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.Resource;
@@ -71,9 +75,14 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
       //  resource.setPerson(authentication.getSub());
         logger.info("Adding Operation :: " + resource.toString());
         Resource resourceDb = new Resource();
-        Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
+//        Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.setDateFormat(new ISO8601DateFormat());
+
         try {
-        	logger.info(serialized.get());
+            String serialized = mapper.writeValueAsString(resource);
+        	logger.info(serialized);
         	logger.info("Create creation Date in DB");
             resourceDb.setCreationDate(new Date());
             logger.info("Create modification Date in DB");
@@ -87,8 +96,8 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             logger.info("Set id in DB" + resource.getId());
             resourceDb.setId(resource.getId());
             logger.info("Set payload in DB");
-            resourceDb.setPayload(serialized.get());
-        } catch (InterruptedException | ExecutionException e) {
+            resourceDb.setPayload(serialized);
+        } catch (JsonProcessingException e) {
             logger.info("serializer exception",e);
             throw new ServiceException(e);
         }

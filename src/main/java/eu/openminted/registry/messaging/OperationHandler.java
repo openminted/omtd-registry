@@ -26,7 +26,7 @@ public class OperationHandler implements MessagesHandler {
 	@Autowired
 	private OperationServiceImpl operationService;
 	
-	private String[] workflowExecutionStatus = {
+	static private String[] workflowExecutionStatus = {
 	        "PENDING",
 	        "RUNNING",
 	        "PAUSED",
@@ -61,8 +61,10 @@ public class OperationHandler implements MessagesHandler {
 					operation.setCorpus(corpus);
 					operation.setComponent(workflowExecutionMsg.getWorkflowID());
 					Date date = new Date();
-					date.setSubmitted(new Integer((int)System.currentTimeMillis()));
+					date.setSubmitted(new java.util.Date());
+					date.setStarted(new java.util.Date());
 					operation.setDate(date);
+					operation.setStatus(workflowExecutionStatus[0]);
 					logger.debug("Operation to insert ::" + operation.toString());
 					operationService.add(operation);
 					logger.info("Operation inserted successfully");
