@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -20,7 +21,8 @@ public class OperationPublisherApp {
 	static final Logger logger = Logger.getLogger(OperationPublisherApp.class);
 	
 	//@Value("${jms.host}")
-	private static String messagesHost = "tcp://<domain>:<port>";
+	private static String messagesHost = "tcp://83.212.101.85:61616";
+	// = "tcp://<domain>:<port>";
 	
 	private static String topic = TopicsRegistry.workflowsExecution;
 	

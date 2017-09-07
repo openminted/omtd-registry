@@ -10,6 +10,7 @@ COPY ./src/main/resources/eu/openminted/registry/domain/application.properties /
 #ENV LOG4J_URL http://central.maven.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar
 
 #RUN wget -o /usr/local/tomcat/lib/log4j-1.2.17.jar "$LOG4J_URL"
+ENV override-name dev
 
 RUN ["cat", "/usr/local/tomcat/lib/registry.properties"]
 CMD ["catalina.sh", "run"]

@@ -1,4 +1,4 @@
-package eu.openminted.registry.messaging;
+package eu.openminted.registry.messages;
 
 
 import org.apache.log4j.Logger;
@@ -10,8 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import eu.openminted.messageservice.connector.MessageServiceSubscriber;
 import eu.openminted.messageservice.connector.TopicsRegistry;
-
-import eu.openminted.registry.messaging.OperationHandler;
 
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )

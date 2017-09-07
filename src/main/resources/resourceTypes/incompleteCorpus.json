@@ -40,9 +40,16 @@
     },
     {
       "multivalued": true,
-      "name": "rights",
-      "label": "Rights",
-      "path": "//*[local-name()='rightsStmtName']/text()",
+      "name": "lingualityType",
+      "label": "Linguality Type",
+      "path": "//*[local-name()='lingualityType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "multilingualityType",
+      "label": "Multilinguality Type",
+      "path": "//*[local-name()='multilingualityType']/text()",
       "type": "java.lang.String"
     },
     {
@@ -54,6 +61,48 @@
     },
     {
       "multivalued": true,
+      "name": "domain",
+      "label": "Domain",
+      "path": "//*[local-name()='domain']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "corpusSubtype",
+      "label": "Corpus Subtype",
+      "path": "//*[local-name()='corpusSubType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "annotationLevel",
+      "label": "Annotation Level",
+      "path": "//*[local-name()='annotationLevel']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "tagset",
+      "label": "Tagset",
+      "path": "//*[local-name()='tagset']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "rights",
+      "label": "Rights",
+      "path": "//*[local-name()='rights']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "rightsStmtName",
+      "label": "Rights Statement Name",
+      "path": "//*[local-name()='rightsStmtName']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
       "name": "dataFormatSpecific",
       "label": "Data Format Specific",
       "path": "//*[local-name()='dataFormatSpecific']/text()",
@@ -61,30 +110,30 @@
     },
     {
       "multivalued": true,
-      "name": "componentType",
-      "label": "Component Type",
-      "path": "//*[local-name()='componentType']/text()",
+      "name": "subject",
+      "label": "Subject",
+      "path": "//*[local-name()='subject']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "componentDistributionMedium",
-      "label": "Component Distribution Medium",
-      "path": "//*[local-name()='componentDistributionForm']/text()",
+      "name": "typeSystem",
+      "label": "Type System",
+      "path": "//*[local-name()='typesystem']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": false,
       "name": "application",
       "label": "Application",
-      "path": "//*[local-name()='application']/text()",
+      "path": null,
       "type": "java.lang.Boolean",
-      "defaultValue": "false"
+      "defaultValue": "true"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
-  "name": "component",
+  "name": "incompletecorpus",
   "aliasGroup": "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Component.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Corpus.xsd"
 }

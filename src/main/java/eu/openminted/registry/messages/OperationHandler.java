@@ -1,4 +1,4 @@
-package eu.openminted.registry.messaging;
+package eu.openminted.registry.messages;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

@@ -23,8 +23,10 @@ public class MetadataHeaderInfoGenerate {
 
     private static Logger logger = LoggerFactory.getLogger(MetadataHeaderInfoGenerate.class);
 
-    static public MetadataHeaderInfo generate(){
-        MetadataHeaderInfo info = new MetadataHeaderInfo();
+    static public MetadataHeaderInfo generate(MetadataHeaderInfo info){
+        if(info == null) {
+            info = new MetadataHeaderInfo();
+        }
 
         //
         // Set creation date and last date updated
@@ -43,66 +45,69 @@ public class MetadataHeaderInfoGenerate {
         //
         // Set metadata record identifier
         //
-        MetadataIdentifier identifier = new MetadataIdentifier();
-        identifier.setValue(UUID.randomUUID().toString());
-        identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OTHER);
-        info.setMetadataRecordIdentifier(identifier);
+        if(info.getMetadataRecordIdentifier() == null) {
+            MetadataIdentifier identifier = new MetadataIdentifier();
+            identifier.setValue(UUID.randomUUID().toString());
+            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OTHER);
+            info.setMetadataRecordIdentifier(identifier);
+        }
 
         //
         // Set metadata creator
         //
-        //TODO check if anonymous user
-        OIDCAuthenticationToken authentication;
-        try {
-             authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        } catch (ClassCastException e) {
-            throw new ServiceException("User is not authenticated in order to generate metadata");
-        }
-
-        PersonInfo personInfo = new PersonInfo();
-        SeparateNames name = new SeparateNames();
-        GivenName givenName = new GivenName();
-        givenName.setValue(authentication.getUserInfo().getGivenName());
-        Surname surname = new Surname();
-        surname.setValue(authentication.getUserInfo().getFamilyName());
-
-        name.getGivenNames().add(givenName);
-        name.getSurnames().add(surname);
-
-        personInfo.setSeparateNames(name);
-
-        PersonIdentifier personIdentifier = new PersonIdentifier();
-        personIdentifier.setValue(authentication.getSub());
-        personIdentifier.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
-        personInfo.getPersonIdentifiers().add(personIdentifier);
-
-        //
-        // Set affiliations
-        //
-        authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
-            String[] organizationPosition = af.getAsString().split("@");
-            if(organizationPosition.length == 2) {
-                Affiliation affiliation = new Affiliation();
-                OrganizationInfo organizationInfo = new OrganizationInfo();
-                OrganizationName organizationName = new OrganizationName();
-                organizationName.setValue(organizationPosition[1]);
-                organizationInfo.getOrganizationNames().add(organizationName);
-                affiliation.setAffiliatedOrganization(organizationInfo);
-                affiliation.setPosition(organizationPosition[0]);
-                personInfo.getAffiliations().add(affiliation);
-            } else {
-                logger.warn("The provided affiliation was not in position@organization format");
+        if(info.getMetadataCreators().size() == 0) {
+            OIDCAuthenticationToken authentication;
+            try {
+                authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            } catch (ClassCastException e) {
+                throw new ServiceException("User is not authenticated in order to generate metadata");
             }
-        });
 
-        //
-        // Set communication info
-        //
-        CommunicationInfo communicationInfo = new CommunicationInfo();
-        communicationInfo.getEmails().add(authentication.getUserInfo().getEmail());
-        personInfo.setCommunicationInfo(communicationInfo);
+            PersonInfo personInfo = new PersonInfo();
+            SeparateNames name = new SeparateNames();
+            GivenName givenName = new GivenName();
+            givenName.setValue(authentication.getUserInfo().getGivenName());
+            Surname surname = new Surname();
+            surname.setValue(authentication.getUserInfo().getFamilyName());
 
-        info.getMetadataCreators().add(personInfo);
+            name.getGivenNames().add(givenName);
+            name.getSurnames().add(surname);
+
+            personInfo.setSeparateNames(name);
+
+            PersonIdentifier personIdentifier = new PersonIdentifier();
+            personIdentifier.setValue(authentication.getSub());
+            personIdentifier.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
+            personInfo.getPersonIdentifiers().add(personIdentifier);
+
+            //
+            // Set affiliations
+            //
+            authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
+                String[] organizationPosition = af.getAsString().split("@");
+                if (organizationPosition.length == 2) {
+                    Affiliation affiliation = new Affiliation();
+                    OrganizationInfo organizationInfo = new OrganizationInfo();
+                    OrganizationName organizationName = new OrganizationName();
+                    organizationName.setValue(organizationPosition[1]);
+                    organizationInfo.getOrganizationNames().add(organizationName);
+                    affiliation.setAffiliatedOrganization(organizationInfo);
+                    affiliation.setPosition(organizationPosition[0]);
+                    personInfo.getAffiliations().add(affiliation);
+                } else {
+                    logger.warn("The provided affiliation was not in position@organization format");
+                }
+            });
+
+            //
+            // Set communication info
+            //
+            CommunicationInfo communicationInfo = new CommunicationInfo();
+            communicationInfo.getEmails().add(authentication.getUserInfo().getEmail());
+            personInfo.setCommunicationInfo(communicationInfo);
+
+            info.getMetadataCreators().add(personInfo);
+        }
         return info;
     }
 }
