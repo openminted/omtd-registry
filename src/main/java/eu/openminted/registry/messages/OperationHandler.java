@@ -89,10 +89,8 @@ public class OperationHandler implements MessagesHandler {
 					operationService.add(operation);
 					logger.info("Operation inserted successfully");
 				}
-				// Set a workflow experiment to start, ie update an operation document
-				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[1])) {
-							
-					
+				// Set a workflow experiment to started, ie update an operation document
+				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[1])) {											
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
 									
@@ -104,23 +102,51 @@ public class OperationHandler implements MessagesHandler {
 					// Set started date
 					date.setStarted(new java.util.Date());
 					operation.setDate(date);
-										
-					ObjectMapper mapper = new ObjectMapper();
-					mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-					mapper.setDateFormat(new ISO8601DateFormat());
-									             
-					String serializedInDB = mapper.writeValueAsString(operation);
-					logger.info("Serialized" + serializedInDB);
-										
-					// Add operation to registry
-					//operationService.delete(operation);
+																			
+					// Update operation to registry				
 					operationService.update(operation);
-					logger.info("Operation updated successfully");
+					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
 					
-				} 
-				
-						      
-				
+				} 	
+				// Set a workflow experiment to finished, ie update an operation document
+				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[3])) {											
+					// Get operation object from registry
+					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
+														
+					// Update status
+					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					
+					// Update date
+					Date date = operation.getDate();
+					// Set finished date
+					date.setFinished(new java.util.Date());
+					operation.setDate(date);
+					
+					// Update corpus
+					Corpus corpus = operation.getCorpus();
+					
+					corpus.setOutput(workflowExecutionMsg.getResultingCorpusID());
+					operation.setCorpus(corpus);
+															
+					logger.info("Operation to finished" + operation.toString());
+					// Update operation to registry				
+					operationService.update(operation);
+					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
+					
+				}
+				else {
+					// Get operation object from registry
+					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
+														
+					// Update status
+					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					logger.info("Operation to finished" + operation.toString());
+					// Update operation to registry				
+					operationService.update(operation);
+					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
+					
+				}
+					
 			}
 			else {
 				logger.info("Handling a non text message :: " + msg.toString());;

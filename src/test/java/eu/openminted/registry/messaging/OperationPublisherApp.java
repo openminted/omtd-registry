@@ -47,30 +47,58 @@ public class OperationPublisherApp {
 		MessageServicePublisher msgServicePub = new MessageServicePublisher(messagesHost); 
 		            
 		//////////////////
-		// Step 1 - A workflow is set to run in the workflow engine      
-        WorkflowExecutionStatusMessage msgPending = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID2";//UUID.randomUUID().toString();
-        msgPending.setWorkflowExecutionID(workflowExecutionID);
-		msgPending.setWorkflowStatus(workflowExecutionStatus[0]);
-		msgPending.setCorpusID(UUID.randomUUID().toString());
-		msgPending.setUserID(userID);
-		msgPending.setWorkflowID(workflowID);                      
+		// Step 1 - A workflow is set to PENDING in the workflow engine      
+        WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
+        String workflowExecutionID = "WFE_ID8";//UUID.randomUUID().toString();
+    /*    msgPended.setWorkflowExecutionID(workflowExecutionID);
+		msgPended.setWorkflowStatus(workflowExecutionStatus[0]);
+		msgPended.setCorpusID(UUID.randomUUID().toString());
+		msgPended.setUserID(userID);
+		msgPended.setWorkflowID(workflowID);                      
         // Publish message
-		logger.info("Sending message - workflow execution :: " + msgPending.toString() );
-        msgServicePub.publishMessage(topic, msgPending);
+		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
+        msgServicePub.publishMessage(topic, msgPended);
          
-    /*    Thread.sleep(10000);
+      
         
         //////////////////
-        // Step 2 - A workflow is set to run in the workflow engine      
-        WorkflowExecutionStatusMessage msgStarting = new WorkflowExecutionStatusMessage(); 
-        msgStarting.setWorkflowExecutionID(workflowExecutionID);
-        msgStarting.setWorkflowStatus(workflowExecutionStatus[1]);
+        // Step 2 - A workflow is set to STARTED in the workflow engine   
+        Thread.sleep(20000);
+        WorkflowExecutionStatusMessage msgStarted = new WorkflowExecutionStatusMessage(); 
+        msgStarted.setWorkflowExecutionID(workflowExecutionID);
+        msgStarted.setWorkflowStatus(workflowExecutionStatus[1]);
                             
 		// Publish message
-		logger.info("Sending message - workflow execution :: " + msgStarting.toString() );
-		msgServicePub.publishMessage(topic, msgStarting);
- */
+		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
+		msgServicePub.publishMessage(topic, msgStarted);
+ 
+		
+		 //////////////////
+        // Step 3 - A workflow is set to FINISHED in the workflow engine   
+        Thread.sleep(20000);
+        
+        WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
+        msgFinished.setWorkflowExecutionID(workflowExecutionID);
+        msgFinished.setWorkflowStatus(workflowExecutionStatus[3]);
+        msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
+                            
+		// Publish message
+		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
+		msgServicePub.publishMessage(topic, msgFinished);
+ 
+		
+		 //////////////////
+        // Step 4 - A workflow is set to other states in the workflow engine   
+        Thread.sleep(20000);
+        */
+        WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
+        msgFinished.setWorkflowExecutionID(workflowExecutionID);
+        msgFinished.setWorkflowStatus(workflowExecutionStatus[2]);
+        msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
+                            
+		// Publish message
+		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
+		msgServicePub.publishMessage(topic, msgFinished);
         ((AbstractApplicationContext)context).close();
   		
 	}
