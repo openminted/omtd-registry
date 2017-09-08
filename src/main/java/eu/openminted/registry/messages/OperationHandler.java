@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import eu.openminted.messageservice.connector.MessagesHandler;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 //import eu.openminted.messageservice.messages.GSON;
 import com.google.gson.Gson;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
-import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
 import eu.openminted.registry.domain.operation.Operation;
@@ -51,24 +54,71 @@ public class OperationHandler implements MessagesHandler {
 				logger.info("Received message :: " + workflowExecutionMsg.toString() );
 			
 				// Generate appropriate Operation object
-				Operation operation = new Operation();
+				
+				// Set a workflow experiment for execution, ie create a new operation document
 				if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[0])) {
-					operation.setId(workflowExecutionMsg.getWorkflowExecutionID());					
+					Operation operation = new Operation();
+					// Operation ID
+					operation.setId(workflowExecutionMsg.getWorkflowExecutionID());
+					// TODO discard Job in next version
 					operation.setJob(workflowExecutionMsg.getWorkflowExecutionID());
+					// Set Status
+					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					// Set User ID
 					operation.setPerson(workflowExecutionMsg.getUserID());
+					// Set Workflow ID
+					operation.setComponent(workflowExecutionMsg.getWorkflowID());					
+					
+					// Create corpus
 					Corpus corpus = new Corpus();
+					// Input corpus ID
 					corpus.setInput(workflowExecutionMsg.getCorpusID());
+					// Set corpus
 					operation.setCorpus(corpus);
-					operation.setComponent(workflowExecutionMsg.getWorkflowID());
+					
+					// Create date
 					Date date = new Date();
+					// Submitted Data
 					date.setSubmitted(new java.util.Date());
+					// TODO discard Date.started in next version
 					date.setStarted(new java.util.Date());
+					// Set date
 					operation.setDate(date);
-					operation.setStatus(workflowExecutionStatus[0]);
-					logger.debug("Operation to insert ::" + operation.toString());
+					
+					// Add operation to registry
 					operationService.add(operation);
 					logger.info("Operation inserted successfully");
 				}
+				// Set a workflow experiment to start, ie update an operation document
+				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[1])) {
+							
+					
+					// Get operation object from registry
+					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
+									
+					// Update status
+					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					
+					// Update date
+					Date date = operation.getDate();
+					// Set started date
+					date.setStarted(new java.util.Date());
+					operation.setDate(date);
+										
+					ObjectMapper mapper = new ObjectMapper();
+					mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+					mapper.setDateFormat(new ISO8601DateFormat());
+									             
+					String serializedInDB = mapper.writeValueAsString(operation);
+					logger.info("Serialized" + serializedInDB);
+										
+					// Add operation to registry
+					//operationService.delete(operation);
+					operationService.update(operation);
+					logger.info("Operation updated successfully");
+					
+				} 
+				
 						      
 				
 			}

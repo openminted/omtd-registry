@@ -38,7 +38,7 @@ public class OperationPublisherApp {
         "FAILED"
 	};
 
-	public static void main(String[] args) throws JMSException{
+	public static void main(String[] args) throws JMSException, InterruptedException{
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(
         		OperationPublisherApp.class);
   
@@ -49,19 +49,28 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to run in the workflow engine      
         WorkflowExecutionStatusMessage msgPending = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID1";//UUID.randomUUID().toString();
+        String workflowExecutionID = "WFE_ID2";//UUID.randomUUID().toString();
         msgPending.setWorkflowExecutionID(workflowExecutionID);
 		msgPending.setWorkflowStatus(workflowExecutionStatus[0]);
 		msgPending.setCorpusID(UUID.randomUUID().toString());
 		msgPending.setUserID(userID);
-		msgPending.setWorkflowID(workflowID);
-		
-		
-        logger.info("Sending message - workflow execution :: " + msgPending.toString() );               
+		msgPending.setWorkflowID(workflowID);                      
         // Publish message
+		logger.info("Sending message - workflow execution :: " + msgPending.toString() );
         msgServicePub.publishMessage(topic, msgPending);
          
+    /*    Thread.sleep(10000);
         
+        //////////////////
+        // Step 2 - A workflow is set to run in the workflow engine      
+        WorkflowExecutionStatusMessage msgStarting = new WorkflowExecutionStatusMessage(); 
+        msgStarting.setWorkflowExecutionID(workflowExecutionID);
+        msgStarting.setWorkflowStatus(workflowExecutionStatus[1]);
+                            
+		// Publish message
+		logger.info("Sending message - workflow execution :: " + msgStarting.toString() );
+		msgServicePub.publishMessage(topic, msgStarting);
+ */
         ((AbstractApplicationContext)context).close();
   		
 	}
