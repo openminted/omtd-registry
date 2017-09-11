@@ -49,8 +49,8 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID8";//UUID.randomUUID().toString();
-    /*    msgPended.setWorkflowExecutionID(workflowExecutionID);
+        String workflowExecutionID = "WFE_ID9";//UUID.randomUUID().toString();
+        msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(workflowExecutionStatus[0]);
 		msgPended.setCorpusID(UUID.randomUUID().toString());
 		msgPended.setUserID(userID);
@@ -86,11 +86,11 @@ public class OperationPublisherApp {
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
 		msgServicePub.publishMessage(topic, msgFinished);
  
-		
+		/*
 		 //////////////////
         // Step 4 - A workflow is set to other states in the workflow engine   
         Thread.sleep(20000);
-        */
+        
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
         msgFinished.setWorkflowStatus(workflowExecutionStatus[2]);
@@ -98,6 +98,7 @@ public class OperationPublisherApp {
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
+		*/
 		msgServicePub.publishMessage(topic, msgFinished);
         ((AbstractApplicationContext)context).close();
   		

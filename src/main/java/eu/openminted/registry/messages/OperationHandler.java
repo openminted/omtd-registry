@@ -134,6 +134,7 @@ public class OperationHandler implements MessagesHandler {
 					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
 					
 				}
+				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
 				else {
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
