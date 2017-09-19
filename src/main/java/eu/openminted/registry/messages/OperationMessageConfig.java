@@ -22,7 +22,7 @@ public class OperationMessageConfig {
 	@Autowired
 	private OperationHandler operationHandler;
 	
-	@Bean
+	//@Bean
 	public MessageServiceSubscriber messageServiceSubscription() {
 		// Connect to Message Service as subscriber
 		logger.info("Creating a message service subscription to  ::" + this.messagesHost );

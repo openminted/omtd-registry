@@ -21,12 +21,12 @@ public class OperationPublisherApp {
 	static final Logger logger = Logger.getLogger(OperationPublisherApp.class);
 	
 	//@Value("${jms.host}")
-	private static String messagesHost = "tcp://83.212.101.85:61616";
-	// = "tcp://<domain>:<port>";
+	private static String messagesHost = "tcp://<domain>:<port>";
 	
 	private static String topic = TopicsRegistry.workflowsExecution;
 	
 	private static String userID = "0931731143127784@openminted.eu";
+	private static String corpusID = "d44abd18-631f-4ab1-8f42-40cc1047dd31";
 	private static String workflowID = "workflowID";
 	
 	private static String[] workflowExecutionStatus = {
@@ -49,10 +49,10 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID9";//UUID.randomUUID().toString();
-        msgPended.setWorkflowExecutionID(workflowExecutionID);
+        String workflowExecutionID = "WFE_ID10";//UUID.randomUUID().toString();
+     /*   msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(workflowExecutionStatus[0]);
-		msgPended.setCorpusID(UUID.randomUUID().toString());
+		msgPended.setCorpusID(corpusID);
 		msgPended.setUserID(userID);
 		msgPended.setWorkflowID(workflowID);                      
         // Publish message
@@ -60,7 +60,7 @@ public class OperationPublisherApp {
         msgServicePub.publishMessage(topic, msgPended);
          
       
-        
+      
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
         Thread.sleep(20000);
@@ -76,7 +76,7 @@ public class OperationPublisherApp {
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
         Thread.sleep(20000);
-        
+        */
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
         msgFinished.setWorkflowStatus(workflowExecutionStatus[3]);
@@ -98,8 +98,9 @@ public class OperationPublisherApp {
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
-		*/
+		
 		msgServicePub.publishMessage(topic, msgFinished);
+		*/
         ((AbstractApplicationContext)context).close();
   		
 	}

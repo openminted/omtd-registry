@@ -1,6 +1,5 @@
 # compile project and pack as war 
-mvn clean
-mvn package
+mvn clean package -DskipTests
 
 # Undeploy previous version
 echo "Undeploy previous version"

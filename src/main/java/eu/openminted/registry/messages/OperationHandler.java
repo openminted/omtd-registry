@@ -19,6 +19,7 @@ import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
 import eu.openminted.registry.domain.operation.Operation;
+import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.service.OperationServiceImpl;
 
 @Component
@@ -28,6 +29,10 @@ public class OperationHandler implements MessagesHandler {
 
 	@Autowired
 	private OperationServiceImpl operationService;
+	
+	
+	@Autowired
+	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 	
 	static private String[] workflowExecutionStatus = {
 	        "PENDING",
@@ -49,32 +54,37 @@ public class OperationHandler implements MessagesHandler {
 				logger.info("text message:" + textMessage.getText());
 				
 				// Transform text message to message object (aka WorkflowExecutionStatusMessage)
-				Gson gson = new Gson();
-				WorkflowExecutionStatusMessage workflowExecutionMsg = gson.fromJson(textMessage.getText(), WorkflowExecutionStatusMessage.class);
-				logger.info("Received message :: " + workflowExecutionMsg.toString() );
+				Gson gson = new Gson();		
+				WorkflowExecutionStatusMessage workflowExeMsg = gson.fromJson(textMessage.getText(), WorkflowExecutionStatusMessage.class);
+				logger.info("Received message :: " + workflowExeMsg.toString() );
 			
 				// Generate appropriate Operation object
 				
 				// Set a workflow experiment for execution, ie create a new operation document
-				if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[0])) {
+				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[0])) {
+					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getUserID() == null ||
+							workflowExeMsg.getWorkflowID() == null || workflowExeMsg.getCorpusID() == null) {
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[0]);
+					}
+
 					Operation operation = new Operation();
 					// Operation ID
-					operation.setId(workflowExecutionMsg.getWorkflowExecutionID());
+					operation.setId(workflowExeMsg.getWorkflowExecutionID());
 					// TODO discard Job in next version
-					operation.setJob(workflowExecutionMsg.getWorkflowExecutionID());
+					operation.setJob(workflowExeMsg.getWorkflowExecutionID());
 					// Set Status
-					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 					// Set User ID
-					operation.setPerson(workflowExecutionMsg.getUserID());
+					operation.setPerson(workflowExeMsg.getUserID());
 					// Set Workflow ID
-					operation.setComponent(workflowExecutionMsg.getWorkflowID());					
+					operation.setComponent(workflowExeMsg.getWorkflowID());					
 					
 					// Create corpus
-					Corpus corpus = new Corpus();
+					Corpus operationCorpus = new Corpus();
 					// Input corpus ID
-					corpus.setInput(workflowExecutionMsg.getCorpusID());
+					operationCorpus.setInput(workflowExeMsg.getCorpusID());
 					// Set corpus
-					operation.setCorpus(corpus);
+					operation.setCorpus(operationCorpus);
 					
 					// Create date
 					Date date = new Date();
@@ -88,14 +98,18 @@ public class OperationHandler implements MessagesHandler {
 					// Add operation to registry
 					operationService.add(operation);
 					logger.info("Operation inserted successfully");
+					
 				}
 				// Set a workflow experiment to started, ie update an operation document
-				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[1])) {											
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[1])) {		
+					if(workflowExeMsg.getWorkflowExecutionID() == null) {
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[1]);
+					}
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
-									
+					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
+								
 					// Update status
-					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 					
 					// Update date
 					Date date = operation.getDate();
@@ -105,16 +119,19 @@ public class OperationHandler implements MessagesHandler {
 																			
 					// Update operation to registry				
 					operationService.update(operation);
-					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
+					logger.info("Operation updated to " + workflowExeMsg.getWorkflowStatus() + " successfully");
 					
 				} 	
 				// Set a workflow experiment to finished, ie update an operation document
-				else if (workflowExecutionMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[3])) {											
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(workflowExecutionStatus[3])) {		
+					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[0]);
+					}
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
+					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());							
 														
 					// Update status
-					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 					
 					// Update date
 					Date date = operation.getDate();
@@ -123,28 +140,34 @@ public class OperationHandler implements MessagesHandler {
 					operation.setDate(date);
 					
 					// Update corpus
-					Corpus corpus = operation.getCorpus();
-					
-					corpus.setOutput(workflowExecutionMsg.getResultingCorpusID());
-					operation.setCorpus(corpus);
+					Corpus operationCorpus = operation.getCorpus();
+					// Generate output corpus metadata
+					eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.createMetadataOutputCorpus(operationCorpus.getInput(), 
+							operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+										
+					operationCorpus.setOutput(outputCorpusMeta.getCorpusInfo().getDistributionInfos().get(0).getDistributionLoc().get(0).getDistributionLocation());
+					operation.setCorpus(operationCorpus);
 															
 					logger.info("Operation to finished" + operation.toString());
 					// Update operation to registry				
 					operationService.update(operation);
-					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
+					logger.info("Operation updated to " + workflowExeMsg.getWorkflowStatus() + " successfully");
+					
+					// TODO outputCorpusMeta add to registry as incomplete?
+				
 					
 				}
 				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
 				else {
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExecutionMsg.getWorkflowExecutionID());
+					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
 														
 					// Update status
-					operation.setStatus(workflowExecutionMsg.getWorkflowStatus().toUpperCase());
+					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 					logger.info("Operation to finished" + operation.toString());
 					// Update operation to registry				
 					operationService.update(operation);
-					logger.info("Operation updated to " + workflowExecutionMsg.getWorkflowStatus() + " successfully");
+					logger.info("Operation updated to " + workflowExeMsg.getWorkflowStatus() + " successfully");
 					
 				}
 					
@@ -160,5 +183,7 @@ public class OperationHandler implements MessagesHandler {
 	    	logger.info(e.getMessage());	    	
 	    }
 	}
+	
+	
 
 }
