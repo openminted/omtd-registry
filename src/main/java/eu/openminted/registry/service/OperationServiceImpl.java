@@ -70,8 +70,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         
         Resource resourceDb = new Resource();
         try {
-            String serialized = mapper.writeValueAsString(operation);
-        	logger.info("Adding Operation::" + serialized);
+            String serialized = mapper.writeValueAsString(operation);        
             resourceDb.setPayloadFormat("json");            	
             resourceDb.setResourceType(getResourceType());         
             resourceDb.setVersion("not_set");         
@@ -82,8 +81,6 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             throw new ServiceException(e);
         }
         try {
-        	String serialized = parserPool.deserialize(resourceDb, ParserService.ParserServiceTypes.JSON).get();        	            
-        	logger.info("Add resource in DB\n" + serialized);
         	resourceService.addResource(resourceDb);
         }catch(Exception e){
 	    	logger.info("add operation",e);	    	
@@ -104,21 +101,14 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             if (resourceDb == null) {
                 throw new ServiceException(getResourceType() + " with key " + kv.toString()  + " does not exists");
             } else {
-                String serialized = parserPool.deserialize(resourceDb, ParserService.ParserServiceTypes.JSON).get();
-                logger.info("OLD ResourceDB serialized:\n " + serialized);
-                
-                
-                serialized = mapper.writeValueAsString(operation);
-                logger.info("Operation updated::"+serialized);             
+                String serialized = mapper.writeValueAsString(operation);  
+                //parserPool.deserialize(resourceDb, ParserService.ParserServiceTypes.JSON).get();
                 resourceDb.setPayloadFormat("json");
-                resourceDb.setPayload(serialized);               
-                serialized = parserPool.deserialize(resourceDb, ParserService.ParserServiceTypes.JSON).get();
-                logger.info("NEW ResourceDB serialized:\n " + serialized);
-                
+                resourceDb.setPayload(serialized);                             
                 resourceService.updateResource(resourceDb);
                 
             }
-        } catch (IOException | ExecutionException | InterruptedException   e) { //| | JsonProcessingException | UnknownHostException  |
+        } catch (IOException  e) { //| ExecutionException | InterruptedException   e) { //| | JsonProcessingException | UnknownHostException  |
             logger.fatal("operation update fatal error", e);
             throw new ServiceException(e);
         }

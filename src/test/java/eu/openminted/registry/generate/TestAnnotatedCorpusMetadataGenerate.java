@@ -33,7 +33,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 		String componentId = "DemoWF3SSHNER";  //omtdid
 		String userId = "0931731143127784@openminted.eu"; 
 		String outputCorpusArchiveId = "outputArchiveId";
-		Corpus outputCorpus = corpusMetadataGenerator.createMetadataOutputCorpus(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 
 	}
 

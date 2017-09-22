@@ -26,8 +26,10 @@ public class OperationPublisherApp {
 	private static String topic = TopicsRegistry.workflowsExecution;
 	
 	private static String userID = "0931731143127784@openminted.eu";
-	private static String corpusID = "d44abd18-631f-4ab1-8f42-40cc1047dd31";
-	private static String workflowID = "workflowID";
+	private static String corpusID = "OMTD_Demo_Dataset4"; // omtdid	
+	private static String workflowID =  "DemoWF4Metabolites"; // "DemoWF3SSHNER";  //omtdid
+	
+	private static String outputCorpusArchiveId = "outputArchiveId";
 	
 	private static String[] workflowExecutionStatus = {
         "PENDING",
@@ -49,8 +51,8 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID10";//UUID.randomUUID().toString();
-     /*   msgPended.setWorkflowExecutionID(workflowExecutionID);
+        String workflowExecutionID = "WFE_ID17";//UUID.randomUUID().toString();
+        msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(workflowExecutionStatus[0]);
 		msgPended.setCorpusID(corpusID);
 		msgPended.setUserID(userID);
@@ -58,9 +60,7 @@ public class OperationPublisherApp {
         // Publish message
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
         msgServicePub.publishMessage(topic, msgPended);
-         
-      
-      
+              
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
         Thread.sleep(20000);
@@ -76,7 +76,7 @@ public class OperationPublisherApp {
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
         Thread.sleep(20000);
-        */
+     
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
         msgFinished.setWorkflowStatus(workflowExecutionStatus[3]);
