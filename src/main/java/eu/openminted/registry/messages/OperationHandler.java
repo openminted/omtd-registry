@@ -45,7 +45,7 @@ public class OperationHandler implements MessagesHandler {
 	@Autowired
 	private CorpusServiceImpl corpusService;
 	
-	static private String[] workflowExecutionStatus = {
+	/*static private String[] workflowExecutionStatus = {
 	        "PENDING",
 	        "RUNNING",
 	        "PAUSED",
@@ -53,7 +53,7 @@ public class OperationHandler implements MessagesHandler {
 	        "CANCELED",
 	        "FAILED"
 	};
-	
+	*/
 	@Autowired
 	public ParserService parserPool;
 		
@@ -75,13 +75,11 @@ public class OperationHandler implements MessagesHandler {
 				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.PENDING.toString())) {
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getUserID() == null ||
 							workflowExeMsg.getWorkflowID() == null || workflowExeMsg.getCorpusID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[0]);
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.PENDING.toString());
 					}
 
 					Operation operation = new Operation();
 					operation.setId(workflowExeMsg.getWorkflowExecutionID());
-					// TODO discard Job in next version
-					operation.setJob(workflowExeMsg.getWorkflowExecutionID());
 					operation.setStatus(OperationStatus.PENDING.toString());
 					operation.setPerson(workflowExeMsg.getUserID());
 					operation.setComponent(workflowExeMsg.getWorkflowID());					
@@ -94,20 +92,19 @@ public class OperationHandler implements MessagesHandler {
 					// Create date
 					Date date = new Date();
 					date.setSubmitted(new java.util.Date());
-					// TODO discard Date.started in next version
-					date.setStarted(new java.util.Date());
 					operation.setDate(date);
 					
 					// Add operation to registry
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Inserting Operation " + operationString.get());					
 					operationService.add(operation);
+					logger.info("Inserted Operation " + operation.getId() + " successfully");
 				    
 				}
 				// Set a workflow experiment to started, ie update an operation document
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.RUNNING.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[1]);
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.RUNNING.toString());
 					}
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
@@ -122,12 +119,13 @@ public class OperationHandler implements MessagesHandler {
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());				
 					operationService.update(operation);
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + OperationStatus.RUNNING.toString());
 						
 				} 	
 				// Set a workflow experiment to finished, ie update an operation document, create ouput corpus metadata
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.FINISHED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExecutionStatus[0]);
+						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.FINISHED.toString());
 					}
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());							
@@ -150,8 +148,6 @@ public class OperationHandler implements MessagesHandler {
 					operation.setCorpus(operationCorpus);
 					
 					// Add ouput corpus metadata to registry 
-				//	Future<String> serialized = parserPool.deserialize(outputCorpusMeta, ParserService.ParserServiceTypes.XML);
-				//	logger.debug("Output corpus metadata xml format::\n" + serialized.get());
 					corpusService.add(outputCorpusMeta);
 					// TODO email user
 					
@@ -160,6 +156,7 @@ public class OperationHandler implements MessagesHandler {
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());					
 					operationService.update(operation);
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + OperationStatus.FINISHED.toString());
 						
 				}
 				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
@@ -174,7 +171,7 @@ public class OperationHandler implements MessagesHandler {
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());								
 					operationService.update(operation);
-							
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
 				}
 					
 			}

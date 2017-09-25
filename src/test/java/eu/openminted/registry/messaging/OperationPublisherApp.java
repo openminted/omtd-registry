@@ -12,6 +12,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import eu.openminted.messageservice.connector.MessageServicePublisher;
 import eu.openminted.messageservice.connector.TopicsRegistry;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
+import eu.openminted.registry.messages.OperationStatus;
 
 
 @Configuration
@@ -31,15 +32,6 @@ public class OperationPublisherApp {
 	
 	private static String outputCorpusArchiveId = "outputArchiveId";
 	
-	private static String[] workflowExecutionStatus = {
-        "PENDING",
-        "RUNNING",
-        "PAUSED",
-        "FINISHED",
-        "CANCELED",
-        "FAILED"
-	};
-
 	public static void main(String[] args) throws JMSException, InterruptedException{
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(
         		OperationPublisherApp.class);
@@ -51,9 +43,9 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID17";//UUID.randomUUID().toString();
+        String workflowExecutionID = "WFE_ID2";//UUID.randomUUID().toString();
         msgPended.setWorkflowExecutionID(workflowExecutionID);
-		msgPended.setWorkflowStatus(workflowExecutionStatus[0]);
+		msgPended.setWorkflowStatus(OperationStatus.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
 		msgPended.setUserID(userID);
 		msgPended.setWorkflowID(workflowID);                      
@@ -66,20 +58,19 @@ public class OperationPublisherApp {
         Thread.sleep(20000);
         WorkflowExecutionStatusMessage msgStarted = new WorkflowExecutionStatusMessage(); 
         msgStarted.setWorkflowExecutionID(workflowExecutionID);
-        msgStarted.setWorkflowStatus(workflowExecutionStatus[1]);
+        msgStarted.setWorkflowStatus(OperationStatus.RUNNING.toString());
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
 		msgServicePub.publishMessage(topic, msgStarted);
  
-		
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
         Thread.sleep(20000);
      
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
-        msgFinished.setWorkflowStatus(workflowExecutionStatus[3]);
+        msgFinished.setWorkflowStatus(OperationStatus.FINISHED.toString());
         msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
                             
 		// Publish message
@@ -93,7 +84,7 @@ public class OperationPublisherApp {
         
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
-        msgFinished.setWorkflowStatus(workflowExecutionStatus[2]);
+        msgFinished.setWorkflowStatus(OperationStatus.FAILED.toString());
         msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
                             
 		// Publish message
