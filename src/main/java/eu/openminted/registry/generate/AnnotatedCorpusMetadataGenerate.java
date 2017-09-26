@@ -128,7 +128,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	    // distributionInfo.datasetDistributionInfo
         List<DatasetDistributionInfo> distributionInfos = this.generateDistributionInfos(inputCorpus, component, outputCorpusArchiveId);
         corpusInfo.setDistributionInfos(distributionInfos);
-        //logger.info("Distribution info:\n" + mapper.writeValueAsString(distributionInfos)+"\n");
+        logger.info("Distribution info:\n" + mapper.writeValueAsString(distributionInfos)+"\n");
         
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotationsInfo
@@ -309,8 +309,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	    // distributionInfo.datasetDistributionInfo.distributionLoc
 	    DistributionLoc distributionLoc = new DistributionLoc();
 	    distributionLoc.setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
-	    // TODO change the URL construction (verify)
-	    distributionLoc.setDistributionLocation(registryHost + "/omtd-registry/request/corpus/download?archiveId=" + outputCorpusArchiveId);
+	    distributionLoc.setDistributionLocation(registryHost + "/request/corpus/download?archiveId=" + outputCorpusArchiveId);
 	    datasetDistributionInfo.getDistributionLoc().add(distributionLoc);
 	   
 	
