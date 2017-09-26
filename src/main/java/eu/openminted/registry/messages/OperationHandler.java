@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 //import eu.openminted.messageservice.messages.GSON;
 import com.google.gson.Gson;
+
+import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ParserService.ParserServiceTypes;
@@ -70,17 +72,20 @@ public class OperationHandler implements MessagesHandler {
 				// Transform text message to message object (aka WorkflowExecutionStatusMessage)
 				Gson gson = new Gson();		
 				WorkflowExecutionStatusMessage workflowExeMsg = gson.fromJson(textMessage.getText(), WorkflowExecutionStatusMessage.class);
+				if(workflowExeMsg.getWorkflowStatus() == null) {
+					throw new NullPointerException("No status is set to WorkflowExecutionStatusMessage");
+				}
 											
 				// Set a workflow experiment for execution, ie create a new operation document
-				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.PENDING.toString())) {
+				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getUserID() == null ||
 							workflowExeMsg.getWorkflowID() == null || workflowExeMsg.getCorpusID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.PENDING.toString());
+						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.PENDING.toString());
 					}
 
 					Operation operation = new Operation();
 					operation.setId(workflowExeMsg.getWorkflowExecutionID());
-					operation.setStatus(OperationStatus.PENDING.toString());
+					operation.setStatus(ExecutionStatus.Status.PENDING.toString());
 					operation.setPerson(workflowExeMsg.getUserID());
 					operation.setComponent(workflowExeMsg.getWorkflowID());					
 					
@@ -102,15 +107,15 @@ public class OperationHandler implements MessagesHandler {
 				    
 				}
 				// Set a workflow experiment to started, ie update an operation document
-				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.RUNNING.toString())) {		
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.RUNNING.toString());
+						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.RUNNING.toString());
 					}
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
 							
 					// Update operation 
-					operation.setStatus(OperationStatus.RUNNING.toString());
+					operation.setStatus(ExecutionStatus.Status.RUNNING.toString());
 					Date date = operation.getDate();
 					date.setStarted(new java.util.Date());
 					operation.setDate(date);
@@ -119,19 +124,19 @@ public class OperationHandler implements MessagesHandler {
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());				
 					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + OperationStatus.RUNNING.toString());
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.RUNNING.toString());
 						
 				} 	
 				// Set a workflow experiment to finished, ie update an operation document, create ouput corpus metadata
-				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(OperationStatus.FINISHED.toString())) {		
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
-						throw new Exception("Missing elements in WorkflowExecutionStatusMessage for status " + OperationStatus.FINISHED.toString());
+						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
 					}
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());							
 														
 					// Update operation 
-					operation.setStatus(OperationStatus.FINISHED.toString());
+					operation.setStatus(ExecutionStatus.Status.FINISHED.toString());
 					Date date = operation.getDate();
 					date.setFinished(new java.util.Date());
 					operation.setDate(date);
@@ -156,11 +161,14 @@ public class OperationHandler implements MessagesHandler {
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());					
 					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + OperationStatus.FINISHED.toString());
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.FINISHED.toString());
 						
 				}
 				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
 				else {
+					if(workflowExeMsg.getWorkflowExecutionID() == null) {
+						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+					}
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
 														

@@ -27,6 +27,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	@Autowired
 	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 	
+	@Ignore
 	@Test
 	public void testFoo() throws JsonProcessingException {	
 		String inputCorpusId = "OMTD_Demo_Dataset4"; // omtdid	

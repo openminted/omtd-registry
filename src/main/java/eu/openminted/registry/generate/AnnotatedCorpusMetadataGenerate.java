@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
+import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.domain.AnnotationInfo;
 import eu.openminted.registry.domain.AnnotationLevelEnum;
@@ -152,16 +153,41 @@ public class AnnotatedCorpusMetadataGenerate {
 	}
 	
 	private String getInputCorpusName(Corpus inputCorpus) {
-		// TODO get english language resource names, not the first one 
-		String inputCorpusName = inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+		String inputCorpusName = getEnglishResourceName(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceNames());
 		return inputCorpusName;
 	}
 	
 	private String getComponentName(Component component) {
-		// TODO get english language resource names, not the first one
-		String componentName = component.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+		String componentName = getEnglishResourceName(component.getComponentInfo().getIdentificationInfo().getResourceNames());
 		return componentName;
 	}
+	
+	
+	private String getEnglishResourceName(List<ResourceName> resourceNames) {
+		
+		String resourceName = resourceNames.get(0).getValue();
+		for (int i = 0; i < resourceNames.size(); i++) {
+			if (resourceNames.get(i).getLang().equals("en")) {
+				resourceName = resourceNames.get(i).getValue();
+			}
+		}
+		
+		return resourceName;
+	}
+	
+	private String getEnglishDescription(List<Description> resourceNames) {
+			
+			String resourceName = resourceNames.get(0).getValue();
+			for (int i = 0; i < resourceNames.size(); i++) {
+				if (resourceNames.get(i).getLang().equals("en")) {
+					resourceName = resourceNames.get(i).getValue();
+				}
+			}
+			
+			return resourceName;
+		}
+	
+	
 	
 	private String getComponentVersion(Component component) {
 		String componentVersion = component.getComponentInfo().getVersionInfo().getVersion();
@@ -183,7 +209,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	
 	private IdentificationInfo generateIdentificationInfo(Corpus inputCorpus, Component component) {
 		
-		String inputCorpusDescription = inputCorpus.getCorpusInfo().getIdentificationInfo().getDescriptions().get(0).getValue();		  
+		String inputCorpusDescription = getEnglishDescription(inputCorpus.getCorpusInfo().getIdentificationInfo().getDescriptions());		  
 		String descriptionDescription  =  "[raw_corpus_name] processed by [component_name]." +
 					"[raw_corpus_description]. Τhe corpus has processed by [component_name] " +
 					"version [component_version] at annotation " +

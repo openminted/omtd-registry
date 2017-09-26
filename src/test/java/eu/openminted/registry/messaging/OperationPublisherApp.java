@@ -12,7 +12,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import eu.openminted.messageservice.connector.MessageServicePublisher;
 import eu.openminted.messageservice.connector.TopicsRegistry;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
-import eu.openminted.registry.messages.OperationStatus;
+import eu.openminted.workflow.api.ExecutionStatus;
 
 
 @Configuration
@@ -45,7 +45,7 @@ public class OperationPublisherApp {
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
         String workflowExecutionID = "WFE_ID2";//UUID.randomUUID().toString();
         msgPended.setWorkflowExecutionID(workflowExecutionID);
-		msgPended.setWorkflowStatus(OperationStatus.PENDING.toString());
+		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
 		msgPended.setUserID(userID);
 		msgPended.setWorkflowID(workflowID);                      
@@ -58,7 +58,7 @@ public class OperationPublisherApp {
         Thread.sleep(20000);
         WorkflowExecutionStatusMessage msgStarted = new WorkflowExecutionStatusMessage(); 
         msgStarted.setWorkflowExecutionID(workflowExecutionID);
-        msgStarted.setWorkflowStatus(OperationStatus.RUNNING.toString());
+        msgStarted.setWorkflowStatus(ExecutionStatus.Status.RUNNING.toString());
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
@@ -70,7 +70,7 @@ public class OperationPublisherApp {
      
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
-        msgFinished.setWorkflowStatus(OperationStatus.FINISHED.toString());
+        msgFinished.setWorkflowStatus(ExecutionStatus.Status.FINISHED.toString());
         msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
                             
 		// Publish message
@@ -84,7 +84,7 @@ public class OperationPublisherApp {
         
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
-        msgFinished.setWorkflowStatus(OperationStatus.FAILED.toString());
+        msgFinished.setWorkflowStatus(OExecutionStatus.Status.FAILED.toString());
         msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
                             
 		// Publish message
