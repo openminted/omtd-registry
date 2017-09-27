@@ -37,6 +37,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     public T get(String id) {
         T resource;
         try {
+        	
             SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID,id);
             resource = parserPool.serialize(searchService.searchId(getResourceType(), kv),typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {

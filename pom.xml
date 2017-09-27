@@ -69,7 +69,6 @@
 			<artifactId>omtd-registry-rest</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-store-rest-client</artifactId>
@@ -163,6 +162,11 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-test</artifactId>
+	        <version>${spring.version}</version>
+    	</dependency>
 		<!-- log4j -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -202,17 +206,30 @@
 			<artifactId>lettuce</artifactId>
 			<version>3.5.0.Final</version>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
+	
+		<dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-message-service-connector</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	     </dependency>  
+     	 <dependency>
+         	<groupId>org.apache.activemq</groupId>
             <artifactId>activemq-client</artifactId>
             <version>5.14.3</version>
-        </dependency>
-		<dependency>
+         </dependency>
+		 <dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-corpus-api</artifactId>
 			<version>${corpus.api.version}</version>
-		</dependency>
+		 </dependency>
+		 <dependency>
+			<!--  Download and install locally, not in repos yet -->
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-workflow-api</artifactId>
+			<version>1.0.0</version>
+		 </dependency>
 	</dependencies>
+	
 	<distributionManagement>
 		<repository>
 			<id>omtd-releases</id>
@@ -238,6 +255,7 @@
 			<snapshots><enabled>false</enabled></snapshots>
 		</repository>
 	</repositories>
+		
 	<build>
 		<!--<pluginManagement>-->
 		<plugins>
@@ -257,7 +275,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>
+			</plugin> 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -282,6 +300,7 @@
 					<squash>true</squash>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 		<finalName>omtd-registry</finalName>
 	</build>
