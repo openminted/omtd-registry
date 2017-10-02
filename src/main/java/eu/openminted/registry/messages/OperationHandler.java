@@ -1,37 +1,27 @@
 package eu.openminted.registry.messages;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Future;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import eu.openminted.messageservice.connector.MessagesHandler;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-//import eu.openminted.messageservice.messages.GSON;
 import com.google.gson.Gson;
-
-import eu.openminted.workflow.api.ExecutionStatus;
+import eu.openminted.messageservice.connector.MessagesHandler;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ParserService.ParserServiceTypes;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.OperationServiceImpl;
+import eu.openminted.workflow.api.ExecutionStatus;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
+import java.util.concurrent.Future;
+
+//import eu.openminted.messageservice.messages.GSON;
 
 @Component
 public class OperationHandler implements MessagesHandler {
