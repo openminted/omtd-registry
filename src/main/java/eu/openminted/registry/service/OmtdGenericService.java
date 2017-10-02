@@ -1,11 +1,13 @@
 package eu.openminted.registry.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.domain.MetadataHeaderInfo;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -14,9 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -110,32 +115,34 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     }
 
     @Override
-    public void update(T resources) {
-        Resource $resource;
+    public void update(T newResource) {
+        Resource oldResource;
         SearchService.KeyValue kv = new SearchService.KeyValue(
                 OMTD_ID,
-                resources.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()
+                newResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()
         );
 
         try {
-            $resource = searchService.searchId(getResourceType(), kv);
+            oldResource = searchService.searchId(getResourceType(), kv);
             Resource resource = new Resource();
-            if ($resource == null) {
+            if (oldResource == null) {
                 throw new ServiceException(getResourceType() + " does not exists");
             } else {
                 GregorianCalendar gregory = new GregorianCalendar();
                 gregory.setTime(new Date());
                 XMLGregorianCalendar calendar;
                 calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-                resources.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
-                String serialized = parserPool.deserialize(resources, ParserService.ParserServiceTypes.XML).get();
+                newResource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+                T old = parserPool.serialize(oldResource,typeParameterClass).get();
+                T insert = deepMerge(old,newResource);
+                String serialized = parserPool.deserialize(insert, ParserService.ParserServiceTypes.XML).get();
 
                 if (!serialized.equals("failed")) {
                     resource.setPayload(serialized);
                 } else {
                     throw new ServiceException("Serialization failed");
                 }
-                resource = $resource;
+                resource = oldResource;
                 resource.setPayloadFormat("xml");
                 resource.setPayload(serialized);
                 resourceService.updateResource(resource);
@@ -165,4 +172,42 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             throw new ServiceException(e);
         }
     }
+
+    public T deepMerge(T original_, T newMap_) {
+        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT,false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        Map original = mapper.convertValue(original_,Map.class);
+        Map newMap = mapper.convertValue(newMap_,Map.class);
+        deepMergeLocal(original,newMap);
+        try {
+            logger.info(mapper.writeValueAsString(original));
+        } catch (IOException e) {
+
+        }
+        return mapper.convertValue(original,typeParameterClass);
+    }
+
+    static Map deepMergeLocal(Map original, Map newMap) {
+        for (Object key : newMap.keySet()) {
+            if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
+                Map originalChild = (Map) original.get(key);
+                Map newChild = (Map) newMap.get(key);
+                original.put(key, deepMergeLocal(originalChild, newChild));
+            } else if (newMap.get(key) instanceof List && original.get(key) instanceof List) {
+                System.out.println(((List) original.get(key)).size());
+                if(((List) original.get(key)).isEmpty()) {
+                    System.out.println("Removed list " + key);
+                    original.put(key,null);
+                } else {
+                    original.put(key, newMap.get(key));
+                }
+            } else {
+                original.put(key, newMap.get(key));
+            }
+        }
+        return original;
+    }
+
 }
