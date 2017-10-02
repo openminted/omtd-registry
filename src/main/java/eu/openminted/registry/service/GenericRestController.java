@@ -3,13 +3,17 @@ package eu.openminted.registry.service;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
+import eu.openminted.registry.core.exception.ServerError;
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +25,8 @@ import java.util.Map;
 public class GenericRestController<T> {
 
     final protected ResourceCRUDService<T> service;
+
+    private Logger logger = Logger.getLogger(GenericRestController.class);
 
     GenericRestController(ResourceCRUDService service) {
         this.service = service;
@@ -102,5 +108,12 @@ public class GenericRestController<T> {
         }
         filter.setFilter(allRequestParams);
         return new ResponseEntity<>(service.getMy(filter), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    ServerError securityException(HttpServletRequest req, Exception ex) {
+        return new ServerError(req.getRequestURL().toString(),ex);
     }
 }
