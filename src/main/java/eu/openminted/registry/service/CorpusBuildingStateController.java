@@ -3,7 +3,6 @@ package eu.openminted.registry.service;
 import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.domain.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
