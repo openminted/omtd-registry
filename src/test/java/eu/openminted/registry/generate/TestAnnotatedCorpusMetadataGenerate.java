@@ -19,7 +19,6 @@ import eu.openminted.registry.domain.Corpus;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Configuration
 @ComponentScan("eu.openminted")
-@ContextConfiguration(classes = {TestAnnotatedCorpusMetadataGenerate.class}) 
 public class TestAnnotatedCorpusMetadataGenerate {
 
 	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class);
