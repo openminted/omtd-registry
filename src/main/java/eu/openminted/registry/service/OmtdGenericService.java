@@ -9,13 +9,12 @@ import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.generate.LabelGenerate;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -40,6 +39,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     @Autowired
     private ResourceValidator resourceValidator;
 
+    @Autowired
+    LabelGenerate labelGenerate;
+
     public OmtdGenericService(Class<T> typeParameterClass) {
         super(typeParameterClass);
     }
@@ -62,7 +64,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     public Browsing getAll(FacetFilter filter) {
         filter.addFilter("public", true);
         filter.setBrowseBy(getBrowseBy());
-        return getResults(filter);
+        Browsing ret = getResults(filter);
+        labelGenerate.createLabels(ret);
+        return ret;
     }
 
     @Override
