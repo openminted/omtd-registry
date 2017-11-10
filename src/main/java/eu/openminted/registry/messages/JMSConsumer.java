@@ -14,6 +14,7 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
 import java.net.UnknownHostException;
 
 @Component("jmsConsumer")
@@ -50,5 +51,13 @@ public class JMSConsumer {
             }
         }
     }
+
+    @JmsListener(containerFactory = "jmsTopicListenerContainerFactory", destination = "${jms.corpus.state.topic:registry.component.create}")
+    public void receiveState(Message message) throws JMSException, UnknownHostException {
+        String responseBody = ((TextMessage) message).getText();
+        JSONObject jsonObject = new JSONObject(responseBody);
+        log.info(responseBody +" is here!");
+    }
+
 }
 

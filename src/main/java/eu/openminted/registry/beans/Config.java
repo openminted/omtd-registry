@@ -72,6 +72,15 @@ public class Config {
         return factory;
     }
 
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsTopicListenerContainerFactory() {
+        DefaultJmsListenerContainerFactory factory
+                = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(activeMQConnectionFactory());
+        factory.setPubSubDomain(true); // false is for queue
+        factory.setMessageConverter(jacksonJmsMessageConverter());
+        return factory;
+    }
 
     @Bean
     public JmsTemplate jmsQueueTemplate(){
