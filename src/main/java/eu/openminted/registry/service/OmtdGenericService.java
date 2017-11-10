@@ -62,6 +62,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public Browsing getAll(FacetFilter filter) {
+        filter.getFilter().keySet().retainAll(getBrowseBy());
         filter.addFilter("public", true);
         filter.setBrowseBy(getBrowseBy());
         Browsing ret = getResults(filter);

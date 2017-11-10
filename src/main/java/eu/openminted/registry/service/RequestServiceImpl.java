@@ -33,6 +33,7 @@ public class RequestServiceImpl extends AbstractGenericService implements Reques
 
     @SuppressWarnings("unchecked")
     public Browsing getResponseByFiltersElastic(FacetFilter filter) {
+        filter.getFilter().keySet().retainAll(getBrowseBy());
         filter.addFilter("public",true);
         filter.setBrowseBy(getBrowseBy());
         Browsing<BaseMetadataRecord> ret = getResults(filter);
