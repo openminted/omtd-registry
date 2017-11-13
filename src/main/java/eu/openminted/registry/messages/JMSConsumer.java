@@ -9,11 +9,14 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import java.net.UnknownHostException;
 
 @Component("jmsConsumer")
@@ -50,5 +53,13 @@ public class JMSConsumer {
             }
         }
     }
+
+    @JmsListener(containerFactory = "jmsTopicListenerContainerFactory", destination = "${jms.corpus.state.topic:registry.component.create}")
+    public void receiveState(Message message) throws JMSException, UnknownHostException {
+        String responseBody = ((TextMessage) message).getText();
+        JSONObject jsonObject = new JSONObject(responseBody);
+        log.info(responseBody +" is here!");
+    }
+
 }
 
