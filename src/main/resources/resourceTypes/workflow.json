@@ -1,0 +1,20 @@
+{
+  "indexFields": [
+    {
+      "name": "personIdentifier",
+      "path": "$.personIdentifier",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "workflow_id",
+      "path": "$.workflow_id",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "workflow",
+  "aliasGroup" : null,
+  "payloadType": "json",
+  "schema": "{\r\n  \"$schema\": \"http:\/\/json-schema.org\/draft-04\/schema#\",\r\n  \"properties\": {\r\n    \"workflow_id\": {\r\n      \"description\": \"Workflow Identifier\",\r\n      \"title\": \"ID\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"personIdentifier\": {\r\n      \"description\": \"Person Identifier\",\r\n      \"title\": \"ID\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"creationDate\": {\r\n      \"description\": \"When the workflow was created.\",\r\n      \"title\": \"Creation Date\",\r\n      \"type\": \"string\",\r\n      \"format\": \"date-time\"\r\n    },\r\n    \"modificationDate\": {\r\n      \"description\": \"When the workflow was edited.\",\r\n      \"title\": \"Modification Date\",\r\n      \"type\": \"string\",\r\n      \"format\": \"date-time\"\r\n    },\r\n    \"workflowDefinition\": {\r\n      \"description\": \"The definition of the workflow.\",\r\n      \"title\": \"workflow Definition\",\r\n      \"type\": \"string\"\r\n    }\r\n  },\r\n  \"required\": [\r\n    \"workflow_id\",\r\n    \"personIdentifier\",\r\n    \"creationDate\",\r\n    \"modificationDate\",\r\n    \"workflowDefinition\"\r\n  ],\r\n  \"type\": \"object\"\r\n}"
+}
