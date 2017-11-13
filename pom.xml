@@ -158,13 +158,25 @@
                 <groupId>org.jsonschema2pojo</groupId>
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>0.4.37</version>
-                <configuration>
-                    <sourceDirectory>${basedir}/src/main/resources/jsonSchema</sourceDirectory>
-                    <targetPackage>${project.groupId}.registry.domain.operation</targetPackage>
-                    <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
-                </configuration>
                 <executions>
                     <execution>
+                        <id>operation</id>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/operation.json</sourceDirectory>
+                            <targetPackage>${project.groupId}.registry.domain.operation</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>workflow</id>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/workflow.json</sourceDirectory>
+                            <targetPackage>${project.groupId}.registry.domain.workflow</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                        </configuration>
                         <goals>
                             <goal>generate</goal>
                         </goals>

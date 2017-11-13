@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "properties": {
+    "workflow_id": {
+      "description": "Workflow Identifier",
+      "title": "ID",
+      "type": "string"
+    },
+    "personIdentifier": {
+      "description": "Person Identifier",
+      "title": "ID",
+      "type": "string"
+    },
+    "creationDate": {
+      "description": "When the workflow was created.",
+      "title": "Creation Date",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modificationDate": {
+      "description": "When the workflow was edited.",
+      "title": "Modification Date",
+      "type": "string",
+      "format": "date-time"
+    },
+    "workflowDefinition": {
+      "description": "The definition of the workflow.",
+      "title": "workflow Definition",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "personIdentifier",
+    "creationDate",
+    "modificationDate",
+    "workflowDefinition"
+  ],
+  "type": "object"
+}
