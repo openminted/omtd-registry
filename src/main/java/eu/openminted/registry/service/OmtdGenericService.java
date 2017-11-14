@@ -1,33 +1,46 @@
 package eu.openminted.registry.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
+import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.domain.MetadataHeaderInfo;
+import eu.openminted.registry.generate.LabelGenerate;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
  * Created by stefanos on 30/6/2017.
  */
-public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractGenericService<T> implements ResourceCRUDService<T> {
+public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractGenericService<T> implements ValidateInterface<T> {
 
     private Logger logger = Logger.getLogger(OmtdGenericService.class);
 
     private static final String OMTD_ID = "omtdid";
+
+    @Autowired
+    private ResourceValidator resourceValidator;
+
+    @Autowired
+    LabelGenerate labelGenerate;
 
     public OmtdGenericService(Class<T> typeParameterClass) {
         super(typeParameterClass);
@@ -37,9 +50,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     public T get(String id) {
         T resource;
         try {
-        	
-            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID,id);
-            resource = parserPool.serialize(searchService.searchId(getResourceType(), kv),typeParameterClass).get();
+
+            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, id);
+            resource = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {
             logger.fatal("get omtd generic", e);
             throw new ServiceException(e);
@@ -49,15 +62,18 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public Browsing getAll(FacetFilter filter) {
-        filter.addFilter("public",true);
+        filter.getFilter().keySet().retainAll(getBrowseBy());
+        filter.addFilter("public", true);
         filter.setBrowseBy(getBrowseBy());
-        return getResults(filter);
+        Browsing ret = getResults(filter);
+        labelGenerate.createLabels(ret);
+        return ret;
     }
 
     @Override
     public Browsing getMy(FacetFilter filter) {
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        filter.addFilter("personIdentifier",authentication.getSub());
+        filter.addFilter("personIdentifier", authentication.getSub());
         return getResults(filter);
     }
 
@@ -71,7 +87,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
             resource.getMetadataHeaderInfo().setMetadataCreationDate(calendar);
             resource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
-        } catch(DatatypeConfigurationException e) {
+        } catch (DatatypeConfigurationException e) {
             throw new ServiceException(e);
         }
 
@@ -80,15 +96,15 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         Resource checkResource;
         try {
             //Check existence if resource
-            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID,insertionId);
+            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, insertionId);
             checkResource = searchService.searchId(getResourceType(), kv);
-        } catch (UnknownHostException e ) {
+        } catch (UnknownHostException e) {
             logger.fatal(e);
             throw new ServiceException(e);
         }
 
         if (checkResource != null) {
-            throw new ServiceException(String.format("%s with id [%s] already exists",getResourceType(),insertionId));
+            throw new ServiceException(String.format("%s with id [%s] already exists", getResourceType(), insertionId));
         }
 
         Resource resourceDb = new Resource();
@@ -110,32 +126,34 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     }
 
     @Override
-    public void update(T resources) {
-        Resource $resource;
+    public void update(T newResource) {
+        Resource oldResource;
         SearchService.KeyValue kv = new SearchService.KeyValue(
                 OMTD_ID,
-                resources.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()
+                newResource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()
         );
 
         try {
-            $resource = searchService.searchId(getResourceType(), kv);
+            oldResource = searchService.searchId(getResourceType(), kv);
             Resource resource = new Resource();
-            if ($resource == null) {
+            if (oldResource == null) {
                 throw new ServiceException(getResourceType() + " does not exists");
             } else {
                 GregorianCalendar gregory = new GregorianCalendar();
                 gregory.setTime(new Date());
                 XMLGregorianCalendar calendar;
                 calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-                resources.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
-                String serialized = parserPool.deserialize(resources, ParserService.ParserServiceTypes.XML).get();
+                newResource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
+                T old = parserPool.serialize(oldResource, typeParameterClass).get();
+                T insert = deepMerge(old, newResource);
+                String serialized = parserPool.deserialize(insert, ParserService.ParserServiceTypes.XML).get();
 
                 if (!serialized.equals("failed")) {
                     resource.setPayload(serialized);
                 } else {
                     throw new ServiceException("Serialization failed");
                 }
-                resource = $resource;
+                resource = oldResource;
                 resource.setPayloadFormat("xml");
                 resource.setPayload(serialized);
                 resourceService.updateResource(resource);
@@ -164,5 +182,78 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             logger.fatal(e);
             throw new ServiceException(e);
         }
+    }
+
+    public T deepMerge(T original_, T newMap_) {
+        ObjectMapper mapper = new ObjectMapper();
+//        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT,false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        Map original = mapper.convertValue(original_, Map.class);
+        Map newMap = mapper.convertValue(newMap_, Map.class);
+        deepMergeLocal(original, newMap);
+        try {
+            logger.info(mapper.writeValueAsString(original));
+        } catch (IOException e) {
+
+        }
+        return mapper.convertValue(original, typeParameterClass);
+    }
+
+    static Map deepMergeLocal(Map original, Map newMap) {
+        for (Object key : newMap.keySet()) {
+            if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
+                Map originalChild = (Map) original.get(key);
+                Map newChild = (Map) newMap.get(key);
+                original.put(key, deepMergeLocal(originalChild, newChild));
+            } else if (newMap.get(key) instanceof List && original.get(key) instanceof List) {
+                System.out.println(((List) original.get(key)).size());
+                if (((List) original.get(key)).isEmpty()) {
+                    System.out.println("Removed list " + key);
+                    original.put(key, null);
+                } else {
+                    original.put(key, newMap.get(key));
+                }
+            } else {
+                original.put(key, newMap.get(key));
+            }
+        }
+        return original;
+    }
+
+    @Override
+    public Boolean validate(T resource) {
+        String resource_;
+        try {
+            resource_ = parserPool.deserialize(resource, ParserService.ParserServiceTypes.XML).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ServiceException(e);
+        }
+        return resourceValidator.validateXML(getResourceType(),resource_);
+    }
+
+    @Override
+    public T deserialize(String resource) {
+        Resource resource_ = new Resource();
+        resource_.setPayload(resource);
+        resource_.setPayloadFormat("xml");
+        T ret;
+        try {
+            ret = parserPool.serialize(resource_, typeParameterClass).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ServiceException(e);
+        }
+        return ret;
+    }
+
+    @Override
+    public String serialize(T resource) {
+        String resource_;
+        try {
+            resource_ = parserPool.deserialize(resource, ParserService.ParserServiceTypes.XML).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ServiceException(e);
+        }
+        return resource_;
     }
 }

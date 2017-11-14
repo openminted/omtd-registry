@@ -133,7 +133,7 @@
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
   "name": "incompletecorpus",
-  "aliasGroup": "resourceTypes",
+  "aliasGroup": null,
   "payloadType": "xml",
   "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Corpus.xsd"
 }
