@@ -52,7 +52,7 @@ public class OperationPublisherApp {
         // Publish message
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
         msgServicePub.publishMessage(topic, msgPended);
-              
+      /*        
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
         Thread.sleep(20000);

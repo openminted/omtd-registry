@@ -7,6 +7,7 @@ import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ParserService.ParserServiceTypes;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
+import eu.openminted.registry.domain.operation.Error;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.service.CorpusServiceImpl;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Component;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 
 //import eu.openminted.messageservice.messages.GSON;
@@ -65,7 +69,8 @@ public class OperationHandler implements MessagesHandler {
 				if(workflowExeMsg.getWorkflowStatus() == null) {
 					throw new NullPointerException("No status is set to WorkflowExecutionStatusMessage");
 				}
-											
+				
+				
 				// Set a workflow experiment for execution, ie create a new operation document
 				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getUserID() == null ||
@@ -89,10 +94,16 @@ public class OperationHandler implements MessagesHandler {
 					date.setSubmitted(new java.util.Date());
 					operation.setDate(date);
 					
+					// Error				
+					List<Error> my_errors = operation.getErrors();
+					Error my_new_error = new Error();
+					my_errors.add(my_new_error);
+					operation.setErrors(my_errors);
+					
 					// Add operation to registry
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Inserting Operation " + operationString.get());					
-					operationService.add(operation);
+				//	operationService.add(operation);
 					logger.info("Inserted Operation " + operation.getId() + " successfully");
 				    
 				}
@@ -121,7 +132,7 @@ public class OperationHandler implements MessagesHandler {
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
-					}
+					}				
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());							
 														
@@ -158,7 +169,7 @@ public class OperationHandler implements MessagesHandler {
 				else {
 					if(workflowExeMsg.getWorkflowExecutionID() == null) {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
-					}
+					}				
 					// Get operation object from registry
 					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
 														
