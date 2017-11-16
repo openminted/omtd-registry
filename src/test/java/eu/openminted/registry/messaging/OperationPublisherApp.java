@@ -48,11 +48,12 @@ public class OperationPublisherApp {
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
 		msgPended.setUserID(userID);
-		msgPended.setWorkflowID(workflowID);                      
+		msgPended.setWorkflowID(workflowID);   
+			
         // Publish message
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
         msgServicePub.publishMessage(topic, msgPended);
-      /*        
+              
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
         Thread.sleep(20000);
@@ -64,6 +65,7 @@ public class OperationPublisherApp {
 		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
 		msgServicePub.publishMessage(topic, msgStarted);
  
+		
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
         Thread.sleep(20000);
@@ -77,21 +79,21 @@ public class OperationPublisherApp {
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
 		msgServicePub.publishMessage(topic, msgFinished);
  
-		/*
+		
 		 //////////////////
         // Step 4 - A workflow is set to other states in the workflow engine   
         Thread.sleep(20000);
         
-        WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
-        msgFinished.setWorkflowExecutionID(workflowExecutionID);
-        msgFinished.setWorkflowStatus(OExecutionStatus.Status.FAILED.toString());
-        msgFinished.setResultingCorpusID(UUID.randomUUID().toString());
+        WorkflowExecutionStatusMessage msgFailed = new WorkflowExecutionStatusMessage(); 
+        msgFailed.setWorkflowExecutionID(workflowExecutionID);
+        msgFailed.setWorkflowStatus(ExecutionStatus.Status.FAILED.toString());
+        msgFailed.setError("An severe error occuried!");
                             
 		// Publish message
-		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
+		logger.info("Sending message - workflow execution :: " + msgFailed.toString() );
 		
-		msgServicePub.publishMessage(topic, msgFinished);
-		*/
+		msgServicePub.publishMessage(topic, msgFailed);
+		
         ((AbstractApplicationContext)context).close();
   		
 	}

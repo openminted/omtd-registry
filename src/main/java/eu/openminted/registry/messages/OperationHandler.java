@@ -21,11 +21,9 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
-//import eu.openminted.messageservice.messages.GSON;
 
 @Component
 public class OperationHandler implements MessagesHandler {
@@ -92,18 +90,12 @@ public class OperationHandler implements MessagesHandler {
 					// Create date
 					Date date = new Date();
 					date.setSubmitted(new java.util.Date());
-					operation.setDate(date);
-					
-					// Error				
-					List<Error> my_errors = operation.getErrors();
-					Error my_new_error = new Error();
-					my_errors.add(my_new_error);
-					operation.setErrors(my_errors);
+					operation.setDate(date);						
 					
 					// Add operation to registry
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Inserting Operation " + operationString.get());					
-				//	operationService.add(operation);
+					operationService.add(operation);
 					logger.info("Inserted Operation " + operation.getId() + " successfully");
 				    
 				}
@@ -155,15 +147,42 @@ public class OperationHandler implements MessagesHandler {
 					
 					// Add ouput corpus metadata to registry 
 					corpusService.add(outputCorpusMeta);
-					// TODO email user
-					
-															
+																						
 					// Update operation to registry			
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());					
 					operationService.update(operation);
 					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.FINISHED.toString());
 						
+				}
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {		
+					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getError() == null) {
+						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FAILED.toString());
+					}
+					// Get operation object from registry
+					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
+														
+					// Update status
+					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
+					
+					// Update Error
+					if (workflowExeMsg.getError() != null) {
+										
+						List<Error> my_errors = operation.getErrors();
+					
+						Error my_new_error = new Error();
+						my_new_error.setMessage(workflowExeMsg.getError());
+						my_new_error.setTimestamp(new java.util.Date());
+						my_errors.add(my_new_error);
+					
+						operation.setErrors(my_errors);
+					}
+					
+					// Update operation to registry		
+					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					logger.info("Update Operation " + operationString.get());								
+					operationService.update(operation);
+					logger.info("Updated Operation " + operation.getId() + " successfully to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
 				}
 				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
 				else {
