@@ -29,9 +29,31 @@
             ],
             "type": "object"
         },
-        "errors": {
-            "type": "object"
-        },
+        "errors" : {
+      		"type" : "array",
+      		"description": "A List of error messages",
+      		"items" : {
+        		"type" : "object",
+        		"description": "The Error Object",
+        		"properties": {
+	                "message": {
+	                    "description": "The error message.",
+	                    "title": "Error message",
+	                    "type": "string"
+	                },
+	                "timestamp": {
+	                    "description": "The time the error occured.",
+	                    "title": "Error Date",
+	                    "type": "string",
+	                     "format": "date-time"
+	                }
+	            },
+	            "required": [
+               	 	"message",
+               	 	"timestamp"
+            	]
+      		}      	
+    	},
         "person": {
             "description": "The sub field from OIDC representing the user.",
             "title": "Person ID",
