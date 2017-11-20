@@ -42,14 +42,22 @@ public class MavenResolverImpl implements MavenResolverService {
     }
 
     public List<MavenComponent> resolveCoordinates(String groupID, String artifactID, String version) {
-        URL[] descriptors;
+        
         List<MavenComponent> records = new ArrayList<>();
         try {
             List<Future<MavenComponent>> futureRecords = new ArrayList<>();
-            descriptors = DescriptorResolver.scanDescriptors(groupID, artifactID, version);
+            URL[] descriptors = DescriptorResolver.scanDescriptors(groupID, artifactID, version);
             for(URL url : descriptors) {
-                futureRecords.add(executor.submit(new FetchDescriptorUrl(url)));
+                futureRecords.add(executor.submit(new FetchDescriptor(url)));
             }
+            
+            if (descriptors.length == 0) {
+            	String[] xmlDescriptors = DescriptorResolver.generateDescriptors(groupID, artifactID, version);
+            	for (String xml : xmlDescriptors) {
+            		futureRecords.add(executor.submit(new FetchDescriptor(xml)));
+            	}
+            }
+            
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
             for(Future<MavenComponent> future : futureRecords) {
@@ -63,21 +71,33 @@ public class MavenResolverImpl implements MavenResolverService {
     }
 
 
-    class FetchDescriptorUrl implements Callable<MavenComponent> {
+    class FetchDescriptor implements Callable<MavenComponent> {
 
         private URL url;
+        private String xml;
 
-        FetchDescriptorUrl(URL url) {
+        FetchDescriptor(URL url) {
             this.url = url;
         }
+        
+        FetchDescriptor(String xml) {
+        	this.xml = xml;
+        }
+        
 
         @Override
         public MavenComponent call() throws Exception {
             MavenComponent ret = new MavenComponent();
-            StringWriter writer = new StringWriter();
-            URLConnection urlConnection = url.openConnection();
-            IOUtils.copy(urlConnection.getInputStream(),writer);
-            ret.setXml(writer.toString());
+            if (xml == null) {
+	            StringWriter writer = new StringWriter();
+	            URLConnection urlConnection = url.openConnection();
+	            IOUtils.copy(urlConnection.getInputStream(),writer);
+	            ret.setXml(writer.toString());
+            }
+            else {
+            	ret.setXml(xml);
+            }
+            
             Unmarshaller unmarshaller = MavenResolverImpl.jaxbContext.createUnmarshaller();
             ret.setComponent((Component)unmarshaller.unmarshal(new StringReader(ret.getXml())));
             return ret;
