@@ -1,6 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "properties": {
+    "openminted_id": {
+      "description": "OMTD Internal Identifier",
+      "title": "ID",
+      "type": "string"
+    },
     "workflow_id": {
       "description": "Workflow Identifier",
       "title": "ID",
@@ -30,11 +35,10 @@
     }
   },
   "required": [
-    "workflow_id",
+    "openminted_id",
     "personIdentifier",
     "creationDate",
-    "modificationDate",
-    "workflowDefinition"
+    "modificationDate"
   ],
   "type": "object"
 }

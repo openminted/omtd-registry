@@ -5,16 +5,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
+import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.AbstractGenericService;
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.workflow.Workflow;
+import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -30,7 +34,7 @@ import java.util.concurrent.ExecutionException;
  */
 @Service("WorkflowService")
 @Primary
-public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> implements ResourceCRUDService<Workflow> {
+public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefinition> implements WorkflowService {
 
     private static final String WORKFLOW_ID = "workflow_id";
 
@@ -38,17 +42,21 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> imp
 
     private ObjectMapper mapper;
 
+    @Autowired
+    private GalaxyInstance galaxyInstance;
+
     public WorkflowDefinitionImpl() {
-        super(Workflow.class);
+        super(WorkflowDefinition.class);
         mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.setDateFormat(new ISO8601DateFormat());
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostAuthorize("returnObject.personIdentifier==authentication.sub")
-    public Workflow get(String id) {
-        Workflow workflow;
+    public WorkflowDefinition get(String id) {
+        WorkflowDefinition workflow;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(WORKFLOW_ID, id);
             workflow = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
@@ -74,7 +82,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> imp
     }
 
     @Override
-    public void add(Workflow Workflow) {
+    public void add(WorkflowDefinition Workflow) {
 
         Resource resourceDb = new Resource();
         try {
@@ -97,7 +105,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> imp
     }
 
     @Override
-    public void update(Workflow Workflow) {
+    public void update(WorkflowDefinition Workflow) {
 
         Resource resourceDb;
         SearchService.KeyValue kv = new SearchService.KeyValue(
@@ -123,7 +131,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> imp
     }
 
     @Override
-    public void delete(Workflow Workflow) {
+    public void delete(WorkflowDefinition Workflow) {
         Resource resourceDb;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(
@@ -147,5 +155,33 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<Workflow> imp
         return "workflow";
     }
 
-   
+
+    @Override
+    public String createWorkflow() {
+        Workflow workflow = galaxyInstance.getWorkflowsClient().createWorkflow("test workflow " + UUID.randomUUID().toString());
+        WorkflowDefinition internalWorkflow = new WorkflowDefinition();
+        internalWorkflow.setWorkflowId(workflow.getId());
+        internalWorkflow.setCreationDate(new Date());
+        internalWorkflow.setModificationDate(new Date());
+        internalWorkflow.setWorkflowDefinition("");
+        internalWorkflow.setOpenmintedId(UUID.randomUUID().toString());
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        internalWorkflow.setPersonIdentifier(authentication.getSub());
+        add(internalWorkflow);
+        return workflow.getId();
+    }
+
+    @Override
+    public String updateWorkflow(String openmintedId) {
+        WorkflowDefinition workflowDefinition = get(openmintedId);
+        String definition = galaxyInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId());
+        workflowDefinition.setWorkflowDefinition(definition);
+        update(workflowDefinition);
+        return "https://dev.openminted.eu/home";
+    }
+
+    @Override
+    public void deleteWorkflow(String workflowId) {
+        galaxyInstance.getWorkflowsClient().deleteWorkflow(workflowId);
+    }
 }
