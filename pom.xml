@@ -173,7 +173,7 @@
                     <execution>
                         <id>workflow</id>
                         <configuration>
-                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/workflow.json</sourceDirectory>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/workflowDefinition.json</sourceDirectory>
                             <targetPackage>${project.groupId}.registry.domain.workflow</targetPackage>
                             <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
                         </configuration>
