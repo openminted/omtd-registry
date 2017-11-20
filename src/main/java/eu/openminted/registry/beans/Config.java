@@ -1,5 +1,12 @@
 package eu.openminted.registry.beans;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.DockerCmdExecFactory;
+import com.github.dockerjava.api.model.AuthConfig;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import eu.openminted.registry.messages.JMSConsumer;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
@@ -45,6 +52,15 @@ public class Config {
     @Value("${jms.host}")
     private String jmsHost;
 
+    @Value("${docker.username}")
+    private String dockerUsername;
+
+    @Value("${docker.password}")
+    private String dockerPassword;
+
+    @Value("${docker.host}")
+    private String dockerHost;
+
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
@@ -52,6 +68,33 @@ public class Config {
         connectionFactory.setConnectionIDPrefix("omtd-registry");
         logger.info("ActiveMQConnection Factory created for " + jmsHost);
         return connectionFactory;
+    }
+
+    @Bean
+    public DockerClient dockerClient() {
+        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                .withDockerHost("tcp://"+dockerHost)
+                .withDockerTlsVerify(false)
+                .build();
+
+        DockerCmdExecFactory dockerCmdExecFactory = new JerseyDockerCmdExecFactory()
+                .withReadTimeout(10000)
+                .withConnectTimeout(10000)
+                .withMaxTotalConnections(100)
+                .withMaxPerRouteConnections(10);
+
+        DockerClient dockerClient = DockerClientBuilder.getInstance(config)
+                .withDockerCmdExecFactory(dockerCmdExecFactory)
+                .build();
+        return dockerClient;
+    }
+
+    @Bean
+    public AuthConfig dockerAuth() {
+        AuthConfig authConfig = new AuthConfig();
+        authConfig.withUsername(dockerUsername);
+        authConfig.withPassword(dockerPassword);
+        return authConfig;
     }
 
     @Bean // Serialize message content to json using TextMessage
@@ -78,7 +121,7 @@ public class Config {
                 = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(activeMQConnectionFactory());
         factory.setPubSubDomain(true); // false is for queue
-        factory.setMessageConverter(jacksonJmsMessageConverter());
+//        factory.setMessageConverter(jacksonJmsMessageConverter());
         return factory;
     }
 
