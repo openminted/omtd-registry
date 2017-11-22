@@ -78,8 +78,8 @@ public class JMSConsumer {
 
         eu.openminted.registry.domain.Component component = parserPool.serialize(resource,eu.openminted.registry.domain.Component.class).get();
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
-        if (distributionInfo.getComponentLoc().getComponentDistributionForm()== ComponentDistributionFormEnum.DOCKER_IMAGE) {
-            String url = distributionInfo.getComponentLoc().getDistributionLocation();
+        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
+            String url = distributionInfo.getDistributionLocation();
             dockerService.downloadDockerFlow(url);
             String image_id = dockerService.uploadDockerFlow(url);
             dockerService.deleteDockerFlow(url,image_id);

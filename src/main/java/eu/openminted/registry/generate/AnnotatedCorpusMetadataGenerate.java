@@ -21,12 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
-import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.ParserService;
+//import eu.openminted.registry.core.domain.Resource;
+//import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.domain.AnnotationInfo;
-import eu.openminted.registry.domain.AnnotationLevelEnum;
+//import eu.openminted.registry.domain.AnnotationLevelEnum;
 import eu.openminted.registry.domain.AnnotationsInfo;
-import eu.openminted.registry.domain.AttributionText;
+//import eu.openminted.registry.domain.AttributionText;
 import eu.openminted.registry.domain.CommunicationInfo;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.ContactInfo;
@@ -43,11 +43,11 @@ import eu.openminted.registry.domain.DistributionMediumEnum;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LicenceEnum;
 import eu.openminted.registry.domain.LicenceInfo;
-import eu.openminted.registry.domain.LicenceInfos;
+//import eu.openminted.registry.domain.LicenceInfos;
 import eu.openminted.registry.domain.MetadataHeaderInfo;
 import eu.openminted.registry.domain.MetadataIdentifier;
 import eu.openminted.registry.domain.MetadataIdentifierSchemeNameEnum;
-import eu.openminted.registry.domain.Name;
+//import eu.openminted.registry.domain.Name;
 import eu.openminted.registry.domain.PersonInfo;
 import eu.openminted.registry.domain.ProcessMode;
 import eu.openminted.registry.domain.RelatedResource;
@@ -143,9 +143,9 @@ public class AnnotatedCorpusMetadataGenerate {
         //  corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo
         AnnotationInfo annotationInfo = generateAnnotationInfo(component); 
         annotationsInfo.setAnnotationInfo(annotationInfo);
-        //logger.info("AnnotationInfo:\n" + mapper.writeValueAsString(annotationInfo) + "\n");
-        
-        corpusSubtypeSpecificInfo.setAnnotationsInfo(annotationsInfo);
+        //logger.info("AnnotationInfo:\n" + mapper.writeValueAsString(annotationInfo) + "\n"););
+		//TODO DELETED
+        //corpusSubtypeSpecificInfo.setAnnotationsInfo(annotationsInfo);
         //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);             
 		       
@@ -235,18 +235,20 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		descriptionDescription = descriptionDescription.replaceAll("\\[component_version\\]", 
 				getComponentVersion(component));
-		List<AnnotationLevelEnum>  annotationLevels = component.getComponentInfo().getOutputResourceInfo().getAnnotationLevels();
-		String annotationLevelsDescription = "";
-		Iterator<AnnotationLevelEnum> iterAnnotation = annotationLevels.iterator();
-		while (iterAnnotation.hasNext()) {
-			annotationLevelsDescription +=  iterAnnotation.next().value();
-			if (iterAnnotation.hasNext()) {
-				annotationLevelsDescription +=  ", ";
-			}
-		}
-		
-		descriptionDescription = descriptionDescription.replaceAll("\\[annotation_level_of_component\\]", 			
-				annotationLevelsDescription);					
+
+		//TODO DELETED
+//		List<AnnotationLevelEnum>  annotationLevels = component.getComponentInfo().getOutputResourceInfo().getAnnotationLevels();
+//		String annotationLevelsDescription = "";
+//		Iterator<AnnotationLevelEnum> iterAnnotation = annotationLevels.iterator();
+//		while (iterAnnotation.hasNext()) {
+//			annotationLevelsDescription +=  iterAnnotation.next().value();
+//			if (iterAnnotation.hasNext()) {
+//				annotationLevelsDescription +=  ", ";
+//			}
+//		}
+//
+//		descriptionDescription = descriptionDescription.replaceAll("\\[annotation_level_of_component\\]",
+//				annotationLevelsDescription);
 		
 		identificationInfo.setDescriptions(new ArrayList<>());
 		Description description = new Description();
@@ -284,12 +286,8 @@ public class AnnotatedCorpusMetadataGenerate {
 		// TODO find user information given userId		
 		
 		// User's name
-		List<Name> names = new ArrayList<>();
-		Name name = new Name();
-		name.setValue("Katerina Gkirtzou");
-		name.setLang("en");
-		names.add(name);
-		personInfo.setNames(names);
+		personInfo.setSurname("Gkirtzou");
+		personInfo.setGivenName("Katerina");
 		
 		// User's communication info
 		CommunicationInfo  communicationInfo = new CommunicationInfo();
@@ -305,64 +303,65 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 	    List<DatasetDistributionInfo> distributionInfos = new ArrayList<>();
 	    DatasetDistributionInfo datasetDistributionInfo = new DatasetDistributionInfo();
-	   
+
+		// TODO DELETED
 	    // distributionInfo.datasetDistributionInfo.distributionLoc
-	    DistributionLoc distributionLoc = new DistributionLoc();
-	    distributionLoc.setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
-	    distributionLoc.setDistributionLocation(registryHost + "/request/corpus/download?archiveId=" + outputCorpusArchiveId);
-	    datasetDistributionInfo.getDistributionLoc().add(distributionLoc);
-	   
-	
-	    // distributionInfo.datasetDistributionInfo.rightsInfo
-	    RightsInfo rightsInfo = new RightsInfo();
-	    List<LicenceInfos> licenceInfosList = new ArrayList<>();
-	    LicenceInfos licenceInfos = new LicenceInfos();
-	    List<LicenceInfo> licenceInfoList = new ArrayList<>();
-	    
-	    // TODO replace licence CC0 to correct value when known.
-	    // TODO If licence change attribution text should change as well
-	    LicenceInfo licenceInfo = new LicenceInfo();
-	    licenceInfo.setLicence(LicenceEnum.CC0_1_0);
-	    
-	    licenceInfoList.add(licenceInfo);
-	    licenceInfos.setLicenceInfo(licenceInfoList);
-	    licenceInfosList.add(licenceInfos);
-	    rightsInfo.setLicenceInfos(licenceInfosList);
-	    datasetDistributionInfo.setRightsInfo(rightsInfo);	
-	    	    	  
-	    // distributionInfo.datasetDistributionInfo.attributionTexts.attributionText
-	    String  attributionTextDescription  =  "The proceesing of \"[annotated_corpus_name]\" has been enabled by the " +
-	    		"OpenMinTed Infrastucture with the [component_name] " +
-	    		"version [component_version]. The corpus is licenced by [licence_name]";
-	    attributionTextDescription = attributionTextDescription.replaceAll("\\[annotated_corpus_name\\]", 
-	    		getCorpusName(inputCorpus, component));
-	    attributionTextDescription = attributionTextDescription.replaceAll("\\[component_name\\]", 
-	    		getComponentName(component));
-	    attributionTextDescription = attributionTextDescription.replaceAll("\\[component_version\\]", 
-	    		getComponentVersion(component));
-	    
-	    String licenceName = "";
-	    Iterator<LicenceInfo> iterLicence = licenceInfoList.iterator();
-		while (iterLicence.hasNext()) {
-			
-	    	licenceName += iterLicence.next().getLicence().toString();
-	    	if (iterLicence.hasNext()) {
-				licenceName +=  ", ";
-			}
-	    }
-	    licenceInfo.getLicence().toString();
-	    attributionTextDescription = attributionTextDescription.replaceAll("\\[licence_name\\]", 
-	    		licenceName);	     	  
-	    
-	    
-	    AttributionText attributionText = new AttributionText();
-	    attributionText.setLang("en");
-	    attributionText.setValue(attributionTextDescription);
-	    List<AttributionText> attributionTextsInfo = new ArrayList<>();
-	    attributionTextsInfo.add(attributionText);
-	    datasetDistributionInfo.setAttributionTexts(attributionTextsInfo);
-	  
-	    distributionInfos.add(datasetDistributionInfo);
+//	    DistributionLoc distributionLoc = new DistributionLoc();
+//	    distributionLoc.setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
+//	    distributionLoc.setDistributionLocation(registryHost + "/request/corpus/download?archiveId=" + outputCorpusArchiveId);
+//	    datasetDistributionInfo.getDistributionLoc().add(distributionLoc);
+//
+//
+//	    // distributionInfo.datasetDistributionInfo.rightsInfo
+//	    RightsInfo rightsInfo = new RightsInfo();
+//	    List<LicenceInfos> licenceInfosList = new ArrayList<>();
+//	    LicenceInfos licenceInfos = new LicenceInfos();
+//	    List<LicenceInfo> licenceInfoList = new ArrayList<>();
+//
+//	    // TODO replace licence CC0 to correct value when known.
+//	    // TODO If licence change attribution text should change as well
+//	    LicenceInfo licenceInfo = new LicenceInfo();
+//	    licenceInfo.setLicence(LicenceEnum.CC0_1_0);
+//
+//	    licenceInfoList.add(licenceInfo);
+//	    licenceInfos.setLicenceInfo(licenceInfoList);
+//	    licenceInfosList.add(licenceInfos);
+//	    rightsInfo.setLicenceInfos(licenceInfosList);
+//	    datasetDistributionInfo.setRightsInfo(rightsInfo);
+//
+//	    // distributionInfo.datasetDistributionInfo.attributionTexts.attributionText
+//	    String  attributionTextDescription  =  "The proceesing of \"[annotated_corpus_name]\" has been enabled by the " +
+//	    		"OpenMinTed Infrastucture with the [component_name] " +
+//	    		"version [component_version]. The corpus is licenced by [licence_name]";
+//	    attributionTextDescription = attributionTextDescription.replaceAll("\\[annotated_corpus_name\\]",
+//	    		getCorpusName(inputCorpus, component));
+//	    attributionTextDescription = attributionTextDescription.replaceAll("\\[component_name\\]",
+//	    		getComponentName(component));
+//	    attributionTextDescription = attributionTextDescription.replaceAll("\\[component_version\\]",
+//	    		getComponentVersion(component));
+//
+//	    String licenceName = "";
+//	    Iterator<LicenceInfo> iterLicence = licenceInfoList.iterator();
+//		while (iterLicence.hasNext()) {
+//
+//	    	licenceName += iterLicence.next().getLicence().toString();
+//	    	if (iterLicence.hasNext()) {
+//				licenceName +=  ", ";
+//			}
+//	    }
+//	    licenceInfo.getLicence().toString();
+//	    attributionTextDescription = attributionTextDescription.replaceAll("\\[licence_name\\]",
+//	    		licenceName);
+//
+//
+//	    AttributionText attributionText = new AttributionText();
+//	    attributionText.setLang("en");
+//	    attributionText.setValue(attributionTextDescription);
+//	    List<AttributionText> attributionTextsInfo = new ArrayList<>();
+//	    attributionTextsInfo.add(attributionText);
+//	    datasetDistributionInfo.setAttributionTexts(attributionTextsInfo);
+//
+//	    distributionInfos.add(datasetDistributionInfo);
 	    return distributionInfos;
 	}
 	
@@ -389,25 +388,25 @@ public class AnnotatedCorpusMetadataGenerate {
 		DateCombination date = new DateCombination();
 		date.setDate(annotationDate);
 		annotationInfo.setAnnotationDate(date);
-		
+		//TODO DELETED
 		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationLevel
 		// TODO Component output resource info may have multiple annotation levels 
 		// while annotated corpus has one
-		List<AnnotationLevelEnum> annotationLevel = component.getComponentInfo().getOutputResourceInfo().getAnnotationLevels();
-		if ( annotationLevel != null && annotationLevel.size() != 0 ) {
-			annotationInfo.setAnnotationLevel(annotationLevel.get(0));
-		}
-		
-		// TODO annotation standoff missing information? Where do we get this?
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationStandoff
-		
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.dataFormatInfo
-		// TODO Component output resource info may have multiple annotation levels 
-		// while annotated corpus has one 		
-		List<DataFormatInfo> dataFormat = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
-		if ( dataFormat != null && dataFormat.size() != 0 ) {
-			annotationInfo.setDataFormatInfo(dataFormat.get(0));
-		}
+//		List<AnnotationLevelEnum> annotationLevel = component.getComponentInfo().getOutputResourceInfo().getAnnotationLevels();
+//		if ( annotationLevel != null && annotationLevel.size() != 0 ) {
+//			annotationInfo.setAnnotationLevel(annotationLevel.get(0));
+//		}
+//
+//		// TODO annotation standoff missing information? Where do we get this?
+//		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationStandoff
+//
+//		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.dataFormatInfo
+//		// TODO Component output resource info may have multiple annotation levels
+//		// while annotated corpus has one
+//		List<DataFormatInfo> dataFormat = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
+//		if ( dataFormat != null && dataFormat.size() != 0 ) {
+//			annotationInfo.setDataFormatInfo(dataFormat.get(0));
+//		}
 				
 		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.typesystem
 		annotationInfo.setTypesystem(component.getComponentInfo().getOutputResourceInfo().getTypesystem());

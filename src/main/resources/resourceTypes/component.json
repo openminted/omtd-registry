@@ -78,5 +78,5 @@
   "name": "component",
   "aliasGroup": "resourceTypes",
   "payloadType": "xml",
-  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share_metadata_schema/master/OMTD-SHARE%20v201%20XSD/OMTD-SHARE-Component.xsd"
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share-schema/master/Schema/OMTD-SHARE-Component.xsd"
 }

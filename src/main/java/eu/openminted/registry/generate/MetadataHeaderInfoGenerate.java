@@ -64,16 +64,8 @@ public class MetadataHeaderInfoGenerate {
             }
 
             PersonInfo personInfo = new PersonInfo();
-            SeparateNames name = new SeparateNames();
-            GivenName givenName = new GivenName();
-            givenName.setValue(authentication.getUserInfo().getGivenName());
-            Surname surname = new Surname();
-            surname.setValue(authentication.getUserInfo().getFamilyName());
-
-            name.getGivenNames().add(givenName);
-            name.getSurnames().add(surname);
-
-            personInfo.setSeparateNames(name);
+            personInfo.setGivenName(authentication.getUserInfo().getGivenName());
+            personInfo.setSurname(authentication.getUserInfo().getFamilyName());
 
             PersonIdentifier personIdentifier = new PersonIdentifier();
             personIdentifier.setValue(authentication.getSub());
@@ -93,7 +85,7 @@ public class MetadataHeaderInfoGenerate {
                     organizationInfo.getOrganizationNames().add(organizationName);
                     affiliation.setAffiliatedOrganization(organizationInfo);
                     affiliation.setPosition(organizationPosition[0]);
-                    personInfo.getAffiliations().add(affiliation);
+                    personInfo.setAffiliation(affiliation);
                 } else {
                     logger.warn("The provided affiliation was not in position@organization format");
                 }
