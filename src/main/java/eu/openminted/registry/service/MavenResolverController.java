@@ -1,6 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.domain.MavenComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

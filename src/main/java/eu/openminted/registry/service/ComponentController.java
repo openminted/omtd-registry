@@ -4,6 +4,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class ComponentController extends GenericRestController<Component>{
     private ValidateInterface<Component> validateInterface;
 
     @Autowired
-    ComponentController(ValidateInterface<Component> service) {
+    ComponentController(@Qualifier("componentService") ValidateInterface<Component> service) {
         super(service);
         validateInterface = service;
     }
