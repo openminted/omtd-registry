@@ -58,14 +58,6 @@
       "label": "Data Format Specific",
       "path": "//*[local-name()='dataFormatSpecific']/text()",
       "type": "java.lang.String"
-    },
-    {
-      "multivalued": false,
-      "name": "application",
-      "label": "Application",
-      "path": null,
-      "type": "java.lang.Boolean",
-      "defaultValue": "false"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",

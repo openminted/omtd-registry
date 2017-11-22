@@ -72,14 +72,6 @@
       "label": "Component Distribution Medium",
       "path": "//*[local-name()='componentDistributionForm']/text()",
       "type": "java.lang.String"
-    },
-    {
-      "multivalued": false,
-      "name": "application",
-      "label": "Application",
-      "path": "//*[local-name()='application']/text()",
-      "type": "java.lang.Boolean",
-      "defaultValue": "false"
     }
   ],
   "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
