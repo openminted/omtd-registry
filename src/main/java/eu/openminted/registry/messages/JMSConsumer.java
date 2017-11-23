@@ -117,7 +117,7 @@ public class JMSConsumer {
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
 
-            File f = new File("../maven-data/"+groupId+"/"+artifactId+"/"+version+"/");
+            File f = new File("/media/maven-data/"+groupId+"/"+artifactId+"/"+version+"/");
 
             if(!f.exists()) {
                 try{
@@ -133,7 +133,7 @@ public class JMSConsumer {
                 }
             }
 
-            f = new File("../maven-data/"+groupId+"/"+artifactId+"/"+version+"/"+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
+            f = new File("/media/maven-data/"+groupId+"/"+artifactId+"/"+version+"/"+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
 
             try {
                 FileWriter fw = new FileWriter(f.getAbsolutePath());
