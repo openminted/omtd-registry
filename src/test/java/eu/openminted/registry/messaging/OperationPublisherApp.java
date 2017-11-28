@@ -43,7 +43,7 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_ID2";//UUID.randomUUID().toString();
+        String workflowExecutionID = "WFE_ID_foo";//UUID.randomUUID().toString();
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 //import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.domain.AnnotationInfo;
 //import eu.openminted.registry.domain.AnnotationLevelEnum;
-import eu.openminted.registry.domain.AnnotationsInfo;
+//import eu.openminted.registry.domain.AnnotationsInfo;
 //import eu.openminted.registry.domain.AttributionText;
 import eu.openminted.registry.domain.CommunicationInfo;
 import eu.openminted.registry.domain.Component;
@@ -133,16 +133,16 @@ public class AnnotatedCorpusMetadataGenerate {
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotationsInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
-        AnnotationsInfo annotationsInfo = new AnnotationsInfo();
+        //AnnotationsInfo annotationsInfo = new AnnotationsInfo();
         //  corpusSubtypeSpecificationInfo.annotationsInfo.rawCorpus
         RelatedResource rawCorpus = new RelatedResource();
         rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
         rawCorpus.setResourceNames(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceNames());
-        annotationsInfo.setRawCorpus(rawCorpus);
+        //annotationsInfo.setRawCorpus(rawCorpus);
         
         //  corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo
         AnnotationInfo annotationInfo = generateAnnotationInfo(component); 
-        annotationsInfo.setAnnotationInfo(annotationInfo);
+        //annotationsInfo.setAnnotationInfo(annotationInfo);
         //logger.info("AnnotationInfo:\n" + mapper.writeValueAsString(annotationInfo) + "\n"););
 		//TODO DELETED
         //corpusSubtypeSpecificInfo.setAnnotationsInfo(annotationsInfo);
