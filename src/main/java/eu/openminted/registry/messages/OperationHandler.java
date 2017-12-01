@@ -33,8 +33,8 @@ public class OperationHandler implements MessagesHandler {
 	@Autowired
 	private OperationServiceImpl operationService;
 	
-	@Autowired
-	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
+	//@Autowired
+	//private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 	
 	@Autowired
 	private CorpusServiceImpl corpusService;
@@ -135,6 +135,7 @@ public class OperationHandler implements MessagesHandler {
 					operation.setDate(date);
 					
 					Corpus operationCorpus = operation.getCorpus();
+					/*
 					// Generate output corpus metadata
 					logger.info("Generating metadata for annotated corpus from experiment " + workflowExeMsg.getWorkflowExecutionID());
 					eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(), 
@@ -147,7 +148,9 @@ public class OperationHandler implements MessagesHandler {
 					
 					// Add ouput corpus metadata to registry 
 					corpusService.add(outputCorpusMeta);
-																						
+					
+					*/
+					
 					// Update operation to registry			
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operationString.get());					
