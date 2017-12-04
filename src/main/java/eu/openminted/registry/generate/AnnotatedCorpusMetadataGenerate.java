@@ -1,12 +1,9 @@
 package eu.openminted.registry.generate;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -15,17 +12,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
-import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.domain.ActorInfo;
 import eu.openminted.registry.domain.AnnotatedCorpusInfo;
 import eu.openminted.registry.domain.AnnotationInfo;
+import eu.openminted.registry.domain.AnnotationTypeInfo;
 import eu.openminted.registry.domain.CommunicationInfo;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.ContactInfo;
@@ -38,12 +33,15 @@ import eu.openminted.registry.domain.DatasetDistributionInfo;
 import eu.openminted.registry.domain.Date;
 import eu.openminted.registry.domain.DateCombination;
 import eu.openminted.registry.domain.Description;
-import eu.openminted.registry.domain.DistributionLoc;
 import eu.openminted.registry.domain.DistributionMediumEnum;
+import eu.openminted.registry.domain.DomainInfo;
+import eu.openminted.registry.domain.GeographicCoverageInfo;
 import eu.openminted.registry.domain.GroupName;
 import eu.openminted.registry.domain.IdentificationInfo;
+import eu.openminted.registry.domain.LanguageInfo;
 import eu.openminted.registry.domain.LicenceEnum;
 import eu.openminted.registry.domain.LicenceInfo;
+import eu.openminted.registry.domain.LingualityInfo;
 import eu.openminted.registry.domain.MetadataHeaderInfo;
 import eu.openminted.registry.domain.MetadataIdentifier;
 import eu.openminted.registry.domain.MetadataIdentifierSchemeNameEnum;
@@ -59,6 +57,9 @@ import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.domain.ResourceName;
 import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.RightsStatementEnum;
+import eu.openminted.registry.domain.SizeInfo;
+import eu.openminted.registry.domain.TextClassificationInfo;
+import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
 import eu.openminted.registry.service.ComponentServiceImpl;
 import eu.openminted.registry.service.CorpusServiceImpl;
@@ -85,7 +86,6 @@ public class AnnotatedCorpusMetadataGenerate {
     @org.springframework.beans.factory.annotation.Value("${registry.host}")
     private String registryHost;
 
-  
     private GregorianCalendar gregory;
          
     public AnnotatedCorpusMetadataGenerate() {    
@@ -178,10 +178,7 @@ public class AnnotatedCorpusMetadataGenerate {
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
-        AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
-        
-        // TODO
-		
+        AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);        		           
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
         logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);             
@@ -189,6 +186,123 @@ public class AnnotatedCorpusMetadataGenerate {
 		return corpusInfo;
 	}
 	
+	private AnnotatedCorpusInfo generateAnnotatedCorpusInfo(Corpus inputCorpus, Component component) throws JsonProcessingException {
+		
+		AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
+        
+        //////////////////////////
+        // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
+        LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
+        annotatedCorpusInfo.setLingualityInfo(lingualityInfo);
+		
+        //////////////////////////
+        // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
+        List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
+        annotatedCorpusInfo.setLanguages(languages);
+        
+		//////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.sizes
+		List<SizeInfo> sizes = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getSizes();
+		annotatedCorpusInfo.setSizes(sizes);
+				
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.dataFormats
+		if (component.getComponentInfo().getOutputResourceInfo() != null) {
+			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
+			// Set to null if the list is a dummy list created from the get method
+			if (dataFormats.size() == 1 && dataFormats.get(0).getDataFormat() == null) {
+				dataFormats = null;
+			}
+			annotatedCorpusInfo.setDataFormats(dataFormats);
+		}
+		
+
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.annotations.annotationInfo
+		List<AnnotationInfo> annotations = new ArrayList<>();
+		AnnotationInfo annotationInfo = new AnnotationInfo();
+		
+		
+		if (component.getComponentInfo().getOutputResourceInfo() != null) {
+			// annotatationInfo.annotationTypes
+			List<AnnotationTypeInfo> annotationTypes = component.getComponentInfo().getOutputResourceInfo().getAnnotationTypes();
+			// Set to null if the list is a dummy list created from the get method
+			if (annotationTypes.size() == 1 && annotationTypes.get(0).getAnnotationType() == null) {
+				annotationTypes = null;
+			}
+			annotationInfo.setAnnotationTypes(annotationTypes);
+			
+			// annotationInfo.typesystem	
+			RelatedResource typesystem = component.getComponentInfo().getOutputResourceInfo().getTypesystem();
+			annotationInfo.setTypesystem(typesystem);
+	
+			// annotationInfo.annotationSchema
+			RelatedResource annotationSchema = component.getComponentInfo().getOutputResourceInfo().getAnnotationSchema();
+			annotationInfo.setAnnotationSchema(annotationSchema);
+			
+			// annotationInfo.annotationResource
+			RelatedResource annotationResource = component.getComponentInfo().getOutputResourceInfo().getAnnotationResource();
+			annotationInfo.setAnnotationResource(annotationResource);
+		}
+		
+		// annotationInfo.annotationMode
+		annotationInfo.setAnnotationMode(ProcessMode.AUTOMATIC);
+		
+		// annotationInfo.isAnnotatedBy
+		RelatedResource isAnnotatedBy = new RelatedResource();
+		isAnnotatedBy.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
+		isAnnotatedBy.setResourceIdentifiers(component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers());		
+		List<RelatedResource> annotatedByList = new ArrayList<>();
+		annotatedByList.add(isAnnotatedBy);
+		annotationInfo.setIsAnnotatedBy(annotatedByList);
+		
+		// annotationInfo.annotationDate
+		DateCombination annotationDate = new DateCombination();
+		XMLGregorianCalendar calendar = null;
+		try {
+			calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
+	    } catch (DatatypeConfigurationException e) {
+	    	e.printStackTrace();
+	    }
+		Date date = new Date();
+		date.setYear(calendar.getYear());
+		date.setMonth(calendar.getMonth());
+		date.setDay(calendar.getDay());		
+		annotationDate.setDate(date);
+		annotationInfo.setAnnotationDate(annotationDate);
+				
+		annotations.add(annotationInfo);
+		annotatedCorpusInfo.setAnnotations(annotations);
+
+		logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
+		
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.characterEncoding
+		// TODO ignore now, in the next version has moved to upper level
+		
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
+		List<TextClassificationInfo> textClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTextClassifications();
+		annotatedCorpusInfo.setTextClassifications(textClassifications);
+		
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
+		List<DomainInfo> domains = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getDomains();
+		annotatedCorpusInfo.setDomains(domains);
+		
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
+		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
+		annotatedCorpusInfo.setTimeClassifications(timeClassifications);
+		
+		////////////////////////
+		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
+		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
+		annotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
+		                
+		return annotatedCorpusInfo;
+	}
+
 	private RightsInfo generateRightsInfo(Corpus inputCorpus, Component component) {
 
 		RightsInfo rightsInfo = new RightsInfo();
@@ -483,70 +597,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	    
 	    return distributionInfos;
 	}
-	
-	private AnnotationInfo generateAnnotationInfo(Component component) {
-		
-		AnnotationInfo annotationInfo = new AnnotationInfo(); 
-		
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationMode
-		annotationInfo.setAnnotationMode(ProcessMode.AUTOMATIC);  
-		
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationDate
-		Date annotationDate = new Date();
-		// Set year- month- day from current date
-		java.util.Date currentDate = new java.util.Date();
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(currentDate);
-		int year = calendar.get(Calendar.YEAR);
-		annotationDate.setYear(year);
-		//Add one to month {0 - 11}
-		int month = calendar.get(Calendar.MONTH) + 1;
-		annotationDate.setMonth(new Integer(month));
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		annotationDate.setDay(new Integer(day));
-		DateCombination date = new DateCombination();
-		date.setDate(annotationDate);
-		annotationInfo.setAnnotationDate(date);
-		//TODO DELETED
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationLevel
-		// TODO Component output resource info may have multiple annotation levels 
-		// while annotated corpus has one
-//		List<AnnotationLevelEnum> annotationLevel = component.getComponentInfo().getOutputResourceInfo().getAnnotationLevels();
-//		if ( annotationLevel != null && annotationLevel.size() != 0 ) {
-//			annotationInfo.setAnnotationLevel(annotationLevel.get(0));
-//		}
-//
-//		// TODO annotation standoff missing information? Where do we get this?
-//		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationStandoff
-//
-//		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.dataFormatInfo
-//		// TODO Component output resource info may have multiple annotation levels
-//		// while annotated corpus has one
-//		List<DataFormatInfo> dataFormat = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
-//		if ( dataFormat != null && dataFormat.size() != 0 ) {
-//			annotationInfo.setDataFormatInfo(dataFormat.get(0));
-//		}
-				
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.typesystem
-		annotationInfo.setTypesystem(component.getComponentInfo().getOutputResourceInfo().getTypesystem());
-		
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationSchema
-		annotationInfo.setAnnotationSchema(component.getComponentInfo().getOutputResourceInfo().getAnnotationSchema());
-		
-		//  corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.annotationResource
-		annotationInfo.setAnnotationResource(component.getComponentInfo().getOutputResourceInfo().getAnnotationResource());
-		  
-		// corpusSubtypeSpecificationInfo.annotationsInfo.annotationInfo.isAnnotatedBy
-		List<RelatedResource> annotatedByResources = new ArrayList<>();
-		RelatedResource annotatedByComponent = new RelatedResource();
-		annotatedByComponent.setResourceIdentifiers(component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers());
-		annotatedByComponent.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		annotatedByResources.add(annotatedByComponent);
-		annotationInfo.setIsAnnotatedBy(annotatedByResources);		
-		
-		return annotationInfo;      
-		  
-	}
+
 	
 	 public MetadataHeaderInfo generateMetadataHeaderInfo(String userId) throws JsonProcessingException{
 		 

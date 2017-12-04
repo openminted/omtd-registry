@@ -116,8 +116,8 @@ public class TestAnnotatedCorpusMetadataGenerate {
 		String outputCorpusArchiveId = "outputArchiveId";
 	
 		//Mockito.when(corpusService.get(inputCorpusID). .getUserName("SomeId")).thenReturn("Mock user name");
-		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v300/Corpus3.xml"));
-		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v300/component1.xml"));
+		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v300/Corpus2.xml"));
+		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v300/component2.xml"));
 		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 
 	}
