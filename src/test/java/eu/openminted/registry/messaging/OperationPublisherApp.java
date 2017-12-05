@@ -27,8 +27,8 @@ public class OperationPublisherApp {
 	private static String topic = TopicsRegistry.workflowsExecution;
 	
 	private static String userID = "0931731143127784@openminted.eu";
-	private static String corpusID =  "9e28871b-5ca0-4091-bb1a-ac0c604ad6f7"; //"OMTD_Demo_Dataset4"; // omtdid	
-	private static String workflowID = "7fa843cf-3a49-4390-aed6-5b486d3bc33b"; //  "DemoWF4Metabolites"; // "DemoWF3SSHNER";  //omtdid
+	private static String corpusID =  "443b8640-8e42-4a31-b481-540107318975"; // omtdid	
+	private static String workflowID = "c163d85f-f730-4bd4-9f69-a6916d3015a3";  //omtdid
 	
 	private static String outputCorpusArchiveId = "outputArchiveId";
 	
@@ -43,7 +43,7 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_Test";//UUID.randomUUID().toString();
+        String workflowExecutionID = "WFE_Test3";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);

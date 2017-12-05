@@ -98,8 +98,7 @@ public class OperationHandler implements MessagesHandler {
 					operationService.add(operation);
 					logger.info("Inserted Operation " + operation.getId() + " successfully");
 				    
-				}
-				/*
+				}				
 				// Set a workflow experiment to started, ie update an operation document
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null) {
@@ -120,11 +119,9 @@ public class OperationHandler implements MessagesHandler {
 					operationService.update(operation);
 					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.RUNNING.toString());
 						
-				}
-				 	
+				}				 	
 				// Set a workflow experiment to finished, ie update an operation document, create ouput corpus metadata				 
-				else */
-				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {		
+				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
 					}				
@@ -146,13 +143,11 @@ public class OperationHandler implements MessagesHandler {
 						
 					
 					String outputCorpusOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue(); 
-					logger.debug("Output corpus id :: " + outputCorpusOmtdId);
-				    /*
+					logger.debug("Output corpus id :: " + outputCorpusOmtdId);				    
 					operationCorpus.setOutput(outputCorpusOmtdId);
-					operation.setCorpus(operationCorpus);
-					
+					operation.setCorpus(operationCorpus);					
 				
-					// Add ouput corpus metadata to registry 
+					// Add output corpus metadata to registry 
 					corpusService.add(outputCorpusMeta);
 																						
 					// Update operation to registry			
@@ -160,10 +155,9 @@ public class OperationHandler implements MessagesHandler {
 					logger.info("Update Operation " + operationString.get());					
 					operationService.update(operation);
 					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.FINISHED.toString());
-					*/
+					
 						
-				}
-				/*
+				}				
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getError() == null) {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FAILED.toString());
@@ -210,7 +204,7 @@ public class OperationHandler implements MessagesHandler {
 					operationService.update(operation);
 					logger.info("Updated Operation " + operation.getId() + " successfully to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
 				}
-				*/
+				
 			}
 			else {
 				logger.info("Handling a non text message :: " + msg.toString());;

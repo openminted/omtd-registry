@@ -18,9 +18,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import eu.openminted.registry.domain.ActorInfo;
+import eu.openminted.registry.domain.ActorTypeEnum;
 import eu.openminted.registry.domain.AnnotatedCorpusInfo;
 import eu.openminted.registry.domain.AnnotationInfo;
 import eu.openminted.registry.domain.AnnotationTypeInfo;
+import eu.openminted.registry.domain.CharacterEncodingEnum;
+import eu.openminted.registry.domain.CharacterEncodingInfo;
 import eu.openminted.registry.domain.CommunicationInfo;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.ContactInfo;
@@ -57,8 +60,8 @@ import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.domain.ResourceName;
 import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.RightsStatementEnum;
-import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextClassificationInfo;
+import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
 import eu.openminted.registry.service.ComponentServiceImpl;
@@ -81,19 +84,22 @@ public class AnnotatedCorpusMetadataGenerate {
 	@Autowired 
 	private ComponentServiceImpl componentService;
 		
-    private ObjectMapper mapper;
-    
     @org.springframework.beans.factory.annotation.Value("${registry.host}")
     private String registryHost;
 
+    @org.springframework.beans.factory.annotation.Value("${registry.domain}")
+    private String landingPageDomain;
+    
     private GregorianCalendar gregory;
+    
+    private ObjectMapper mapper;
          
     public AnnotatedCorpusMetadataGenerate() {    
     	mapper = new ObjectMapper();
      	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
      	mapper.setDateFormat(new ISO8601DateFormat());
         gregory = new GregorianCalendar();
-        gregory.setTime(new java.util.Date());
+        gregory.setTime(new java.util.Date());       
      	
     }
     
@@ -127,11 +133,6 @@ public class AnnotatedCorpusMetadataGenerate {
         corpusInfo.setIdentificationInfo(identificationInfo);
         logger.info("Identification Info:\n" + mapper.writeValueAsString(identificationInfo) +"\n");
         
-        //////////////////////////
-        // ContactInfo
-        ContactInfo contactInfo = generateContactInfo(userId, corpusOmtdId);
-        corpusInfo.setContactInfo(contactInfo);
-        logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
         
         /////////////////////////
         // VersionInfo
@@ -147,7 +148,24 @@ public class AnnotatedCorpusMetadataGenerate {
         corpusInfo.setVersionInfo(versionInfo);
         logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
         
+        //////////////////////////
+        // ContactInfo
+        ContactInfo contactInfo = generateContactInfo(userId, corpusOmtdId);
+        corpusInfo.setContactInfo(contactInfo);
+        logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
         
+    	//////////////////////////
+	    // datasetDistributionInfo
+        DatasetDistributionInfo datasetDistributionInfo = generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId);
+        corpusInfo.setDatasetDistributionInfo(datasetDistributionInfo);
+        logger.info("Distribution info:\n" + mapper.writeValueAsString(datasetDistributionInfo)+"\n");
+        
+        //////////////////////////
+        // rightsInfo
+        RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
+        corpusInfo.setRightsInfo(rightsInfo);
+        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+       
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
@@ -160,21 +178,8 @@ public class AnnotatedCorpusMetadataGenerate {
         RelationInfo relationInfo = generateRelationInfo(inputCorpus);
         relations.add(relationInfo);
         corpusInfo.setRelations(relations);
-        logger.info("Resource Creation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");
-        
-        
-    	//////////////////////////
-	    // distributionInfo.datasetDistributionInfo
-        List<DatasetDistributionInfo> distributionInfos = this.generateDistributionInfos(outputCorpusArchiveId);
-        corpusInfo.setDistributionInfos(distributionInfos);
-        logger.info("Distribution info:\n" + mapper.writeValueAsString(distributionInfos)+"\n");
-        
-        //////////////////////////
-        // rightsInfo
-        RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
-        corpusInfo.setRightsInfo(rightsInfo);
-        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");
-        
+        logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
+       
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
@@ -190,38 +195,17 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
         
-        //////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
         LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
         annotatedCorpusInfo.setLingualityInfo(lingualityInfo);
 		
-        //////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
         List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
         annotatedCorpusInfo.setLanguages(languages);
-        
-		//////////////////////////
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.sizes
-		List<SizeInfo> sizes = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getSizes();
-		annotatedCorpusInfo.setSizes(sizes);
-				
-		////////////////////////
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.dataFormats
-		if (component.getComponentInfo().getOutputResourceInfo() != null) {
-			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
-			// Set to null if the list is a dummy list created from the get method
-			if (dataFormats.size() == 1 && dataFormats.get(0).getDataFormat() == null) {
-				dataFormats = null;
-			}
-			annotatedCorpusInfo.setDataFormats(dataFormats);
-		}
-		
-
-		////////////////////////
+       	
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.annotations.annotationInfo
 		List<AnnotationInfo> annotations = new ArrayList<>();
 		AnnotationInfo annotationInfo = new AnnotationInfo();
-		
 		
 		if (component.getComponentInfo().getOutputResourceInfo() != null) {
 			// annotatationInfo.annotationTypes
@@ -275,27 +259,19 @@ public class AnnotatedCorpusMetadataGenerate {
 		annotatedCorpusInfo.setAnnotations(annotations);
 
 		logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
-		
-		////////////////////////
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.characterEncoding
-		// TODO ignore now, in the next version has moved to upper level
-		
-		////////////////////////
+			
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
 		List<TextClassificationInfo> textClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTextClassifications();
 		annotatedCorpusInfo.setTextClassifications(textClassifications);
 		
-		////////////////////////
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
 		List<DomainInfo> domains = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getDomains();
 		annotatedCorpusInfo.setDomains(domains);
 		
-		////////////////////////
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
 		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
 		annotatedCorpusInfo.setTimeClassifications(timeClassifications);
 		
-		////////////////////////
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
 		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
 		annotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
@@ -317,9 +293,9 @@ public class AnnotatedCorpusMetadataGenerate {
 		rightsInfo.setLicenceInfos(licenceInfos);
 		
 		// rightsInfo.rightsStatement
-		// NOTE that right statement open access is chosen by default to avoid validation error
+		// NOTE that right statement restricted access is chosen by default to avoid validation error
 		// User must select the appropriate right statement.
-		rightsInfo.setRightsStatement(RightsStatementEnum.OPEN_ACCESS);
+		rightsInfo.setRightsStatement(RightsStatementEnum.RESTRICTED_ACCESS);
 		
 		// rightsInfo.attributionText
 		String  attributionText  =  "The processing of <input_corpus_name>(by <input_corpus_creator_name>) " +
@@ -359,10 +335,10 @@ public class AnnotatedCorpusMetadataGenerate {
 			for (int i = 0; i < creatorsList.size(); i++) {
 				if (creatorsList.get(i).getRelatedPerson() != null) {
 					creatorsName += creatorsList.get(i).getRelatedPerson().getSurname();
-					logger.info("creatorsName " + creatorsName);
+					logger.info("Creators name : " + creatorsName);
 					if (creatorsList.get(i).getRelatedPerson().getGivenName() != null) {
 						creatorsName += " " + creatorsList.get(i).getRelatedPerson().getGivenName();
-						logger.info("creatorsName " + creatorsName);
+						logger.info("Creators name : " + creatorsName);
 					}
 				}
 				else if(creatorsList.get(i).getRelatedGroup() != null) {
@@ -411,9 +387,11 @@ public class AnnotatedCorpusMetadataGenerate {
 	private ResourceCreationInfo generateResourceCreationInfo(String userId) {
 		ResourceCreationInfo resourceCreationInfo = new ResourceCreationInfo();
 		
+
 		// resourceCreators.resourceCreator.relatedPerson
 		List<ActorInfo> resourceCreators = new ArrayList<>();
 		ActorInfo actorInfo = new ActorInfo();
+		actorInfo.setActorType(ActorTypeEnum.PERSON);		
 		actorInfo.setRelatedPerson(generatePersonInfo(userId));
 		resourceCreators.add(actorInfo);
 		resourceCreationInfo.setResourceCreators(resourceCreators);
@@ -507,8 +485,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		IdentificationInfo identificationInfo = new IdentificationInfo();
 		
 		// identificationInfo.resourceNames.resourceName		
-		identificationInfo.setResourceNames(new ArrayList<>());
-				
+		identificationInfo.setResourceNames(new ArrayList<>());				
 		ResourceName resourceName = new ResourceName();	
 		resourceName.setLang("en");
 		resourceName.setValue(getCorpusName(inputCorpus, component));
@@ -520,8 +497,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		descriptionDescription = descriptionDescription.replaceAll("\\[input_corpus_description\\]", 
 			inputCorpusDescription);
 		descriptionDescription = descriptionDescription.replaceAll("\\[component_name\\]", 
-			getComponentName(component));
-		
+			getComponentName(component));		
 		descriptionDescription = descriptionDescription.replaceAll("\\[component_version\\]", 
 				getComponentVersion(component));
 		
@@ -547,11 +523,8 @@ public class AnnotatedCorpusMetadataGenerate {
 	private ContactInfo generateContactInfo(String userId, String corpusOmtdId) {		
 		ContactInfo contactInfo = new ContactInfo();
 		
-		// contactPoint
-		// TODO change to get value automatically with spring annotation
-		// https://dev.openminted.eu/landingPage/corpus/{id}
-		String landingPageDomain = "https://dev.openminted.eu/landingPage/corpus/";
-		contactInfo.setContactPoint(landingPageDomain + corpusOmtdId );
+		// contactPoint	
+		contactInfo.setContactPoint(landingPageDomain + corpusOmtdId);
 		
 		// contactType
 		contactInfo.setContactType(ContactTypeEnum.LANDING_PAGE);
@@ -583,19 +556,60 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 	}
 	
-	private  List<DatasetDistributionInfo> generateDistributionInfos(String outputCorpusArchiveId) {
+	private  DatasetDistributionInfo generateDatasetDistributionInfo(Corpus inputCorpus, Component component, String outputCorpusArchiveId) {
+				    
+		DatasetDistributionInfo datasetDistributionInfo = new DatasetDistributionInfo();
 		
-	    List<DatasetDistributionInfo> distributionInfos = new ArrayList<>();
-	    DatasetDistributionInfo datasetDistributionInfo = new DatasetDistributionInfo();
-	
-	    // distributionInfo.datasetDistributionInfo.distributionMedium
+	    // datasetDistributionInfo.distributionMedium
 	    datasetDistributionInfo.setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
 	    
-	    // distributionInfo.datasetDistributionInfo.distributionLocation
+	    // datasetDistributionInfo.distributionLocation
 	    datasetDistributionInfo.setDistributionLocation(registryHost + "/request/corpus/download?archiveId=" + outputCorpusArchiveId);
-	    distributionInfos.add(datasetDistributionInfo);
 	    
-	    return distributionInfos;
+	    // datasetDistributionInfo.sizes	
+		datasetDistributionInfo.setSizes(inputCorpus.getCorpusInfo().getDatasetDistributionInfo().getSizes());
+		
+		// datasetDistributionInfo.textFormats.textFormatInfo.dataFormatInfo
+		if (component.getComponentInfo().getOutputResourceInfo() != null) {
+			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
+			// Set to null if the list is a dummy list created from the get method
+			if (dataFormats.size() == 1 && dataFormats.get(0).getDataFormat() == null) {
+				dataFormats = null;
+			}
+			if (dataFormats != null) {
+				List<TextFormatInfo> textFormats = new ArrayList<>();
+				for (int i = 0; i < dataFormats.size(); i++) {
+					TextFormatInfo textFormatInfo = new TextFormatInfo();
+					textFormatInfo.setDataFormatInfo(dataFormats.get(i));
+					textFormats.add(textFormatInfo);
+				}	
+				datasetDistributionInfo.setTextFormats(textFormats);
+			}
+		}
+		
+		// datasetDistributionInfo.characterEncodings
+		// If exists in component get from compoment
+		if (component.getComponentInfo().getOutputResourceInfo() != null &&
+				component.getComponentInfo().getOutputResourceInfo().getCharacterEncodings() != null) {
+			
+			
+			List<CharacterEncodingEnum> componentCharacterEncodings = component.getComponentInfo().getOutputResourceInfo().getCharacterEncodings();			
+			List<CharacterEncodingInfo> characterEncodings = new ArrayList<>();
+			
+			for (int i = 0; i < componentCharacterEncodings.size(); i++) {
+				CharacterEncodingInfo cei = new CharacterEncodingInfo();
+				cei.setCharacterEncoding(componentCharacterEncodings.get(i));
+				characterEncodings.add(cei);				
+			}
+						
+			datasetDistributionInfo.setCharacterEncodings(characterEncodings);
+		}
+		// otherwise get from corpus
+		else {				
+			datasetDistributionInfo.setCharacterEncodings(inputCorpus.getCorpusInfo().getDatasetDistributionInfo().getCharacterEncodings());
+		}
+				
+	    return datasetDistributionInfo;
 	}
 
 	
@@ -627,5 +641,5 @@ public class AnnotatedCorpusMetadataGenerate {
 	        
 	        logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 	        return metadataHeaderInfo;
-	    }
+	}
 }
