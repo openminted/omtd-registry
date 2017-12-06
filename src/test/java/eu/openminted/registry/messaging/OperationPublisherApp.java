@@ -27,8 +27,17 @@ public class OperationPublisherApp {
 	private static String topic = TopicsRegistry.workflowsExecution;
 	
 	private static String userID = "0931731143127784@openminted.eu";
-	private static String corpusID =  "443b8640-8e42-4a31-b481-540107318975"; // omtdid	
-	private static String workflowID = "c163d85f-f730-4bd4-9f69-a6916d3015a3";  //omtdid
+	// omtdid	
+	private static String corpusID = "1cee8f5c-dda1-46f5-a069-68145f09c684";
+			// "6e92743a-8b2f-4e97-9f5b-8da8798181bc"; 
+			// "443b8640-8e42-4a31-b481-540107318975"; 
+	
+	//omtdid
+	private static String workflowID = "8749e0a5-8823-40c8-971f-a752d8feaece";
+			// "18591923-f83f-46a1-9328-d04d8ba6e210";
+			//"a739747f-1af0-4c19-a59c-8ee454287d50"; 
+			//"c2447f2f-cb62-442a-9e34-127914c60a67";
+			// "c163d85f-f730-4bd4-9f69-a6916d3015a3";  
 	
 	private static String outputCorpusArchiveId = "outputArchiveId";
 	
@@ -43,7 +52,7 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_Test3";//UUID.randomUUID().toString();  // operation_id
+        String workflowExecutionID = "WFE_Test5";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
@@ -54,10 +63,10 @@ public class OperationPublisherApp {
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
         msgServicePub.publishMessage(topic, msgPended);
               
-     /*
+     
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
-        Thread.sleep(20000);
+        Thread.sleep(200);
         WorkflowExecutionStatusMessage msgStarted = new WorkflowExecutionStatusMessage(); 
         msgStarted.setWorkflowExecutionID(workflowExecutionID);
         msgStarted.setWorkflowStatus(ExecutionStatus.Status.RUNNING.toString());
@@ -69,8 +78,8 @@ public class OperationPublisherApp {
 		
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
-        Thread.sleep(20000);
-     */
+        Thread.sleep(200);
+     
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);
         msgFinished.setWorkflowStatus(ExecutionStatus.Status.FINISHED.toString());

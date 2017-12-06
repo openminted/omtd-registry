@@ -38,9 +38,8 @@ import eu.openminted.registry.service.CorpusServiceImpl;
 
  
 @ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)//(SpringJUnit4ClassRunner.class)
-@ContextConfiguration//(classes = TestAnnotatedCorpusMetadataGenerate.class)
-//@Configuration
+@RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration
 @ComponentScan("eu.openminted")
 public class TestAnnotatedCorpusMetadataGenerate {
 
@@ -116,7 +115,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 		String outputCorpusArchiveId = "outputArchiveId";
 			
 		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v300/corpus_maximum.xml"));
-		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v300/component_maximum.xml"));
+		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v300/component_real2.xml"));
 		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 
 	}

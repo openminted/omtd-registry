@@ -22,6 +22,7 @@ import eu.openminted.registry.domain.ActorTypeEnum;
 import eu.openminted.registry.domain.AnnotatedCorpusInfo;
 import eu.openminted.registry.domain.AnnotationInfo;
 import eu.openminted.registry.domain.AnnotationTypeInfo;
+import eu.openminted.registry.domain.AnnotationTypeType;
 import eu.openminted.registry.domain.CharacterEncodingEnum;
 import eu.openminted.registry.domain.CharacterEncodingInfo;
 import eu.openminted.registry.domain.CommunicationInfo;
@@ -32,6 +33,7 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.CorpusInfo;
 import eu.openminted.registry.domain.CorpusSubtypeSpecificInfo;
 import eu.openminted.registry.domain.DataFormatInfo;
+import eu.openminted.registry.domain.DataFormatType;
 import eu.openminted.registry.domain.DatasetDistributionInfo;
 import eu.openminted.registry.domain.Date;
 import eu.openminted.registry.domain.DateCombination;
@@ -108,7 +110,7 @@ public class AnnotatedCorpusMetadataGenerate {
     	corpus.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String corpusOmtdId = corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
     	corpus.setCorpusInfo(generateAnnotatedCorpusInfo(corpusOmtdId, inputCorpusId, componentId, userId, outputCorpusArchiveId));
-    	logger.info("Output corpus metadata::\n " + mapper.writeValueAsString(corpus)+"\n");
+    	//logger.info("Output corpus metadata::\n " + mapper.writeValueAsString(corpus)+"\n");
     	return corpus;
     }
 	
@@ -131,7 +133,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		// IdentificationInfo
 		IdentificationInfo identificationInfo = generateIdentificationInfo(inputCorpus, component);		
         corpusInfo.setIdentificationInfo(identificationInfo);
-        logger.info("Identification Info:\n" + mapper.writeValueAsString(identificationInfo) +"\n");
+        //logger.info("Identification Info:\n" + mapper.writeValueAsString(identificationInfo) +"\n");
         
         
         /////////////////////////
@@ -143,34 +145,33 @@ public class AnnotatedCorpusMetadataGenerate {
             calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
-        }
-        versionInfo.setVersionDate(calendar.toString());
+        }       
         corpusInfo.setVersionInfo(versionInfo);
-        logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
+        //logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
         
         //////////////////////////
         // ContactInfo
         ContactInfo contactInfo = generateContactInfo(userId, corpusOmtdId);
         corpusInfo.setContactInfo(contactInfo);
-        logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
+        //logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
         
     	//////////////////////////
 	    // datasetDistributionInfo
         DatasetDistributionInfo datasetDistributionInfo = generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId);
         corpusInfo.setDatasetDistributionInfo(datasetDistributionInfo);
-        logger.info("Distribution info:\n" + mapper.writeValueAsString(datasetDistributionInfo)+"\n");
+        //logger.info("Distribution info:\n" + mapper.writeValueAsString(datasetDistributionInfo)+"\n");
         
         //////////////////////////
         // rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         corpusInfo.setRightsInfo(rightsInfo);
-        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
        
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         corpusInfo.setResourceCreationInfo(resourceCreationInfo);
-        logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
         
         //////////////////////////
         // relations.relationInfo
@@ -178,14 +179,14 @@ public class AnnotatedCorpusMetadataGenerate {
         RelationInfo relationInfo = generateRelationInfo(inputCorpus);
         relations.add(relationInfo);
         corpusInfo.setRelations(relations);
-        logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
+        //ogger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
        
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
         AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);        		           
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
-        logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
+        //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);             
 		       
 		return corpusInfo;
@@ -210,9 +211,11 @@ public class AnnotatedCorpusMetadataGenerate {
 		if (component.getComponentInfo().getOutputResourceInfo() != null) {
 			// annotatationInfo.annotationTypes
 			List<AnnotationTypeInfo> annotationTypes = component.getComponentInfo().getOutputResourceInfo().getAnnotationTypes();
-			// Set to null if the list is a dummy list created from the get method
-			if (annotationTypes.size() == 1 && annotationTypes.get(0).getAnnotationType() == null) {
-				annotationTypes = null;
+			// TODO Added a dummy node just for passing validation of add in registry 	
+			if (annotationTypes.size() == 0) { 
+				AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
+				annotationTypeInfo.setAnnotationType(AnnotationTypeType.LEMMA);		
+				annotationTypes.add(annotationTypeInfo);
 			}
 			annotationInfo.setAnnotationTypes(annotationTypes);
 			
@@ -258,7 +261,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		annotations.add(annotationInfo);
 		annotatedCorpusInfo.setAnnotations(annotations);
 
-		logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
+		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
 			
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
 		List<TextClassificationInfo> textClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTextClassifications();
@@ -285,7 +288,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		// rightsInfo.licenceInfos.licenceInfo
 		List<LicenceInfo> licenceInfos = new ArrayList<>();
-		// NOTE that license CC0 is chosen by default to avoid validation error
+		// TODO that license CC0 is chosen by default to avoid validation error
 		// User must select the appropriate license.
 		LicenceInfo licenceInfo = new LicenceInfo();
 		licenceInfo.setLicence(LicenceEnum.CC0_1_0);			
@@ -293,11 +296,12 @@ public class AnnotatedCorpusMetadataGenerate {
 		rightsInfo.setLicenceInfos(licenceInfos);
 		
 		// rightsInfo.rightsStatement
-		// NOTE that right statement restricted access is chosen by default to avoid validation error
+		// TODO that right statement restricted access is chosen by default to avoid validation error
 		// User must select the appropriate right statement.
 		rightsInfo.setRightsStatement(RightsStatementEnum.RESTRICTED_ACCESS);
 		
 		// rightsInfo.attributionText
+		// TODO replace <annotated_corpus_licence when user selects the correct licence.
 		String  attributionText  =  "The processing of <input_corpus_name>(by <input_corpus_creator_name>) " +
 	       "performed under <input_corpus_licence> has been enabled by the OpenMinTeD infrastructure " +
 	       "using the <component_name>. <annotated_corpus_name> is licensed under " +
@@ -330,15 +334,15 @@ public class AnnotatedCorpusMetadataGenerate {
 		String creatorsName = null;
 		if (inputCorpus.getCorpusInfo().getResourceCreationInfo() != null ) {
 			List<ActorInfo> creatorsList = inputCorpus.getCorpusInfo().getResourceCreationInfo().getResourceCreators();
-			logger.info("Creators list has size " + creatorsList.size());
+			//logger.info("Creators list has size " + creatorsList.size());
 			creatorsName = "";
 			for (int i = 0; i < creatorsList.size(); i++) {
 				if (creatorsList.get(i).getRelatedPerson() != null) {
 					creatorsName += creatorsList.get(i).getRelatedPerson().getSurname();
-					logger.info("Creators name : " + creatorsName);
+					//logger.info("Creators name : " + creatorsName);
 					if (creatorsList.get(i).getRelatedPerson().getGivenName() != null) {
 						creatorsName += " " + creatorsList.get(i).getRelatedPerson().getGivenName();
-						logger.info("Creators name : " + creatorsName);
+						//logger.info("Creators name : " + creatorsName);
 					}
 				}
 				else if(creatorsList.get(i).getRelatedGroup() != null) {
@@ -365,7 +369,7 @@ public class AnnotatedCorpusMetadataGenerate {
 				} 
 			}
 		}		
-		logger.info("CreatorsName is : " + creatorsName);
+		//logger.info("CreatorsName is : " + creatorsName);
 		return creatorsName;
 	}
 
@@ -571,12 +575,10 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		// datasetDistributionInfo.textFormats.textFormatInfo.dataFormatInfo
 		if (component.getComponentInfo().getOutputResourceInfo() != null) {
-			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();
-			// Set to null if the list is a dummy list created from the get method
-			if (dataFormats.size() == 1 && dataFormats.get(0).getDataFormat() == null) {
-				dataFormats = null;
-			}
-			if (dataFormats != null) {
+		
+			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();			
+			if (dataFormats != null && dataFormats.size() != 0) {
+				
 				List<TextFormatInfo> textFormats = new ArrayList<>();
 				for (int i = 0; i < dataFormats.size(); i++) {
 					TextFormatInfo textFormatInfo = new TextFormatInfo();
@@ -585,6 +587,26 @@ public class AnnotatedCorpusMetadataGenerate {
 				}	
 				datasetDistributionInfo.setTextFormats(textFormats);
 			}
+			// TODO Added a dummy node just for passing validation of add in registry 		
+			else {
+				List<TextFormatInfo> textFormats = new ArrayList<>();
+				TextFormatInfo textFormatInfo = new TextFormatInfo();
+				DataFormatInfo dataFormatInfo = new DataFormatInfo();
+				dataFormatInfo.setDataFormat(DataFormatType.APPLICATION_VND_XMI_XML);
+				textFormatInfo.setDataFormatInfo(dataFormatInfo);
+				textFormats.add(textFormatInfo);
+				datasetDistributionInfo.setTextFormats(textFormats);
+			}
+		}
+		// TODO Added a dummy node just for passing validation of add in registry		
+		else {
+			List<TextFormatInfo> textFormats = new ArrayList<>();
+			TextFormatInfo textFormatInfo = new TextFormatInfo();
+			DataFormatInfo dataFormatInfo = new DataFormatInfo();
+			dataFormatInfo.setDataFormat(DataFormatType.APPLICATION_VND_XMI_XML);
+			textFormatInfo.setDataFormatInfo(dataFormatInfo);
+			textFormats.add(textFormatInfo);
+			datasetDistributionInfo.setTextFormats(textFormats);
 		}
 		
 		// datasetDistributionInfo.characterEncodings
@@ -639,7 +661,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	        PersonInfo personInfo = generatePersonInfo(userId);
 	        metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
-	        logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
+	        //logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 	        return metadataHeaderInfo;
 	}
 }

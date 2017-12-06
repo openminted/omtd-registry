@@ -79,6 +79,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public void add(T resource) {
+    	logger.info("ADD - Adding a resource :: " + resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
         resource.setMetadataHeaderInfo(MetadataHeaderInfoGenerate.generate(resource.getMetadataHeaderInfo()));
         try {
             GregorianCalendar gregory = new GregorianCalendar();
@@ -93,6 +94,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
 
         String insertionId = resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+        logger.info("ADD - Adding a resource with id : " + insertionId);
         Resource checkResource;
         try {
             //Check existence if resource
@@ -103,6 +105,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             throw new ServiceException(e);
         }
 
+        logger.info("ADD - Check resource :: " + insertionId);
         if (checkResource != null) {
             throw new ServiceException(String.format("%s with id [%s] already exists", getResourceType(), insertionId));
         }
@@ -122,6 +125,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
+        logger.info("ADD - add ResourceDb :: " + insertionId);
         resourceService.addResource(resourceDb);
     }
 
