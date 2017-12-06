@@ -173,11 +173,12 @@ public class AnnotatedCorpusMetadataGenerate {
         RelationInfo relationInfo = generateRelationInfo(inputCorpus);
         relations.add(relationInfo);
         corpusInfo.setRelations(relations);
-        //ogger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
+        //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
        
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
+
         AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);        		           
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
         //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");

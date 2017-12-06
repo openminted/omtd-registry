@@ -27,7 +27,7 @@ import java.util.concurrent.Future;
 
 import static javax.xml.bind.JAXBContext.newInstance;
 
-@Service
+@Service("mavenResolverService")
 public class MavenResolverImpl implements MavenResolverService {
 
     private static Logger logger = Logger.getLogger(MavenResolverImpl.class);
