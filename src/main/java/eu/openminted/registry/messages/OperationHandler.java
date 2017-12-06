@@ -39,15 +39,6 @@ public class OperationHandler implements MessagesHandler {
 	@Autowired
 	private CorpusServiceImpl corpusService;
 	
-	/*static private String[] workflowExecutionStatus = {
-	        "PENDING",
-	        "RUNNING",
-	        "PAUSED",
-	        "FINISHED",
-	        "CANCELED",
-	        "FAILED"
-	};
-	*/
 	@Autowired
 	public ParserService parserPool;
 		
@@ -94,10 +85,8 @@ public class OperationHandler implements MessagesHandler {
 					
 					// Add operation to registry
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
-					logger.info("Inserting Operation " + operationString.get());					
-					operationService.add(operation);
-					logger.info("Inserted Operation " + operation.getId() + " successfully");
-				    
+					logger.info("Insert Operation " + operationString.get());					
+					operationService.add(operation);								    
 				}				
 				// Set a workflow experiment to started, ie update an operation document
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {		
@@ -115,10 +104,8 @@ public class OperationHandler implements MessagesHandler {
 																			
 					// Update operation to registry		
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
-					logger.info("Update Operation " + operationString.get());				
-					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.RUNNING.toString());
-						
+					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());				
+					operationService.update(operation);						
 				}				 	
 				// Set a workflow experiment to finished, ie update an operation document, create ouput corpus metadata				 
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {		
@@ -143,7 +130,7 @@ public class OperationHandler implements MessagesHandler {
 						
 					
 					String outputCorpusOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue(); 
-					logger.debug("Output corpus id :: " + outputCorpusOmtdId);				    
+					logger.info("Output corpus id :: " + outputCorpusOmtdId);				    
 					operationCorpus.setOutput(outputCorpusOmtdId);
 					operation.setCorpus(operationCorpus);					
 				
@@ -152,11 +139,8 @@ public class OperationHandler implements MessagesHandler {
 																						
 					// Update operation to registry			
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
-					logger.info("Update Operation " + operationString.get());					
-					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + ExecutionStatus.Status.FINISHED.toString());
-					
-						
+					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());			
+					operationService.update(operation);										
 				}				
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {		
 					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getError() == null) {
@@ -183,9 +167,8 @@ public class OperationHandler implements MessagesHandler {
 					
 					// Update operation to registry		
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
-					logger.info("Update Operation " + operationString.get());								
-					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());								
+					operationService.update(operation);	
 				}
 				// Set a workflow experiment to resumed, failed, paused, ie update an operation document
 				else {
@@ -200,9 +183,8 @@ public class OperationHandler implements MessagesHandler {
 					
 					// Update operation to registry		
 					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
-					logger.info("Update Operation " + operationString.get());								
-					operationService.update(operation);
-					logger.info("Updated Operation " + operation.getId() + " successfully to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());							
+					operationService.update(operation);					
 				}
 				
 			}

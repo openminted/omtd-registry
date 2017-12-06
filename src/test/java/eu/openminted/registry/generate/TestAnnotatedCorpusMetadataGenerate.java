@@ -9,30 +9,23 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ResourceUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.messages.OperationMessageConfig;
 import eu.openminted.registry.service.ComponentServiceImpl;
 import eu.openminted.registry.service.CorpusServiceImpl;
 
@@ -105,17 +98,17 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	
 	
 	@Test
-	public void testFoo() throws JsonProcessingException, FileNotFoundException {
+	public void testBasic() throws JsonProcessingException, FileNotFoundException {
 		
 
-		logger.info("Running test foo");
-		String inputCorpusId =  "d309d239-222e-4cd8-9bf6-032d3cb6b40e"; //"OMTD_Demo_Dataset4"; // omtdid	
-		String componentId = "DemoWF3SSHNER";  //omtdid
+		logger.info("Running Corpus Metadata Generate");
+		String inputCorpusId =  "corpus_maximum.xml"; // omtdid	
+		String componentId = "component_real2.xml";  //omtdid
 		String userId = "0931731143127784@openminted.eu"; 
 		String outputCorpusArchiveId = "outputArchiveId";
 			
-		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v300/corpus_maximum.xml"));
-		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v300/component_real2.xml"));
+		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v301/" + inputCorpusId));
+		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v301/" + componentId));
 		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 
 	}

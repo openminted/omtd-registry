@@ -140,12 +140,6 @@ public class AnnotatedCorpusMetadataGenerate {
         // VersionInfo
         VersionInfo versionInfo = new VersionInfo();
         versionInfo.setVersion("0.0.1");
-        XMLGregorianCalendar calendar = null;
-        try {
-            calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }       
         corpusInfo.setVersionInfo(versionInfo);
         //logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
         

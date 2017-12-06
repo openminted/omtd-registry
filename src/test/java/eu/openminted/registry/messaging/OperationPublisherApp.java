@@ -16,12 +16,10 @@ import eu.openminted.workflow.api.ExecutionStatus;
 
 
 @Configuration
-//@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class OperationPublisherApp {
 	
 	static final Logger logger = Logger.getLogger(OperationPublisherApp.class.getName());
 	
-	//@Value("${jms.host}")
 	private static String messagesHost = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
 	
 	private static String topic = TopicsRegistry.workflowsExecution;
