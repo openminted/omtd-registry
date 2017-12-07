@@ -48,7 +48,7 @@ public class MetadataHeaderInfoGenerate {
         if(info.getMetadataRecordIdentifier() == null) {
             MetadataIdentifier identifier = new MetadataIdentifier();
             identifier.setValue(UUID.randomUUID().toString());
-            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OTHER);
+            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
             info.setMetadataRecordIdentifier(identifier);
         }
 

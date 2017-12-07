@@ -68,6 +68,7 @@ import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
 import eu.openminted.registry.service.ComponentServiceImpl;
 import eu.openminted.registry.service.CorpusServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 
 
 /*
@@ -86,10 +87,10 @@ public class AnnotatedCorpusMetadataGenerate {
 	@Autowired 
 	private ComponentServiceImpl componentService;
 		
-    @org.springframework.beans.factory.annotation.Value("${registry.host}")
+    @Value("${registry.host}")
     private String registryHost;
 
-    @org.springframework.beans.factory.annotation.Value("${registry.domain}")
+    @Value("${webapp.front}/landingPage/corpus/")
     private String landingPageDomain;
     
     private GregorianCalendar gregory;

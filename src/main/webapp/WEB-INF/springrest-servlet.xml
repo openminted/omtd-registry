@@ -71,7 +71,7 @@
     </util:map>
 
     <bean class="eu.openminted.registry.beans.FrontEndLinkURIAuthenticationSuccessHandler" id="frontEndRedirect">
-        <property name="frontEndURI" value="${webapp.front}"/>
+        <property name="frontEndURI" value="${webapp.front}/home"/>
     </bean>
     <!--
       -
