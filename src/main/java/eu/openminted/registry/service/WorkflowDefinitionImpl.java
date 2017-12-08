@@ -1,9 +1,11 @@
 package eu.openminted.registry.service;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
@@ -158,14 +160,16 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
 
     @Override
     public String createWorkflow() {
-        Workflow workflow = galaxyInstance.getWorkflowsClient().createWorkflow("test workflow " + UUID.randomUUID().toString());
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String workflowName = authentication.getSub() + " " +UUID.randomUUID().toString();
+        Workflow workflow = galaxyInstance.getWorkflowsClient().createWorkflow(workflowName);
         WorkflowDefinition internalWorkflow = new WorkflowDefinition();
         internalWorkflow.setWorkflowId(workflow.getId());
         internalWorkflow.setCreationDate(new Date());
         internalWorkflow.setModificationDate(new Date());
-        internalWorkflow.setWorkflowDefinition("");
+        internalWorkflow.setWorkflowName(workflowName);
+        internalWorkflow.setWorkflowDefinition("{\"name\": \"" + workflowName + "\", \"steps\": {}, \"annotation\": \"\"}");
         internalWorkflow.setOpenmintedId(UUID.randomUUID().toString());
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         internalWorkflow.setPersonIdentifier(authentication.getSub());
         add(internalWorkflow);
         return workflow.getId();
@@ -184,4 +188,5 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     public void deleteWorkflow(String workflowId) {
         galaxyInstance.getWorkflowsClient().deleteWorkflow(workflowId);
     }
+
 }

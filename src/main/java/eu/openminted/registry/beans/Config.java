@@ -1,5 +1,9 @@
 package eu.openminted.registry.beans;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
 import com.github.dockerjava.api.DockerClient;
@@ -73,6 +77,14 @@ public class Config {
         connectionFactory.setConnectionIDPrefix("omtd-registry");
         logger.info("ActiveMQConnection Factory created for " + jmsHost);
         return connectionFactory;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper;
     }
 
     @Bean
