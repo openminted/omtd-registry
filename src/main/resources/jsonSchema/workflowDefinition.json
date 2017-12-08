@@ -11,6 +11,11 @@
       "title": "ID",
       "type": "string"
     },
+    "workflowName": {
+      "description": "Name of the workflow",
+      "title": "name",
+      "type": "string"
+    },
     "personIdentifier": {
       "description": "Person Identifier",
       "title": "ID",

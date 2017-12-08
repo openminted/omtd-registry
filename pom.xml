@@ -199,6 +199,7 @@
                             <mapClasses>asClasses</mapClasses>
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
+                                <pattern>eu.openminted.registry.domain.workflow.*</pattern>
                             </classPatterns>
                             <outputFile>target/operation.ts</outputFile>
                             <outputKind>module</outputKind>
