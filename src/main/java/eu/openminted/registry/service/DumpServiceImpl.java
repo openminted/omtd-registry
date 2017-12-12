@@ -6,7 +6,6 @@ import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.ResourceTypeService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.BaseMetadataRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +24,7 @@ import java.util.zip.ZipOutputStream;
 @Service("dumpService")
 public class DumpServiceImpl implements DumpService {
 
-
-    private static FileAttribute PERMISSIONS = PosixFilePermissions.asFileAttribute(EnumSet.of
+    private static final FileAttribute PERMISSIONS = PosixFilePermissions.asFileAttribute(EnumSet.of
             (PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_READ, PosixFilePermission
                             .OWNER_EXECUTE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_READ,
                     PosixFilePermission.GROUP_EXECUTE, PosixFilePermission.OTHERS_READ, PosixFilePermission
@@ -65,32 +63,26 @@ public class DumpServiceImpl implements DumpService {
     }
 
     static void getAllFiles(File dir, List<File> fileList) {
-        try {
-            File[] files = dir.listFiles();
-            for (File file : files) {
-                fileList.add(file);
-                if (file.isDirectory()) {
-                    System.out.println("directory:" + file.getCanonicalPath());
-                    getAllFiles(file, fileList);
-                } else {
-                    System.out.println("     file:" + file.getCanonicalPath());
-                }
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            fileList.add(file);
+            if (file.isDirectory()) {
+                getAllFiles(file, fileList);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     static void addToZip(File directoryToZip, File file, ZipOutputStream zos) throws FileNotFoundException,
             IOException {
 
+
         FileInputStream fis = new FileInputStream(file);
 
         // we want the zipEntry's path to be a relative path that is relative
         // to the directory being zipped, so chop off the rest of the path
-        String zipFilePath = file.getCanonicalPath().substring(directoryToZip.getCanonicalPath().length() + 1,
-                file.getCanonicalPath().length());
-        System.out.println("Writing '" + zipFilePath + "' to zip file");
+        String[] splitInto = file.getCanonicalPath().split("/");
+        String zipFilePath = splitInto[splitInto.length-2]+"/"+ splitInto[splitInto.length-1];
+
         ZipEntry zipEntry = new ZipEntry(zipFilePath);
         zos.putNextEntry(zipEntry);
 
@@ -104,100 +96,47 @@ public class DumpServiceImpl implements DumpService {
         fis.close();
     }
 
-    public File bringAll() {
 
-        Path masterDirectory = null;
+    public File bringAll(boolean isRaw, boolean wantSchema, String[] resourceTypes) {
 
-        try {
-            Calendar today = Calendar.getInstance();
-            today.set(Calendar.HOUR_OF_DAY, 0);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd") ;
-            masterDirectory = Files.createTempDirectory(dateFormat.format(today.getTime()),PERMISSIONS);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        List<ResourceType> resourceTypes;
+        Path masterDirectory = createBasicPath();
+
+        List<ResourceType> resourceTypesList = new ArrayList<>();
         List<Resource> resources;
 
-        resourceTypes = resourceTypeService.getAllResourceType();
+        if(resourceTypes.length==0)
+            resourceTypesList = resourceTypeService.getAllResourceType();
+
+        for(String resourceType: resourceTypes) {
+            ResourceType tmp = resourceTypeService.getResourceType(resourceType);
+            if(tmp!=null)
+                resourceTypesList.add(tmp);
+        }
+
         List<File> fileList = new ArrayList<>();
-        for (int i = 0; i < resourceTypes.size(); i++) {
-            if (!resourceTypes.get(i).getName().equals("user")) {
-                resources = resourceService.getResource(resourceTypes.get(i).getName());
-                createDirectory(masterDirectory.toAbsolutePath().toString() + "/" + resourceTypes.get(i).getName(), resources);
+        for(ResourceType resourceType: resourceTypesList){
+            if (!resourceType.getName().equals("user")) {
+                resources = resourceService.getResource(resourceType.getName());
+                createDirectory(masterDirectory.toAbsolutePath().toString() + "/" + resourceType.getName(), resources, isRaw);
                 try {
-                    File tempFile = new File(masterDirectory + "/" + resourceTypes.get(i).getName() + ".json");
-                    Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
-                    FileWriter file = new FileWriter(filePath.toFile());
-                    file.write(parserPool.deserialize(resourceTypes.get(i), ParserService.ParserServiceTypes.JSON).get());
-                    file.flush();
-                    file.close();
+                    if(wantSchema) { //skip schema creation
+                        File tempFile = new File(masterDirectory + "/"+resourceType.getName()+"/" + resourceType.getName() + ".json");
+                        Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
+                        FileWriter file = new FileWriter(filePath.toFile());
+                        file.write(parserPool.deserialize(resourceType, ParserService.ParserServiceTypes.JSON).get());
+                        file.flush();
+                        file.close();
+                    }
                 } catch (Exception e) {
-                    throw new ServiceException("Failed to create schema-file for " + resourceTypes.get(i).getName());
+                    throw new ServiceException("Failed to create schema-file for " + resourceType.getName());
                 }
             }
         }
-        File tempDir = masterDirectory.toFile();
-        getAllFiles(tempDir, fileList);
-        File masterZip = new File(masterDirectory + "/final.zip");
-        writeZipFile(masterZip, fileList);
-        try {
-            File tempFile = new File(masterDirectory + "/dump-" + getCurrentDate() + ".zip");
-            Files.createFile(tempFile.toPath(), PERMISSIONS);
-            masterZip.renameTo(tempFile);
-			return tempFile;
-        } catch (IOException e1) {
 
-        }
-        return masterZip;
+        return finalizeFile(masterDirectory,fileList);
     }
 
-    public File bringResourceType(String resourceType) {
-
-
-        String parentName = "/home/user/tmp/dump-testCase";
-        File masterDirectory = new File(parentName);
-
-        try {
-            Files.createDirectory(masterDirectory.toPath(), PERMISSIONS);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        ResourceType resourceTypes = new ResourceType();
-        List<Resource> resources;
-
-        resourceTypes = resourceTypeService.getResourceType(resourceType);
-        List<File> fileList = new ArrayList<>();
-        if (resourceTypes != null) {
-            resources = resourceService.getResource(resourceTypes.getName());
-            createDirectory(parentName + "/" + resourceTypes.getName(), resources);
-            try {
-                File tempFile = new File(parentName + "/" + resourceTypes.getName() + ".json");
-                Path filePath = Files.createFile(tempFile.toPath(), PERMISSIONS);
-                FileWriter file = new FileWriter(filePath.toFile());
-                file.write(parserPool.deserialize(resourceTypes, ParserService.ParserServiceTypes.JSON).get());
-                file.flush();
-                file.close();
-            } catch (Exception e) {
-                throw new ServiceException("Failed to create schema-file for " + resourceTypes.getName());
-            }
-        }
-        File tempDir = new File(parentName);
-        getAllFiles(tempDir, fileList);
-        File masterZip = new File(parentName + "/final.zip");
-        writeZipFile(masterZip, fileList);
-        try {
-            File tempFile = new File(parentName + "/dump-" + getCurrentDate() + ".zip");
-            Files.createFile(tempFile.toPath(), PERMISSIONS);
-            masterZip.renameTo(tempFile);
-//			return tempFile;
-        } catch (IOException e1) {
-
-        }
-        return masterZip;
-    }
-
-    public void createDirectory(String name, List<Resource> resources) {
+    public void createDirectory(String name, List<Resource> resources,boolean isRaw) {
         File parentDirectory = new File(name);
 
         if (!parentDirectory.exists()) {
@@ -209,23 +148,68 @@ public class DumpServiceImpl implements DumpService {
         }
         for (int i = 0; i < resources.size(); i++) {
             try {
-                File openFile = new File(name + "/" + resources.get(i).getId() + ".json");
+                String extension = ".json";
+                if(isRaw)
+                    extension = "."+resources.get(i).getPayloadFormat();
+
+                File openFile = new File(name + "/" + resources.get(i).getId() + extension);
+
                 Path filePath = Files.createFile(openFile.toPath(), PERMISSIONS);
                 FileWriter file = new FileWriter(filePath.toFile());
-                file.write(parserPool.deserialize(resources.get(i), ParserService.ParserServiceTypes.JSON).get());
+                resources.get(i).setIndexedFields(new ArrayList<>());
+                if(isRaw){
+                    file.write(resources.get(i).getPayload());
+                }else{
+                    file.write(parserPool.deserialize(resources.get(i), ParserService.ParserServiceTypes.JSON).get());
+                }
                 file.flush();
                 file.close();
             } catch (Exception e) {
+                e.printStackTrace();
 				throw new ServiceException("Failed to create file(s) for "+ name);
+
             }
         }
-
     }
 
-    public String getCurrentDate() {
+    private File finalizeFile(Path masterDirectory, List<File> fileList){
+        File tempDir = masterDirectory.toFile();
+        getAllFiles(tempDir, fileList);
+        File masterZip = new File(masterDirectory + "/final.zip");
+
+
+        writeZipFile(masterZip, fileList);
+        try {
+            File tempFile = new File(masterDirectory + "/dump-" + getCurrentDate() + ".zip");
+            Files.createFile(tempFile.toPath(), PERMISSIONS);
+            masterZip.renameTo(tempFile);
+            return tempFile;
+        } catch (IOException e1) {
+
+        }
+        return masterZip;
+    }
+
+
+    private Path createBasicPath(){
+        Path masterDirectory = null;
+        try {
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd") ;
+            masterDirectory = Files.createTempDirectory(dateFormat.format(today.getTime()),PERMISSIONS);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        return masterDirectory;
+    }
+
+    private String getCurrentDate() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("ddMMyyyy");//dd/MM/yyyy
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
     }
+
 }

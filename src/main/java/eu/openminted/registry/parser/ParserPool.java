@@ -6,13 +6,14 @@ import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.ObjectFactory;
 import org.apache.log4j.Logger;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.concurrent.ExecutorService;
@@ -64,10 +65,40 @@ public class ParserPool implements ParserService{
             }
             return type;
         });
+    }
+
+    @Override
+    public <T> T deserialize(String json, Class<T> returnType) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.readValue(json, returnType);
 
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public Resource deserializeResource(File file, ParserServiceTypes mediaType) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (mediaType == ParserServiceTypes.JSON) {
+            try {
+                return mapper.readValue(file, Resource.class);
+            } catch (IOException e) {
+                return null;
+            }
+        } else if (mediaType == ParserServiceTypes.XML) {
+            Unmarshaller unmarshaller = null;
+            try {
+                unmarshaller = jaxbContext.createUnmarshaller();
+                Resource resource = (Resource) unmarshaller.unmarshal(file);
+                return resource;
+            } catch (JAXBException e) {
+               return null;
+            }
+        }
+        return null;
+    }
+
+        @SuppressWarnings("unchecked")
     public Future<String> deserialize(Object resource, ParserServiceTypes mediaType) {
         return executor.submit(() -> {
             if(mediaType == ParserServiceTypes.XML) {
