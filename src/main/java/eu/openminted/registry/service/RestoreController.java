@@ -14,7 +14,7 @@ public class RestoreController {
 
     @RequestMapping(value = "/restore/", method = RequestMethod.POST)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void dumpAll(@RequestParam("datafile") MultipartFile file ) {
         restoreService.restoreDataFromZip(file);
     }

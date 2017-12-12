@@ -34,7 +34,7 @@ public class DumpController {
 
     @RequestMapping(value = "/dump/", method = RequestMethod.GET)
     @ResponseBody
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void dumpAll(
                         @RequestParam(value="raw", required = false, defaultValue = "false") String raw,
                         @RequestParam(value = "schema", required = false, defaultValue = "false") String schema,
