@@ -82,7 +82,7 @@ public class ParserPool implements ParserService{
         if (mediaType == ParserServiceTypes.JSON) {
             try {
                 return mapper.readValue(file, Resource.class);
-            } catch (IOException e) {
+            } catch (IOException | ClassCastException e) {
                 return null;
             }
         } else if (mediaType == ParserServiceTypes.XML) {
@@ -91,7 +91,7 @@ public class ParserPool implements ParserService{
                 unmarshaller = jaxbContext.createUnmarshaller();
                 Resource resource = (Resource) unmarshaller.unmarshal(file);
                 return resource;
-            } catch (JAXBException e) {
+            } catch (JAXBException | ClassCastException e) {
                return null;
             }
         }

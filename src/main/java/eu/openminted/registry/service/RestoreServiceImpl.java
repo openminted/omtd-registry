@@ -76,7 +76,8 @@ public class RestoreServiceImpl implements RestoreService {
                     //if there is a file with the same name as the directory then it's the schema of the resource type. Drop resource type and reimport
                     String resourceTypeName = file.getParentFile().getName();
                     System.out.println("Adding resource type:"+resourceTypeName);
-                    resourceTypeService.deleteResourceType(resourceTypeName);
+                    if(resourceTypeService.getResourceType(resourceTypeName)!=null)
+                        resourceTypeService.deleteResourceType(resourceTypeName);
 
                     ResourceType resourceType = new ResourceType();
                     try {
@@ -116,9 +117,12 @@ public class RestoreServiceImpl implements RestoreService {
                         }
 
                         if(resource==null) {//if it's still null that means that the file contains just the payload
+                            resource = new Resource();
                             resource.setPayload(FileUtils.readFileToString(file));
                             resource.setPayloadFormat(extension);
                             resource.setResourceType(file.getParentFile().getName());
+                            resourceService.addResource(resource);
+                        }else{
                             resourceService.addResource(resource);
                         }
                     }
