@@ -21,14 +21,7 @@
       "multivalued": true,
       "name": "language",
       "label": "Language",
-      "path": "//*[local-name()='languageTag']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "mediaType",
-      "label": "Media Type",
-      "path": "//*[local-name()='mediaType']/text()",
+      "path": "//*[local-name()='language']/text()",
       "type": "java.lang.String"
     },
     {
@@ -54,13 +47,6 @@
     },
     {
       "multivalued": true,
-      "name": "mimeType",
-      "label": "Mime Type",
-      "path": "//*[local-name()='mimeType']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
       "name": "domain",
       "label": "Domain",
       "path": "//*[local-name()='domain']/text()",
@@ -70,56 +56,27 @@
       "multivalued": true,
       "name": "corpusSubtype",
       "label": "Corpus Subtype",
-      "path": "//*[local-name()='corpusSubType']/text()",
+      "path": "//*[local-name()='corpusSubtype']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "annotationLevel",
-      "label": "Annotation Level",
-      "path": "//*[local-name()='annotationLevel']/text()",
+      "name": "annotationType",
+      "label": "Annotation Type",
+      "path": "//*[local-name()='annotationType']/text()",
       "type": "java.lang.String"
     },
     {
-      "multivalued": true,
-      "name": "tagset",
-      "label": "Tagset",
-      "path": "//*[local-name()='tagset']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
       "name": "rights",
-      "label": "Rights",
-      "path": "//*[local-name()='rights']/text()",
+      "label": "Rights Statement",
+      "path": "//*[local-name()='rightsStatement']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "rightsStmtName",
-      "label": "Rights Statement Name",
-      "path": "//*[local-name()='rightsStmtName']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "dataFormatSpecific",
-      "label": "Data Format Specific",
-      "path": "//*[local-name()='dataFormatSpecific']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "subject",
-      "label": "Subject",
-      "path": "//*[local-name()='subject']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "typeSystem",
-      "label": "Type System",
-      "path": "//*[local-name()='typesystem']/text()",
+      "name": "keyword",
+      "label": "Keyword",
+      "path": "//*[local-name()='keyword']/text()",
       "type": "java.lang.String"
     }
   ],
