@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.DumpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class DumpController {
         }
         return (directory.delete());
     }
+
 
 
     @RequestMapping(value = "/dump/", method = RequestMethod.GET)
