@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.*;
+import eu.openminted.registry.core.service.AbstractGenericService;
+import eu.openminted.registry.core.service.ParserService;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.generate.LabelGenerate;
@@ -15,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -115,7 +119,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             resourceDb.setCreationDate(new Date());
             resourceDb.setModificationDate(new Date());
             resourceDb.setPayloadFormat("xml");
-            resourceDb.setResourceType(getResourceType());
+            resourceDb.setResourceType(resourceType);
             resourceDb.setVersion("not_set");
             resourceDb.setId(insertionId);
             resourceDb.setPayload(serialized.get());

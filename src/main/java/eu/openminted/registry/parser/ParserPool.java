@@ -68,34 +68,30 @@ public class ParserPool implements ParserService{
     }
 
     @Override
-    public <T> T deserialize(String json, Class<T> returnType) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    public <T> Future<T> deserialize(String json, Class<T> returnType) throws IOException {
+        return executor.submit(() -> {
+            ObjectMapper mapper = new ObjectMapper();
 
-        return mapper.readValue(json, returnType);
-
+            return mapper.readValue(json, returnType);
+        });
     }
 
     @Override
     public Resource deserializeResource(File file, ParserServiceTypes mediaType) {
-        ObjectMapper mapper = new ObjectMapper();
-
-        if (mediaType == ParserServiceTypes.JSON) {
+            ObjectMapper mapper = new ObjectMapper();
             try {
-                return mapper.readValue(file, Resource.class);
+                if (mediaType == ParserServiceTypes.JSON)
+                    return mapper.readValue(file, Resource.class);
+                else if (mediaType == ParserServiceTypes.XML) {
+                    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                    return (Resource) unmarshaller.unmarshal(file);
+                }else
+                    return null;
             } catch (IOException | ClassCastException e) {
                 return null;
+            } catch (JAXBException e) {
+                return null;
             }
-        } else if (mediaType == ParserServiceTypes.XML) {
-            Unmarshaller unmarshaller = null;
-            try {
-                unmarshaller = jaxbContext.createUnmarshaller();
-                Resource resource = (Resource) unmarshaller.unmarshal(file);
-                return resource;
-            } catch (JAXBException | ClassCastException e) {
-               return null;
-            }
-        }
-        return null;
     }
 
         @SuppressWarnings("unchecked")

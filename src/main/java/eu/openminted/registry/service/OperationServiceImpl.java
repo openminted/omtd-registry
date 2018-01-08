@@ -5,10 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-import eu.openminted.registry.core.domain.Browsing;
-import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.core.domain.Order;
-import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.domain.*;
 import eu.openminted.registry.core.service.AbstractGenericService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.SearchService;
@@ -18,7 +15,6 @@ import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.FatOperations;
 import eu.openminted.registry.domain.operation.Operation;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.context.annotation.Primary;
@@ -85,7 +81,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         try {
             String serialized = mapper.writeValueAsString(operation);
             resourceDb.setPayloadFormat("json");
-            resourceDb.setResourceType(getResourceType());
+            resourceDb.setResourceType(resourceType);
             resourceDb.setVersion("not_set");
             resourceDb.setId(operation.getId());
             resourceDb.setPayload(serialized);

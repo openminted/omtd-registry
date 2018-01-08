@@ -9,6 +9,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,12 +20,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 
 @Service("restoreService")
 public class RestoreServiceImpl implements RestoreService {
+
+    private Logger logger = Logger.getLogger(RestoreServiceImpl.class);
 
 
     @Autowired
@@ -75,16 +79,28 @@ public class RestoreServiceImpl implements RestoreService {
                 if (FilenameUtils.removeExtension(file.getName()).equals(file.getParentFile().getName())) {
                     //if there is a file with the same name as the directory then it's the schema of the resource type. Drop resource type and reimport
                     String resourceTypeName = file.getParentFile().getName();
-                    System.out.println("Adding resource type:"+resourceTypeName);
-                    if(resourceTypeService.getResourceType(resourceTypeName)!=null)
+                    logger.info("Adding resource type: "+resourceTypeName);
+                    long start_time = System.nanoTime();
+                    if(resourceTypeService.getResourceType(resourceTypeName)!=null) {
+                        logger.info("Resource type found in db, removing..");
                         resourceTypeService.deleteResourceType(resourceTypeName);
+                        long end_time = System.nanoTime();
+                        double difference = (end_time - start_time) / 1e6;
+                        logger.info("Resource type \""+resourceTypeName+"\" deleted in "+difference+"ms");
+                    }
+
+
 
                     ResourceType resourceType = new ResourceType();
                     try {
-                        resourceType = parserPool.deserialize(FileUtils.readFileToString(file).replaceAll("^\t$", "").replaceAll("^\n$",""),ResourceType.class);
+                        resourceType = parserPool.deserialize(FileUtils.readFileToString(file).replaceAll("^\t$", "").replaceAll("^\n$",""),ResourceType.class).get();
                         resourceTypeService.addResourceType(resourceType);
                     } catch (IOException e) {
                         new ServiceException("Failed to read schema file");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
 
 
@@ -101,9 +117,11 @@ public class RestoreServiceImpl implements RestoreService {
                     ResourceType resourceType = resourceTypeService.getResourceType(splitInto[splitInto.length - 1]);
                     if(!FilenameUtils.removeExtension(file.getName()).equals(file.getParentFile().getName())){
                         //if it's not the schema file then add it as a resource
-                        System.out.println("Adding resource:"+file.getName());
+                        logger.info("Adding resource:"+file.getName());
                         String extension = FilenameUtils.getExtension(file.getName());
                         Resource resource = new Resource();
+
+                        long start_time = System.nanoTime();
                         if(extension.equals("json")) {
                             resource = parserPool.deserializeResource(file, ParserService.ParserServiceTypes.JSON);
                             if(resource==null)
@@ -115,12 +133,15 @@ public class RestoreServiceImpl implements RestoreService {
                         }else{
                             new ServiceException("Unsupported file format");
                         }
+                        long end_time = System.nanoTime();
+                        double difference = (end_time - start_time) / 1e6;
 
+                        logger.info("Trying to parse resource from file in: "+difference+" ms");
                         if(resource==null) {//if it's still null that means that the file contains just the payload
                             resource = new Resource();
                             resource.setPayload(FileUtils.readFileToString(file));
                             resource.setPayloadFormat(extension);
-                            resource.setResourceType(file.getParentFile().getName());
+                            resource.setResourceType(resourceType);
                             resourceService.addResource(resource);
                         }else{
                             resourceService.addResource(resource);
@@ -160,14 +181,23 @@ public class RestoreServiceImpl implements RestoreService {
             while (entry != null) {
                 String filePath = destDirectory + File.separator + entry.getName();
 //                System.out.println(entry.getName());
-
+                boolean isDir = false;
 
                 String[] splitInto = entry.getName().split("/");
-                File tmpFile = new File(destDirectory+File.separator+splitInto[splitInto.length-2]);
+
+                System.out.println(entry.getName());
+                File tmpFile = null;
+                if(splitInto.length<2) {//it's a dir
+                    tmpFile = new File(destDirectory + File.separator + splitInto[0]);
+                    isDir = true;
+                }else
+                    tmpFile = new File(destDirectory+File.separator+splitInto[splitInto.length-2]);
+
                 if(!tmpFile.exists())
                     tmpFile.mkdir();
 
-                extractFile(zipIn, filePath);
+                if(!isDir)
+                    extractFile(zipIn, filePath);
 
                 zipIn.closeEntry();
                 entry = zipIn.getNextEntry();

@@ -3,17 +3,11 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.core.service.ResourceTypeService;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,6 +22,7 @@ import java.util.Date;
 
 //@Component
 public class PopulateSchemaBean {
+
     @Autowired
     ResourceTypeService resourceTypeService;
 

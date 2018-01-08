@@ -1,11 +1,9 @@
 package eu.openminted.registry.service;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
@@ -90,7 +88,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
         try {
             String serialized = mapper.writeValueAsString(Workflow);
             resourceDb.setPayloadFormat("json");
-            resourceDb.setResourceType(getResourceType());
+            resourceDb.setResourceType(resourceType);
             resourceDb.setVersion("not_set");
             resourceDb.setId(Workflow.getWorkflowId());
             resourceDb.setPayload(serialized);

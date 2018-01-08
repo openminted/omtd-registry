@@ -2,15 +2,14 @@ package eu.openminted.registry.service;
 
 
 import eu.openminted.corpus.CorpusBuildingState;
-import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,9 @@ import java.util.concurrent.Future;
 @Service("corpusBuildingStateService")
 @Primary
 public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService{
+
+    @Autowired
+    ResourceTypeService resourceTypeService;
 
     private static final String CORPUS_ID = "corpus_id";
 
@@ -77,7 +79,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
             resourceDb.setCreationDate(new Date());
             resourceDb.setModificationDate(new Date());
             resourceDb.setPayloadFormat("json");
-            resourceDb.setResourceType(getResourceType());
+            resourceDb.setResourceType(resourceType);
             resourceDb.setVersion("not_set");
             resourceDb.setId(resource.getId());
             resourceDb.setPayload(serialized.get());
