@@ -17,7 +17,7 @@ import java.util.Properties;
 @Component
 public class LabelGenerate {
 
-    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","mimeType"};
+    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","dataFormat"};
 
     private Map<String,Properties> mappings;
 
@@ -62,7 +62,15 @@ public class LabelGenerate {
     }
 
     static private String sanitize(String value) {
-        return value.replaceAll("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,.\\/]","_").toUpperCase();
+        return value.replaceAll("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,./]","_").toUpperCase();
+    }
+
+    static private String capitalize(String value) {
+        if(StringUtils.isAllUpperCase(value)) {
+            return value;
+        } else {
+            return StringUtils.capitalize(value.replaceAll("(.)([A-Z])","$1 $2"));
+        }
     }
 
     public void createLabels(Browsing<BaseMetadataRecord> browsing) {
@@ -70,9 +78,9 @@ public class LabelGenerate {
             for(Value value : facet.getValues()) {
                 switch (facet.getField()) {
                     case "language" : value.setLabel(getLanguageLabel(value.getValue())); break;
-                    case "mimeType" : value.setLabel(mappings.get("mimeType").getProperty(sanitize(value.getValue())));break;
+                    case "dataFormat" : value.setLabel(mappings.get("dataFormat").getProperty(sanitize(value.getValue())));break;
                     case "licence" : value.setLabel(mappings.get("licence").getProperty(sanitize(value.getValue()))); break;
-                    default : value.setLabel(StringUtils.capitalize(value.getValue()).replaceAll("(.)([A-Z])","$1 $2"));
+                    default : value.setLabel(capitalize(value.getValue()));
                 }
             }
         }
