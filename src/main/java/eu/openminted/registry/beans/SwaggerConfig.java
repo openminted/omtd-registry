@@ -14,6 +14,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Configuration
 @EnableSwagger2
@@ -24,7 +26,7 @@ public class SwaggerConfig {
     @Value("${openminted.debug:#{false}}")
     public Boolean isLocalhost;
 
-    @Value("${openminted.path:api}")
+    @Value("${registry.host}")
     public String host;
 
     @Autowired
@@ -37,17 +39,18 @@ public class SwaggerConfig {
             return new RelativePathProvider(context) {
                 @Override
                 protected String applicationPath() {
-                    return "/";
+                    return "";
                 }
             };
         }
     }
 
     @Bean
-    public Docket api() {
+    public Docket api() throws MalformedURLException {
+        URL hostURL = new URL(host);
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathProvider(pathProvider())
-                .pathMapping(isLocalhost ? null : host)
+                .host(isLocalhost ? null : hostURL.getHost() + hostURL.getPath())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("eu.openminted.registry.service"))
                 .paths(PathSelectors.any())
