@@ -26,7 +26,7 @@ public class RequestController {
 
 
     @RequestMapping(value = "/request", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<Browsing> getResourceTypeByFilters(@RequestParam Map<String,Object> allRequestParams) {
+    public ResponseEntity<Browsing> getResourceTypeByFilters(@RequestParam(required = false) Map<String,Object> allRequestParams) {
 
         FacetFilter facetFilter = new FacetFilter();
         facetFilter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");

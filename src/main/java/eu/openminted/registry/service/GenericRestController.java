@@ -71,7 +71,7 @@ public class GenericRestController<T> {
     }
 
     @RequestMapping(path = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getAllComponents(@RequestParam Map<String,Object> allRequestParams) {
+    public ResponseEntity<Browsing> getAllComponents(@RequestParam(required = false) Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
         filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
         filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
@@ -91,7 +91,7 @@ public class GenericRestController<T> {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getMyComponents(@RequestParam Map<String,Object> allRequestParams) {
+    public ResponseEntity<Browsing> getMyComponents(@RequestParam(required = false) Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
         filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
         filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
