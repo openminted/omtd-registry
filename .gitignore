@@ -16,9 +16,9 @@ hs_err_pid*
 .idea
 
 #eclipse ignore files
-.settings/
-.project
-.classpath
+*.settings/
+*.project
+*.classpath
 bin/
 
 #test inactive folder
