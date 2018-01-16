@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -46,10 +48,19 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public ApiInfo apiInfo() {
+        ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
+        apiInfoBuilder.title("OpenMinTeD API Documentation")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0");
+        return apiInfoBuilder.build();
+    }
+
+    @Bean
     public Docket api() throws MalformedURLException {
         URL hostURL = new URL(host);
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathProvider(pathProvider())
+                .apiInfo(apiInfo())
                 .host(isLocalhost ? null : hostURL.getHost() + hostURL.getPath())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("eu.openminted.registry.service"))

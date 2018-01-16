@@ -210,7 +210,7 @@ public class AnnotatedCorpusMetadataGenerate {
 			// TODO Added a dummy node just for passing validation of add in registry 	
 			if (annotationTypes.size() == 0) { 
 				AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
-				annotationTypeInfo.setAnnotationType(AnnotationTypeType.LEMMA);		
+//				annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
 				annotationTypes.add(annotationTypeInfo);
 			}
 			annotationInfo.setAnnotationTypes(annotationTypes);
@@ -588,7 +588,7 @@ public class AnnotatedCorpusMetadataGenerate {
 				List<TextFormatInfo> textFormats = new ArrayList<>();
 				TextFormatInfo textFormatInfo = new TextFormatInfo();
 				DataFormatInfo dataFormatInfo = new DataFormatInfo();
-				dataFormatInfo.setDataFormat(DataFormatType.APPLICATION_VND_XMI_XML);
+//				dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
 				textFormatInfo.setDataFormatInfo(dataFormatInfo);
 				textFormats.add(textFormatInfo);
 				datasetDistributionInfo.setTextFormats(textFormats);
@@ -599,7 +599,7 @@ public class AnnotatedCorpusMetadataGenerate {
 			List<TextFormatInfo> textFormats = new ArrayList<>();
 			TextFormatInfo textFormatInfo = new TextFormatInfo();
 			DataFormatInfo dataFormatInfo = new DataFormatInfo();
-			dataFormatInfo.setDataFormat(DataFormatType.APPLICATION_VND_XMI_XML);
+//			dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
 			textFormatInfo.setDataFormatInfo(dataFormatInfo);
 			textFormats.add(textFormatInfo);
 			datasetDistributionInfo.setTextFormats(textFormats);

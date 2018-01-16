@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Mapping of the aai roles into Simple Granted Authority</comment>
+    <entry key="urn:mace:openminted.eu:aai.openminted.eu:group:OpenAIRE+Super+Administrator">ROLE_ADMIN</entry>
+</properties>

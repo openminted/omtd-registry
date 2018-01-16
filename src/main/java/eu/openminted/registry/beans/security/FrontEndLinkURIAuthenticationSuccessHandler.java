@@ -1,4 +1,4 @@
-package eu.openminted.registry.beans;
+package eu.openminted.registry.beans.security;
 
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +16,11 @@ import java.io.IOException;
 public class FrontEndLinkURIAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private String frontEndURI;
+
+    public FrontEndLinkURIAuthenticationSuccessHandler(String frontEndURI) {
+        this.frontEndURI = frontEndURI;
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OIDCAuthenticationToken authOIDC = (OIDCAuthenticationToken) authentication;
