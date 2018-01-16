@@ -1,40 +1,42 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Component;
+import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.service.ValidateInterface;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-@RestController
-@RequestMapping("/request/component")
-public class ComponentController extends GenericRestController<Component>{
+public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRestController<T> {
 
-    private ValidateInterface<Component> validateInterface;
+    private ValidateInterface<T> validateInterface;
 
-    @Autowired
-    ComponentController(@Qualifier("componentService") ValidateInterface<Component> service) {
+    public OmtdRestController(ResourceCRUDService<T> service) {
         super(service);
-        validateInterface = service;
+        validateInterface = (ValidateInterface<T>) service;
     }
 
     @PreAuthorize("isAuthenticated()")
+    @ApiOperation(value = "Loads the url and then validates according the resourceType schema.")
     @RequestMapping(path = "load", method = RequestMethod.GET)
-    public ResponseEntity<Component> loadURL(@RequestParam("url") String url,@RequestParam(value = "validate", defaultValue = "true") Boolean validate) {
+    public ResponseEntity<T> loadURL(
+            @RequestParam("url") String url,
+            @RequestParam(value = "validate", defaultValue = "true", required = false) Boolean validate) {
         URL requestUrl;
-        Component ret;
+        T ret;
         try {
             requestUrl = new URL(url);
             URLConnection yc = requestUrl.openConnection();
@@ -51,5 +53,12 @@ public class ComponentController extends GenericRestController<Component>{
         ResponseEntity response = ResponseEntity.ok().
                 contentType(MediaType.APPLICATION_XML).body(ret);
         return response;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @ApiOperation(value = "Validates the resource provided with the schema of the resource stored in the registry.")
+    @RequestMapping(path = "validate", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> validate(@RequestBody T resource) {
+        return ResponseEntity.ok(validateInterface.validate(resource));
     }
 }

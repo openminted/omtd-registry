@@ -1,6 +1,8 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.util;
 
 import eu.openminted.registry.domain.MavenComponent;
+import eu.openminted.registry.service.MavenResolverService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ public class MavenResolverController {
     @Autowired
     private MavenResolverService mavenResolverService;
 
+    @ApiOperation(value = "Returns the components found inside a maven jar.")
     @RequestMapping(value = "request/maven", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<MavenComponent>> getComponents(
             @RequestParam("groupID") String groupID,

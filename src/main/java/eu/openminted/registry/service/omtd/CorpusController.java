@@ -1,6 +1,10 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.CorpusService;
+import eu.openminted.registry.service.GenericRestController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +18,8 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/request/corpus")
-public class CorpusController extends GenericRestController<Corpus>{
+@Api(value = "/request/corpus", description = "Operations about OMTD corpora.")
+public class CorpusController extends OmtdRestController<Corpus> {
 
     final private CorpusService corpusService;
 
@@ -24,6 +29,7 @@ public class CorpusController extends GenericRestController<Corpus>{
         this.corpusService = service;
     }
 
+    @ApiOperation(value = "Upload a corpus zip.")
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     public ResponseEntity<String> uploadCorpus(@RequestParam("filename") String filename, @RequestParam("file") MultipartFile file) {
 
@@ -34,6 +40,7 @@ public class CorpusController extends GenericRestController<Corpus>{
         }
     }
 
+    @ApiOperation(value = "Download a corpus zip.")
     @RequestMapping(value = "download", method = RequestMethod.GET)
     @ResponseBody
     public void downloadCorpus(HttpServletRequest request, HttpServletResponse response) throws IOException {

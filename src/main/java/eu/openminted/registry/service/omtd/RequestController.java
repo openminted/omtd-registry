@@ -1,21 +1,29 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.service.RequestService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.service.MediaTypes;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Api(description = "Search service that searches all OMTD related indices.")
 public class RequestController {
 
     @Autowired
@@ -24,8 +32,15 @@ public class RequestController {
     @Autowired
     RequestService requestService;
 
-
-    @RequestMapping(value = "/request", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    @ApiOperation(value = "Returns all OMTD resources.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyword", value = "Keyword for search refine", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "from", value = "From paging", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "quantity", value = "Quantity of resources to be fetched", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "order", value = "asc|desc", dataType = "string", paramType = "query", defaultValue = "asc"),
+            @ApiImplicitParam(name = "orderField", value = "The facet that it is going to be ordered", dataType = "string", paramType = "query")
+    })
+    @RequestMapping(value = "/request", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Browsing> getResourceTypeByFilters(@RequestParam(required = false) Map<String,Object> allRequestParams) {
 
         FacetFilter facetFilter = new FacetFilter();
@@ -47,7 +62,14 @@ public class RequestController {
 
     }
 
-    @RequestMapping(value = "/request/grouped", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    @ApiOperation(value = "Returns all OMTD resources grouped by a facet.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyword", value = "Keyword for search refine", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "from", value = "From paging", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "quantity", value = "Quantity of resources to be fetched", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "group", value = "The facet that is going to be used as a group.", dataType = "string", paramType = "query"),
+    })
+    @RequestMapping(value = "/request/grouped", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Map<String,List<?>>> getResourceTypeByFiltersGrouped(@RequestParam Map<String,Object> allRequestParams) {
 
         FacetFilter facetFilter = new FacetFilter();

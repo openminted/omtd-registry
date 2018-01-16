@@ -1,7 +1,9 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.service.GenericRestController;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/request/lexical")
-public class LexicalController extends GenericRestController<Lexical> {
+@Api(value = "/request/lexical", description = "Operations about OMTD lexical conceptual resources.")
+public class LexicalController extends OmtdRestController<Lexical> {
 
     @Autowired
     LexicalController(ResourceCRUDService<Lexical> service) {

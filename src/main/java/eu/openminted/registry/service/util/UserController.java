@@ -1,9 +1,10 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.util;
 
 import eu.openminted.registry.core.exception.ServerError;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.domain.User;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class UserController {
 
     private Logger logger = Logger.getLogger(UserController.class);
 
+    @ApiOperation(value = "Returns the user of the current session.")
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getUser() {
@@ -49,16 +51,6 @@ public class UserController {
         List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         body.put("role",roles);
         return new ResponseEntity<>(body, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> addUser(@RequestBody User user) {
-        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    @RequestMapping(value = "/user/edit", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        return new ResponseEntity<>("{\"message\":\"not supported.\"}", HttpStatus.NOT_IMPLEMENTED);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)

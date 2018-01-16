@@ -1,6 +1,7 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.restore;
 
 import eu.openminted.registry.core.service.DumpService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class DumpController {
     }
 
 
-
+    @ApiOperation(value = "Dumps all resource types stored in the registry.")
     @RequestMapping(value = "/dump/", method = RequestMethod.GET)
     @ResponseBody
 //    @PreAuthorize("hasRole('ROLE_USER')")
