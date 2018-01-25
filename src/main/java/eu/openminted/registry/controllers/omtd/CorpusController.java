@@ -1,8 +1,8 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.CorpusService;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;

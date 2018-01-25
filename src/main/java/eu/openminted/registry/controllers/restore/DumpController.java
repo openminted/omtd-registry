@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.restore;
+package eu.openminted.registry.controllers.restore;
 
 import eu.openminted.registry.core.service.DumpService;
 import io.swagger.annotations.ApiOperation;

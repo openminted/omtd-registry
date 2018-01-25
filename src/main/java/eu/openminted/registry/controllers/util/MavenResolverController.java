@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.util;
+package eu.openminted.registry.controllers.util;
 
 import eu.openminted.registry.domain.MavenComponent;
 import eu.openminted.registry.service.MavenResolverService;

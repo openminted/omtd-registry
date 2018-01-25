@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.util;
+package eu.openminted.registry.controllers.util;
 
 import eu.openminted.registry.core.exception.ServerError;
 import eu.openminted.registry.core.service.ResourceService;

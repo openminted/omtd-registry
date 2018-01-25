@@ -1,9 +1,9 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.ValidateInterface;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;

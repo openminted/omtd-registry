@@ -1,8 +1,8 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

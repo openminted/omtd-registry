@@ -1,9 +1,9 @@
-package eu.openminted.registry.service.util;
+package eu.openminted.registry.controllers.util;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.WorkflowService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

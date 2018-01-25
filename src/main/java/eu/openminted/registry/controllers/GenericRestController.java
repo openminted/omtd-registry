@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.controllers;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;

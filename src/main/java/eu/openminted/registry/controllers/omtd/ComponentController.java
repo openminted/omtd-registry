@@ -1,8 +1,8 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.ValidateInterface;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

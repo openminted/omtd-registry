@@ -1,8 +1,8 @@
-package eu.openminted.registry.service.util;
+package eu.openminted.registry.controllers.util;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.operation.Operation;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
