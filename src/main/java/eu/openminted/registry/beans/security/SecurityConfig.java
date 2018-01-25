@@ -19,7 +19,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -30,8 +29,8 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
-@PropertySource({ "classpath:application.properties", "classpath:registry.properties"})
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@PropertySource({"classpath:application.properties", "classpath:registry.properties"})
 @ComponentScan
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //
@@ -40,15 +39,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.authenticationProvider(openIdConnectAuthenticationProvider());
 //    }
 
+
+    //.exceptionHandling()
+    //                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
+    //                .and()
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAfter(openIdConnectAuthenticationFilter(),
+        http.addFilterBefore(openIdConnectAuthenticationFilter(),
                 AbstractPreAuthenticatedProcessingFilter.class)
                 .exceptionHandling()
-                .authenticationEntryPoint( new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 
     @Autowired
@@ -92,18 +95,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     ServerConfiguration aaiServerConfiguration() {
         ServerConfiguration serverConfiguration = new ServerConfiguration();
         serverConfiguration.setIssuer(oidcIssuer);
-        serverConfiguration.setAuthorizationEndpointUri(oidcIssuer+"authorize");
-        serverConfiguration.setTokenEndpointUri(oidcIssuer+"token");
-        serverConfiguration.setUserInfoUri(oidcIssuer+"userinfo");
-        serverConfiguration.setJwksUri(oidcIssuer+"jwk");
-        serverConfiguration.setRevocationEndpointUri(oidcIssuer+"revoke");
+        serverConfiguration.setAuthorizationEndpointUri(oidcIssuer + "authorize");
+        serverConfiguration.setTokenEndpointUri(oidcIssuer + "token");
+        serverConfiguration.setUserInfoUri(oidcIssuer + "userinfo");
+        serverConfiguration.setJwksUri(oidcIssuer + "jwk");
+        serverConfiguration.setRevocationEndpointUri(oidcIssuer + "revoke");
         return serverConfiguration;
     }
 
     @Bean
     ServerConfigurationService serverConfigurationService() {
-        Map<String,ServerConfiguration> properties = new HashMap<>();
-        properties.put(oidcIssuer,aaiServerConfiguration());
+        Map<String, ServerConfiguration> properties = new HashMap<>();
+        properties.put(oidcIssuer, aaiServerConfiguration());
         StaticServerConfigurationService ret = new StaticServerConfigurationService();
         ret.setServers(properties);
         return ret;
@@ -122,8 +125,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     ClientConfigurationService clientConfigurationService() {
-        Map<String,RegisteredClient> clients = new HashMap<>();
-        clients.put(oidcIssuer,platformClient());
+        Map<String, RegisteredClient> clients = new HashMap<>();
+        clients.put(oidcIssuer, platformClient());
         StaticClientConfigurationService ret = new StaticClientConfigurationService();
         ret.setClients(clients);
         return ret;

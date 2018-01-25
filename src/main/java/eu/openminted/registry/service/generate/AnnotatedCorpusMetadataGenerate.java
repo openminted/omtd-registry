@@ -1,4 +1,4 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.service.generate;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -9,7 +9,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,8 +67,8 @@ import eu.openminted.registry.domain.TextClassificationInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
-import eu.openminted.registry.service.ComponentServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
+import eu.openminted.registry.service.omtd.ComponentServiceImpl;
+import eu.openminted.registry.service.omtd.CorpusServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 
 
@@ -79,7 +80,7 @@ import org.springframework.beans.factory.annotation.Value;
 @org.springframework.stereotype.Component
 public class AnnotatedCorpusMetadataGenerate {
 
-	static final Logger logger = Logger.getLogger(AnnotatedCorpusMetadataGenerate.class);
+	static final Logger logger = LogManager.getLogger(AnnotatedCorpusMetadataGenerate.class);
 	
 	@Autowired 
 	private CorpusServiceImpl corpusService;
@@ -210,7 +211,7 @@ public class AnnotatedCorpusMetadataGenerate {
 			// TODO Added a dummy node just for passing validation of add in registry 	
 			if (annotationTypes.size() == 0) { 
 				AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
-//				annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
+				annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
 				annotationTypes.add(annotationTypeInfo);
 			}
 			annotationInfo.setAnnotationTypes(annotationTypes);
@@ -588,7 +589,7 @@ public class AnnotatedCorpusMetadataGenerate {
 				List<TextFormatInfo> textFormats = new ArrayList<>();
 				TextFormatInfo textFormatInfo = new TextFormatInfo();
 				DataFormatInfo dataFormatInfo = new DataFormatInfo();
-//				dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
+				dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
 				textFormatInfo.setDataFormatInfo(dataFormatInfo);
 				textFormats.add(textFormatInfo);
 				datasetDistributionInfo.setTextFormats(textFormats);
@@ -599,7 +600,7 @@ public class AnnotatedCorpusMetadataGenerate {
 			List<TextFormatInfo> textFormats = new ArrayList<>();
 			TextFormatInfo textFormatInfo = new TextFormatInfo();
 			DataFormatInfo dataFormatInfo = new DataFormatInfo();
-//			dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
+			dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
 			textFormatInfo.setDataFormatInfo(dataFormatInfo);
 			textFormats.add(textFormatInfo);
 			datasetDistributionInfo.setTextFormats(textFormats);

@@ -1,10 +1,10 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.service.generate;
 
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -21,7 +21,7 @@ public class MetadataHeaderInfoGenerate {
 
     private static final String SCOPE_AFFILIATION = "edu_person_scoped_affiliations";
 
-    private static Logger logger = LoggerFactory.getLogger(MetadataHeaderInfoGenerate.class);
+    private static Logger logger = LogManager.getLogger(MetadataHeaderInfoGenerate.class);
 
     static public MetadataHeaderInfo generate(MetadataHeaderInfo info){
         if(info == null) {

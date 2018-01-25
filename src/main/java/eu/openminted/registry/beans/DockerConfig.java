@@ -21,7 +21,6 @@ import org.springframework.jms.annotation.EnableJms;
  */
 
 @Configuration
-@EnableJms
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class DockerConfig {
 

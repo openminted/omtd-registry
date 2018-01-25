@@ -1,17 +1,20 @@
-package eu.openminted.registry.messages;
+package eu.openminted.registry.service.messages;
 
 import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.DockerService;
-import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
-import org.apache.log4j.Logger;
+import eu.openminted.registry.service.omtd.IncompleteCorpusServiceImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +32,7 @@ import java.util.regex.Pattern;
 
 @Component("jmsConsumer")
 public class JMSConsumer {
-    private static Logger log = Logger.getLogger(JMSConsumer.class.getName());
+    private static Logger log = LogManager.getLogger(JMSConsumer.class.getName());
 
     @Autowired
     public SearchService searchService;
@@ -38,9 +41,11 @@ public class JMSConsumer {
     public ParserService parserPool;
 
     @Autowired
-    CorpusBuildingStateServiceImpl corpusBuildingStateService;
+    @Qualifier("corpusBuildingStateService")
+    ResourceCRUDService<CorpusBuildingState> corpusBuildingStateService;
 
     @Autowired
+    @Qualifier("incompleteCorpusService")
     IncompleteCorpusServiceImpl incompleteCorpusService;
 
     @Autowired

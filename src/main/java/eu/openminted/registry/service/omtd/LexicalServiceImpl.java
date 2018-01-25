@@ -1,6 +1,5 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
-import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.domain.Lexical;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;

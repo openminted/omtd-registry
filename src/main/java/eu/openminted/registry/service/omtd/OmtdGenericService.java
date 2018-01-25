@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +12,11 @@ import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.generate.LabelGenerate;
-import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
-import org.apache.log4j.Logger;
+import eu.openminted.registry.service.ValidateInterface;
+import eu.openminted.registry.service.generate.LabelGenerate;
+import eu.openminted.registry.service.generate.MetadataHeaderInfoGenerate;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +38,7 @@ import java.util.concurrent.Future;
  */
 public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractGenericService<T> implements ValidateInterface<T> {
 
-    private Logger logger = Logger.getLogger(OmtdGenericService.class);
+    private Logger logger = LogManager.getLogger(OmtdGenericService.class);
 
     private static final String OMTD_ID = "omtdid";
 

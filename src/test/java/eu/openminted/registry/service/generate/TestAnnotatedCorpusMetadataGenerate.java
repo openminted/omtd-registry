@@ -1,4 +1,4 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.service.generate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,8 +26,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.service.ComponentServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
+import eu.openminted.registry.service.omtd.ComponentServiceImpl;
+import eu.openminted.registry.service.omtd.CorpusServiceImpl;
 
  
 @ActiveProfiles("test")

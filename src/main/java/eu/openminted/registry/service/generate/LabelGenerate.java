@@ -1,4 +1,4 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.service.generate;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.Facet;
@@ -9,7 +9,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;

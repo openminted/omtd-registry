@@ -5,17 +5,14 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-
-
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;// new Class[] { SecurityConfig.class, SessionConfig.class, WebConfig.class };
+        return new Class[] { SecurityConfig.class, SessionConfig.class, DockerConfig.class, ServiceConfig.class, OperationMessageConfig.class}; //
     }
-    // end::config[]
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { SecurityConfig.class, SessionConfig.class, WebConfig.class };
+        return new Class[] { WebConfig.class , SwaggerConfig.class};
     }
 
     @Override

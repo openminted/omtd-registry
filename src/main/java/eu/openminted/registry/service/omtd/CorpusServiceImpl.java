@@ -1,10 +1,12 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.CorpusService;
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
@@ -21,7 +23,7 @@ import java.util.zip.ZipInputStream;
 @Primary
 public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements CorpusService {
 
-    private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
+    private Logger logger = LogManager.getLogger(CorpusServiceImpl.class);
 
     private final int BUFFER_SIZE = 4096;
 

@@ -6,7 +6,9 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
-import org.apache.log4j.Logger;
+import eu.openminted.registry.service.omtd.OmtdGenericService;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -26,7 +28,7 @@ import java.util.concurrent.Future;
  */
 @Service("corpusBuildingStateService")
 @Primary
-public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService{
+public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService {
 
     @Autowired
     ResourceTypeService resourceTypeService;
@@ -35,7 +37,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
 
     private static final String[] CONNECTORS = {"CORE", "OpenAIRE"};
 
-    private Logger logger = Logger.getLogger(OmtdGenericService.class);
+    private Logger logger = LogManager.getLogger(OmtdGenericService.class);
 
     public CorpusBuildingStateServiceImpl() {
         super(CorpusBuildingState.class);

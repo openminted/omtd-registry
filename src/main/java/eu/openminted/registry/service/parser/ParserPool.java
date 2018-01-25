@@ -1,11 +1,12 @@
-package eu.openminted.registry.parser;
+package eu.openminted.registry.service.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.ObjectFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
@@ -30,7 +31,7 @@ public class ParserPool implements ParserService{
 
     private ExecutorService executor;
 
-    private static Logger logger = Logger.getLogger(ParserPool.class);
+    private static Logger logger = LogManager.getLogger(ParserPool.class);
 
     private JAXBContext jaxbContext = null;
 

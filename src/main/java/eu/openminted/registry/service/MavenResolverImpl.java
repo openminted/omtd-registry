@@ -6,7 +6,8 @@ import eu.openminted.registry.domain.MavenComponent;
 import eu.openminted.registry.domain.ObjectFactory;
 import eu.openminted.share.annotations.util.DescriptorResolver;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ import static javax.xml.bind.JAXBContext.newInstance;
 @Service("mavenResolverService")
 public class MavenResolverImpl implements MavenResolverService {
 
-    private static Logger logger = Logger.getLogger(MavenResolverImpl.class);
+    private static Logger logger = LogManager.getLogger(MavenResolverImpl.class);
 
     private ExecutorService executor;
 

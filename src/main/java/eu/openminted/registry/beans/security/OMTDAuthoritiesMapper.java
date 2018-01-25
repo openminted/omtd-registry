@@ -3,8 +3,8 @@ package eu.openminted.registry.beans.security;
 import com.nimbusds.jwt.JWT;
 import org.mitre.openid.connect.client.OIDCAuthoritiesMapper;
 import org.mitre.openid.connect.model.UserInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +19,7 @@ import java.util.*;
 @Component
 public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
 
-    private static Logger logger = LoggerFactory.getLogger(OMTDAuthoritiesMapper.class);
+    private static Logger logger = LogManager.getLogger(OMTDAuthoritiesMapper.class);
 
     final private static String ROLE_CLAIMS = "edu_person_entitlements";
 

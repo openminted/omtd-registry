@@ -9,7 +9,8 @@ import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.api.model.PushResponseItem;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
 @Primary
 public class DockerServiceImpl implements DockerService {
 
-    private Logger logger = Logger.getLogger(DockerServiceImpl.class);
+    private Logger logger = LogManager.getLogger(DockerServiceImpl.class);
 
     final private String OPENMINTED_REPO = "docker.openminted.eu";
     final private String DEFAULT_PULL_SOURCE = "https://index.docker.io/v1";

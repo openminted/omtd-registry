@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -24,8 +25,8 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@EnableRedisHttpSession
-@ComponentScan({"eu.openminted.registry","eu.openminted.registry.core.controllers","eu.openminted.registry.service"})
+//@ComponentScan({"eu.openminted.registry.beans", "eu.openminted.registry.core.controllers","eu.openminted.registry.service"})
+@ComponentScan({"eu.openminted.registry.core.controllers" ,"eu.openminted.registry.controllers"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static Logger logger = Logger.getLogger(WebConfig.class);
@@ -64,11 +65,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        logger.error("Addi message converters");
+        logger.error("Adding message converters");
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper()));
         converters.add(new Jaxb2RootElementHttpMessageConverter());
         converters.add(stringHttpMessageConverter());
         super.configureMessageConverters(converters);
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Override
