@@ -17,7 +17,7 @@ import java.util.Properties;
 @Component
 public class LabelGenerate {
 
-    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","dataFormat"};
+    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","dataFormat", "operationType"};
 
     private Map<String,Properties> mappings;
 
@@ -62,6 +62,7 @@ public class LabelGenerate {
     }
 
     static private String sanitize(String value) {
+        value = value.replaceAll("([a-z])([A-Z])","$1_$2");
         return value.replaceAll("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,./]","_").toUpperCase();
     }
 
@@ -80,6 +81,7 @@ public class LabelGenerate {
                     case "language" : value.setLabel(getLanguageLabel(value.getValue())); break;
                     case "dataFormat" : value.setLabel(mappings.get("dataFormat").getProperty(sanitize(value.getValue())));break;
                     case "licence" : value.setLabel(mappings.get("licence").getProperty(sanitize(value.getValue()))); break;
+                    case "function" : value.setLabel(mappings.get("operationType").getProperty(sanitize(value.getValue()))); break;
                     default : value.setLabel(capitalize(value.getValue()));
                 }
             }
