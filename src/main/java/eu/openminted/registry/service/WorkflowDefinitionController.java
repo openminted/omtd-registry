@@ -36,11 +36,7 @@ public class WorkflowDefinitionController extends GenericRestController<Workflow
 
     @RequestMapping("update/{workflowId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void updateWorkflow(@PathVariable("workflowId") String workflowID, HttpServletResponse response) {
-        try {
-            response.sendRedirect(workflowService.updateWorkflow(workflowID));
-        } catch (Exception e) {
-            throw new ServiceException(e);
-        }
+    public ResponseEntity<String> updateWorkflow(@PathVariable("workflowId") String workflowID) {
+        return ResponseEntity.ok(workflowService.updateWorkflow(workflowID));
     }
 }
