@@ -19,10 +19,14 @@ import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -45,6 +49,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Autowired
     LabelGenerate labelGenerate;
+
+    @Autowired
+    private JAXBContext omtdJAXBContext;
 
     public OmtdGenericService(Class<T> typeParameterClass) {
         super(typeParameterClass);
@@ -252,12 +259,14 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public String serialize(T resource) {
-        String resource_;
+        StringWriter writer = new StringWriter();
         try {
-            resource_ = parserPool.deserialize(resource, ParserService.ParserServiceTypes.XML).get();
-        } catch (InterruptedException | ExecutionException e) {
+            Marshaller marshaller = omtdJAXBContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(resource, writer);
+        } catch (JAXBException e) {
             throw new ServiceException(e);
         }
-        return resource_;
+        return writer.toString();
     }
 }

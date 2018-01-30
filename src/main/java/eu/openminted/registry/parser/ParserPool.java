@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.ObjectFactory;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
@@ -20,8 +20,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import static javax.xml.bind.JAXBContext.newInstance;
-
 /**
  * Created by stefanos on 26/6/2017.
  */
@@ -32,15 +30,11 @@ public class ParserPool implements ParserService{
 
     private static Logger logger = Logger.getLogger(ParserPool.class);
 
-    private JAXBContext jaxbContext = null;
+    @Autowired
+    JAXBContext omtdJAXBContext;
 
     public ParserPool() {
         executor = Executors.newCachedThreadPool();
-        try {
-            jaxbContext = newInstance(ObjectFactory.class);
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -52,7 +46,7 @@ public class ParserPool implements ParserService{
             }
             try {
                 if(resource.getPayloadFormat().equals("xml")) {
-                    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();                    
+                    Unmarshaller unmarshaller = omtdJAXBContext.createUnmarshaller();
                     type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
                 } else if (resource.getPayloadFormat().equals("json")){
                     ObjectMapper mapper = new ObjectMapper();
@@ -83,7 +77,7 @@ public class ParserPool implements ParserService{
                 if (mediaType == ParserServiceTypes.JSON)
                     return mapper.readValue(file, Resource.class);
                 else if (mediaType == ParserServiceTypes.XML) {
-                    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                    Unmarshaller unmarshaller = omtdJAXBContext.createUnmarshaller();
                     return (Resource) unmarshaller.unmarshal(file);
                 }else
                     return null;
@@ -98,7 +92,7 @@ public class ParserPool implements ParserService{
     public Future<String> deserialize(Object resource, ParserServiceTypes mediaType) {
         return executor.submit(() -> {
             if(mediaType == ParserServiceTypes.XML) {
-                Marshaller marshaller = jaxbContext.createMarshaller();
+                Marshaller marshaller = omtdJAXBContext.createMarshaller();
                 StringWriter sw = new StringWriter();
                 marshaller.marshal(resource, sw);
                 return sw.toString();
