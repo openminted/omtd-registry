@@ -1,6 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/request/application")
-public class ApplicationController extends GenericRestController<Component>{
+public class ApplicationController extends OmtdRestController<Component>{
 
     @Autowired
-    ApplicationController(@Qualifier("applicationService")ResourceCRUDService<Component> service) {
+    ApplicationController(@Qualifier("applicationService")ValidateInterface<Component> service) {
         super(service);
     }
 }

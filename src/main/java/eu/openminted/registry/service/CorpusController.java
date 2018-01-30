@@ -14,13 +14,14 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/request/corpus")
-public class CorpusController extends GenericRestController<Corpus>{
+public class CorpusController extends OmtdRestController<Corpus>{
 
     final private CorpusService corpusService;
 
     @Autowired
+    @SuppressWarnings("unchecked")
     CorpusController(CorpusService service) {
-        super(service);
+        super((ValidateInterface<Corpus>) service);
         this.corpusService = service;
     }
 
