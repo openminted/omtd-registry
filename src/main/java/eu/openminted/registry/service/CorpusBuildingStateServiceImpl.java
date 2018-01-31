@@ -83,10 +83,12 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
             resourceDb.setVersion("not_set");
             resourceDb.setId(resource.getId());
             resourceDb.setPayload(serialized.get());
+
+            resourceService.addResource(resourceDb);
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
+
     }
 
     @Override
@@ -159,6 +161,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
         for(String connector : CONNECTORS) {
             try {
                 SearchService.KeyValue kv = new SearchService.KeyValue(CORPUS_ID, id+"@"+connector);
+                logger.info("Searching for "+ id +" to elastic");
                 CorpusBuildingState tmp = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
                 resource.add(tmp);
             } catch (UnknownHostException | ExecutionException | InterruptedException e) {
