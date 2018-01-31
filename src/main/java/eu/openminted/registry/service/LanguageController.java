@@ -1,6 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.LanguageDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LanguageController extends GenericRestController<LanguageDescription> {
 
     @Autowired
-    LanguageController(ResourceCRUDService<LanguageDescription> service) {
+    LanguageController(ValidateInterface<LanguageDescription> service) {
         super(service);
     }
 } 

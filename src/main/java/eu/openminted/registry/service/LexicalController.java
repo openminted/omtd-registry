@@ -1,6 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Lexical;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/request/lexical")
-public class LexicalController extends GenericRestController<Lexical> {
+public class LexicalController extends OmtdRestController<Lexical> {
 
     @Autowired
-    LexicalController(ResourceCRUDService<Lexical> service) {
+    LexicalController(ValidateInterface<Lexical> service) {
         super(service);
     }
 } 
