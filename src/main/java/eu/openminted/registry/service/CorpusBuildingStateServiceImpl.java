@@ -83,10 +83,12 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
             resourceDb.setVersion("not_set");
             resourceDb.setId(resource.getId());
             resourceDb.setPayload(serialized.get());
+
+            resourceService.addResource(resourceDb);
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
+
     }
 
     @Override
