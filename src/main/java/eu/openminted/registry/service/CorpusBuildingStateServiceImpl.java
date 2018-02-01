@@ -163,6 +163,9 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
                 SearchService.KeyValue kv = new SearchService.KeyValue(CORPUS_ID, id+"@"+connector);
                 logger.info("Searching for "+ id +" to elastic");
                 CorpusBuildingState tmp = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
+                if(tmp == null){
+                    logger.info("!_-----Incoming null-----_!");
+                }
                 resource.add(tmp);
             } catch (UnknownHostException | ExecutionException | InterruptedException e) {
                 logger.fatal("corpusBuildingState get fatal error", e);
