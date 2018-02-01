@@ -130,10 +130,11 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             resourceDb.setVersion("not_set");
             resourceDb.setId(insertionId);
             resourceDb.setPayload(serialized.get());
+            resourceService.addResource(resourceDb);
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
+
     }
 
     @Override
