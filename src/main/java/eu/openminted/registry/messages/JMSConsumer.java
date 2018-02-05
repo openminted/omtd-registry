@@ -77,7 +77,7 @@ public class JMSConsumer {
 
 
 
-        eu.openminted.registry.domain.Component component = parserPool.serialize(resource,eu.openminted.registry.domain.Component.class).get();
+        eu.openminted.registry.domain.Component component = parserPool.deserialize(resource,eu.openminted.registry.domain.Component.class).get();
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
             String url = distributionInfo.getDistributionLocation();
@@ -104,7 +104,7 @@ public class JMSConsumer {
     }
 
     private void mavenExportDirectory(Resource resource) throws ExecutionException, InterruptedException {
-        eu.openminted.registry.domain.Component component = parserPool.serialize(resource, eu.openminted.registry.domain.Component.class).get();
+        eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);
 
         if (resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.MAVEN) {

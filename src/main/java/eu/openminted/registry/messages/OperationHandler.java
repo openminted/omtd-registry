@@ -84,7 +84,7 @@ public class OperationHandler implements MessagesHandler {
 					operation.setDate(date);						
 					
 					// Add operation to registry
-					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
 					logger.info("Insert Operation " + operationString.get());					
 					operationService.add(operation);								    
 				}				
@@ -103,7 +103,7 @@ public class OperationHandler implements MessagesHandler {
 					operation.setDate(date);
 																			
 					// Update operation to registry		
-					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());				
 					operationService.update(operation);						
 				}				 	
@@ -140,7 +140,7 @@ public class OperationHandler implements MessagesHandler {
 					
 					
 					// Update operation to registry			
-					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());			
 					operationService.update(operation);										
 				}				
@@ -168,7 +168,7 @@ public class OperationHandler implements MessagesHandler {
 					}
 					
 					// Update operation to registry		
-					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());								
 					operationService.update(operation);	
 				}
@@ -184,7 +184,7 @@ public class OperationHandler implements MessagesHandler {
 					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 					
 					// Update operation to registry		
-					Future<String> operationString = parserPool.deserialize(operation, ParserServiceTypes.JSON);
+					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
 					logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());							
 					operationService.update(operation);					
 				}

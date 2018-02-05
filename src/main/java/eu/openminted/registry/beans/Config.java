@@ -1,11 +1,5 @@
 package eu.openminted.registry.beans;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
-import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.DockerCmdExecFactory;
 import com.github.dockerjava.api.model.AuthConfig;
@@ -13,7 +7,6 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
-import eu.openminted.registry.messages.JMSConsumer;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,11 +57,7 @@ public class Config {
     @Value("${docker.host}")
     private String dockerHost;
 
-    @Value("${galaxy.host}")
-    private String galaxyHost;
 
-    @Value("${galaxy.api}")
-    private String galaxyAPI;
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
@@ -106,12 +95,6 @@ public class Config {
         return authConfig;
     }
 
-    @Bean
-    public GalaxyInstance galaxyInstanceFactory() {
-        logger.info("Connected to galaxy in host " + galaxyHost);
-        GalaxyInstance galaxy = GalaxyInstanceFactory.get(galaxyHost,galaxyAPI);
-        return galaxy;
-    }
 
     @Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter() {

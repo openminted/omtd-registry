@@ -5,6 +5,7 @@ import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.core.service.*;
 import org.apache.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -47,7 +48,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
         CorpusBuildingState resource;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(CORPUS_ID,id);
-            resource = parserPool.serialize(searchService.searchId(getResourceType(), kv),typeParameterClass).get();
+            resource = parserPool.deserialize(searchService.searchId(getResourceType(), kv),typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {
             logger.fatal("corpusBuildingState get fatal error", e);
             throw new ServiceException(e);
@@ -70,11 +71,11 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
     }
 
     @Override
-    public void add(CorpusBuildingState resource) {
+    public CorpusBuildingState add(CorpusBuildingState resource) {
 //        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 //        resource.setToken(authentication.getSub());
         Resource resourceDb = new Resource();
-        Future<String> serialized = parserPool.deserialize(resource, ParserService.ParserServiceTypes.JSON);
+        Future<String> serialized = parserPool.serialize(resource, ParserService.ParserServiceTypes.JSON);
         try {
             resourceDb.setCreationDate(new Date());
             resourceDb.setModificationDate(new Date());
@@ -83,8 +84,8 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
             resourceDb.setVersion("not_set");
             resourceDb.setId(resource.getId());
             resourceDb.setPayload(serialized.get());
-
             resourceService.addResource(resourceDb);
+            return resource;
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
@@ -92,7 +93,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
     }
 
     @Override
-    public void update(CorpusBuildingState resources) {
+    public CorpusBuildingState update(CorpusBuildingState resources) {
         CorpusBuildingState previous;
         Resource $resource;
         SearchService.KeyValue kv = new SearchService.KeyValue(
@@ -101,7 +102,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
         );
         try {
             $resource = searchService.searchId(getResourceType(), kv);
-            previous = parserPool.serialize($resource,typeParameterClass).get();
+            previous = parserPool.deserialize($resource,typeParameterClass).get();
             Resource resource = new Resource();
             if ($resource == null) {
                 throw new ServiceException(getResourceType() + " does not exists");
@@ -110,7 +111,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
                 if(resources.getTotalRejected() == null) resources.setTotalRejected(previous.getTotalRejected());
                 if(resources.getMetadataProgress() == null) resources.setMetadataProgress(previous.getMetadataProgress());
                 if(resources.getFulltextProgress() == null) resources.setFulltextProgress(previous.getFulltextProgress());
-                String serialized = parserPool.deserialize(resources, ParserService.ParserServiceTypes.JSON).get();
+                String serialized = parserPool.serialize(resources, ParserService.ParserServiceTypes.JSON).get();
                 if (!serialized.equals("failed")) {
                     resource.setPayload(serialized);
                 } else {
@@ -128,6 +129,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
             logger.fatal("corpusBuildingState update fatal error", e);
             throw new ServiceException(e);
         }
+        return resources;
     }
 
     @Override
@@ -165,7 +167,7 @@ public class CorpusBuildingStateServiceImpl extends AbstractGenericService<Corpu
                 Resource state = searchService.searchId(getResourceType(), kv);
 
                 if (state != null)
-                    resource.add(parserPool.serialize(state, typeParameterClass).get());
+                    resource.add(parserPool.deserialize(state, typeParameterClass).get());
 
             } catch (UnknownHostException | ExecutionException | InterruptedException e) {
                 logger.fatal("corpusBuildingState get fatal error", e);

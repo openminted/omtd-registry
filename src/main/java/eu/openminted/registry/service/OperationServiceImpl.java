@@ -75,7 +75,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     }
 
     @Override
-    public void add(Operation operation) {
+    public Operation add(Operation operation) {
 
         Resource resourceDb = new Resource();
         try {
@@ -85,20 +85,16 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             resourceDb.setVersion("not_set");
             resourceDb.setId(operation.getId());
             resourceDb.setPayload(serialized);
+            resourceService.addResource(resourceDb);
+            return operation;
         } catch (JsonProcessingException e) {
-            logger.info("serializer exception", e);
+            logger.info("add operation", e);
             throw new ServiceException(e);
         }
-        try {
-            resourceService.addResource(resourceDb);
-        } catch (Exception e) {
-            logger.info("add operation", e);
-        }
-
     }
 
     @Override
-    public void update(Operation operation) {
+    public Operation update(Operation operation) {
 
         Resource resourceDb;
         SearchService.KeyValue kv = new SearchService.KeyValue(
@@ -115,7 +111,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
                 resourceDb.setPayloadFormat("json");
                 resourceDb.setPayload(serialized);
                 resourceService.updateResource(resourceDb);
-
+                return operation;
             }
         } catch (IOException e) { //| ExecutionException | InterruptedException   e) { //| | JsonProcessingException | UnknownHostException  |
             logger.fatal("operation update fatal error", e);
@@ -127,7 +123,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         Operation operation;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(OPERATION_ID, id);
-            operation = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
+            operation = parserPool.deserialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {
             logger.fatal("operation get fatal error", e);
             throw new ServiceException(e);
@@ -201,7 +197,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, resourceId);
             Resource resource = this.searchService.searchId(resourceName, kv);
-            output = parserPool.serialize(resource, resourceType).get();
+            output = parserPool.deserialize(resource, resourceType).get();
         } catch (Exception e) {
             logger.error("the resourceType of the operation " + resourceId + " was not found");
         }
