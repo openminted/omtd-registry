@@ -24,7 +24,7 @@ public class CorpusBuildingStateController extends GenericRestController<CorpusB
 
 
     @RequestMapping(value = "/aggregate/{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<List<CorpusBuildingState>> getAggregate(@PathVariable("id") String id) {
+    public ResponseEntity<List<CorpusBuildingState>> getAggregate(@PathVariable("id") String id) throws ResourceNotFoundException {
         String id_decoded = id; //new String(Base64.getDecoder().decode(id));
         List<CorpusBuildingState> component;
         component = ((CorpusBuildingStatusService) service).getAggregate(id_decoded);

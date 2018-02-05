@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -31,8 +32,8 @@ public class GenericRestController<T> {
         this.service = service;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<T> getComponent(@PathVariable("id") String id) {
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<T> getComponent(@PathVariable("id") String id) throws ResourceNotFoundException {
         String id_decoded = id; //new String(Base64.getDecoder().decode(id));
         T component = service.get(id_decoded);
         if (component == null)
@@ -42,29 +43,23 @@ public class GenericRestController<T> {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> addComponentJson(@RequestBody T component) {
-        service.add(component);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<T> addComponent(@RequestBody T component) {
+        T ret = service.add(component);
+        return ResponseEntity.ok(ret);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<String> addComponentXml(@RequestBody T component) {
-        service.add(component);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<T> updateComponent(@RequestBody T component) throws ResourceNotFoundException {
+        T ret = service.update(component);
+        return new ResponseEntity<>(ret,HttpStatus.OK);
 
     }
 
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json; charset=utf-8")
-    public ResponseEntity<T> updateComponent(@RequestBody T component) {
-        service.update(component);
-        return new ResponseEntity<>(component,HttpStatus.OK);
-
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, headers = "Accept=application/json; charset=utf-8")
-    public ResponseEntity<String> deleteComponent(@RequestBody T component) {
+    @RequestMapping(method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<String> deleteComponent(@RequestBody T component) throws ResourceNotFoundException {
         service.delete(component);
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -107,12 +102,5 @@ public class GenericRestController<T> {
         }
         filter.setFilter(allRequestParams);
         return new ResponseEntity<>(service.getMy(filter), HttpStatus.OK);
-    }
-
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseBody
-    ServerError securityException(HttpServletRequest req, Exception ex) {
-        return new ServerError(req.getRequestURL().toString(),ex);
     }
 }

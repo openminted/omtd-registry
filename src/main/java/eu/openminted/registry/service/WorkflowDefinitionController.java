@@ -1,16 +1,17 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by stefanos on 10/7/2017.
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping({"workflow", "/request/workflow"})
 public class WorkflowDefinitionController extends GenericRestController<WorkflowDefinition>{
 
-    WorkflowService workflowService = null;
+    WorkflowService workflowService;
 
     @Autowired
     WorkflowDefinitionController(ResourceCRUDService<WorkflowDefinition> service) {
@@ -30,13 +31,32 @@ public class WorkflowDefinitionController extends GenericRestController<Workflow
 
     @RequestMapping("create")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> createWorkflow() {
+    public ResponseEntity<WorkflowDefinition> createWorkflow() {
         return ResponseEntity.ok(workflowService.createWorkflow());
     }
 
     @RequestMapping("update/{workflowId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> updateWorkflow(@PathVariable("workflowId") String workflowID) {
+    public ResponseEntity<WorkflowDefinition> updateWorkflow(@PathVariable("workflowId") String workflowID) throws ResourceNotFoundException {
         return ResponseEntity.ok(workflowService.updateWorkflow(workflowID));
     }
+
+    @RequestMapping("restore/{workflowId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<WorkflowDefinition> restoreWorkflow(@PathVariable("workflowId") String workflowID) throws ResourceNotFoundException {
+        return ResponseEntity.ok(workflowService.restoreWorkflow(workflowID));
+    }
+
+    @RequestMapping(value = "deleteEditor/{workflowId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<String> deleteFromEditor(@PathVariable("workflowId") String workflowID) throws ResourceNotFoundException {
+        return ResponseEntity.ok(workflowService.deleteWorkflow(workflowID));
+    }
+
+    @RequestMapping(value = "deleteAll" , method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<String>> deleteAll() {
+        return ResponseEntity.ok(workflowService.deleteAll());
+    }
+
 }

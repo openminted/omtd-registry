@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.openminted</groupId>
     <artifactId>omtd-registry-rest</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.3-SNAPSHOT</version>
 
 
     <parent>
@@ -20,7 +20,7 @@
     </licenses>
 
     <properties>
-        <registry.core.version>1.4.3-SNAPSHOT</registry.core.version>
+        <registry.core.version>1.4.4-SNAPSHOT</registry.core.version>
         <corpus.api.version>1.0.1-SNAPSHOT</corpus.api.version>
         <omtd.model.version>3.0.2-SNAPSHOT</omtd.model.version>
     </properties>
