@@ -7,7 +7,12 @@
       "type": "string"
     },
     "workflow_id": {
-      "description": "Workflow Identifier",
+      "description": "Workflow Identifier in the galaxy editor",
+      "title": "ID",
+      "type": "string"
+    },
+    "executor_id": {
+      "description": "Workflow Identifier in the galaxy executor",
       "title": "ID",
       "type": "string"
     },
