@@ -2,6 +2,7 @@ package eu.openminted.registry.generate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -16,11 +17,22 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.util.ResourceUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -31,14 +43,13 @@ import eu.openminted.registry.service.CorpusServiceImpl;
 
  
 @ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration
-@ComponentScan("eu.openminted")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
 public class TestAnnotatedCorpusMetadataGenerate {
 
 	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());
-
-	@InjectMocks
+	
+    @InjectMocks
 	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 	
 	@Mock
@@ -46,6 +57,10 @@ public class TestAnnotatedCorpusMetadataGenerate {
 
 	@Mock
 	private ComponentServiceImpl componentService;
+
+	@Autowired
+	private UserInfoAAIRetrieve aaiUserService;
+	
 	
 	private Corpus generateCorpus(String fileToCorpus) throws FileNotFoundException {
 		
@@ -85,30 +100,26 @@ public class TestAnnotatedCorpusMetadataGenerate {
     }
 	
 	@Before
-	public void setup() {
+	public void setup() {		        
 	    MockitoAnnotations.initMocks(this);
+	    ReflectionTestUtils.setField(corpusMetadataGenerator, "aaiUserInfoRetriever", aaiUserService);
 	}
-	
-	@Bean 
-	public AnnotatedCorpusMetadataGenerate annotatedCorpusMetadataGenerate() {
-
-		return new AnnotatedCorpusMetadataGenerate();
-	}
-	
 	
 	
 	@Test
-	public void testBasic() throws JsonProcessingException, FileNotFoundException {
+	public void testBasic() throws JsonProcessingException, FileNotFoundException, IOException {
 		
-
+	
 		logger.info("Running Corpus Metadata Generate");
 		String inputCorpusId =  "corpus_maximum.xml"; // omtdid	
 		String componentId = "component_real2.xml";  //omtdid
 		String userId = "0931731143127784@openminted.eu"; 
 		String outputCorpusArchiveId = "outputArchiveId";
 			
+		
 		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v301/" + inputCorpusId));
 		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v301/" + componentId));
+		
 		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 
 	}

@@ -1,5 +1,6 @@
 package eu.openminted.registry.generate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -12,7 +13,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
@@ -96,6 +99,9 @@ public class AnnotatedCorpusMetadataGenerate {
     private GregorianCalendar gregory;
     
     private ObjectMapper mapper;
+    
+    @Autowired
+    private UserInfoAAIRetrieve aaiUserInfoRetriever;
          
     public AnnotatedCorpusMetadataGenerate() {    
     	mapper = new ObjectMapper();
@@ -106,7 +112,7 @@ public class AnnotatedCorpusMetadataGenerate {
      	
     }
     
-    public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws JsonProcessingException  {
+    public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException  {
     	Corpus corpus = new Corpus();
     	corpus.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String corpusOmtdId = corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
@@ -115,7 +121,7 @@ public class AnnotatedCorpusMetadataGenerate {
     	return corpus;
     }
 	
-	public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws JsonProcessingException {
+	public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException {
 	
 		// Get input corpus information
 		logger.info("Retrieving input corpus " + inputCorpusId);
@@ -384,7 +390,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		return relationInfo;
 	}
 
-	private ResourceCreationInfo generateResourceCreationInfo(String userId) {
+	private ResourceCreationInfo generateResourceCreationInfo(String userId) throws JsonParseException, JsonMappingException, IOException {
 		ResourceCreationInfo resourceCreationInfo = new ResourceCreationInfo();
 		
 
@@ -520,7 +526,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	 * Set the contact information of the annotated corpus as the user
 	 * that run the workflow
 	 */
-	private ContactInfo generateContactInfo(String userId, String corpusOmtdId) {		
+	private ContactInfo generateContactInfo(String userId, String corpusOmtdId) throws JsonParseException, JsonMappingException, IOException {		
 		ContactInfo contactInfo = new ContactInfo();
 		
 		// contactPoint	
@@ -537,21 +543,27 @@ public class AnnotatedCorpusMetadataGenerate {
 		return contactInfo;		
 	}
 	
-	private PersonInfo generatePersonInfo(String userId) {
+	private PersonInfo generatePersonInfo(String userId) throws JsonParseException, JsonMappingException, IOException {
 		PersonInfo personInfo = new PersonInfo();
 		
 		// TODO find user information given userId		
+		logger.info("user service is " + aaiUserInfoRetriever);
+		int coId =  aaiUserInfoRetriever.getCoId(userId);
+		String surname = aaiUserInfoRetriever.getSurname(coId);;
+		String givenName = aaiUserInfoRetriever.getGivenName(coId);
+		String email = aaiUserInfoRetriever.getEmail(coId);
 		
 		// User's name
-		personInfo.setSurname("Gkirtzou");
-		personInfo.setGivenName("Katerina");
+		personInfo.setSurname(surname);
+		personInfo.setGivenName(givenName);
 		
 		// User's communication info
 		CommunicationInfo  communicationInfo = new CommunicationInfo();
 		List<String> emails = new ArrayList<>();
-		emails.add("katerina.gkirtzou@ilsp.gr");
+		emails.add(email);
 		communicationInfo.setEmails(emails);		
 		personInfo.setCommunicationInfo(communicationInfo);
+		logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
 		return personInfo;
 		
 	}
@@ -631,7 +643,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	}
 
 	
-	 public MetadataHeaderInfo generateMetadataHeaderInfo(String userId) throws JsonProcessingException{
+	 public MetadataHeaderInfo generateMetadataHeaderInfo(String userId) throws IOException{
 		 
 		 	MetadataHeaderInfo metadataHeaderInfo = new MetadataHeaderInfo();
 		 	
@@ -657,7 +669,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	        PersonInfo personInfo = generatePersonInfo(userId);
 	        metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
-	        //logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
+	        logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 	        return metadataHeaderInfo;
 	}
 }
