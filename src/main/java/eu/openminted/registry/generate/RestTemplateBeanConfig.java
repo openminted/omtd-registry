@@ -8,21 +8,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
-//@PropertySource("classpath:registry.properties")
-//@TestPropertySource("/test.properties")
+@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class RestTemplateBeanConfig {
 	static final Logger logger = Logger.getLogger(RestTemplateBeanConfig.class);
 
 	
-	//@Value("${aaiservice.username}")
+	@Value("${aaiservice.username}")
 	private String aaiUserName;
 	
-	//@Value("${aaiservice.password}")
+	@Value("${aaiservice.password}")
 	private String aaiUserPassword;
 	
 	
@@ -33,13 +31,11 @@ public class RestTemplateBeanConfig {
 	}
 	
 	@Bean
-	public HttpEntity<String> getHttpEntity() {		
-		aaiUserName = "56p+B-6YfRch69AM";
-		aaiUserPassword = "SvGV#j_EV3uJz^#^VL&!BCck";
-		logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
+	public HttpEntity<String> getHttpEntity() {				
+		//logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
 		
 		String plainCreds = aaiUserName + ":" + aaiUserPassword;
-		logger.info(plainCreds);
+		//logger.info(plainCreds);
 		byte[] plainCredsBytes = plainCreds.getBytes();
 		byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
 		String base64Creds = new String(base64CredsBytes);
@@ -53,7 +49,7 @@ public class RestTemplateBeanConfig {
 	}
 	
 	@Bean 
-	public UserInfoAAIRetrieve UserInfoAAIRetrieve() {
+	public UserInfoAAIRetrieve userInfoAAIRetrieve() {
 		logger.info("Creating UserInfoAAIRetrieve");
 		return new UserInfoAAIRetrieve();
 	}

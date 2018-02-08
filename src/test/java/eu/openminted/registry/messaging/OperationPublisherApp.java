@@ -24,14 +24,16 @@ public class OperationPublisherApp {
 	
 	private static String topic = TopicsRegistry.workflowsExecution;
 	
-	private static String userID = "0931731143127784@openminted.eu";
+	private static String userID = "0931732115452907@openminted.eu"; //"0931731143127784@openminted.eu";
 	// omtdid	
-	private static String corpusID = "1cee8f5c-dda1-46f5-a069-68145f09c684";
+	private static String corpusID = "8ed76a12-5d9c-4fb4-841c-9241f254ac53"; 
+			//"1cee8f5c-dda1-46f5-a069-68145f09c684";
 			// "6e92743a-8b2f-4e97-9f5b-8da8798181bc"; 
 			// "443b8640-8e42-4a31-b481-540107318975"; 
 	
 	//omtdid
-	private static String workflowID = "8749e0a5-8823-40c8-971f-a752d8feaece";
+	private static String workflowID = "164d24ce-e9f3-4854-8722-3f9e52ad1bb3"; 
+			//"8749e0a5-8823-40c8-971f-a752d8feaece";
 			// "18591923-f83f-46a1-9328-d04d8ba6e210";
 			//"a739747f-1af0-4c19-a59c-8ee454287d50"; 
 			//"c2447f2f-cb62-442a-9e34-127914c60a67";
@@ -50,7 +52,7 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
-        String workflowExecutionID = "WFE_Test5";//UUID.randomUUID().toString();  // operation_id
+        String workflowExecutionID = "WFE_ID8";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);

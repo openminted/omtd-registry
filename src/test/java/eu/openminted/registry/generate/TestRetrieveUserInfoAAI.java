@@ -45,14 +45,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
-@TestPropertySource("classpath:test.properties")
+//@TestPropertySource("classpath:test.properties")
 public class TestRetrieveUserInfoAAI {
 	static final Logger logger = Logger.getLogger(TestRetrieveUserInfoAAI.class.getName());
 
 	@Autowired
 	private UserInfoAAIRetrieve aaiRetriever;
-	
-	
 	
 	@Test
 	public void testBasic() throws JsonParseException, JsonMappingException, IOException {

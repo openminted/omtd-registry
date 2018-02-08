@@ -546,8 +546,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	private PersonInfo generatePersonInfo(String userId) throws JsonParseException, JsonMappingException, IOException {
 		PersonInfo personInfo = new PersonInfo();
 		
-		// TODO find user information given userId		
-		logger.info("user service is " + aaiUserInfoRetriever);
+		// Retrieve user information from aai service
 		int coId =  aaiUserInfoRetriever.getCoId(userId);
 		String surname = aaiUserInfoRetriever.getSurname(coId);;
 		String givenName = aaiUserInfoRetriever.getGivenName(coId);
@@ -563,7 +562,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		emails.add(email);
 		communicationInfo.setEmails(emails);		
 		personInfo.setCommunicationInfo(communicationInfo);
-		logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
+		//logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
 		return personInfo;
 		
 	}
@@ -669,7 +668,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	        PersonInfo personInfo = generatePersonInfo(userId);
 	        metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
-	        logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
+	        //logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 	        return metadataHeaderInfo;
 	}
 }

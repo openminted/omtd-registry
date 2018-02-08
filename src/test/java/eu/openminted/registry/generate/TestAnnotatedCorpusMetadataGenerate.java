@@ -42,7 +42,7 @@ import eu.openminted.registry.service.ComponentServiceImpl;
 import eu.openminted.registry.service.CorpusServiceImpl;
 
  
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
 public class TestAnnotatedCorpusMetadataGenerate {
@@ -106,7 +106,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testBasic() throws JsonProcessingException, FileNotFoundException, IOException {
 		
 	
