@@ -65,13 +65,13 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostAuthorize("returnObject.personIdentifier==authentication.sub")
-    public WorkflowDefinition get(String id) throws ResourceNotFoundException {
+    public WorkflowDefinition get(String id) {
         WorkflowDefinition workflow;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(WORKFLOW_ID, id);
             Resource workflowRes = searchService.searchId(getResourceType(), kv);
             if(workflowRes==null) {
-                throw new ResourceNotFoundException(id,getResourceType());
+                return null;
             }
             workflow = parserPool.deserialize(workflowRes, typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {

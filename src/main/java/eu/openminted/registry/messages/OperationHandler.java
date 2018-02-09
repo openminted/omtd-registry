@@ -62,31 +62,7 @@ public class OperationHandler implements MessagesHandler {
 				
 				// Set a workflow experiment for execution, ie create a new operation document
 				if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
-					if(workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getUserID() == null ||
-							workflowExeMsg.getWorkflowID() == null || workflowExeMsg.getCorpusID() == null) {
-						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.PENDING.toString());
-					}
-
-					Operation operation = new Operation();
-					operation.setId(workflowExeMsg.getWorkflowExecutionID());
-					operation.setStatus(ExecutionStatus.Status.PENDING.toString());
-					operation.setPerson(workflowExeMsg.getUserID());
-					operation.setComponent(workflowExeMsg.getWorkflowID());					
-					
-					// Create corpus
-					Corpus operationCorpus = new Corpus();
-					operationCorpus.setInput(workflowExeMsg.getCorpusID());
-					operation.setCorpus(operationCorpus);
-					
-					// Create date
-					Date date = new Date();
-					date.setSubmitted(new java.util.Date());
-					operation.setDate(date);						
-					
-					// Add operation to registry
-					Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-					logger.info("Insert Operation " + operationString.get());					
-					operationService.add(operation);								    
+					logger.info("Ignoring PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
 				}				
 				// Set a workflow experiment to started, ie update an operation document
 				else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {		
@@ -94,7 +70,7 @@ public class OperationHandler implements MessagesHandler {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.RUNNING.toString());
 					}
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
+					Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 							
 					// Update operation 
 					operation.setStatus(ExecutionStatus.Status.RUNNING.toString());
@@ -113,7 +89,7 @@ public class OperationHandler implements MessagesHandler {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
 					}				
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());							
+					Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 														
 					// Update operation 
 					operation.setStatus(ExecutionStatus.Status.FINISHED.toString());
@@ -149,7 +125,7 @@ public class OperationHandler implements MessagesHandler {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FAILED.toString());
 					}
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
+					Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 														
 					// Update status
 					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
@@ -178,7 +154,7 @@ public class OperationHandler implements MessagesHandler {
 						throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
 					}				
 					// Get operation object from registry
-					Operation operation = operationService.getOperation(workflowExeMsg.getWorkflowExecutionID());
+					Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 														
 					// Update status
 					operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
@@ -191,14 +167,14 @@ public class OperationHandler implements MessagesHandler {
 				
 			}
 			else {
-				logger.info("Handling a non text message :: " + msg.toString());;
+				logger.info("Handling a non text message :: " + msg.toString());
 			
 			}
 		}catch(JMSException e){
 	    	logger.info(e.getMessage());	    	
 	    }
 		catch(Exception e){
-	    	logger.info(e);	    	
+	    	logger.fatal("operation handler fatal",e);
 	    }
 	}
 	
