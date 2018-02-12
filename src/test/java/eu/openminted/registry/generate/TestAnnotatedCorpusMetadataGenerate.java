@@ -43,8 +43,8 @@ import eu.openminted.registry.service.CorpusServiceImpl;
 
  
 //@ActiveProfiles("test")
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
 public class TestAnnotatedCorpusMetadataGenerate {
 
 	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());

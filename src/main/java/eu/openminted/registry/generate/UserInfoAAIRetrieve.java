@@ -35,7 +35,8 @@ public class UserInfoAAIRetrieve {
 	
 		logger.info("Running Retrieving COmanage id");
 	 
-		String serviceUri = aaiServiceUrl + "co_people.json?search.identifier={userId}";	
+		String serviceUri = aaiServiceUrl + "co_people.json?search.identifier={userId}";
+		logger.info("AAI service uri is " + serviceUri);
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("userId", userId);
