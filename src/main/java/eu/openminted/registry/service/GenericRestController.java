@@ -3,18 +3,15 @@ package eu.openminted.registry.service;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
-import eu.openminted.registry.core.exception.ServerError;
 import eu.openminted.registry.core.service.ResourceCRUDService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +23,7 @@ public class GenericRestController<T> {
 
     final protected ResourceCRUDService<T> service;
 
-    private Logger logger = Logger.getLogger(GenericRestController.class);
+    private Logger logger = LogManager.getLogger(GenericRestController.class);
 
     GenericRestController(ResourceCRUDService service) {
         this.service = service;

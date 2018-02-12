@@ -1,7 +1,8 @@
 package eu.openminted.registry.service;
 
 import eu.openminted.registry.core.exception.ServerError;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class OmtdControllerAdvice {
 
-    private Logger logger = Logger.getLogger(OmtdControllerAdvice.class);
+    private Logger logger = LogManager.getLogger(OmtdControllerAdvice.class);
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)

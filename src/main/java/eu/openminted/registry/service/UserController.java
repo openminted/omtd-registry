@@ -4,7 +4,8 @@ import eu.openminted.registry.core.exception.ServerError;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.domain.User;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class UserController {
     @Autowired
     SearchService searchService;
 
-    private Logger logger = Logger.getLogger(UserController.class);
+    private Logger logger = LogManager.getLogger(UserController.class);
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
