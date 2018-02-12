@@ -1,17 +1,6 @@
 package eu.openminted.registry.generate;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.UUID;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,59 +8,21 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-
-import eu.openminted.registry.domain.ActorInfo;
-import eu.openminted.registry.domain.ActorTypeEnum;
-import eu.openminted.registry.domain.AnnotatedCorpusInfo;
-import eu.openminted.registry.domain.AnnotationInfo;
-import eu.openminted.registry.domain.AnnotationTypeInfo;
-import eu.openminted.registry.domain.AnnotationTypeType;
-import eu.openminted.registry.domain.CharacterEncodingEnum;
-import eu.openminted.registry.domain.CharacterEncodingInfo;
-import eu.openminted.registry.domain.CommunicationInfo;
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.ContactInfo;
-import eu.openminted.registry.domain.ContactTypeEnum;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.CorpusInfo;
-import eu.openminted.registry.domain.CorpusSubtypeSpecificInfo;
-import eu.openminted.registry.domain.DataFormatInfo;
-import eu.openminted.registry.domain.DataFormatType;
-import eu.openminted.registry.domain.DatasetDistributionInfo;
-import eu.openminted.registry.domain.Date;
-import eu.openminted.registry.domain.DateCombination;
-import eu.openminted.registry.domain.Description;
-import eu.openminted.registry.domain.DistributionMediumEnum;
-import eu.openminted.registry.domain.DomainInfo;
-import eu.openminted.registry.domain.GeographicCoverageInfo;
-import eu.openminted.registry.domain.GroupName;
-import eu.openminted.registry.domain.IdentificationInfo;
-import eu.openminted.registry.domain.LanguageInfo;
-import eu.openminted.registry.domain.LicenceEnum;
-import eu.openminted.registry.domain.LicenceInfo;
-import eu.openminted.registry.domain.LingualityInfo;
-import eu.openminted.registry.domain.MetadataHeaderInfo;
-import eu.openminted.registry.domain.MetadataIdentifier;
-import eu.openminted.registry.domain.MetadataIdentifierSchemeNameEnum;
-import eu.openminted.registry.domain.OrganizationName;
-import eu.openminted.registry.domain.PersonInfo;
-import eu.openminted.registry.domain.ProcessMode;
-import eu.openminted.registry.domain.RelatedResource;
-import eu.openminted.registry.domain.RelationInfo;
-import eu.openminted.registry.domain.RelationTypeEnum;
-import eu.openminted.registry.domain.ResourceCreationInfo;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
-import eu.openminted.registry.domain.ResourceName;
-import eu.openminted.registry.domain.RightsInfo;
-import eu.openminted.registry.domain.RightsStatementEnum;
-import eu.openminted.registry.domain.TextClassificationInfo;
-import eu.openminted.registry.domain.TextFormatInfo;
-import eu.openminted.registry.domain.TimeCoverageInfo;
-import eu.openminted.registry.domain.VersionInfo;
-import eu.openminted.registry.service.ComponentServiceImpl;
+import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusServiceImpl;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.UUID;
 
 
 /*
@@ -82,34 +33,37 @@ import org.springframework.beans.factory.annotation.Value;
 @org.springframework.stereotype.Component
 public class AnnotatedCorpusMetadataGenerate {
 
-	static final Logger logger = Logger.getLogger(AnnotatedCorpusMetadataGenerate.class);
-	
-	@Autowired 
-	private CorpusServiceImpl corpusService;
-	
-	@Autowired 
-	private ComponentServiceImpl componentService;
-		
+    static final Logger logger = Logger.getLogger(AnnotatedCorpusMetadataGenerate.class);
+
+    @Autowired
+    private CorpusServiceImpl corpusService;
+
+    @Autowired
+    @Qualifier("applicationService")
+    private ResourceCRUDService<Component> applicationService;
+
     @Value("${registry.host}")
     private String registryHost;
 
     @Value("${webapp.front}/landingPage/corpus/")
     private String landingPageDomain;
-    
+
     private GregorianCalendar gregory;
-    
+
     private ObjectMapper mapper;
     
     @Autowired
     private UserInfoAAIRetrieve aaiUserInfoRetriever;
          
-    public AnnotatedCorpusMetadataGenerate() {    
-    	mapper = new ObjectMapper();
-     	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-     	mapper.setDateFormat(new ISO8601DateFormat());
+  
+
+    public AnnotatedCorpusMetadataGenerate() {
+        mapper = new ObjectMapper();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.setDateFormat(new ISO8601DateFormat());
         gregory = new GregorianCalendar();
-        gregory.setTime(new java.util.Date());       
-     	
+        gregory.setTime(new java.util.Date());
+
     }
     
     public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException  {
@@ -121,87 +75,88 @@ public class AnnotatedCorpusMetadataGenerate {
     	return corpus;
     }
 	
-	public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException {
-	
-		// Get input corpus information
-		logger.info("Retrieving input corpus " + inputCorpusId);
-		Corpus inputCorpus = corpusService.get(inputCorpusId);		
-		//logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
-		
-		// Get component information
-		logger.info("Retrieving component " + componentId);
-		Component component = componentService.get(componentId);
-		//logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
-							
-		// CorpusInfo 
-		CorpusInfo corpusInfo = new CorpusInfo();
-				
-		////////////////////////
-		// IdentificationInfo
-		IdentificationInfo identificationInfo = generateIdentificationInfo(inputCorpus, component);		
+	  
+    public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException {
+
+        // Get input corpus information
+        logger.info("Retrieving input corpus " + inputCorpusId);
+        Corpus inputCorpus = corpusService.get(inputCorpusId);
+        //logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
+
+        // Get component information
+        logger.info("Retrieving component " + componentId);
+        Component component = applicationService.get(componentId);
+        //logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
+
+        // CorpusInfo
+        CorpusInfo corpusInfo = new CorpusInfo();
+
+        ////////////////////////
+        // IdentificationInfo
+        IdentificationInfo identificationInfo = generateIdentificationInfo(inputCorpus, component);
         corpusInfo.setIdentificationInfo(identificationInfo);
         //logger.info("Identification Info:\n" + mapper.writeValueAsString(identificationInfo) +"\n");
-        
-        
+
+
         /////////////////////////
         // VersionInfo
         VersionInfo versionInfo = new VersionInfo();
         versionInfo.setVersion("0.0.1");
         corpusInfo.setVersionInfo(versionInfo);
         //logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
-        
+
         //////////////////////////
         // ContactInfo
         ContactInfo contactInfo = generateContactInfo(userId, corpusOmtdId);
         corpusInfo.setContactInfo(contactInfo);
         //logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
-        
-    	//////////////////////////
-	    // datasetDistributionInfo
+
+        //////////////////////////
+        // datasetDistributionInfo
         DatasetDistributionInfo datasetDistributionInfo = generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId);
         corpusInfo.setDatasetDistributionInfo(datasetDistributionInfo);
         //logger.info("Distribution info:\n" + mapper.writeValueAsString(datasetDistributionInfo)+"\n");
-        
+
         //////////////////////////
         // rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         corpusInfo.setRightsInfo(rightsInfo);
         //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
-       
+
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         corpusInfo.setResourceCreationInfo(resourceCreationInfo);
         //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
-        
+
         //////////////////////////
         // relations.relationInfo
-        List<RelationInfo> relations = new ArrayList<>(); 
+        List<RelationInfo> relations = new ArrayList<>();
         RelationInfo relationInfo = generateRelationInfo(inputCorpus);
         relations.add(relationInfo);
         corpusInfo.setRelations(relations);
         //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
-       
+
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
         CorpusSubtypeSpecificInfo corpusSubtypeSpecificInfo = new CorpusSubtypeSpecificInfo();
 
-        AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);        		           
+        AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
         //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
-        corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);             
-		       
-		return corpusInfo;
-	}
-	
-	private AnnotatedCorpusInfo generateAnnotatedCorpusInfo(Corpus inputCorpus, Component component) throws JsonProcessingException {
-		
-		AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
-        
+        corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);
+
+        return corpusInfo;
+    }
+
+    private AnnotatedCorpusInfo generateAnnotatedCorpusInfo(Corpus inputCorpus, Component component) throws JsonProcessingException {
+
+        AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
+
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
         LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
         annotatedCorpusInfo.setLingualityInfo(lingualityInfo);
-		
+
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
         List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
         annotatedCorpusInfo.setLanguages(languages);

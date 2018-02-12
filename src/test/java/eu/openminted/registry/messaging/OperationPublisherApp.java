@@ -66,7 +66,7 @@ public class OperationPublisherApp {
      
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
-        Thread.sleep(200);
+        Thread.sleep(2000);
         WorkflowExecutionStatusMessage msgStarted = new WorkflowExecutionStatusMessage(); 
         msgStarted.setWorkflowExecutionID(workflowExecutionID);
         msgStarted.setWorkflowStatus(ExecutionStatus.Status.RUNNING.toString());
@@ -78,7 +78,7 @@ public class OperationPublisherApp {
 		
 		 //////////////////
         // Step 3 - A workflow is set to FINISHED in the workflow engine   
-        Thread.sleep(200);
+        Thread.sleep(2000);
      
         WorkflowExecutionStatusMessage msgFinished = new WorkflowExecutionStatusMessage(); 
         msgFinished.setWorkflowExecutionID(workflowExecutionID);

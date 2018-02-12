@@ -2,6 +2,7 @@ package eu.openminted.registry.generate;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ public class RestTemplateBeanConfig {
 	
 	
 	@Bean
+	@Qualifier("aaiRestTemplate")
 	public RestTemplate getRestTemplate() {
 		logger.info("Creating Rest Template");
 		return new RestTemplate();

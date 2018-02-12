@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
  * Created by stefanos on 26/6/2017.
  */
 @Component("parserPool")
-public class ParserPool implements ParserService{
+public class ParserPool implements ParserService {
 
     private ExecutorService executor;
 
@@ -38,19 +38,20 @@ public class ParserPool implements ParserService{
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Future<T> serialize(Resource resource, Class<T> returnType) {
+    @Override
+    public <T> Future<T> deserialize(Resource resource, Class<T> returnType) {
         return executor.submit(() -> {
             T type;
             if (resource == null) {
                 throw new ServiceException("null resource");
             }
             try {
-                if(resource.getPayloadFormat().equals("xml")) {
+                if (resource.getPayloadFormat().equals("xml")) {
                     Unmarshaller unmarshaller = omtdJAXBContext.createUnmarshaller();
                     type = (T) unmarshaller.unmarshal(new StringReader(resource.getPayload()));
-                } else if (resource.getPayloadFormat().equals("json")){
+                } else if (resource.getPayloadFormat().equals("json")) {
                     ObjectMapper mapper = new ObjectMapper();
-                    type = mapper.readValue(resource.getPayload(),returnType);
+                    type = mapper.readValue(resource.getPayload(), returnType);
                 } else {
                     throw new ServiceException("Unsupported media type");
                 }
@@ -72,26 +73,27 @@ public class ParserPool implements ParserService{
 
     @Override
     public Resource deserializeResource(File file, ParserServiceTypes mediaType) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                if (mediaType == ParserServiceTypes.JSON)
-                    return mapper.readValue(file, Resource.class);
-                else if (mediaType == ParserServiceTypes.XML) {
-                    Unmarshaller unmarshaller = omtdJAXBContext.createUnmarshaller();
-                    return (Resource) unmarshaller.unmarshal(file);
-                }else
-                    return null;
-            } catch (IOException | ClassCastException e) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            if (mediaType == ParserServiceTypes.JSON)
+                return mapper.readValue(file, Resource.class);
+            else if (mediaType == ParserServiceTypes.XML) {
+                Unmarshaller unmarshaller = omtdJAXBContext.createUnmarshaller();
+                return (Resource) unmarshaller.unmarshal(file);
+            } else
                 return null;
-            } catch (JAXBException e) {
-                return null;
-            }
+        } catch (IOException | ClassCastException e) {
+            return null;
+        } catch (JAXBException e) {
+            return null;
+        }
     }
 
-        @SuppressWarnings("unchecked")
-    public Future<String> deserialize(Object resource, ParserServiceTypes mediaType) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public Future<String> serialize(Object resource, ParserServiceTypes mediaType) {
         return executor.submit(() -> {
-            if(mediaType == ParserServiceTypes.XML) {
+            if (mediaType == ParserServiceTypes.XML) {
                 Marshaller marshaller = omtdJAXBContext.createMarshaller();
                 StringWriter sw = new StringWriter();
                 marshaller.marshal(resource, sw);

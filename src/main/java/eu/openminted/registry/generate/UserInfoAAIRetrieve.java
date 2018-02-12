@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class UserInfoAAIRetrieve {
 
 	@Autowired
+	@Qualifier("aaiRestTemplate")
   	private RestTemplate restTemplate;
 	
 	@Autowired
