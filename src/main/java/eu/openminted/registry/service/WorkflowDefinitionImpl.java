@@ -15,7 +15,8 @@ import eu.openminted.registry.core.service.AbstractGenericService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,7 +43,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
 
     private static final String WORKFLOW_ID = "openminted_id";
 
-    private Logger logger = Logger.getLogger(WorkflowDefinitionImpl.class);
+    private Logger logger = LogManager.getLogger(WorkflowDefinitionImpl.class);
 
     private ObjectMapper mapper;
 

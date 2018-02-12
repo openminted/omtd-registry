@@ -3,7 +3,8 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.core.service.ResourceTypeService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -31,7 +32,7 @@ public class PopulateSchemaBean {
 
     private static String ANTPATH = "classpath:resourceTypes/*.json";
 
-    private static Logger logger = Logger.getLogger(PopulateSchemaBean.class);
+    private static Logger logger = LogManager.getLogger(PopulateSchemaBean.class);
 
     @PostConstruct
     public void afterPropertiesSet() throws Exception {

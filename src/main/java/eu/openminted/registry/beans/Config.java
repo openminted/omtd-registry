@@ -8,7 +8,8 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +35,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class Config {
 
-    private static Logger logger = Logger.getLogger(Config.class);
+    private static Logger logger = LogManager.getLogger(Config.class);
 
     @Value("${redis.host}")
     private String host;

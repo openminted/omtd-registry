@@ -1,6 +1,7 @@
 #!/bin/bash
 
-for i in application component corpus incompletecorpus language lexical; do
+for i in application component corpus incompletecorpus language lexical corpusbuildingstate workflow; do
+#for i in incompletecorpus; do
 	psql -h $1 -Uvrasidas registry <<endOfMessage
 delete from resourcetype_indexfield where resourcetype_name ='$i';
 delete from indexfield where resourcetype_name ='$i';

@@ -2,7 +2,8 @@ package eu.openminted.registry.beans;
 
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class GalaxyConfig {
 
-    static final private Logger logger = Logger.getLogger(GalaxyConfig.class);
+    static final private Logger logger = LogManager.getLogger(GalaxyConfig.class);
 
     @Value("${galaxy.host}")
     private String galaxyEditorHost;

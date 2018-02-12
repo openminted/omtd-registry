@@ -1,24 +1,23 @@
 package eu.openminted.registry.messaging;
 
-import java.util.UUID;
-
-import javax.jms.JMSException;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.AbstractApplicationContext;
-
 import eu.openminted.messageservice.connector.MessageServicePublisher;
 import eu.openminted.messageservice.connector.TopicsRegistry;
 import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
 import eu.openminted.workflow.api.ExecutionStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.AbstractApplicationContext;
+
+import javax.jms.JMSException;
+import java.util.UUID;
 
 
 @Configuration
 public class OperationPublisherApp {
 	
-	static final Logger logger = Logger.getLogger(OperationPublisherApp.class.getName());
+	static final Logger logger = LogManager.getLogger(OperationPublisherApp.class.getName());
 	
 	private static String messagesHost = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
 	
