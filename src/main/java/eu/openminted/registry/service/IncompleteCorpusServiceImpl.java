@@ -1,8 +1,8 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.domain.Corpus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
     @Autowired
     CorpusService corpusService;
 
-    private Logger logger = Logger.getLogger(IncompleteCorpusServiceImpl.class);
+    private Logger logger = LogManager.getLogger(IncompleteCorpusServiceImpl.class);
 
     public IncompleteCorpusServiceImpl() {
         super(Corpus.class);

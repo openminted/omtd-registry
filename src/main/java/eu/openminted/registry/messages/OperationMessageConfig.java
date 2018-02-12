@@ -1,21 +1,21 @@
 package eu.openminted.registry.messages;
 
 
-import org.apache.log4j.Logger;
+import eu.openminted.messageservice.connector.MessageServiceSubscriber;
+import eu.openminted.messageservice.connector.TopicsRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import eu.openminted.messageservice.connector.MessageServiceSubscriber;
-import eu.openminted.messageservice.connector.TopicsRegistry;
-
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
 public class OperationMessageConfig {
 	
-	static final Logger logger = Logger.getLogger(OperationMessageConfig.class);
+	static final Logger logger = LogManager.getLogger(OperationMessageConfig.class);
 	@Value("${jms.host}")
 	private String messagesHost;
 	

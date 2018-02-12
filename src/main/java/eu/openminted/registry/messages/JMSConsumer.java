@@ -9,7 +9,8 @@ import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.DockerService;
 import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 
 @Component("jmsConsumer")
 public class JMSConsumer {
-    private static Logger log = Logger.getLogger(JMSConsumer.class.getName());
+    private static Logger log = LogManager.getLogger(JMSConsumer.class.getName());
 
     @Autowired
     public SearchService searchService;

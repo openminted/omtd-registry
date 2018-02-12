@@ -17,13 +17,13 @@ import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.workflow.api.ExecutionStatus;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,11 +34,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +50,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     private static final String OPERATION_ID = "operation_id";
     private static final String OMTD_ID = "omtdid";
 
-    private Logger logger = Logger.getLogger(OperationServiceImpl.class);
+    private Logger logger = LogManager.getLogger(OperationServiceImpl.class);
 
     private ObjectMapper mapper;
 

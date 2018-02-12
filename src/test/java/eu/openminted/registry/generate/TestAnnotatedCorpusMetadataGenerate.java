@@ -1,13 +1,12 @@
 package eu.openminted.registry.generate;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.log4j.Logger;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.openminted.registry.domain.Component;
+import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.ComponentServiceImpl;
+import eu.openminted.registry.service.CorpusServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,16 +17,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.util.ResourceUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.util.ResourceUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.service.ComponentServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileNotFoundException;
 
  
 @ActiveProfiles("test")
@@ -36,7 +34,7 @@ import eu.openminted.registry.service.CorpusServiceImpl;
 @ComponentScan("eu.openminted")
 public class TestAnnotatedCorpusMetadataGenerate {
 
-	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());
+	static final Logger logger = LogManager.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());
 
 	@InjectMocks
 	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
