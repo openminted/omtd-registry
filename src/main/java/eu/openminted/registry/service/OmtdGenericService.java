@@ -138,7 +138,6 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
         return resource;
     }
 
