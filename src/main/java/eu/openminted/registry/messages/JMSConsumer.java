@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,13 @@ import java.util.regex.Pattern;
 @Component("jmsConsumer")
 public class JMSConsumer {
     private static Logger log = LogManager.getLogger(JMSConsumer.class.getName());
+
+    @Value("${maven.data.path:#{'/media/maven-data'}}")
+    private static String mavenDataPath;
+
+
+    @Value("${docker.data.path:#{'/media/docker-data'}}")
+    private static String dockerDataPath;
 
     @Autowired
     public SearchService searchService;
@@ -87,7 +95,7 @@ public class JMSConsumer {
             dockerService.deleteDockerFlow(url,image_id);
         }
 
-        mavenExportDirectory(resource);
+        exportDirectory(resource);
     }
 
     @JmsListener(containerFactory = "jmsTopicListenerContainerFactory", destination = "${jms.component.update.topic:registry.component.update}")
@@ -100,16 +108,17 @@ public class JMSConsumer {
         resource.setPayloadFormat("xml");
         resource.setPayload((String) object.get("resource"));
 
-        mavenExportDirectory(resource);
+        exportDirectory(resource);
 
     }
 
-    private void mavenExportDirectory(Resource resource) throws ExecutionException, InterruptedException {
+    private void exportDirectory(Resource resource) throws ExecutionException, InterruptedException {
         eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);
 
-        if (resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.MAVEN) {
+        String filePath = "";
 
+        if (resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.MAVEN) {
             Pattern pattern = Pattern.compile("mvn:([\\w\\._-]+):([\\w\\._-]+):([\\.\\w_-]+)");
             Matcher matcher = pattern.matcher(resourceIdentifier.getValue());
             matcher.find();
@@ -117,35 +126,38 @@ public class JMSConsumer {
             String groupId = matcher.group(1);
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
+            filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version;
+        }else if(resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.DOCKER) {
+            filePath = dockerDataPath;
+        }else {
+            return ;
+        }
 
-            File f = new File("/media/maven-data/"+groupId+"/"+artifactId+"/"+version+"/");
+        File f = new File(filePath);
 
-            if(!f.exists()) {
-                try{
-                    if(f.mkdirs()) {
-                        System.out.println("Directory Created");
-                    } else {
-                        System.out.println("Directory is not created");
-                    }
-                } catch(Exception e){
-                    //  Demo purposes only.  Do NOT do this in real code.  EVER.
-                    //  It squashes exceptions ...
-                    e.printStackTrace();
+        if(!f.exists()) {
+            try{
+                if(f.mkdirs()) {
+                    log.info("Directory Created");
+                } else {
+                    log.info("Directory is not created");
                 }
+            } catch(Exception e){
+               log.error("Error creating directory for maven component", e);
             }
+        }
 
-            f = new File("/media/maven-data/"+groupId+"/"+artifactId+"/"+version+"/"+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
+        f = new File(filePath+"/"+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
 
-            try {
-                FileWriter fw = new FileWriter(f.getAbsolutePath());
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(resource.getPayload());
+        try {
+            FileWriter fw = new FileWriter(f.getAbsolutePath());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(resource.getPayload());
 
-                bw.close();
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            log.error("Error writting in maven component's directory", e);
         }
     }
 
