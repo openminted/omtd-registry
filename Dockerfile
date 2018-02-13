@@ -1,4 +1,4 @@
-FROM tomcat:8.5-jre8
+FROM tomcat:8.5-jre8-alpine
 MAINTAINER "stevengatsios@gmail.com"
 
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
