@@ -115,6 +115,7 @@ public class JMSConsumer {
     private void exportDirectory(Resource resource) throws ExecutionException, InterruptedException {
         eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);
+	ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
 
         String filePath = "";
 
@@ -127,7 +128,7 @@ public class JMSConsumer {
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
             filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version;
-        }else if(resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.DOCKER) {
+        }else if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
             filePath = dockerDataPath;
         }else {
             return ;
