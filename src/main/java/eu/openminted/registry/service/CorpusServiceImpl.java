@@ -4,8 +4,8 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
+import org.reflections.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
@@ -22,12 +22,15 @@ import java.util.zip.ZipInputStream;
 @Primary
 public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements CorpusService {
 
-    private Logger logger = LogManager.getLogger(CorpusServiceImpl.class);
+    private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
 
     private final int BUFFER_SIZE = 4096;
 
     @Autowired
     Environment environment;
+
+    @Autowired
+    StoreRESTClient storeClient;
 
     public CorpusServiceImpl() {
         super(Corpus.class);
@@ -43,7 +46,7 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
         String archiveId = null;
 
         try {
-            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
+//            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
             File temp = File.createTempFile("copr", "tmp");
             OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
 
@@ -114,7 +117,7 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
     @Override
     public InputStream downloadCorpus(String archiveId) {
         try {
-            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
+//            StoreRESTClient storeClient = new StoreRESTClient(environment.getProperty("services.store.ip", "http://83.212.101.85:8090"));
             File temp = File.createTempFile("cor", "tmp");
 
             temp.deleteOnExit();
