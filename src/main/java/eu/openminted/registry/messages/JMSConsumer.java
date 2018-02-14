@@ -34,11 +34,11 @@ public class JMSConsumer {
     private static Logger logger = LogManager.getLogger(JMSConsumer.class.getName());
 
     @Value("${maven.data.path:#{'/media/maven-data'}}")
-    private static String mavenDataPath;
+    private String mavenDataPath;
 
 
     @Value("${docker.data.path:#{'/media/docker-data'}}")
-    private static String dockerDataPath;
+    private String dockerDataPath;
 
     @Autowired
     public SearchService searchService;
@@ -119,10 +119,6 @@ public class JMSConsumer {
 
         String filePath = "";
 
-        logger.info("Component distribution info:" + distributionInfo.getComponentDistributionForm());
-        logger.info("Resource identifier Scheme name:" + resourceIdentifier.getResourceIdentifierSchemeName());
-
-
         if (resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.MAVEN) {
             Pattern pattern = Pattern.compile("mvn:([\\w\\._-]+):([\\w\\._-]+):([\\.\\w_-]+)");
             Matcher matcher = pattern.matcher(resourceIdentifier.getValue());
@@ -131,14 +127,13 @@ public class JMSConsumer {
             String groupId = matcher.group(1);
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
-            filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version;
+            filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version+"/";
 
             logger.info("Found maven component, saving @ "+ filePath);
         }else if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
-            filePath = dockerDataPath;
+            filePath = dockerDataPath+"/";
             logger.info("Found docker component, saving @ "+ filePath);
         }else {
-            logger.info("Not maven or docker type");
             return ;
         }
 
@@ -147,16 +142,16 @@ public class JMSConsumer {
         if(!f.exists()) {
             try{
                 if(f.mkdirs()) {
-                    logger.info("Directory Created");
+//                    logger.info("Directory Created");
                 } else {
-                    logger.info("Directory is not created");
+//                    logger.info("Directory is not created");
                 }
             } catch(Exception e){
-               logger.error("Error creating directory for maven component", e);
+               logger.error("Error creating directory " +filePath+" component", e);
             }
         }
 
-        f = new File(filePath+"/"+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
+        f = new File(filePath+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
 
         try {
             FileWriter fw = new FileWriter(f.getAbsolutePath());
