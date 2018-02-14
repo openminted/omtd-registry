@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 @Component("jmsConsumer")
 public class JMSConsumer {
-    private static Logger log = LogManager.getLogger(JMSConsumer.class.getName());
+    private static Logger logger = LogManager.getLogger(JMSConsumer.class.getName());
 
     @Value("${maven.data.path:#{'/media/maven-data'}}")
     private static String mavenDataPath;
@@ -57,7 +57,7 @@ public class JMSConsumer {
 
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws JMSException, UnknownHostException {
-        log.info("State of corpus building: " + corpusBuildingState);
+        logger.info("State of corpus building: " + corpusBuildingState);
         SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getId());
         Resource resource = searchService.searchId("corpusbuildingstate", kv);
         if (resource == null) {
@@ -128,8 +128,11 @@ public class JMSConsumer {
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
             filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version;
+
+            logger.info("Found maven component, saving @ "+ filePath);
         }else if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
             filePath = dockerDataPath;
+            logger.info("Found docker component, saving @ "+ filePath);
         }else {
             return ;
         }
@@ -139,12 +142,12 @@ public class JMSConsumer {
         if(!f.exists()) {
             try{
                 if(f.mkdirs()) {
-                    log.info("Directory Created");
+                    logger.info("Directory Created");
                 } else {
-                    log.info("Directory is not created");
+                    logger.info("Directory is not created");
                 }
             } catch(Exception e){
-               log.error("Error creating directory for maven component", e);
+               logger.error("Error creating directory for maven component", e);
             }
         }
 
@@ -158,7 +161,7 @@ public class JMSConsumer {
             bw.close();
             fw.close();
         } catch (IOException e) {
-            log.error("Error writting in maven component's directory", e);
+            logger.error("Error writting in maven component's directory", e);
         }
     }
 
