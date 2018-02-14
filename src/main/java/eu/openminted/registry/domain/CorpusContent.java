@@ -1,9 +1,5 @@
 package eu.openminted.registry.domain;
 
-import eu.openminted.store.common.StoreResponse;
-import eu.openminted.store.restclient.StoreRESTClient;
-import eu.openminted.utils.files.ZipToDir;
-import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
