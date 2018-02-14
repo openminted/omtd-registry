@@ -1,8 +1,10 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Corpus;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,13 @@ import java.io.IOException;
 @RequestMapping("/request/corpus")
 public class CorpusController extends OmtdRestController<Corpus> {
 
-    final private CorpusService corpusService;
+    @Autowired
+    private StoreService storeService;
 
     @Autowired
     @SuppressWarnings("unchecked")
-    CorpusController(CorpusService service) {
+    CorpusController(@Qualifier("corpusService") ResourceCRUDService<Corpus> service) {
         super((ValidateInterface<Corpus>) service);
-        this.corpusService = service;
     }
 
     @RequestMapping(value = "xmlUpload", method = RequestMethod.POST, consumes = {
@@ -32,7 +34,7 @@ public class CorpusController extends OmtdRestController<Corpus> {
     })
     public ResponseEntity<Corpus> saveCorpusWithArchiveId(@RequestParam("archiveId") String archiveId, @RequestBody Corpus corpus) {
         corpus.getCorpusInfo().getDatasetDistributionInfo().setDistributionLocation(archiveId);
-        corpusService.add(corpus);
+        service.add(corpus);
         return ResponseEntity.ok(corpus);
     }
 
@@ -40,7 +42,7 @@ public class CorpusController extends OmtdRestController<Corpus> {
     public ResponseEntity<String> uploadCorpus(@RequestParam("filename") String filename, @RequestParam("file") MultipartFile file) {
 
         try {
-            return new ResponseEntity<>(corpusService.uploadCorpus(filename, file.getInputStream()), HttpStatus.OK);
+            return new ResponseEntity<>(storeService.uploadCorpus(filename, file.getInputStream()), HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -53,6 +55,6 @@ public class CorpusController extends OmtdRestController<Corpus> {
         String filename = request.getParameter("archiveId") + ".zip";
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
         response.setContentType(mimeType);
-        IOUtils.copyLarge(corpusService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
+        IOUtils.copyLarge(storeService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
     }
 }
