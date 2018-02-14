@@ -52,7 +52,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     CorpusContentService ccService;
 
     @Autowired
-    LettuceConnectionFactory lettuceConnectionFactory;
+    LettuceConnectionFactory lettuceConnectionFactory;  // TODO
 
 
     private String resolveCorpusArchive(String corpusId) {
@@ -80,7 +80,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         CorpusContent content = new CorpusContent(archiveId);
 
         // retrieve all files inside the archive
-        content.setFilepaths(storeClient.listFiles(archiveId, false, true));
+        content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
 
         // analyze file-paths and create publication entries
         createPublicationEntries(content);

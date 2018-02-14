@@ -273,6 +273,11 @@
 			<version>${corpus.api.version}</version>
 		 </dependency>
 		 <dependency>
+			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-utils-files</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		 </dependency>
+		 <dependency>
 			<!--  Download and install locally, not in repos yet -->
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-workflow-api</artifactId>
