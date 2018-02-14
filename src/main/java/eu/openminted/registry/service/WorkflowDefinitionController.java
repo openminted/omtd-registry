@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"workflow", "/request/workflow"})
-public class WorkflowDefinitionController extends GenericRestController<WorkflowDefinition>{
+public class WorkflowDefinitionController extends GenericRestController<WorkflowDefinition> {
 
     WorkflowService workflowService;
 
@@ -29,19 +29,19 @@ public class WorkflowDefinitionController extends GenericRestController<Workflow
         this.workflowService = (WorkflowService) service;
     }
 
-    @RequestMapping("create")
+    @RequestMapping(value = "create", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<WorkflowDefinition> createWorkflow() {
         return ResponseEntity.ok(workflowService.createWorkflow());
     }
 
-    @RequestMapping("update/{workflowId}")
+    @RequestMapping(value = "update/{workflowId}", method = {RequestMethod.GET, RequestMethod.POST})
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<WorkflowDefinition> updateWorkflow(@PathVariable("workflowId") String workflowID) throws ResourceNotFoundException {
         return ResponseEntity.ok(workflowService.updateWorkflow(workflowID));
     }
 
-    @RequestMapping("restore/{workflowId}")
+    @RequestMapping(value = "restore/{workflowId}", method = {RequestMethod.GET, RequestMethod.POST})
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<WorkflowDefinition> restoreWorkflow(@PathVariable("workflowId") String workflowID) throws ResourceNotFoundException {
         return ResponseEntity.ok(workflowService.restoreWorkflow(workflowID));
@@ -53,7 +53,7 @@ public class WorkflowDefinitionController extends GenericRestController<Workflow
         return ResponseEntity.ok(workflowService.deleteWorkflow(workflowID));
     }
 
-    @RequestMapping(value = "deleteAll" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "deleteAll", method = RequestMethod.DELETE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<String>> deleteAll() {
         return ResponseEntity.ok(workflowService.deleteAll());
