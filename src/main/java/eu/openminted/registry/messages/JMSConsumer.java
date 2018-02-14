@@ -119,6 +119,10 @@ public class JMSConsumer {
 
         String filePath = "";
 
+        logger.info("Component distribution info:" + distributionInfo.getComponentDistributionForm());
+        logger.info("Resource identifier Scheme name:" + resourceIdentifier.getResourceIdentifierSchemeName());
+
+
         if (resourceIdentifier.getResourceIdentifierSchemeName() == ResourceIdentifierSchemeNameEnum.MAVEN) {
             Pattern pattern = Pattern.compile("mvn:([\\w\\._-]+):([\\w\\._-]+):([\\.\\w_-]+)");
             Matcher matcher = pattern.matcher(resourceIdentifier.getValue());
@@ -134,6 +138,7 @@ public class JMSConsumer {
             filePath = dockerDataPath;
             logger.info("Found docker component, saving @ "+ filePath);
         }else {
+            logger.info("Not maven or docker type");
             return ;
         }
 
