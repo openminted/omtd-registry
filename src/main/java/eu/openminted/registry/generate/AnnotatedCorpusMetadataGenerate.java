@@ -12,6 +12,8 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -355,7 +357,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		List<ActorInfo> resourceCreators = new ArrayList<>();
 		ActorInfo actorInfo = new ActorInfo();
 		actorInfo.setActorType(ActorTypeEnum.PERSON);		
-		actorInfo.setRelatedPerson(generatePersonInfo(userId));
+		actorInfo.setRelatedPerson(generatePersonInfo(userId, false));
 		resourceCreators.add(actorInfo);
 		resourceCreationInfo.setResourceCreators(resourceCreators);
 		
@@ -494,24 +496,36 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		// contactPersons.contactPerson
 		List<PersonInfo> contactPersons = new ArrayList<>();
-		PersonInfo contactPerson = generatePersonInfo(userId);
+		PersonInfo contactPerson = generatePersonInfo(userId, false);
 		contactPersons.add(contactPerson);
 		contactInfo.setContactPersons(contactPersons);
 		return contactInfo;		
 	}
 	
-	private PersonInfo generatePersonInfo(String userId) throws JsonParseException, JsonMappingException, IOException {
+	/* Set boolean to true to add the OMTD id in the user info. For the metadataHeaderInfo */
+	private PersonInfo generatePersonInfo(String userId, boolean addOMTDPersonId) throws JsonParseException, JsonMappingException, IOException {
 		PersonInfo personInfo = new PersonInfo();
 		
 		// Retrieve user information from aai service
 		int coId =  aaiUserInfoRetriever.getCoId(userId);
-		String surname = aaiUserInfoRetriever.getSurname(coId);;
-		String givenName = aaiUserInfoRetriever.getGivenName(coId);
+		Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);  
+		String surname = userNames.getKey();
+		String givenName =  userNames.getValue();
 		String email = aaiUserInfoRetriever.getEmail(coId);
 		
 		// User's name
 		personInfo.setSurname(surname);
 		personInfo.setGivenName(givenName);
+		
+		if (addOMTDPersonId) {
+			// Identifiers
+			List<PersonIdentifier> personIdentifiers = new ArrayList<>();
+			PersonIdentifier personID = new PersonIdentifier();
+			personID.setValue(userId);
+			personID.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
+			personIdentifiers.add(personID);
+			personInfo.setPersonIdentifiers(personIdentifiers);
+		}
 		
 		// User's communication info
 		CommunicationInfo  communicationInfo = new CommunicationInfo();
@@ -519,7 +533,7 @@ public class AnnotatedCorpusMetadataGenerate {
 		emails.add(email);
 		communicationInfo.setEmails(emails);		
 		personInfo.setCommunicationInfo(communicationInfo);
-		//logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
+		logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
 		return personInfo;
 		
 	}
@@ -622,7 +636,7 @@ public class AnnotatedCorpusMetadataGenerate {
 	   
 	        // Set metadata creator
 	        metadataHeaderInfo.setMetadataCreators(new ArrayList<PersonInfo>());
-	        PersonInfo personInfo = generatePersonInfo(userId);
+	        PersonInfo personInfo = generatePersonInfo(userId, true);
 	        metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
 	        //logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");

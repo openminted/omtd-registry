@@ -1,5 +1,7 @@
 package eu.openminted.registry.service.aai;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -81,7 +83,7 @@ public class UserInfoAAIRetrieve {
 		return coemail.getString("Mail");
 	}
 	
-	public String getSurname(int userCoId) throws IOException {
+	public Pair<String, String> getSurnameGivenName(int userCoId) throws IOException {
 		
 		logger.info("Running Retrieving Surname from COmanage id");
 	 
@@ -102,9 +104,11 @@ public class UserInfoAAIRetrieve {
 		JSONObject name  = nameArray.getJSONObject(0);
 		//logger.info("Surname is " + name.getString("Family"));
 		
-		return name.getString("Family");
+		Pair<String, String> userNames = new ImmutablePair<>(name.getString("Family"), name.getString("Given"));
+		
+		return userNames;
 	}
-
+/*
     public String getGivenName(int userCoId) throws IOException {
 		
 		logger.info("Running Retrieving Name from COmanage id");
@@ -128,5 +132,5 @@ public class UserInfoAAIRetrieve {
 		
 		return name.getString("Given");
 	}
-	
+	*/
 }
