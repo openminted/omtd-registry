@@ -1,10 +1,7 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.service.aai;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-@org.springframework.stereotype.Component
+@Component
 public class UserInfoAAIRetrieve {
 
 	@Autowired
@@ -31,16 +30,16 @@ public class UserInfoAAIRetrieve {
 	@Value("${aaiservice.url}")
 	private String aaiServiceUrl;
 	
-	private Logger logger = Logger.getLogger(UserInfoAAIRetrieve.class.getName());
+	private Logger logger = LogManager.getLogger(UserInfoAAIRetrieve.class.getName());
 	
-	public int getCoId(String userId) throws JsonParseException, JsonMappingException, IOException {
+	public int getCoId(String userId) throws IOException {
 	
 		logger.info("Running Retrieving COmanage id");
 	 
 		String serviceUri = aaiServiceUrl + "co_people.json?search.identifier={userId}";
 		logger.info("AAI service uri is " + serviceUri);
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("userId", userId);
         
 	
@@ -58,13 +57,13 @@ public class UserInfoAAIRetrieve {
 		return copeople.getInt("Id");
 	}
 	
-	public String getEmail(int userCoId) throws JsonParseException, JsonMappingException, IOException {
+	public String getEmail(int userCoId) throws IOException {
 		
 		logger.info("Running Retrieving email from COmanage id");
 	 
 		String serviceUri = aaiServiceUrl + "email_addresses.json?copersonid={userCoId}";
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("userCoId", Integer.toString(userCoId));
         
 	
@@ -82,13 +81,13 @@ public class UserInfoAAIRetrieve {
 		return coemail.getString("Mail");
 	}
 	
-	public String getSurname(int userCoId) throws JsonParseException, JsonMappingException, IOException {
+	public String getSurname(int userCoId) throws IOException {
 		
 		logger.info("Running Retrieving Surname from COmanage id");
 	 
 		String serviceUri =  aaiServiceUrl + "names.json?copersonid={userCoId}" ;
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("userCoId", Integer.toString(userCoId));
         
 	
@@ -106,13 +105,13 @@ public class UserInfoAAIRetrieve {
 		return name.getString("Family");
 	}
 
-    public String getGivenName(int userCoId) throws JsonParseException, JsonMappingException, IOException {
+    public String getGivenName(int userCoId) throws IOException {
 		
 		logger.info("Running Retrieving Name from COmanage id");
 	 
 		String serviceUri = aaiServiceUrl + "names.json?copersonid={userCoId}" ;
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put("userCoId", Integer.toString(userCoId));
         
 	

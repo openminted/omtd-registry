@@ -1,10 +1,13 @@
-package eu.openminted.registry.generate;
+package eu.openminted.registry.beans.security;
 
+import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
@@ -14,8 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
-public class RestTemplateBeanConfig {
-	static final Logger logger = Logger.getLogger(RestTemplateBeanConfig.class);
+@ComponentScan("eu.openminted.registry.service.aai")
+public class UserInfoAAIConfig {
+	static final Logger logger = LogManager.getLogger(UserInfoAAIConfig.class);
 
 	
 	@Value("${aaiservice.username}")
@@ -49,11 +53,5 @@ public class RestTemplateBeanConfig {
 		return(request);
 		
 	}
-	
-	@Bean 
-	public UserInfoAAIRetrieve userInfoAAIRetrieve() {
-		logger.info("Creating UserInfoAAIRetrieve");
-		return new UserInfoAAIRetrieve();
-	}
-	
+
 }

@@ -1,44 +1,25 @@
 package eu.openminted.registry.generate;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
+import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.domain.Component;
+import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.util.ResourceUtils;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ResourceUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
  
 //@ActiveProfiles("test")
@@ -52,10 +33,10 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 	
 	@Mock
-	private CorpusServiceImpl corpusService;
+	private ResourceCRUDService<Corpus> corpusService;
 
 	@Mock
-	private ComponentServiceImpl componentService;
+	private ResourceCRUDService<Component> componentService;
 
 	@Autowired
 	private UserInfoAAIRetrieve aaiUserService;
@@ -106,7 +87,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	
 	
 	//@Test
-	public void testBasic() throws JsonProcessingException, FileNotFoundException, IOException {
+	public void testBasic() throws IOException {
 		
 	
 		logger.info("Running Corpus Metadata Generate");

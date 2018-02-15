@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusServiceImpl;
+import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
