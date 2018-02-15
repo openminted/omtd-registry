@@ -9,9 +9,10 @@ import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.api.model.PushResponseItem;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
-import org.apache.log4j.Logger;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,13 @@ import java.util.regex.Pattern;
 @Primary
 public class DockerServiceImpl implements DockerService {
 
-    private Logger logger = Logger.getLogger(DockerServiceImpl.class);
+    private Logger logger = LogManager.getLogger(DockerServiceImpl.class);
 
-    final private String OPENMINTED_REPO = "docker.openminted.eu";
+    @Value("${docker.registry:#{'docker.openminted.eu'}}")
+    private String OPENMINTED_REPO;
+
     final private String DEFAULT_PULL_SOURCE = "https://index.docker.io/v1";
+    final private Pattern pattern = Pattern.compile("^(?:(?<host>[\\w\\d\\.]+)\\/)?(?<image>[\\w\\d.-]+)(?::(?<version>[\\w\\d\\.]+))?$");
 
 
     @Autowired
@@ -38,14 +42,13 @@ public class DockerServiceImpl implements DockerService {
 
     private DockerImage parseLocation(String url){
         DockerImage image = new DockerImage();
-        Pattern pattern = Pattern.compile("^(?:([\\w\\d\\.]+)\\/)?([\\w\\d]+)(?::([\\w\\d\\.]+))?$");
         Matcher matcher = pattern.matcher(url);
         matcher.find();
-        image.domain = matcher.group(1) != null ? matcher.group(1) : DEFAULT_PULL_SOURCE;
-        if (matcher.group(2) != null)
-            image.name = matcher.group(2);
-        if (matcher.group(3) != null)
-            image.version = matcher.group(3);
+        image.domain = matcher.group("host") != null ? matcher.group("host") : DEFAULT_PULL_SOURCE;
+        if (matcher.group("image") != null)
+            image.name = matcher.group("image");
+        if (matcher.group("version") != null)
+            image.version = matcher.group("version");
         else {
             image.version = "latest";
         }

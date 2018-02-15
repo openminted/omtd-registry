@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ServiceException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class ParserPool implements ParserService {
 
     private ExecutorService executor;
 
-    private static Logger logger = Logger.getLogger(ParserPool.class);
+    private static Logger logger = LogManager.getLogger(ParserPool.class);
 
     @Autowired
     JAXBContext omtdJAXBContext;

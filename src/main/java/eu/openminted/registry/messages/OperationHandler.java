@@ -13,14 +13,14 @@ import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.OperationServiceImpl;
 import eu.openminted.workflow.api.ExecutionStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
-
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.Future;
 @Component
 public class OperationHandler implements MessagesHandler {
 
-	static final Logger logger = Logger.getLogger(OperationHandler.class.getName());
+	static final Logger logger = LogManager.getLogger(OperationHandler.class.getName());
 
 	@Autowired
 	private OperationServiceImpl operationService;

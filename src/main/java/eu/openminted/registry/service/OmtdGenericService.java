@@ -15,7 +15,8 @@ import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.generate.LabelGenerate;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -41,7 +41,7 @@ import java.util.concurrent.Future;
  */
 public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractGenericService<T> implements ValidateInterface<T> {
 
-    private static Logger logger = Logger.getLogger(OmtdGenericService.class);
+    private static Logger logger = LogManager.getLogger(OmtdGenericService.class);
 
     private static final String OMTD_ID = "omtdid";
 
@@ -135,10 +135,10 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             resourceDb.setId(insertionId);
             resourceDb.setPayload(serialized.get());
             resourceService.addResource(resourceDb);
+            logger.info("Added new Resource with id " + insertionId);
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        resourceService.addResource(resourceDb);
         return resource;
     }
 

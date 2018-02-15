@@ -34,12 +34,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.service.ComponentServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileNotFoundException;
 
  
 //@ActiveProfiles("test")

@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusServiceImpl;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ import java.util.UUID;
 @org.springframework.stereotype.Component
 public class AnnotatedCorpusMetadataGenerate {
 
-    static final Logger logger = Logger.getLogger(AnnotatedCorpusMetadataGenerate.class);
+    static final Logger logger = LogManager.getLogger(AnnotatedCorpusMetadataGenerate.class);
 
     @Autowired
     private CorpusServiceImpl corpusService;

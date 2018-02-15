@@ -7,7 +7,8 @@ import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.generate.LabelGenerate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class RequestServiceImpl extends AbstractGenericService implements Reques
     @Autowired
     LabelGenerate labelGenerate;
 
-    final private static Logger logger = Logger.getLogger(RequestServiceImpl.class);
+    final private static Logger logger = LogManager.getLogger(RequestServiceImpl.class);
 
     final private static String RESOURCE_ALIAS = "resourceTypes";
 
