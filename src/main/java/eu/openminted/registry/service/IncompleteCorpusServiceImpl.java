@@ -17,6 +17,9 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
 
     private Logger logger = LogManager.getLogger(IncompleteCorpusServiceImpl.class);
 
+    @Autowired
+    ResourceCRUDService<Corpus> corpusService;
+
     public IncompleteCorpusServiceImpl() {
         super(Corpus.class);
     }
@@ -25,7 +28,7 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
         logger.info("moving corpus with id " + corpusId);
         Corpus resource = this.get(corpusId);
         if (resource != null) {
-            this.add(resource);
+            corpusService.add(resource);
         }
         this.delete(resource);
     }
