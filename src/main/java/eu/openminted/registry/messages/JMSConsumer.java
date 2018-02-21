@@ -9,6 +9,8 @@ import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.DockerService;
 import eu.openminted.registry.service.IncompleteCorpusServiceImpl;
+import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -55,6 +57,9 @@ public class JMSConsumer {
     @Autowired
     DockerService dockerService;
 
+    @Autowired
+    WorkflowEngineComponentRegistry TDMComponentReg;
+    
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws JMSException, UnknownHostException {
         logger.info("State of corpus building: " + corpusBuildingState);
@@ -77,16 +82,20 @@ public class JMSConsumer {
     @JmsListener(containerFactory = "jmsTopicListenerContainerFactory", destination = "${jms.component.create.topic:registry.component.create}")
     public void receiveStateTopic(Message message) throws JMSException, UnknownHostException, ExecutionException, InterruptedException {
 
+    	// Get Msg
         String responseBody = ((TextMessage) message).getText();
         JSONObject object = new JSONObject(responseBody);
-
         Resource resource = new Resource();
         resource.setPayloadFormat("xml");
         resource.setPayload((String) object.get("resource"));
 
-
-
-        eu.openminted.registry.domain.Component component = parserPool.deserialize(resource,eu.openminted.registry.domain.Component.class).get();
+        // Deserialize it to a TDM Component object.
+        eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
+        // Register it
+        TDMComponentReg.registerTDMComponentToWorkflowEngine(component);
+        
+        // We do need the following ant more
+        /*
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
             String url = distributionInfo.getDistributionLocation();
@@ -96,6 +105,7 @@ public class JMSConsumer {
         }
 
         exportDirectory(resource);
+        */
     }
 
     @JmsListener(containerFactory = "jmsTopicListenerContainerFactory", destination = "${jms.component.update.topic:registry.component.update}")
@@ -112,6 +122,8 @@ public class JMSConsumer {
 
     }
 
+
+    
     private void exportDirectory(Resource resource) throws ExecutionException, InterruptedException {
         eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);

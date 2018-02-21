@@ -7,7 +7,12 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
+
+import eu.openminted.registry.service.SSH;
 import eu.openminted.store.restclient.StoreRESTClient;
+import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
+import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
+
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,5 +110,26 @@ public class Config {
         logger.info("Store Service is connected to " + storeServiceHost);
         return new StoreRESTClient(storeServiceHost);
     }
-
+   
+    
+    // Beans for Galaxy wrappers generation ...
+    
+    @Bean
+    public GalaxyWrapperGenerator galaxyWrapperGenerator() {
+        logger.info("galaxyWrapperGenerator");
+        return new GalaxyWrapperGenerator();
+    }
+    
+    @Bean
+    public GalaxyToolWrapperWriter galaxyToolWrapperWriter() {
+        logger.info("GalaxyToolWrapperWriter");
+        return new GalaxyToolWrapperWriter();
+    }
+   
+    @Bean
+    public SSH galaxySSH() {
+        logger.info("Galaxy SSH");
+        return new SSH("","","","");
+    }
+    
 }
