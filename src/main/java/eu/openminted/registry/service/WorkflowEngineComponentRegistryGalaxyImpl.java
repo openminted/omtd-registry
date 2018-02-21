@@ -40,7 +40,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 		
 		String trgFolder = "";
 		
-		// Prepare Galaxy wrappers generation&copying.
+		// Prepare Galaxy wrapper generation&copying.
         if(isDocker(componentMeta)) { // Docker-packaged components
         	logger.info("Registering:" + "Docker");
         	trgFolder = "omtdDocker";
@@ -61,7 +61,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	}
         }
         
-        // Generate wrappers.
+        // Generate wrapper.
         Tool tool = galaxyWrapperGenerator.generate(componentMeta);
         
         // Write wrapper.
