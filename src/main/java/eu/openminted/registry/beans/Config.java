@@ -126,10 +126,11 @@ public class Config {
         return new GalaxyToolWrapperWriter();
     }
    
+    /*
     @Bean
     public SSH galaxySSH() {
         logger.info("Galaxy SSH");
         return new SSH("","","","");
     }
-    
+    */
 }

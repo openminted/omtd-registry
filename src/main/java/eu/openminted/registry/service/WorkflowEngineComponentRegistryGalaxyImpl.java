@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,15 +27,16 @@ import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry{
 
     private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
-
+    private String galaxyRootTools = "/srv/galaxy/tools/";
+    
     @Autowired
     private GalaxyWrapperGenerator galaxyWrapperGenerator;
     
     @Autowired
     private GalaxyToolWrapperWriter galaxyToolWrapperWriter;
     
-    @Autowired
-    private SSH ssh;
+    //@Autowired
+    //private SSH ssh;
     
 	@Override
     public void registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
@@ -66,10 +69,10 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         
         // Write wrapper.
         String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
-        File tmpForWrapper = null;
+        File tmpFileForWrapper = null;
         try {
-        	tmpForWrapper = File.createTempFile("tmp", "");
-        	FileOutputStream fos = new FileOutputStream(tmpForWrapper);
+        	tmpFileForWrapper = File.createTempFile("tmp", "");
+        	FileOutputStream fos = new FileOutputStream(tmpFileForWrapper);
         	fos.write(wrapperXML.getBytes());
         	fos.flush();
         	fos.close();
@@ -79,10 +82,20 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 		}
         
         // Copy over SSH.
-        boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(), "/srv/galaxy/tools/" + trgFolder);
+        //boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(),  galaxyRootTools + trgFolder);
         
+        // Copy over NFS.
+        copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, trgFolder);
     }
     
+	private void copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
+        try {
+			Files.copy(Paths.get(tmpForWrapper.getAbsolutePath()), Paths.get(galaxyRootTools + trgFolder), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			logger.debug(e);
+		}
+	}
+	
     private boolean isDocker(eu.openminted.registry.domain.Component component){
     	 ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
          return distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE;
