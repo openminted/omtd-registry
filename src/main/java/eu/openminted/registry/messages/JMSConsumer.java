@@ -91,7 +91,7 @@ public class JMSConsumer {
 
         // Deserialize it to a TDM Component object.
         eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
-        // Register it
+        // Register it to workflow engine.
         TDMComponentReg.registerTDMComponentToWorkflowEngine(component);
         
         // We do need the following ant more
