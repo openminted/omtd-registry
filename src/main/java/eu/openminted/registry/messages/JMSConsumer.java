@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 @Component("jmsConsumer")
 public class JMSConsumer {
-    private static Logger logger = LogManager.getLogger(JMSConsumer.class.getName());
+    private static Logger logger = LogManager.getLogger(JMSConsumer.class);
 
     @Value("${maven.data.path:#{'/media/maven-data'}}")
     private String mavenDataPath;

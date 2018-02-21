@@ -251,17 +251,6 @@
 			<artifactId>activemq-spring</artifactId>
 			<version>5.14.3</version>
 		</dependency>
-		<dependency>
-			<groupId>eu.openminted</groupId>
-			<artifactId>omtd-message-service-connector</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.activemq</groupId>
-					<artifactId>activemq-all</artifactId>
-				</exclusion>
-			</exclusions>
-	     </dependency>  
      	 <dependency>
          	<groupId>org.apache.activemq</groupId>
             <artifactId>activemq-client</artifactId>
@@ -276,7 +265,7 @@
 			<!--  Download and install locally, not in repos yet -->
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-workflow-api</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		 </dependency>
 		<dependency>
 			<groupId>com.github.docker-java</groupId>

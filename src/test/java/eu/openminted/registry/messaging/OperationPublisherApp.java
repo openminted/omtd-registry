@@ -1,14 +1,15 @@
 package eu.openminted.registry.messaging;
 
-import eu.openminted.messageservice.connector.MessageServicePublisher;
-import eu.openminted.messageservice.connector.TopicsRegistry;
-import eu.openminted.messageservice.messages.WorkflowExecutionStatusMessage;
 import eu.openminted.workflow.api.ExecutionStatus;
+import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.JMSException;
 import java.util.UUID;
@@ -20,8 +21,12 @@ public class OperationPublisherApp {
 	static final Logger logger = LogManager.getLogger(OperationPublisherApp.class.getName());
 	
 	private static String messagesHost = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
-	
-	private static String topic = TopicsRegistry.workflowsExecution;
+
+	@Value("${workflows.execution:workflows.execution}")
+	private static String topic;
+
+	@Autowired
+	JmsTemplate jmsQueueTemplate;
 	
 	private static String userID = "0931732115452907@openminted.eu"; //"0931731143127784@openminted.eu";
 	// omtdid	
@@ -46,12 +51,12 @@ public class OperationPublisherApp {
         		OperationPublisherApp.class);
   
         // Connect to Message Service
-        logger.info("Creating a message posting service to  ::" + messagesHost );
-		MessageServicePublisher msgServicePub = new MessageServicePublisher(messagesHost); 
+//        logger.info("Creating a message posting service to  ::" + messagesHost );
+//		MessageServicePublisher msgServicePub = new MessageServicePublisher(messagesHost);
 		            
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
-        WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage(); 
+        WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage();
         String workflowExecutionID = "WFE_ID8";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
@@ -61,7 +66,8 @@ public class OperationPublisherApp {
 			
         // Publish message
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
-        msgServicePub.publishMessage(topic, msgPended);
+		JmsTemplate jmsTemplate = (JmsTemplate) context.getBean("jmsQueueTemplate");
+        jmsTemplate.convertAndSend(topic, msgPended);
               
      
         //////////////////
@@ -73,7 +79,7 @@ public class OperationPublisherApp {
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
-		msgServicePub.publishMessage(topic, msgStarted);
+		jmsTemplate.convertAndSend(topic, msgStarted);
  
 		
 		 //////////////////
@@ -88,7 +94,7 @@ public class OperationPublisherApp {
     		
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
-		msgServicePub.publishMessage(topic, msgFinished);
+		jmsTemplate.convertAndSend(topic, msgFinished);
  
 	/*	
 		 //////////////////
