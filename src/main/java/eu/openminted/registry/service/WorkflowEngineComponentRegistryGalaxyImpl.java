@@ -68,7 +68,20 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         Tool tool = galaxyWrapperGenerator.generate(componentMeta);
         
         // Write wrapper.
-        String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
+        File tmpFileForWrapper = writeWrapperToDisk(tool);
+        
+        // If succeeded copy it to Galaxy machine.
+        if(tmpFileForWrapper != null){
+        	// Copy over SSH.
+            //boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(),  galaxyRootTools + trgFolder);
+            
+            // Copy over NFS.
+            copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, trgFolder);
+        }
+    }
+    
+	private File writeWrapperToDisk(Tool tool){
+		String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
         File tmpFileForWrapper = null;
         try {
         	tmpFileForWrapper = File.createTempFile("tmp", "");
@@ -77,17 +90,13 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	fos.flush();
         	fos.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			logger.debug(e);
+			return null;
+		}	
         
-        // Copy over SSH.
-        //boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(),  galaxyRootTools + trgFolder);
-        
-        // Copy over NFS.
-        copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, trgFolder);
-    }
-    
+        return tmpFileForWrapper;
+	}
+	
 	private void copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
         try {
 			Files.copy(Paths.get(tmpForWrapper.getAbsolutePath()), Paths.get(galaxyRootTools + trgFolder), StandardCopyOption.REPLACE_EXISTING);
