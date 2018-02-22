@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/request/corpuscontent")
 public class CorpusContentController {
 
-    final private CorpusContentService ccService;
+    final private CorpusContentService corpusContentService;
 
     @Autowired
     CorpusContentController(CorpusContentService content) {
-        this.ccService = content;
+        this.corpusContentService = content;
     }
 
     @RequestMapping(path = "/getCorpusContent", method = RequestMethod.GET)
     public CorpusContent getCorpusContent(@RequestParam(value="corpusId") String corpusId) {
-        return ccService.getCorpusContent(corpusId);
+        return corpusContentService.getCorpusContent(corpusId);
     }
 }
