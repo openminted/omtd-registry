@@ -12,11 +12,15 @@ import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +30,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -38,6 +43,7 @@ import java.util.stream.Collectors;
  */
 
 @Service("corpusContentService")
+@Primary
 public class CorpusContentServiceImpl implements CorpusContentService {
 
     private Logger logger = Logger.getLogger(CorpusContentServiceImpl.class);
@@ -49,11 +55,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     ResourceCRUDService<Corpus> corpusService;
 
     @Autowired
-    CorpusContentService ccService;
-
-    @Autowired
     LettuceConnectionFactory lettuceConnectionFactory;  // TODO
-
 
     private String resolveCorpusArchive(String corpusId) {
         final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
@@ -77,10 +79,17 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     public CorpusContent getCorpusContent(String corpusId) {
         String archiveId = resolveCorpusArchive(corpusId);
 
-        CorpusContent content = new CorpusContent(archiveId);
+        CorpusContent content;
 
-        // retrieve all files inside the archive
-        content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
+        content = new CorpusContent(archiveId);
+
+        try {
+            // retrieve all files inside the archive
+            content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
+        } catch (Exception e) {
+            logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
+            e.printStackTrace();
+        }
 
         // analyze file-paths and create publication entries
         createPublicationEntries(content);
