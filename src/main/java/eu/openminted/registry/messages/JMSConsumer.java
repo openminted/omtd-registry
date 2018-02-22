@@ -58,7 +58,7 @@ public class JMSConsumer {
     DockerService dockerService;
 
     @Autowired
-    WorkflowEngineComponentRegistry TDMComponentReg;
+    WorkflowEngineComponentRegistry workflowEngineComponentReg;
     
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws JMSException, UnknownHostException {
@@ -92,7 +92,7 @@ public class JMSConsumer {
         // Deserialize it to a TDM Component object.
         eu.openminted.registry.domain.Component component = parserPool.deserialize(resource, eu.openminted.registry.domain.Component.class).get();
         // Register it to workflow engine.
-        TDMComponentReg.registerTDMComponentToWorkflowEngine(component);
+        workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
         
         // We do need the following ant more
         /*

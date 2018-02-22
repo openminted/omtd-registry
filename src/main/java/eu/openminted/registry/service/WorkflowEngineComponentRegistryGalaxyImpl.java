@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
@@ -41,26 +42,26 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 	@Override
     public void registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
 		
-		String trgFolder = "";
+		String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+		String galaxyTrgFolder = "";
 		
 		// Prepare Galaxy wrapper generation&copying.
         if(isDocker(componentMeta)) { // Docker-packaged components
-        	logger.info("Registering:" + "Docker");
-        	trgFolder = "omtdDocker";
+        	logger.info("Registering component -> " + "Docker");
+        	galaxyTrgFolder = "omtdDocker/";
         }else{ // Non Docker-packaged components 
         	String framework = componentMeta.getComponentInfo().getComponentCreationInfo().getFramework().value();
+        	logger.info("Registering component -> " + framework);
         	
         	if(framework == FrameworkEnum.UIMA.value()){
-        		logger.info("Registering:" + framework);
-        		trgFolder = "omtdUIMA";
+        		galaxyTrgFolder = "omtdUIMA/";
         		galaxyWrapperGenerator.setDockerImage("TO-DO");
         		
         	}else if(framework == FrameworkEnum.GATE.value()){
-        		logger.info("Registering:" + framework);
-        		trgFolder = "omtdGATE";
+        		galaxyTrgFolder = "omtdGATE/";
         		galaxyWrapperGenerator.setDockerImage("TO-DO");
         	}else{
-        		logger.info("Registering:" + "error");
+        		logger.info("Registering component -> " + "error");
         	}
         }
         
@@ -68,7 +69,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         Tool tool = galaxyWrapperGenerator.generate(componentMeta);
         
         // Write wrapper.
-        File tmpFileForWrapper = writeWrapperToDisk(tool);
+        File tmpFileForWrapper = writeWrapperToDisk(tool, resourceID);
         
         // If succeeded copy it to Galaxy machine.
         if(tmpFileForWrapper != null){
@@ -76,15 +77,15 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
             //boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(),  galaxyRootTools + trgFolder);
             
             // Copy over NFS.
-            copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, trgFolder);
+            copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }
     }
     
-	private File writeWrapperToDisk(Tool tool){
+	private File writeWrapperToDisk(Tool tool, String resourceID){
 		String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
         File tmpFileForWrapper = null;
         try {
-        	tmpFileForWrapper = File.createTempFile("tmp", "");
+        	tmpFileForWrapper = File.createTempFile("wrapper_" + resourceID, ".xml");
         	FileOutputStream fos = new FileOutputStream(tmpFileForWrapper);
         	fos.write(wrapperXML.getBytes());
         	fos.flush();
@@ -99,7 +100,9 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 	
 	private void copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
         try {
-			Files.copy(Paths.get(tmpForWrapper.getAbsolutePath()), Paths.get(galaxyRootTools + trgFolder), StandardCopyOption.REPLACE_EXISTING);
+        	Path src = Paths.get(tmpForWrapper.getAbsolutePath());
+        	Path trg = Paths.get(galaxyRootTools + trgFolder + tmpForWrapper.getName());
+			Files.copy(src, trg,StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			logger.debug(e);
 		}
