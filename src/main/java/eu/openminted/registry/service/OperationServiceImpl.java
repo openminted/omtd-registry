@@ -290,17 +290,22 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             throw new RuntimeException(e);
         }
 
-        logger.debug(url.toString());
-
-        ResponseEntity<String> executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
-
-        Operation operation = createOperation(corpusId,applicationId,executionId.getBody());
+            logger.debug(url.toString());
+            ResponseEntity<String> executionId;
+            Operation operation;
+        synchronized (OperationServiceImpl.class) {
+            logger.info("Starting workflow job");
+            logger.info(this);
+            executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
+            operation = createOperation(corpusId, applicationId, executionId.getBody());
+            add(operation);
+            logger.info("Added operation with execution id " + executionId.getBody());
+        }
         try {
             logger.debug(mapper.writeValueAsString(operation));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        add(operation);
         return executionId.getBody();
     }
 }
