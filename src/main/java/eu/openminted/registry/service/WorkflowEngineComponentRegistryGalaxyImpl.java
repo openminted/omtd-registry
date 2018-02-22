@@ -28,7 +28,8 @@ import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry{
 
     private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
-    private String galaxyRootTools = "/srv/galaxy/tools/";
+    //private String galaxyRootTools = "/srv/galaxy/tools/";
+    private String galaxyRootTools = "/tmp/";
     
     @Autowired
     private GalaxyWrapperGenerator galaxyWrapperGenerator;
@@ -90,6 +91,8 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	fos.write(wrapperXML.getBytes());
         	fos.flush();
         	fos.close();
+        	
+        	logger.info("Wrapper tmp:" + tmpFileForWrapper.getAbsolutePath());
 		} catch (IOException e) {
 			logger.debug(e);
 			return null;
@@ -100,9 +103,17 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 	
 	private void copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
         try {
+        	// Create parent folder if not exists. 
+        	File parent = new File(galaxyRootTools + trgFolder);
+        	if(!parent.exists()){
+        		parent.mkdirs();
+        	}
+        	
+        	// Copy 
         	Path src = Paths.get(tmpForWrapper.getAbsolutePath());
         	Path trg = Paths.get(galaxyRootTools + trgFolder + tmpForWrapper.getName());
-			Files.copy(src, trg,StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(src, trg, StandardCopyOption.REPLACE_EXISTING);
+			
 		} catch (IOException e) {
 			logger.debug(e);
 		}
