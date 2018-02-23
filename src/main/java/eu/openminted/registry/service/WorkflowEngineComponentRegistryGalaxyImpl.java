@@ -28,8 +28,7 @@ import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry{
 
     private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
-    //private String galaxyRootTools = "/srv/galaxy/tools/";
-    private String galaxyRootTools = "/tmp/";
+    private String galaxyRootTools = "/opt/galaxy/tools/";
     
     @Autowired
     private GalaxyWrapperGenerator galaxyWrapperGenerator;
@@ -106,7 +105,8 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	// Create parent folder if not exists. 
         	File parent = new File(galaxyRootTools + trgFolder);
         	if(!parent.exists()){
-        		parent.mkdirs();
+        		boolean mkdrs = parent.mkdirs();
+        		logger.info("copyViaNFSToGalaxyToolsFolder -> make parent" + mkdrs);
         	}
         	
         	// Copy 
