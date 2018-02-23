@@ -51,7 +51,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         }else{ // Non Docker-packaged components 
         	String framework = componentMeta.getComponentInfo().getComponentCreationInfo().getFramework().value();
         	logger.info("Registering component -> " + framework);
-        	
+        		
         	if(framework == FrameworkEnum.UIMA.value()){
         		galaxyTrgFolder = "omtdUIMA/";
         		galaxyWrapperGenerator.setDockerImage("TO-DO");
@@ -80,7 +80,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         }
         
         wec.setComponentID(tool.getId());
-        wec.getComponentVersion();
+        wec.setComponentVersion(tool.getVersion());
         
         return wec;
     }
