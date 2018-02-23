@@ -1,7 +1,9 @@
 package eu.openminted.registry.service;
 
 
+import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.domain.CorpusContent;
+import eu.openminted.registry.domain.PublicationInfo;
 
 /**
  * Created by spyroukostas on 7-Feb-2018.
@@ -13,5 +15,5 @@ public interface CorpusContentService {
      * @param corpusId
      * @return
      */
-    CorpusContent getCorpusContent(String corpusId);
+    Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size);
 }
