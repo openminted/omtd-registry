@@ -7,6 +7,12 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
+
+import eu.openminted.registry.service.SSH;
+import eu.openminted.store.restclient.StoreRESTClient;
+import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
+import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
+
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,11 +23,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.jms.support.converter.MessageType;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
@@ -31,9 +32,8 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
  */
 
 @Configuration
-@EnableRedisHttpSession(redisNamespace = "omtd-registry")
-@EnableJms
-@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@EnableRedisHttpSession
+@PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class Config {
 
     private static Logger logger = LogManager.getLogger(Config.class);
@@ -59,21 +59,13 @@ public class Config {
     @Value("${docker.host}")
     private String dockerHost;
 
-
-
-    @Bean
-    public ActiveMQConnectionFactory activeMQConnectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(jmsHost);
-        connectionFactory.setConnectionIDPrefix("omtd-registry");
-        logger.info("ActiveMQConnection Factory created for " + jmsHost);
-        return connectionFactory;
-    }
+    @Value("${services.store.ip:#{'http://83.212.101.85:8090'}}")
+    private String storeServiceHost;
 
     @Bean
     public DockerClient dockerClient() {
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost("tcp://"+dockerHost)
+                .withDockerHost("tcp://" + dockerHost)
                 .withDockerTlsVerify(false)
                 .build();
 
@@ -97,55 +89,8 @@ public class Config {
         return authConfig;
     }
 
-
-    @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
-    }
-
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsQueueListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory
-                = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(activeMQConnectionFactory());
-        factory.setPubSubDomain(false); // false is for queue
-        factory.setMessageConverter(jacksonJmsMessageConverter());
-        return factory;
-    }
-
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsTopicListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory
-                = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(activeMQConnectionFactory());
-        factory.setPubSubDomain(true); // false is for queue
-//        factory.setMessageConverter(jacksonJmsMessageConverter());
-        return factory;
-    }
-
-    @Bean
-    public JmsTemplate jmsQueueTemplate(){
-        JmsTemplate template = new JmsTemplate();
-        template.setConnectionFactory(activeMQConnectionFactory());
-        template.setPubSubDomain(false); //false is for queue
-        template.setMessageConverter(jacksonJmsMessageConverter());
-        return template;
-    }
-
-//    @Bean
-//    public LettuceConnectionFactory connectionFactory() {
-//        logger.info(String.format("Redis connection listens to %s:%s",host,port));
-//        LettuceConnectionFactory factory = new LettuceConnectionFactory(host,Integer.parseInt(port));
-//        if(password != null) factory.setPassword(password);
-//        return factory;
-//    }
-
     @Bean
     JedisConnectionFactory connectionFactory() {
-
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(host);
         jedisConnectionFactory.setPort(Integer.parseInt(port));
@@ -169,4 +114,32 @@ public class Config {
         return serializer;
     }
 
+    @Bean
+    public StoreRESTClient storeRESTClient() {
+        logger.info("Store Service is connected to " + storeServiceHost);
+        return new StoreRESTClient(storeServiceHost);
+    }
+   
+    
+    // Beans for Galaxy wrappers generation ...
+    
+    @Bean
+    public GalaxyWrapperGenerator galaxyWrapperGenerator() {
+        logger.info("galaxyWrapperGenerator");
+        return new GalaxyWrapperGenerator();
+    }
+    
+    @Bean
+    public GalaxyToolWrapperWriter galaxyToolWrapperWriter() {
+        logger.info("GalaxyToolWrapperWriter");
+        return new GalaxyToolWrapperWriter();
+    }
+   
+    /*
+    @Bean
+    public SSH galaxySSH() {
+        logger.info("Galaxy SSH");
+        return new SSH("","","","");
+    }
+    */
 }

@@ -1,5 +1,6 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Corpus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Primary
 public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> implements IncompleteCorpusService {
 
-    @Autowired
-    CorpusService corpusService;
-
     private Logger logger = LogManager.getLogger(IncompleteCorpusServiceImpl.class);
+
+    @Autowired
+    ResourceCRUDService<Corpus> corpusService;
 
     public IncompleteCorpusServiceImpl() {
         super(Corpus.class);
