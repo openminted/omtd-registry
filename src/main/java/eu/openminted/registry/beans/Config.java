@@ -8,7 +8,6 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 
-import eu.openminted.registry.service.SSH;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;

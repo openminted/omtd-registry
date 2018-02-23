@@ -13,10 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-
 import eu.openminted.registry.domain.ComponentDistributionFormEnum;
 import eu.openminted.registry.domain.ComponentDistributionInfo;
 import eu.openminted.registry.domain.FrameworkEnum;
@@ -72,9 +68,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         
         // If succeeded copy it to Galaxy machine.
         if(tmpFileForWrapper != null){
-        	// Copy over SSH.
-            //boolean done = ssh.copy(tmpForWrapper.getAbsolutePath(),  galaxyRootTools + trgFolder);
-            
+        	
             // Copy over NFS.
             copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }
