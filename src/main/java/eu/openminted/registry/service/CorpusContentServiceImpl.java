@@ -12,6 +12,7 @@ import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ListOperations;
@@ -52,10 +53,27 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     StoreRESTClient storeClient;
 
     @Autowired
+    @Qualifier("corpusService")
     ResourceCRUDService<Corpus> corpusService;
 
     @Autowired
-    LettuceConnectionFactory lettuceConnectionFactory;  // TODO
+    private RedisTemplate<String, CorpusContent> template;
+
+
+    private void addContent(String corpusId, CorpusContent content) {
+        if (!template.hasKey(corpusId)) {
+            template.opsForList().leftPush(corpusId, content);
+            template.expireAt(corpusId, new Date(1000000));
+        }
+    }
+
+    private CorpusContent getContent(String corpusId) {
+        if (template.hasKey(corpusId)) {
+            return template.opsForList().rightPopAndLeftPush(corpusId, corpusId);
+        } else {
+            return null;
+        }
+    }
 
     private String resolveCorpusArchive(String corpusId) {
         final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
@@ -80,19 +98,23 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         String archiveId = resolveCorpusArchive(corpusId);
 
         CorpusContent content;
+        content = getContent(corpusId);
 
-        content = new CorpusContent(archiveId);
+        if (content == null) {
+            content = new CorpusContent(archiveId);
 
-        try {
-            // retrieve all files inside the archive
-            content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
-        } catch (Exception e) {
-            logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
-            e.printStackTrace();
+            try {
+                // retrieve all files inside the archive
+                content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
+            } catch (Exception e) {
+                logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
+                e.printStackTrace();
+            }
+
+            // analyze file-paths and create publication entries
+            createPublicationEntries(content);
+            addContent(corpusId, content);
         }
-
-        // analyze file-paths and create publication entries
-        createPublicationEntries(content);
 
         return content;
     }
@@ -192,7 +214,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     /**
      * Populates the list of Publications.
      */
-    public void createPublicationEntries(CorpusContent content) {
+    private void createPublicationEntries(CorpusContent content) {
         int abstractMask = 0x0001;
         int fulltextMask = 0x0010;
         int metadataMask = 0x0100;
@@ -274,7 +296,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
      * Prints {@link PublicationInfo} fields.
      * @param info
      */
-    public void printPublicationInfo(PublicationInfo info) {
+    private void printPublicationInfo(PublicationInfo info) {
         System.out.println("\n");
         System.out.println("Archive ID:\t" + info.getArchiveId());
         System.out.println("Pub ID:  \t" + info.getId());
@@ -290,7 +312,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
      *
      * @param pubInfo
      */
-    public void printPubInfoList(List<PublicationInfo> pubInfo) {
+    private void printPubInfoList(List<PublicationInfo> pubInfo) {
         if (pubInfo != null) {
             System.out.println("\nPrinting Publication Info:");
             pubInfo.forEach(pub -> printPublicationInfo(pub));
@@ -305,7 +327,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
      * @param size
      * @return {@link List<PublicationInfo>}
      */
-    public List<PublicationInfo> getCorpusSubset(CorpusContent content, int from, int size) {
+    private List<PublicationInfo> getCorpusSubset(CorpusContent content, int from, int size) {
         List<PublicationInfo> pubInfo = content.getPubInfo();
 
         if (pubInfo != null)
