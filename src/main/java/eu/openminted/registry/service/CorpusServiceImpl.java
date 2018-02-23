@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Primary
 public class CorpusServiceImpl extends OmtdGenericService<Corpus> {
 
-    private Logger logger = Logger.getLogger(CorpusServiceImpl.class);
+    private Logger logger = LogManager.getLogger(CorpusServiceImpl.class);
 
     public CorpusServiceImpl() {
         super(Corpus.class);
