@@ -19,7 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
@@ -88,11 +89,19 @@ public class Config {
     }
 
     @Bean
-    public LettuceConnectionFactory connectionFactory() {
-        logger.info(String.format("Redis connection listens to %s:%s", host, port));
-        LettuceConnectionFactory factory = new LettuceConnectionFactory(host, Integer.parseInt(port));
-        if (password != null) factory.setPassword(password);
-        return factory;
+    JedisConnectionFactory connectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setHostName(host);
+        jedisConnectionFactory.setPort(Integer.parseInt(port));
+        if(password != null) jedisConnectionFactory.setPassword(password);
+        return jedisConnectionFactory;
+    }
+
+    @Bean
+    public RedisTemplate redisTemplate() {
+        RedisTemplate template = new RedisTemplate();
+        template.setConnectionFactory(connectionFactory());
+        return template;
     }
 
     @Bean
