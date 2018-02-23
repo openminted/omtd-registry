@@ -1,6 +1,7 @@
 package eu.openminted.registry.service;
 
 
+import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
@@ -11,17 +12,16 @@ import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,10 +31,10 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -63,8 +63,9 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     private void addContent(String corpusId, CorpusContent content) {
         if (!template.hasKey(corpusId)) {
             template.opsForList().leftPush(corpusId, content);
-            template.expireAt(corpusId, new Date(1000000));
+            template.expire(corpusId, 30, TimeUnit.DAYS);
         }
+
     }
 
     private CorpusContent getContent(String corpusId) {
@@ -94,11 +95,11 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
 
     @Override
-    public CorpusContent getCorpusContent(String corpusId) {
+    public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
         String archiveId = resolveCorpusArchive(corpusId);
 
-        CorpusContent content;
-        content = getContent(corpusId);
+        CorpusContent content = null;
+//        content = getContent(corpusId);  // TODO: redis
 
         if (content == null) {
             content = new CorpusContent(archiveId);
@@ -113,10 +114,16 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
             // analyze file-paths and create publication entries
             createPublicationEntries(content);
-            addContent(corpusId, content);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT,true);
+            try {
+                logger.info(mapper.writeValueAsString(content));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//            addContent(corpusId, content);  // TODO: redis
         }
-
-        return content;
+        return getCorpusSubset(content, from, size);
     }
 
     /**
@@ -292,52 +299,30 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         content.setTotalPublications(publicationInfo.size());
     }
 
-    /**
-     * Prints {@link PublicationInfo} fields.
-     * @param info
-     */
-    private void printPublicationInfo(PublicationInfo info) {
-        System.out.println("\n");
-        System.out.println("Archive ID:\t" + info.getArchiveId());
-        System.out.println("Pub ID:  \t" + info.getId());
-        System.out.println("Title:   \t" + info.getTitle());
-        System.out.println("Abstract:\t" + info.isHasAbstract());
-        System.out.println("Fulltext:\t" + info.isHasFulltext());
-        System.out.println("Metadata:\t" + info.isHasMetadata());
-        System.out.println("Annotations:\t" + info.isHasAnnotations());
-    }
-
-    /**
-     * Prints the {@link List<PublicationInfo>} that is given as an argument.
-     *
-     * @param pubInfo
-     */
-    private void printPubInfoList(List<PublicationInfo> pubInfo) {
-        if (pubInfo != null) {
-            System.out.println("\nPrinting Publication Info:");
-            pubInfo.forEach(pub -> printPublicationInfo(pub));
-        }
-    }
-
 
     /**
      * Returns a subset of information of publications.
      *
      * @param from
      * @param size
-     * @return {@link List<PublicationInfo>}
+     * @return {@link Browsing<PublicationInfo>}
      */
-    private List<PublicationInfo> getCorpusSubset(CorpusContent content, int from, int size) {
-        List<PublicationInfo> pubInfo = content.getPubInfo();
+    private Browsing<PublicationInfo> getCorpusSubset(CorpusContent content, int from, int size) {
+        Browsing<PublicationInfo> browsing = new Browsing<>(content.getTotalPublications(), from, 0, null, null);
+        browsing.setResults(content.getPubInfo());
 
-        if (pubInfo != null)
+        if (content.getPubInfo() != null) {
 
-            if (pubInfo.size() >= from + size)
-                return pubInfo.subList(from, (from + size));
+            if (content.getTotalPublications() >= from + size) {
+                browsing.setResults(content.getPubInfo().subList(from, (from + size)));
+                browsing.setTo(from + size);
 
-            else if (pubInfo.size() > from)
-                return pubInfo.subList(from, pubInfo.size());
-
+            } else if (content.getTotalPublications() > from) {
+                browsing.setResults(content.getPubInfo().subList(from, content.getTotalPublications()));
+                browsing.setTo(content.getTotalPublications());
+            }
+            return browsing;
+        }
         return null;
     }
 
