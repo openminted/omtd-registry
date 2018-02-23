@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
+import eu.openminted.registry.domain.Date;
 import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
@@ -23,10 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 /*
@@ -342,7 +340,11 @@ public class AnnotatedCorpusMetadataGenerate {
 		
 		// relatedResource
 		RelatedResource rawCorpus = new RelatedResource();
-		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
+		ResourceIdentifier identifier = new ResourceIdentifier();
+		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+		identifier.setValue(inputCorpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+		rawCorpus.setResourceIdentifiers(Collections.singletonList(identifier));
+//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
 		rawCorpus.setResourceNames(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceNames());
 		relationInfo.setRelatedResource(rawCorpus);
 		
