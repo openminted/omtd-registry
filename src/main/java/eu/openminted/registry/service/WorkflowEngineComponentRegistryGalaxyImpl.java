@@ -36,11 +36,10 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     @Autowired
     private GalaxyToolWrapperWriter galaxyToolWrapperWriter;
     
-    //@Autowired
-    //private SSH ssh;
-    
 	@Override
-    public void registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
+    public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
+		
+		WorkflowEngineComponent wec = new WorkflowEngineComponent();
 		
 		String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
 		String galaxyTrgFolder = "";
@@ -79,6 +78,11 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
             // Copy over NFS.
             copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }
+        
+        wec.setComponentID(tool.getId());
+        wec.getComponentVersion();
+        
+        return wec;
     }
     
 	private File writeWrapperToDisk(Tool tool, String resourceID){
@@ -106,7 +110,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	File parent = new File(galaxyRootTools + trgFolder);
         	if(!parent.exists()){
         		boolean mkdrs = parent.mkdirs();
-        		logger.info("copyViaNFSToGalaxyToolsFolder -> make parent" + mkdrs);
+        		logger.info("copyViaNFSToGalaxyToolsFolder -> make parent:" + mkdrs);
         	}
         	
         	// Copy 
