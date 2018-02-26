@@ -8,6 +8,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 
+import eu.openminted.registry.service.DockerImageProviderImpl;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
@@ -121,24 +122,22 @@ public class Config {
    
     
     // Beans for Galaxy wrappers generation ...
-    
     @Bean
     public GalaxyWrapperGenerator galaxyWrapperGenerator() {
-        logger.info("galaxyWrapperGenerator");
+    	logger.info("Creating:" + GalaxyWrapperGenerator.class.getName());
         return new GalaxyWrapperGenerator();
     }
     
     @Bean
     public GalaxyToolWrapperWriter galaxyToolWrapperWriter() {
-        logger.info("GalaxyToolWrapperWriter");
+    	logger.info("Creating:" + GalaxyToolWrapperWriter.class.getName());
         return new GalaxyToolWrapperWriter();
     }
-   
-    /*
+    
     @Bean
-    public SSH galaxySSH() {
-        logger.info("Galaxy SSH");
-        return new SSH("","","","");
+    public DockerImageProviderImpl dockerImageProviderImpl() {
+        logger.info("Creating:" + DockerImageProviderImpl.class.getName());
+        return new DockerImageProviderImpl();
     }
-    */
+    
 }

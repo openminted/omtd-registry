@@ -32,7 +32,11 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     @Autowired
     private GalaxyToolWrapperWriter galaxyToolWrapperWriter;
     
-	@Override
+    @Autowired
+    private DockerImageProvider dockerImageProvider;
+    
+    @Override
+
     public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
 		
 		WorkflowEngineComponent wec = new WorkflowEngineComponent();
@@ -50,11 +54,11 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         		
         	if(framework == FrameworkEnum.UIMA.value()){
         		galaxyTrgFolder = "omtdUIMA/";
-        		galaxyWrapperGenerator.setDockerImage("TO-DO");
+        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
         		
         	}else if(framework == FrameworkEnum.GATE.value()){
         		galaxyTrgFolder = "omtdGATE/";
-        		galaxyWrapperGenerator.setDockerImage("TO-DO");
+        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
         	}else{
         		logger.info("Registering component -> " + "error");
         	}
@@ -68,7 +72,6 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         
         // If succeeded copy it to Galaxy machine.
         if(tmpFileForWrapper != null){
-        	
             // Copy over NFS.
             copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }

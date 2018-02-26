@@ -41,7 +41,7 @@ public class JMSConsumer {
 
     @Value("${docker.data.path:#{'/media/docker-data'}}")
     private String dockerDataPath;
-
+    
     @Autowired
     public SearchService searchService;
 
