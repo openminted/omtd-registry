@@ -118,6 +118,7 @@ public class OperationHandler {
 
         Corpus operationCorpus = operation.getCorpus();
 
+        //TODO add service for other types of outputs, eg language/conceptual resource and language description
         // Generate output corpus metadata
         logger.info("Generating metadata for annotated corpus from experiment " + workflowExeMsg.getWorkflowExecutionID());
         eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
