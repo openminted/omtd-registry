@@ -200,6 +200,7 @@
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
                                 <pattern>eu.openminted.registry.domain.workflow.*</pattern>
+                                <pattern>eu.openminted.registry.domain.PublicationInfo</pattern>
                             </classPatterns>
                             <outputFile>target/operation.ts</outputFile>
                             <outputKind>module</outputKind>
