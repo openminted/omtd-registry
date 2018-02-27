@@ -42,6 +42,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 		WorkflowEngineComponent wec = new WorkflowEngineComponent();
 		
 		String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+		String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
 		String galaxyTrgFolder = "";
 		
 		// Prepare Galaxy wrapper generation&copying.
@@ -78,6 +79,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         
         wec.setComponentID(tool.getId());
         wec.setComponentVersion(tool.getVersion());
+        wec.setName(resourceName);
         
         return wec;
     }

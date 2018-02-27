@@ -1,0 +1,101 @@
+{
+  "a_galaxy_workflow": "true",
+  "annotation": "",
+  "format-version": "0.1",
+  "name": null,
+  "steps": {
+    "0": {
+      "annotation": "",
+      "content_id": "omtdImporter",
+      "errors": null,
+      "id": 0,
+      "input_connections": {},
+      "inputs": [],
+      "label": null,
+      "name": "omtdImporter",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 235,
+        "top": 132
+      },
+      "post_job_actions": {},
+      "tool_id": "omtdImporter",
+      "tool_state": "{\"omtdStoreCorpusID\": \"\\\"\\\"\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": null,
+      "workflow_outputs": []
+    },
+    "1": {
+      "annotation": "",
+      "content_id": "mvn:de.tudarmstadt.ukp.dkpro.core:de.tudarmstadt.ukp.dkpro.core.io.pdf-asl:1.9.0-SNAPSHOT#de.tudarmstadt.ukp.dkpro.core.io.pdf.PdfReader",
+      "errors": null,
+      "id": 1,
+      "input_connections": {
+        "PdfReader_InputFiles": {
+          "id": 0,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "PdfReader",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 389,
+        "top": 220
+      },
+      "post_job_actions": {},
+      "tool_id": "mvn:de.tudarmstadt.ukp.dkpro.core:de.tudarmstadt.ukp.dkpro.core.io.pdf-asl:1.9.0-SNAPSHOT#de.tudarmstadt.ukp.dkpro.core.io.pdf.PdfReader",
+      "tool_state": "{\"__page__\": null, \"endPage\": \"\\\"-1\\\"\", \"language\": \"\\\"\\\"\", \"headingType\": \"\\\"<built-in>\\\"\", \"__rerun_remap_job_id__\": null, \"substitutionTableLocation\": \"\\\"<built-in>\\\"\", \"patterns\": \"\\\"\\\"\", \"startPage\": \"\\\"-1\\\"\", \"includeHidden\": \"\\\"false\\\"\", \"paragraphType\": \"\\\"<built-in>\\\"\", \"logFreq\": \"\\\"1\\\"\", \"sourceLocation\": \"\\\"\\\"\", \"useDefaultExcludes\": \"\\\"true\\\"\", \"PdfReader_InputFiles\": \"null\"}",
+      "tool_version": "1.9.0-SNAPSHOT",
+      "type": "tool",
+      "uuid": null,
+      "workflow_outputs": []
+    },
+    "2": {
+      "annotation": "",
+      "content_id": null,
+      "errors": null,
+      "id": 2,
+      "input_connections": {
+        "_InputFiles": {
+          "id": 1,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": null,
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 588.5,
+        "top": 321
+      },
+      "post_job_actions": {},
+      "tool_id": null,
+      "tool_state": "",
+      "tool_version": null,
+      "type": "tool",
+      "uuid": null,
+      "workflow_outputs": []
+    }
+  },
+  "tags": [],
+  "uuid": null
+}
