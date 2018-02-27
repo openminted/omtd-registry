@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/request/corpus")
@@ -47,8 +49,9 @@ public class CorpusController extends OmtdRestController<Corpus> {
     @RequestMapping(path = "getCorpusContent/{corpusId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Browsing<PublicationInfo> getCorpusContent(@PathVariable(value="corpusId") String corpusId,
                                                       @RequestParam(defaultValue = "0") int from,
-                                                      @RequestParam(defaultValue = "1000") int size) {
+                                                      @RequestParam(defaultValue = "0") int size) {
         if(size < 0) throw new ServiceException("Size is negative");
+        if(from < 0) throw new ServiceException("From is negative");
         return corpusContentService.getCorpusContent(corpusId, from, size);
     }
 
@@ -71,4 +74,13 @@ public class CorpusController extends OmtdRestController<Corpus> {
         response.setContentType(mimeType);
         IOUtils.copyLarge(storeService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
     }
+
+    @RequestMapping(value = "downloadFile", method = RequestMethod.GET)
+    @ResponseBody
+    public void downloadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String filename = request.getParameter("path");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+        IOUtils.copyLarge(storeService.downloadFile(request.getParameter("path")), response.getOutputStream());
+    }
+
 }
