@@ -63,13 +63,16 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     private void addContent(String corpusId, CorpusContent content) {
         if (!template.hasKey(corpusId)) {
             template.opsForList().leftPush(corpusId, content);
-            template.expire(corpusId, 30, TimeUnit.DAYS);
+            template.expire(corpusId, 5, TimeUnit.MINUTES);
         }
 
     }
 
     private CorpusContent getContent(String corpusId) {
         if (template.hasKey(corpusId)) {
+            CorpusContent content;
+            content = template.opsForList().leftPop(corpusId);
+            addContent(corpusId, content);
             return template.opsForList().rightPopAndLeftPush(corpusId, corpusId);
         } else {
             return null;
@@ -102,22 +105,15 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 //        content = getContent(corpusId);  // TODO: redis
 
         if (content == null) {
+            logger.info("CorpusContent is not saved in redis, communicating with store service ...");
             content = new CorpusContent(archiveId);
-
-            try {
-                // retrieve all files inside the archive
-                content.setFilepaths(storeClient.listFiles(archiveId, false, true, true));
-            } catch (Exception e) {
-                logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
-                e.printStackTrace();
-            }
 
             // analyze file-paths and create publication entries
             createPublicationEntries(content);
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT,true);
             try {
-                logger.info(mapper.writeValueAsString(content));
+                logger.debug(mapper.writeValueAsString(content));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -219,6 +215,20 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
 
     /**
+     * Retrieves all filenames inside a corpus.
+     */
+    private void getCorpusFiles(CorpusContent content) {
+        try {
+            // retrieve all files inside the archive
+            content.setFilepaths(storeClient.listFiles(content.getArchiveId(),
+                    false, true, true));
+        } catch (Exception e) {
+            logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Populates the list of Publications.
      */
     private void createPublicationEntries(CorpusContent content) {
@@ -226,6 +236,8 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         int fulltextMask = 0x0010;
         int metadataMask = 0x0100;
         int annotationsMask = 0x1000;
+
+        getCorpusFiles(content);
 
         String archiveId = content.getArchiveId();
         List<String> filepaths = content.getFilepaths();
@@ -245,6 +257,10 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
         // create a set with publication IDs extracted from the filenames.
         Set<String> publicationId = new HashSet<>();
+        HashMap<String, String> abstract_paths = new HashMap<>();
+        HashMap<String, String> fulltext_paths = new HashMap<>();
+        HashMap<String, String> metadata_paths = new HashMap<>();
+        HashMap<String, String> annotations_paths = new HashMap<>();
 
         for (Path file : paths) {
             String filename = file.getFileName().toString();
@@ -254,17 +270,26 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
             String parent = file.getParent().getFileName().toString();
 
+            abstract_paths.putIfAbsent(filename, "");
+            fulltext_paths.putIfAbsent(filename, "");
+            metadata_paths.putIfAbsent(filename, "");
+            annotations_paths.putIfAbsent(filename, "");
+
             if (parent.equals("abstract")) {
                 publicationInfo.replace(filename, publicationInfo.get(filename) + abstractMask);
+                abstract_paths.replace(filename, file.toString());
 
             } else if (parent.equals("fulltext")) {
                 publicationInfo.replace(filename, publicationInfo.get(filename) + fulltextMask);
+                fulltext_paths.replace(filename, file.toString());
 
             } else if (parent.equals("metadata")) {
                 publicationInfo.replace(filename, publicationInfo.get(filename) + metadataMask);
+                metadata_paths.replace(filename, file.toString());
 
             } else if (parent.equals("annotations")) {
                 publicationInfo.replace(filename, publicationInfo.get(filename) + annotationsMask);
+                annotations_paths.replace(filename, file.toString());
 
             } else {
                 //
@@ -292,7 +317,9 @@ public class CorpusContentServiceImpl implements CorpusContentService {
             boolean hasAnnotations = ((value & annotationsMask) == annotationsMask);
 
             pubInfo.add(new PublicationInfo(id, title, archiveId,
-                    hasFulltext, hasAbstract, hasMetadata, hasAnnotations));
+                    hasAbstract, hasFulltext, hasMetadata, hasAnnotations,
+                    abstract_paths.get(id), fulltext_paths.get(id),
+                    metadata_paths.get(id), annotations_paths.get(id)));
         }
 
         content.setPubInfo(pubInfo);
@@ -310,6 +337,8 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     private Browsing<PublicationInfo> getCorpusSubset(CorpusContent content, int from, int size) {
         Browsing<PublicationInfo> browsing = new Browsing<>(content.getTotalPublications(), from, 0, null, null);
         browsing.setResults(content.getPubInfo());
+
+        if (size == 0) size = content.getTotalPublications();
 
         if (content.getPubInfo() != null) {
 

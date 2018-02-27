@@ -2,6 +2,7 @@ package eu.openminted.registry.service;
 
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -101,6 +103,23 @@ public class StoreServiceImpl implements StoreService {
 
             temp.deleteOnExit();
             storeClient.downloadArchive(archiveId, temp.getAbsolutePath());
+            return new FileInputStream(temp);
+        } catch (Exception e) {
+            logger.error("error downloading file", e);
+        }
+
+        return null;
+    }
+
+    @Override // FIXME: complete function
+    public InputStream downloadFile(String path) {
+        try {
+//            File temp = File.createTempFile(Paths.get(path).getFileName().toString(), "tmp");
+            File temp = File.createTempFile("file", "tmp");
+
+            temp.deleteOnExit();
+//            storeClient.finalizeArchive(path); // FIXME: create zip, download zip, delete zip
+            storeClient.downloadFile(path, temp.getAbsolutePath());
             return new FileInputStream(temp);
         } catch (Exception e) {
             logger.error("error downloading file", e);
