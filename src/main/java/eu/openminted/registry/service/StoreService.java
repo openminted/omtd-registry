@@ -19,4 +19,13 @@ public interface StoreService {
      * @return
      */
     InputStream downloadCorpus(String archiveId);
+
+    /**
+     * Download a file.
+     *
+     * @param path
+     * @return
+     */
+    InputStream downloadFile(String path);
+
 }
