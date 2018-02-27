@@ -111,14 +111,11 @@ public class StoreServiceImpl implements StoreService {
         return null;
     }
 
-    @Override // FIXME: complete function
     public InputStream downloadFile(String path) {
         try {
-//            File temp = File.createTempFile(Paths.get(path).getFileName().toString(), "tmp");
             File temp = File.createTempFile("file", "tmp");
 
             temp.deleteOnExit();
-//            storeClient.finalizeArchive(path); // FIXME: create zip, download zip, delete zip
             storeClient.downloadFile(path, temp.getAbsolutePath());
             return new FileInputStream(temp);
         } catch (Exception e) {
