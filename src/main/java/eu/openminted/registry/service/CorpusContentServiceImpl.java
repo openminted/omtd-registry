@@ -328,10 +328,13 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         Iterator it = publicationId.iterator();
         while (it.hasNext()) {
             String id = (String) it.next();
+            String title = id;
             int value = publicationInfo.get(id);
-            String title = publication_titles.get(id);
-            if (title == null || title.equals("")) {
-                title = id;
+            if (publication_titles != null) {
+                title = publication_titles.get(id);
+                if (title == null || title.equals("")) {
+                    title = id;
+                }
             }
 
             boolean hasAbstract = ((value & abstractMask) == abstractMask);
