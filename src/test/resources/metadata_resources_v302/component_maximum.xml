@@ -2753,7 +2753,7 @@
 			</ms:parameterInfo>
 		</ms:parameterInfos>
 		<ms:inputContentResourceInfo>
-			<ms:processingResourceType>userInputText</ms:processingResourceType>
+			<ms:processingResourceType>corpus</ms:processingResourceType>
 			<ms:dataFormats>
 				<ms:dataFormatInfo>
 					<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Pdf</ms:dataFormat>
@@ -2815,7 +2815,7 @@
 			<ms:samplesLocation>www</ms:samplesLocation>
 		</ms:inputContentResourceInfo>
 		<ms:outputResourceInfo>
-			<ms:processingResourceType>corpus</ms:processingResourceType>
+			<ms:processingResourceType>lexicalConceptualResource</ms:processingResourceType>
 			<ms:dataFormats>
 				<ms:dataFormatInfo>
 					<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Pls</ms:dataFormat>

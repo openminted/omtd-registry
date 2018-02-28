@@ -1,6 +1,5 @@
 package eu.openminted.registry.beans.security;
 
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -12,11 +11,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@TestPropertySource("classpath:application-test.properties")
 @ComponentScan("eu.openminted.registry.service.aai")
 public class UserInfoAAIConfig {
 	static final Logger logger = LogManager.getLogger(UserInfoAAIConfig.class);
@@ -38,7 +39,7 @@ public class UserInfoAAIConfig {
 	
 	@Bean
 	public HttpEntity<String> getHttpEntity() {				
-		//logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
+		logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
 		
 		String plainCreds = aaiUserName + ":" + aaiUserPassword;
 		//logger.info(plainCreds);

@@ -4,15 +4,22 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ResourceUtils;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -22,9 +29,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
  
-//@ActiveProfiles("test")
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes=RestTemplateBeanConfig.class, loader=AnnotationConfigContextLoader.class)
+@ActiveProfiles("test")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 public class TestAnnotatedCorpusMetadataGenerate {
 
 	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());
@@ -38,7 +45,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	@Mock
 	private ResourceCRUDService<Component> componentService;
 
-	@Autowired
+	@Mock
 	private UserInfoAAIRetrieve aaiUserService;
 	
 	
@@ -86,7 +93,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	
-	//@Test
+	@Test
 	public void testBasic() throws IOException {
 		
 	
@@ -99,6 +106,9 @@ public class TestAnnotatedCorpusMetadataGenerate {
 		
 		Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v301/" + inputCorpusId));
 		Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v301/" + componentId));
+		Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));	
 		
 		Corpus outputCorpus = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
 

@@ -5,21 +5,11 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.Date;
-import eu.openminted.registry.service.CorpusServiceImpl;
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -33,46 +23,15 @@ import java.util.*;
  */
 
 @org.springframework.stereotype.Component
-public class AnnotatedCorpusMetadataGenerate {
+public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGenerate {
 
     static final Logger logger = LogManager.getLogger(AnnotatedCorpusMetadataGenerate.class);
-
-    @Autowired
-    private CorpusServiceImpl corpusService;
-
-    @Autowired
-    @Qualifier("applicationService")
-    private ResourceCRUDService<Component> applicationService;
-
-    @Value("${registry.host}")
-    private String registryHost;
-
-    @Value("${webapp.front}/landingPage/corpus/")
-    private String landingPageDomain;
-
-    private GregorianCalendar gregory;
-
-    private ObjectMapper mapper;
-    
-    @Autowired
-    private UserInfoAAIRetrieve aaiUserInfoRetriever;
-         
   
-
-    public AnnotatedCorpusMetadataGenerate() {
-        mapper = new ObjectMapper();
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.setDateFormat(new ISO8601DateFormat());
-        gregory = new GregorianCalendar();
-        gregory.setTime(new java.util.Date());
-
-    }
-    
     public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException  {
     	Corpus corpus = new Corpus();
     	corpus.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
-    	String corpusOmtdId = corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
-    	corpus.setCorpusInfo(generateAnnotatedCorpusInfo(corpusOmtdId, inputCorpusId, componentId, userId, outputCorpusArchiveId));
+    	String workingCorpusOmtdId = corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+    	corpus.setCorpusInfo(generateAnnotatedCorpusInfo(workingCorpusOmtdId, inputCorpusId, componentId, userId, outputCorpusArchiveId));
     	//logger.info("Output corpus metadata::\n " + mapper.writeValueAsString(corpus)+"\n");
     	return corpus;
     }
@@ -94,36 +53,30 @@ public class AnnotatedCorpusMetadataGenerate {
         CorpusInfo corpusInfo = new CorpusInfo();
 
         ////////////////////////
-        // IdentificationInfo
-        IdentificationInfo identificationInfo = generateIdentificationInfo(inputCorpus, component);
-        corpusInfo.setIdentificationInfo(identificationInfo);
-        //logger.info("Identification Info:\n" + mapper.writeValueAsString(identificationInfo) +"\n");
-
+        // IdentificationInfo      
+        corpusInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
+        logger.info("Identification Info:\n" + mapper.writeValueAsString(corpusInfo.getIdentificationInfo()) +"\n");
 
         /////////////////////////
-        // VersionInfo
-        VersionInfo versionInfo = new VersionInfo();
-        versionInfo.setVersion("0.0.1");
-        corpusInfo.setVersionInfo(versionInfo);
-        //logger.info("Version info:\n" + mapper.writeValueAsString(versionInfo)+"\n");
+        // VersionInfo     
+        corpusInfo.setVersionInfo(generateVersionInfo());
+        logger.info("Version info:\n" + mapper.writeValueAsString(corpusInfo.getVersionInfo())+"\n");
 
         //////////////////////////
-        // ContactInfo
-        ContactInfo contactInfo = generateContactInfo(userId, corpusOmtdId);
-        corpusInfo.setContactInfo(contactInfo);
-        //logger.info("Contact info::\n" + mapper.writeValueAsString(contactInfo) + "\n");
+        // ContactInfo       
+        corpusInfo.setContactInfo(generateContactInfo(userId, corpusOmtdId));
+        logger.info("Contact info::\n" + mapper.writeValueAsString(corpusInfo.getContactInfo()) + "\n");
 
         //////////////////////////
-        // datasetDistributionInfo
-        DatasetDistributionInfo datasetDistributionInfo = generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId);
-        corpusInfo.setDatasetDistributionInfo(datasetDistributionInfo);
-        //logger.info("Distribution info:\n" + mapper.writeValueAsString(datasetDistributionInfo)+"\n");
+        // datasetDistributionInfo       
+        corpusInfo.setDatasetDistributionInfo(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
+        logger.info("Distribution info:\n" + mapper.writeValueAsString(corpusInfo.getDatasetDistributionInfo())+"\n");
 
         //////////////////////////
         // rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         corpusInfo.setRightsInfo(rightsInfo);
-        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
 
         //////////////////////////
         // resourceCreationInfo
@@ -241,96 +194,6 @@ public class AnnotatedCorpusMetadataGenerate {
 		return annotatedCorpusInfo;
 	}
 
-	private RightsInfo generateRightsInfo(Corpus inputCorpus, Component component) {
-
-		RightsInfo rightsInfo = new RightsInfo();
-		
-		// rightsInfo.licenceInfos.licenceInfo
-		List<LicenceInfo> licenceInfos = new ArrayList<>();
-		// TODO that license CC0 is chosen by default to avoid validation error
-		// User must select the appropriate license.
-		LicenceInfo licenceInfo = new LicenceInfo();
-		licenceInfo.setLicence(LicenceEnum.CC0_1_0);			
-		licenceInfos.add(licenceInfo);
-		rightsInfo.setLicenceInfos(licenceInfos);
-		
-		// rightsInfo.rightsStatement
-		// TODO that right statement restricted access is chosen by default to avoid validation error
-		// User must select the appropriate right statement.
-		rightsInfo.setRightsStatement(RightsStatementEnum.RESTRICTED_ACCESS);
-		
-		// rightsInfo.attributionText
-		// TODO replace <annotated_corpus_licence when user selects the correct licence.
-		String  attributionText  =  "The processing of <input_corpus_name>(by <input_corpus_creator_name>) " +
-	       "performed under <input_corpus_licence> has been enabled by the OpenMinTeD infrastructure " +
-	       "using the <component_name>. <annotated_corpus_name> is licensed under " +
-	       "<annotated_corpus_licence>.";
-		attributionText = attributionText.replaceAll("<input_corpus_name>", 
-				getInputCorpusName(inputCorpus));
-		String inputCorpusCreatorName = getInputCorpusCreatorName(inputCorpus);
-		if (inputCorpusCreatorName != null) {
-			attributionText = attributionText.replaceAll("<input_corpus_creator_name>",
-					inputCorpusCreatorName);
-		}
-		else {
-			attributionText = attributionText.replaceAll("\\(by <input_corpus_creator_name>\\)",
-					"");
-		}
-		attributionText = attributionText.replaceAll("<input_corpus_licence>", 
-				getInputCorpusLicence(inputCorpus));
-		attributionText = attributionText.replaceAll("<component_name>",
-				getComponentName(component));
-		attributionText = attributionText.replaceAll("<annotated_corpus_name>",
-				getCorpusName(inputCorpus, component));
-		
-	
-		rightsInfo.setAttributionText(attributionText);
-		
-		return rightsInfo;
-	}
-
-	private String getInputCorpusCreatorName(Corpus inputCorpus) {
-		String creatorsName = null;
-		if (inputCorpus.getCorpusInfo().getResourceCreationInfo() != null ) {
-			List<ActorInfo> creatorsList = inputCorpus.getCorpusInfo().getResourceCreationInfo().getResourceCreators();
-			//logger.info("Creators list has size " + creatorsList.size());
-			creatorsName = "";
-			for (int i = 0; i < creatorsList.size(); i++) {
-				if (creatorsList.get(i).getRelatedPerson() != null) {
-					creatorsName += creatorsList.get(i).getRelatedPerson().getSurname();
-					//logger.info("Creators name : " + creatorsName);
-					if (creatorsList.get(i).getRelatedPerson().getGivenName() != null) {
-						creatorsName += " " + creatorsList.get(i).getRelatedPerson().getGivenName();
-						//logger.info("Creators name : " + creatorsName);
-					}
-				}
-				else if(creatorsList.get(i).getRelatedGroup() != null) {
-					List<GroupName> relatedGroups = creatorsList.get(i).getRelatedGroup().getGroupNames();
-					for (int j = 0; j < relatedGroups.size(); j++) {
-						creatorsName += relatedGroups.get(j).getValue();
-						if (j+1 != relatedGroups.size()) {
-							creatorsName += ", ";
-						} 						
-					}					
-				}
-				else if (creatorsList.get(i).getRelatedOrganization() != null) {
-					List<OrganizationName> organizationsName = creatorsList.get(i).getRelatedOrganization().getOrganizationNames();
-					for (int j = 0; j < organizationsName.size(); j++) {
-						creatorsName += organizationsName.get(j).getValue();
-						if (j+1 != organizationsName.size()) {
-							creatorsName += ", ";
-						} 						
-					}	
-				}
-				
-				if (i+1 != creatorsList.size()) {
-					creatorsName += ", ";
-				} 
-			}
-		}		
-		//logger.info("CreatorsName is : " + creatorsName);
-		return creatorsName;
-	}
 
 	private RelationInfo generateRelationInfo(Corpus inputCorpus) {
 		
@@ -382,58 +245,10 @@ public class AnnotatedCorpusMetadataGenerate {
 		return resourceCreationInfo;
 	}
 
-	private String getInputCorpusName(Corpus inputCorpus) {
-		String inputCorpusName = getEnglishResourceName(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceNames());
-		return inputCorpusName;
-	}
-	
 
-	private String getInputCorpusLicence(Corpus inputCorpus) {
-		String inputCorpusLicence = inputCorpus.getCorpusInfo().getRightsInfo().getLicenceInfos().get(0).getLicence().toString();
-		return inputCorpusLicence;
-	}
 	
-	private String getComponentName(Component component) {
-		String componentName = getEnglishResourceName(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		return componentName;
-	}
-	
-	
-	private String getEnglishResourceName(List<ResourceName> resourceNames) {
-		
-		String resourceName = resourceNames.get(0).getValue();
-		for (int i = 0; i < resourceNames.size(); i++) {
-			if (resourceNames.get(i).getLang().equals("en")) {
-				resourceName = resourceNames.get(i).getValue();
-			}
-		}
-		
-		return resourceName;
-	}
-	
-	private String getEnglishDescription(List<Description> resourceNames) {
-			
-			String resourceName = resourceNames.get(0).getValue();
-			for (int i = 0; i < resourceNames.size(); i++) {
-				if (resourceNames.get(i).getLang().equals("en")) {
-					resourceName = resourceNames.get(i).getValue();
-				}
-			}
-			
-			return resourceName;
-		}
-	
-	
-	
-	private String getComponentVersion(Component component) {
-		String componentVersion = component.getComponentInfo().getVersionInfo().getVersion();
-		if (componentVersion == null) {			
-			componentVersion = component.getComponentInfo().getVersionInfo().getVersionDate();
-		}		
-		return componentVersion;
-	}
-	
-	private String getCorpusName(Corpus inputCorpus, Component component) {
+	@Override
+	protected String getWorkingResourceName(Corpus inputCorpus, Component component) {
 		String corpusName = "[input_corpus_name] processed by [component_name]";
 		corpusName = corpusName.replaceAll("\\[input_corpus_name\\]", 
 				getInputCorpusName(inputCorpus));			
@@ -443,205 +258,45 @@ public class AnnotatedCorpusMetadataGenerate {
 		return corpusName;
 	}	
 	
-	private IdentificationInfo generateIdentificationInfo(Corpus inputCorpus, Component component) {
+	@Override
+	protected IdentificationInfo generateIdentificationInfo(Corpus inputCorpus, Component component) {
 		
-		String inputCorpusDescription = getEnglishDescription(inputCorpus.getCorpusInfo().getIdentificationInfo().getDescriptions());		  
 		String descriptionDescription  =  "[input_corpus_name] processed by [component_name] " +
 					"version [component_version]." + "[input_corpus_description]"; 		    
 		
 		IdentificationInfo identificationInfo = new IdentificationInfo();
 		
 		// identificationInfo.resourceNames.resourceName		
-		identificationInfo.setResourceNames(new ArrayList<>());				
-		ResourceName resourceName = new ResourceName();	
-		resourceName.setLang("en");
-		resourceName.setValue(getCorpusName(inputCorpus, component));
-		identificationInfo.getResourceNames().add(resourceName);
+		identificationInfo.setResourceNames(generateResourceNameList(inputCorpus, component));
 		
 		// identificationInfo.descriptions.description
-		descriptionDescription = descriptionDescription.replaceAll("\\[input_corpus_name\\]", 
-			getInputCorpusName(inputCorpus));
-		descriptionDescription = descriptionDescription.replaceAll("\\[input_corpus_description\\]", 
-			inputCorpusDescription);
-		descriptionDescription = descriptionDescription.replaceAll("\\[component_name\\]", 
-			getComponentName(component));		
-		descriptionDescription = descriptionDescription.replaceAll("\\[component_version\\]", 
-				getComponentVersion(component));
-		
-		identificationInfo.setDescriptions(new ArrayList<>());
-		Description description = new Description();
-		description.setLang("en");
-		description.setValue(descriptionDescription);
-		identificationInfo.getDescriptions().add(description);
-		
+		identificationInfo.setDescriptions(generateDescriptionList(inputCorpus, component, descriptionDescription));
+	
 		// identificationInfo.resourceIdentifiers.resourceIdentifier
-		ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
-		resourceIdentifier.setValue(UUID.randomUUID().toString());
-		resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-		identificationInfo.getResourceIdentifiers().add(resourceIdentifier);
+		identificationInfo.setResourceIdentifiers(generateResourceIdentifierList());
 		
 		return identificationInfo;
 	}
-	
-	/*
-	 * Set the contact information of the annotated corpus as the user
-	 * that run the workflow
-	 */
-	private ContactInfo generateContactInfo(String userId, String corpusOmtdId) throws JsonParseException, JsonMappingException, IOException {		
-		ContactInfo contactInfo = new ContactInfo();
-		
-		// contactPoint	
-		contactInfo.setContactPoint(landingPageDomain + corpusOmtdId);
-		
-		// contactType
-		contactInfo.setContactType(ContactTypeEnum.LANDING_PAGE);
-		
-		// contactPersons.contactPerson
-		List<PersonInfo> contactPersons = new ArrayList<>();
-		PersonInfo contactPerson = generatePersonInfo(userId, false);
-		contactPersons.add(contactPerson);
-		contactInfo.setContactPersons(contactPersons);
-		return contactInfo;		
+
+
+	@Override
+	protected String generateWorkingResourceLandingPage(String resourceOmtdId) {
+		 
+		return landingPageDomain + "/landingPage/corpus/" + resourceOmtdId;
 	}
-	
-	/* Set boolean to true to add the OMTD id in the user info. For the metadataHeaderInfo */
-	private PersonInfo generatePersonInfo(String userId, boolean addOMTDPersonId) throws JsonParseException, JsonMappingException, IOException {
-		PersonInfo personInfo = new PersonInfo();
-		
-		// Retrieve user information from aai service
-		int coId =  aaiUserInfoRetriever.getCoId(userId);
-		Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);  
-		String surname = userNames.getKey();
-		String givenName =  userNames.getValue();
-		String email = aaiUserInfoRetriever.getEmail(coId);
-		
-		// User's name
-		personInfo.setSurname(surname);
-		personInfo.setGivenName(givenName);
-		
-		if (addOMTDPersonId) {
-			// Identifiers
-			List<PersonIdentifier> personIdentifiers = new ArrayList<>();
-			PersonIdentifier personID = new PersonIdentifier();
-			personID.setValue(userId);
-			personID.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
-			personIdentifiers.add(personID);
-			personInfo.setPersonIdentifiers(personIdentifiers);
-		}
-		
-		// User's communication info
-		CommunicationInfo  communicationInfo = new CommunicationInfo();
-		List<String> emails = new ArrayList<>();
-		emails.add(email);
-		communicationInfo.setEmails(emails);		
-		personInfo.setCommunicationInfo(communicationInfo);
-		logger.info("Person info as retrieved from aai :: " + mapper.writeValueAsString(personInfo));
-		return personInfo;
-		
+
+
+	@Override
+	protected String generateDistributionLocation(String outputArchiveId) {
+		return registryHost + "/request/corpus/download?archiveId=" + outputArchiveId;
 	}
-	
-	private  DatasetDistributionInfo generateDatasetDistributionInfo(Corpus inputCorpus, Component component, String outputCorpusArchiveId) {
-				    
-		DatasetDistributionInfo datasetDistributionInfo = new DatasetDistributionInfo();
-		
-	    // datasetDistributionInfo.distributionMedium
-	    datasetDistributionInfo.setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
-	    
-	    // datasetDistributionInfo.distributionLocation
-	    datasetDistributionInfo.setDistributionLocation(registryHost + "/request/corpus/download?archiveId=" + outputCorpusArchiveId);
-	    
-	    // datasetDistributionInfo.sizes	
-		datasetDistributionInfo.setSizes(inputCorpus.getCorpusInfo().getDatasetDistributionInfo().getSizes());
-		
-		// datasetDistributionInfo.textFormats.textFormatInfo.dataFormatInfo
-		if (component.getComponentInfo().getOutputResourceInfo() != null) {
-		
-			List<DataFormatInfo> dataFormats = component.getComponentInfo().getOutputResourceInfo().getDataFormats();			
-			if (dataFormats != null && dataFormats.size() != 0) {
-				
-				List<TextFormatInfo> textFormats = new ArrayList<>();
-				for (int i = 0; i < dataFormats.size(); i++) {
-					TextFormatInfo textFormatInfo = new TextFormatInfo();
-					textFormatInfo.setDataFormatInfo(dataFormats.get(i));
-					textFormats.add(textFormatInfo);
-				}	
-				datasetDistributionInfo.setTextFormats(textFormats);
-			}
-			// TODO Added a dummy node just for passing validation of add in registry 		
-			else {
-				List<TextFormatInfo> textFormats = new ArrayList<>();
-				TextFormatInfo textFormatInfo = new TextFormatInfo();
-				DataFormatInfo dataFormatInfo = new DataFormatInfo();
-				dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
-				textFormatInfo.setDataFormatInfo(dataFormatInfo);
-				textFormats.add(textFormatInfo);
-				datasetDistributionInfo.setTextFormats(textFormats);
-			}
-		}
-		// TODO Added a dummy node just for passing validation of add in registry		
-		else {
-			List<TextFormatInfo> textFormats = new ArrayList<>();
-			TextFormatInfo textFormatInfo = new TextFormatInfo();
-			DataFormatInfo dataFormatInfo = new DataFormatInfo();
-			dataFormatInfo.setDataFormat(DataFormatType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_XMI);
-			textFormatInfo.setDataFormatInfo(dataFormatInfo);
-			textFormats.add(textFormatInfo);
-			datasetDistributionInfo.setTextFormats(textFormats);
-		}
-		
-		// datasetDistributionInfo.characterEncodings
-		// If exists in component get from compoment
-		if (component.getComponentInfo().getOutputResourceInfo() != null &&
-				component.getComponentInfo().getOutputResourceInfo().getCharacterEncodings() != null) {
-			
-			
-			List<CharacterEncodingEnum> componentCharacterEncodings = component.getComponentInfo().getOutputResourceInfo().getCharacterEncodings();			
-			List<CharacterEncodingInfo> characterEncodings = new ArrayList<>();
-			
-			for (int i = 0; i < componentCharacterEncodings.size(); i++) {
-				CharacterEncodingInfo cei = new CharacterEncodingInfo();
-				cei.setCharacterEncoding(componentCharacterEncodings.get(i));
-				characterEncodings.add(cei);				
-			}
-						
-			datasetDistributionInfo.setCharacterEncodings(characterEncodings);
-		}
-		// otherwise get from corpus
-		else {				
-			datasetDistributionInfo.setCharacterEncodings(inputCorpus.getCorpusInfo().getDatasetDistributionInfo().getCharacterEncodings());
-		}
-				
-	    return datasetDistributionInfo;
+
+
+	@Override
+	protected List<SizeInfo> generateDistributionSizeInfo(Corpus inputCorpus) {
+		return inputCorpus.getCorpusInfo().getDatasetDistributionInfo().getSizes();
 	}
 
 	
-	 public MetadataHeaderInfo generateMetadataHeaderInfo(String userId) throws IOException{
-		 
-		 	MetadataHeaderInfo metadataHeaderInfo = new MetadataHeaderInfo();
-		 	
-		     // Set metadata record identifier
-	        MetadataIdentifier identifier = new MetadataIdentifier();
-	        identifier.setValue(UUID.randomUUID().toString());		       
-	        identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
-	        metadataHeaderInfo.setMetadataRecordIdentifier(identifier);	        
 	
-		 	// Set creation date and last date updated
-		 	XMLGregorianCalendar calendar = null;
-	        try {
-	            calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-	        } catch (DatatypeConfigurationException e) {
-	            e.printStackTrace();
-	        }
-	        metadataHeaderInfo.setMetadataCreationDate(calendar);
-	        metadataHeaderInfo.setMetadataLastDateUpdated(calendar);
-	        
-	   
-	        // Set metadata creator
-	        metadataHeaderInfo.setMetadataCreators(new ArrayList<PersonInfo>());
-	        PersonInfo personInfo = generatePersonInfo(userId, true);
-	        metadataHeaderInfo.getMetadataCreators().add(personInfo);
-	        
-	        //logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
-	        return metadataHeaderInfo;
-	}
 }
