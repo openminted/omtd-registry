@@ -59,26 +59,73 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     @Autowired
     private RedisTemplate<String, CorpusContent> template;
 
+    private final String redis_prefix = "corpuscontent:id:";
 
+
+    @Override
+    public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
+        String archiveId = resolveCorpusArchive(corpusId);
+
+        CorpusContent content = null;
+        content = getContent(corpusId);  // TODO: redis
+
+        if (content == null) {
+            logger.info("CorpusContent is not saved in redis, communicating with store service ...");
+            content = new CorpusContent(archiveId);
+
+            // analyze file-paths and create publication entries
+            createPublicationEntries(content);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+            try {
+                logger.debug(mapper.writeValueAsString(content));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            addContent(corpusId, content);  // TODO: redis
+        }
+        return getCorpusSubset(content, from, size);
+    }
+
+
+    /**
+     * Saves {@link CorpusContent} with ID {@param corpusId} to Redis.
+     *
+     * @param corpusId
+     * @param content
+     */
     private void addContent(String corpusId, CorpusContent content) {
-        if (!template.hasKey(corpusId)) {
-            template.opsForList().leftPush(corpusId, content);
-            template.expire(corpusId, 5, TimeUnit.MINUTES);
+        String key = redis_prefix + corpusId;
+        if (!template.hasKey(key)) {
+            template.opsForList().leftPush(key, content);
+            template.expire(key, 5, TimeUnit.MINUTES);
         }
 
     }
 
+
+    /**
+     * Retrieves {@link CorpusContent} from Redis.
+     *
+     * @param corpusId
+     * @return {@link CorpusContent}
+     */
     private CorpusContent getContent(String corpusId) {
-        if (template.hasKey(corpusId)) {
-            CorpusContent content;
-            content = template.opsForList().leftPop(corpusId);
-            addContent(corpusId, content);
-            return template.opsForList().rightPopAndLeftPush(corpusId, corpusId);
+        String key = redis_prefix + corpusId;
+        if (template.hasKey(key)) {
+            return template.opsForList().rightPopAndLeftPush(key, key);
         } else {
             return null;
         }
     }
 
+
+    /**
+     * Resolves archiveId from corpusId.
+     *
+     * @param corpusId
+     * @return archiveId
+     */
     private String resolveCorpusArchive(String corpusId) {
         final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
         Corpus corpus = corpusService.get(corpusId);
@@ -96,31 +143,6 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         return archiveId;
     }
 
-
-    @Override
-    public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
-        String archiveId = resolveCorpusArchive(corpusId);
-
-        CorpusContent content = null;
-//        content = getContent(corpusId);  // TODO: redis
-
-        if (content == null) {
-            logger.info("CorpusContent is not saved in redis, communicating with store service ...");
-            content = new CorpusContent(archiveId);
-
-            // analyze file-paths and create publication entries
-            createPublicationEntries(content);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT,true);
-            try {
-                logger.debug(mapper.writeValueAsString(content));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            addContent(corpusId, content);  // TODO: redis
-        }
-        return getCorpusSubset(content, from, size);
-    }
 
     /**
      * Downloads metadata files to extract publication titles.
@@ -227,6 +249,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Populates the list of Publications.
