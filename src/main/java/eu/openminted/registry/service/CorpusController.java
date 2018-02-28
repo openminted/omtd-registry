@@ -5,6 +5,13 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.PublicationInfo;
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.CloseShieldInputStream;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.Parser;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,9 +21,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -79,8 +89,35 @@ public class CorpusController extends OmtdRestController<Corpus> {
     @ResponseBody
     public void downloadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String filename = request.getParameter("path");
+
+        InputStream is = storeService.downloadFile(filename);
+
+        ContentHandler contenthandler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        metadata.set(Metadata.RESOURCE_NAME_KEY, filename);
+        Parser parser = new AutoDetectParser();
+        ParseContext context = new ParseContext();
+
+        try {
+            parser.parse(is, contenthandler, metadata, context);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (TikaException e) {
+            e.printStackTrace();
+        }
+
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
-        IOUtils.copyLarge(storeService.downloadFile(request.getParameter("path")), response.getOutputStream());
+        response.setContentType(metadata.get(Metadata.CONTENT_TYPE));
+
+        IOUtils.copy(storeService.downloadFile(filename), response.getOutputStream());
+    }
+
+    @RequestMapping(value = "showFile", method = RequestMethod.GET)
+    @ResponseBody
+    public void showFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String filename = request.getParameter("path");
+        response.setHeader("Content-Disposition", "inline; filename=\"" + filename + "\"");
+        IOUtils.copy(storeService.downloadFile(filename), response.getOutputStream());
     }
 
 }
