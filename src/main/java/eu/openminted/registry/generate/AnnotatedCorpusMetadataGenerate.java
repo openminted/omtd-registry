@@ -82,15 +82,15 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         corpusInfo.setResourceCreationInfo(resourceCreationInfo);
-        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////
         // relations.relationInfo
-        List<RelationInfo> relations = new ArrayList<>();
-        RelationInfo relationInfo = generateRelationInfo(inputCorpus);
-        relations.add(relationInfo);
+        List<RelationInfo> relations = new ArrayList<>();        
+        relations.add(generateRelationInfo(inputCorpus));
+        relations.add(generateRelationInfo(component));
         corpusInfo.setRelations(relations);
-        //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relationInfo) + "\n");                
+        logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");                
 
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
@@ -189,13 +189,13 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
 		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
-		annotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
-		                
+		annotatedCorpusInfo.setGeographicClassifications(geographicClassifications);		                
+		
 		return annotatedCorpusInfo;
 	}
-
-
-	private RelationInfo generateRelationInfo(Corpus inputCorpus) {
+    
+    @Override    
+	protected RelationInfo generateRelationInfo(Corpus inputCorpus) {
 		
 		RelationInfo relationInfo = new RelationInfo();
 		// relationType
@@ -213,38 +213,27 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		
 		return relationInfo;
 	}
-
-	private ResourceCreationInfo generateResourceCreationInfo(String userId) throws JsonParseException, JsonMappingException, IOException {
-		ResourceCreationInfo resourceCreationInfo = new ResourceCreationInfo();
+    
+    @Override        
+	protected RelationInfo generateRelationInfo(Component component) {
 		
-
-		// resourceCreators.resourceCreator.relatedPerson
-		List<ActorInfo> resourceCreators = new ArrayList<>();
-		ActorInfo actorInfo = new ActorInfo();
-		actorInfo.setActorType(ActorTypeEnum.PERSON);		
-		actorInfo.setRelatedPerson(generatePersonInfo(userId, false));
-		resourceCreators.add(actorInfo);
-		resourceCreationInfo.setResourceCreators(resourceCreators);
+		RelationInfo relationInfo = new RelationInfo();
+		// relationType
+		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
 		
-		// resourceCreationDate
-		DateCombination creationDate = new DateCombination();
-		XMLGregorianCalendar calendar = null;
-		try {
-			calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
-	    } catch (DatatypeConfigurationException e) {
-	    	e.printStackTrace();
-	    }
-		Date date = new Date();
-		date.setYear(calendar.getYear());
-		date.setMonth(calendar.getMonth());
-		date.setDay(calendar.getDay());
-		
-		creationDate.setDate(date);
-		resourceCreationInfo.setCreationDate(creationDate);
-	
-		return resourceCreationInfo;
+		// relatedResource
+		RelatedResource componentRR = new RelatedResource();
+		ResourceIdentifier identifier = new ResourceIdentifier();
+		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+		componentRR.setResourceIdentifiers(Collections.singletonList(identifier));
+//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
+		componentRR.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
+		relationInfo.setRelatedResource(componentRR);
+			
+		return relationInfo;
 	}
-
+	
 
 	
 	@Override
