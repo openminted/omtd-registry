@@ -18,16 +18,16 @@ public class DockerImageProviderImpl implements DockerImageProvider{
 	public String getImage(Component metaComponent) {
 		String imageName = "NOT FOUND";
 		
-		String imageIDSelector = "";
+		String imageSelector = "";
 		
 		if(Utils.isWebService(metaComponent.getComponentInfo().getDistributionInfos())){
-			imageIDSelector = ComponentDistributionFormEnum.WEB_SERVICE.value();
+			imageSelector = ComponentDistributionFormEnum.WEB_SERVICE.value();
 			
 		}else{
-			imageIDSelector = metaComponent.getComponentInfo().getComponentCreationInfo().getFramework().value();
+			imageSelector = metaComponent.getComponentInfo().getComponentCreationInfo().getFramework().value();
 		}
 		
-		imageName = env.getProperty(dockerImageProperty + "." + imageIDSelector);
+		imageName = env.getProperty(dockerImageProperty + "." + imageSelector);
 		
 		return imageName;
 	}

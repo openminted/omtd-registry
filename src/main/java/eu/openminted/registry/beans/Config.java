@@ -22,6 +22,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
@@ -99,9 +101,24 @@ public class Config {
     }
 
     @Bean
+    public StringRedisSerializer stringRedisSerializer() {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        return stringRedisSerializer;
+    }
+
+    @Bean
+    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer() {
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer =
+                new GenericJackson2JsonRedisSerializer();
+        return genericJackson2JsonRedisJsonSerializer;
+    }
+
+    @Bean
     public RedisTemplate redisTemplate() {
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(connectionFactory());
+        template.setKeySerializer(stringRedisSerializer());
+        template.setValueSerializer(genericJackson2JsonRedisJsonSerializer());
         return template;
     }
 
