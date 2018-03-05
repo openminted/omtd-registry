@@ -116,6 +116,10 @@ public class JMSConsumer {
         Resource resource = fromJMS(resourceApplication);
         // Deserialize it to a TDM Component object.
         Component application = parserPool.deserialize(resource, Component.class).get();
+        if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
+            logger.info("application with id " + application.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue() + " has a workflow definition");
+            return;
+        }
         // Register it to workflow engine.
         WorkflowEngineComponent wec = workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(application);
         String workflowDefinition = workflowGenerate.generateResource(wec);
