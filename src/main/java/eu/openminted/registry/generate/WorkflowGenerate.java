@@ -50,7 +50,6 @@ public class WorkflowGenerate {
             String toolState = step2.get("tool_state").asText();
             toolState = toolState.replace("<inputFiles>",component.getName() + "_InputFiles");
             step2.put("tool_state",toolState);
-            System.out.println(node.toString());
             return node.toString();
         } catch (IOException e) {
             throw new ServiceException(e);
