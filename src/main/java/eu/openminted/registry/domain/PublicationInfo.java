@@ -6,7 +6,7 @@ package eu.openminted.registry.domain;
  * @author spyroukostas
  */
 
-public class PublicationInfo {
+public class PublicationInfo implements Comparable<PublicationInfo> {
 
     private String id;
     private String title;
@@ -152,4 +152,8 @@ public class PublicationInfo {
         this.annotations_path = annotations_path;
     }
 
+    @Override
+    public int compareTo(PublicationInfo info) {
+        return this.getTitle().compareToIgnoreCase(info.getTitle());
+    }
 }
