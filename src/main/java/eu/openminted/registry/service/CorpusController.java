@@ -4,6 +4,8 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.PublicationInfo;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.CloseShieldInputStream;
@@ -42,7 +44,7 @@ public class CorpusController extends OmtdRestController<Corpus> {
 
     @Autowired
     @SuppressWarnings("unchecked")
-    CorpusController(@Qualifier("corpusService") ResourceCRUDService<Corpus> service) {
+    CorpusController(@Qualifier("corpusService") CorpusService service) {
         super((ValidateInterface<Corpus>) service);
     }
 
@@ -51,9 +53,16 @@ public class CorpusController extends OmtdRestController<Corpus> {
             MediaType.APPLICATION_JSON_UTF8_VALUE
     })
     public ResponseEntity<Corpus> saveCorpusWithArchiveId(@RequestParam("archiveId") String archiveId, @RequestBody Corpus corpus) {
-        corpus.getCorpusInfo().getDatasetDistributionInfo().setDistributionLocation(archiveId);
-        service.add(corpus);
-        return ResponseEntity.ok(corpus);
+        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId);
+        return ResponseEntity.ok(corpusRet);
+    }
+
+    @RequestMapping(value = "zipUpload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Corpus> uploadCorpus(@RequestPart("file") MultipartFile file,
+                                               @RequestPart("corpus") Corpus corpus) throws IOException {
+        String archiveId = storeService.uploadCorpus(file.getName(), file.getInputStream());
+        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId);
+        return ResponseEntity.ok(corpusRet);
     }
 
     @RequestMapping(path = "getCorpusContent/{corpusId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
