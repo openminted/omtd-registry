@@ -67,7 +67,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
         String archiveId = resolveCorpusArchive(corpusId);
 
         CorpusContent content = null;
-        content = getContent(corpusId);  // TODO: redis
+        content = getContent(corpusId);
 
         if (content == null) {
             logger.info("CorpusContent is not saved in redis, communicating with store service ...");
@@ -75,6 +75,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
             // analyze file-paths and create publication entries
             createPublicationEntries(content);
+            Collections.sort(content.getPubInfo());
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
             try {
@@ -82,7 +83,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            addContent(corpusId, content);  // TODO: redis
+            addContent(corpusId, content);
         }
         return getCorpusSubset(content, from, size);
     }
