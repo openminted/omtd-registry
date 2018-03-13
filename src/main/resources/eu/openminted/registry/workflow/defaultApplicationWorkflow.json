@@ -57,7 +57,7 @@
       },
       "post_job_actions": {},
       "tool_id": "mvn:de.tudarmstadt.ukp.dkpro.core:de.tudarmstadt.ukp.dkpro.core.io.pdf-asl:1.9.0-SNAPSHOT#de.tudarmstadt.ukp.dkpro.core.io.pdf.PdfReader",
-      "tool_state": "{\"__page__\": null, \"endPage\": \"\\\"-1\\\"\", \"language\": \"\\\"\\\"\", \"headingType\": \"\\\"<built-in>\\\"\", \"__rerun_remap_job_id__\": null, \"substitutionTableLocation\": \"\\\"<built-in>\\\"\", \"patterns\": \"\\\"\\\"\", \"startPage\": \"\\\"-1\\\"\", \"includeHidden\": \"\\\"false\\\"\", \"paragraphType\": \"\\\"<built-in>\\\"\", \"logFreq\": \"\\\"1\\\"\", \"sourceLocation\": \"\\\"\\\"\", \"useDefaultExcludes\": \"\\\"true\\\"\", \"PdfReader_InputFiles\": \"null\"}",
+      "tool_state": "{\"__page__\": null, \"endPage\": \"\\\"-1\\\"\", \"language\": \"\\\"\\\"\", \"headingType\": \"\\\"<built-in>\\\"\", \"__rerun_remap_job_id__\": null, \"substitutionTableLocation\": \"\\\"<built-in>\\\"\", \"patterns\": \"\\\"[+]**/*.pdf\\\"\", \"startPage\": \"\\\"-1\\\"\", \"includeHidden\": \"\\\"false\\\"\", \"paragraphType\": \"\\\"<built-in>\\\"\", \"logFreq\": \"\\\"1\\\"\", \"sourceLocation\": \"\\\"\\\"\", \"useDefaultExcludes\": \"\\\"true\\\"\", \"PdfReader_InputFiles\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
       "tool_version": "1.9.0-SNAPSHOT",
       "type": "tool",
       "uuid": null,
