@@ -89,7 +89,7 @@
       },
       "post_job_actions": {},
       "tool_id": null,
-      "tool_state": "{\"<inputFiles>\": \"null\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"__page__\": null, \"__rerun_remap_job_id__\": null, \"component_InputFiles\": \"null\"}",
       "tool_version": null,
       "type": "tool",
       "uuid": null,

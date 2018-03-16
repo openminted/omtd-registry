@@ -47,9 +47,6 @@ public class WorkflowGenerate {
             input.put("id",1);
             input.put("output_name","output");
             inputConnections.set(component.getName() + "_InputFiles",input);
-            String toolState = step2.get("tool_state").asText();
-            toolState = toolState.replace("<inputFiles>",component.getComponentID() + "_InputFiles");
-            step2.put("tool_state",toolState);
             return node.toString();
         } catch (IOException e) {
             throw new ServiceException(e);
