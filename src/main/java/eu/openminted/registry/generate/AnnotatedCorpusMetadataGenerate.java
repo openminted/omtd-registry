@@ -143,6 +143,14 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 			RelatedResource annotationResource = component.getComponentInfo().getOutputResourceInfo().getAnnotationResource();
 			annotationInfo.setAnnotationResource(annotationResource);
 		}
+		else {
+			// TODO Added a dummy node just for passing validation of add in registry 	
+			List<AnnotationTypeInfo> annotationTypes = new ArrayList<>();
+			AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
+			annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
+			annotationTypes.add(annotationTypeInfo);
+			annotationInfo.setAnnotationTypes(annotationTypes);
+		}
 		
 		// annotationInfo.annotationMode
 		annotationInfo.setAnnotationMode(ProcessMode.AUTOMATIC);
