@@ -2,11 +2,13 @@ package eu.openminted.registry.messaging;
 
 import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
@@ -16,15 +18,32 @@ import java.util.UUID;
 
 
 @Configuration
+
 public class OperationPublisherApp {
 	
 	static final Logger logger = LogManager.getLogger(OperationPublisherApp.class.getName());
 	
-	private static String messagesHost = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
+	private static String DEFAULT_BROKER_URL = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
 
-	@Value("${workflows.execution:workflows.execution}")
-	private static String topic;
-
+	//@Value("${workflows.execution:workflows.execution}")
+	private static String ORDER_QUEUE = "workflows.execution";	
+ 
+    @Bean
+    public ActiveMQConnectionFactory connectionFactory(){
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+        connectionFactory.setBrokerURL(DEFAULT_BROKER_URL);
+        //connectionFactory.setTrustedPackages(Arrays.asList("com.websystique.spring","java.util"));
+        return connectionFactory;
+    }
+     
+    @Bean
+    public JmsTemplate jmsQueueTemplate(){
+        JmsTemplate template = new JmsTemplate();
+        template.setConnectionFactory(connectionFactory());
+        template.setDefaultDestinationName(ORDER_QUEUE);
+        return template;
+    }     
+	
 	@Autowired
 	JmsTemplate jmsQueueTemplate;
 	
@@ -67,9 +86,9 @@ public class OperationPublisherApp {
         // Publish message
 		logger.info("Sending message - workflow execution :: " + msgPended.toString() );
 		JmsTemplate jmsTemplate = (JmsTemplate) context.getBean("jmsQueueTemplate");
-        jmsTemplate.convertAndSend(topic, msgPended);
+        jmsTemplate.convertAndSend(ORDER_QUEUE, msgPended);
               
-     
+   /*  
         //////////////////
         // Step 2 - A workflow is set to STARTED in the workflow engine   
         Thread.sleep(2000);
@@ -79,7 +98,7 @@ public class OperationPublisherApp {
                             
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgStarted.toString() );
-		jmsTemplate.convertAndSend(topic, msgStarted);
+		jmsTemplate.convertAndSend(ORDER_QUEUE, msgStarted);
  
 		
 		 //////////////////
@@ -94,8 +113,8 @@ public class OperationPublisherApp {
     		
 		// Publish message
 		logger.info("Sending message - workflow execution :: " + msgFinished.toString() );
-		jmsTemplate.convertAndSend(topic, msgFinished);
- 
+		jmsTemplate.convertAndSend(ORDER_QUEUE, msgFinished);
+ */
 	/*	
 		 //////////////////
         // Step 4 - A workflow is set to other states in the workflow engine   

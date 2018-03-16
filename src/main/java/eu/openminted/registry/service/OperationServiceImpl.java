@@ -290,12 +290,12 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             throw new RuntimeException(e);
         }
 
-            logger.debug(url.toString());
-            ResponseEntity<String> executionId;
-            Operation operation;
+        logger.debug(url.toString());
+        ResponseEntity<String> executionId;
+        Operation operation;
         synchronized (OperationServiceImpl.class) {
-            logger.info("Starting workflow job");
-            logger.info(this);
+        	logger.info("Starting workflow job");
+        	logger.info(this);
             executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
             add(operation);
