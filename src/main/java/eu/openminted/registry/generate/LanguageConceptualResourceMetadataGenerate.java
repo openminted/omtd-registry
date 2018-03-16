@@ -38,7 +38,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
     	lcr.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String lcrOmtdId = lcr.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();    
     	lcr.setLexicalConceptualResourceInfo(generateLanguageConceptualResourceInfo(lcrOmtdId, inputCorpusId, componentId, userId, outputCorpusArchiveId));
-    	logger.info("Output corpus metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
+    	logger.info("Output lrc metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
     	return lcr;
     }
 
@@ -217,27 +217,55 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 
 		LexicalConceptualResourceTextInfo lcrTextInfo = new LexicalConceptualResourceTextInfo();
 
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
+		// lexicalConceptualResourceTextInfo.lingualityInfo
 		LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
 		lcrTextInfo.setLingualityInfo(lingualityInfo);
 
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
+		// lexicalConceptualResourceTextInfo.languages
 		List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
 		lcrTextInfo.setLanguages(languages);
 	       								
 			
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
-		//List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
-		//lcrTextInfo.setTimeCoverage(timeClassifications);
-	
+		// lexicalConceptualResourceTextInfo.timeCoverage
+		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
+		String timeCoverage = null;
+		Iterator<TimeCoverageInfo> timeIter = timeClassifications.iterator();
+		while(timeIter.hasNext()) {
+			String sep = ", ";
+			if (timeCoverage == null) {
+				timeCoverage = "";
+				sep = "";
+			}
+			timeCoverage += sep + timeIter.next().getTimeCoverage();
 			
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
-		//List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
-		//lcrTextInfo.setGeographicCoverage(geographicClassifications);
+		}
+		if (timeCoverage != null) {
+			lcrTextInfo.setTimeCoverage(timeCoverage);
+		}
+
+		// lexicalConceptualResourceTextInfo.geographicClassifications
+		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
+		String geoCoverage = null;
+		Iterator<GeographicCoverageInfo> geoIter = geographicClassifications.iterator();
+		while(geoIter.hasNext()) {
+			String sep = ", ";
+			if (geoCoverage == null) {
+				geoCoverage = "";
+				sep = "";
+			}
+			geoCoverage += sep + geoIter.next().getGeographicCoverage();
+			
+		}
+		if (geoCoverage != null) {
+			lcrTextInfo.setGeographicCoverage(geoCoverage);
+		}
+	
 			                
 		CreationInfo creationInfo = generateCreationInfo(inputCorpus, component);
 		lcrTextInfo.setCreationInfo(creationInfo);
 		return lcrTextInfo;
 	}
+	
+
 		
 }

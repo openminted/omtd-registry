@@ -27,16 +27,24 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.ResourceUtils; 
+import org.springframework.util.ResourceUtils;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 	
 
 @ActiveProfiles("test")
@@ -105,14 +113,33 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    ReflectionTestUtils.setField(lcrMetadataGenerator, "aaiUserInfoRetriever", aaiUserService);
 		}
 		
+		private void printToFile(String filename, Lexical outputLCR) {
+					
+			try {
+				
+				File file = new File(filename);
+				JAXBContext jaxbContext = JAXBContext.newInstance(Lexical.class);
+				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+				
+				// output pretty printed
+				jaxbMarshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.meta-share.org/OMTD-SHARE_XMLSchema http://www.meta-share.org/OMTD-SHARE_XMLSchema/v302/OMTD-SHARE-LexicalConceptualResource.xsd");
+				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);			
+				jaxbMarshaller.marshal(outputLCR, file);
+				jaxbMarshaller.marshal(outputLCR, System.out);
+
+			} catch (JAXBException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
 		
 		@Test
-		public void testBasic() throws IOException {
+		public void testWithMinimalCorpusMinimalComponent() throws IOException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
-			String inputCorpusId =  "corpus_maximum.xml"; // omtdid	
-			String componentId = "component_minimal.xml";  //omtdid
+			String inputCorpusId = "corpus_minimal.xml"; // omtdid	
+			String componentId = "component_minimal_generatesLCRLexicon.xml";  //omtdid
 			String userId = "0931731143127784@openminted.eu"; 
 			String outputCorpusArchiveId = "outputArchiveId";
 						
@@ -123,8 +150,113 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
-			Lexical output = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMinCorpusMinComponent.xml", outputLCR); 									
+		}
+		
+		@Test
+		public void testWithMinimalCorpusDemimaxComponent() throws IOException {
+			
+		
+			logger.info("Running Language/Conceptual Resource Metadata Generate");
+			String inputCorpusId = "corpus_minimal.xml"; // omtdid	
+			String componentId = "component_demimax_generatesLCRLexicon.xml";  //omtdid
+			String userId = "0931731143127784@openminted.eu"; 
+			String outputCorpusArchiveId = "outputArchiveId";
+						
+			
+		    Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v302/" + inputCorpusId));		
+		    Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v302/" + componentId));
+		    Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
+			
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMinCorpusDemimaxComponent.xml", outputLCR); 									
+		}
+		
+		@Test
+		public void testWithMinimalCorpusMaxComponent() throws IOException {
+			
+		
+			logger.info("Running Language/Conceptual Resource Metadata Generate");
+			String inputCorpusId = "corpus_minimal.xml"; // omtdid	
+			String componentId = "component_maximum_generatesLCROntology.xml"; //omtdid
+			String userId = "0931731143127784@openminted.eu"; 
+			String outputCorpusArchiveId = "outputArchiveId";
+						
+			
+		    Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v302/" + inputCorpusId));		
+		    Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v302/" + componentId));
+		    Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
+			
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMinCorpusMaxComponent.xml", outputLCR); 									
+		}
+		
+		@Test
+		public void testWithMaximumCorpusMinimalComponent() throws IOException {
+			
+		
+			logger.info("Running Language/Conceptual Resource Metadata Generate");
+			String inputCorpusId = "corpus_maximum.xml"; // omtdid	
+			String componentId = "component_minimal_generatesLCRLexicon.xml";  //omtdid
+			String userId = "0931731143127784@openminted.eu"; 
+			String outputCorpusArchiveId = "outputArchiveId";
+						
+			
+		    Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v302/" + inputCorpusId));		
+		    Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v302/" + componentId));
+		    Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
+			
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMaxCorpusMinComponent.xml", outputLCR); 									
+		}
+		
+		@Test
+		public void testWithMaximumCorpusDemimaxComponent() throws IOException {
+			
+		
+			logger.info("Running Language/Conceptual Resource Metadata Generate");
+			String inputCorpusId = "corpus_maximum.xml"; // omtdid	
+			String componentId = "component_demimax_generatesLCRLexicon.xml";  //omtdid
+			String userId = "0931731143127784@openminted.eu"; 
+			String outputCorpusArchiveId = "outputArchiveId";
+						
+			
+		    Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v302/" + inputCorpusId));		
+		    Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v302/" + componentId));
+		    Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
+			
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMaxCorpusDemimaxComponent.xml", outputLCR); 									
+		}
+		
+		@Test
+		public void testWithMaximumCorpusMaxComponent() throws IOException {
+			
+		
+			logger.info("Running Language/Conceptual Resource Metadata Generate");
+			String inputCorpusId = "corpus_maximum.xml"; // omtdid	
+			String componentId = "component_maximum_generatesLCROntology.xml"; //omtdid
+			String userId = "0931731143127784@openminted.eu"; 
+			String outputCorpusArchiveId = "outputArchiveId";
+						
+			
+		    Mockito.when(corpusService.get(inputCorpusId)).thenReturn(this.generateCorpus("/metadata_resources_v302/" + inputCorpusId));		
+		    Mockito.when(componentService.get(componentId)).thenReturn(this.generateComponent("/metadata_resources_v302/" + componentId));
+		    Mockito.when(aaiUserService.getCoId(userId)).thenReturn(14);
+		    Mockito.when(aaiUserService.getEmail(14)).thenReturn("katerina.gkirtzou@ilsp.gr");
+		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
+			
+			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
+			printToFile("lcrMaxCorpusMaxComponent.xml", outputLCR); 									
 		}
 
 		

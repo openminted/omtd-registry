@@ -1,6 +1,7 @@
 package eu.openminted.registry.generate;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
@@ -271,8 +272,11 @@ public abstract class WorkflowOutputMetadataGenerate {
 			 calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
 		 } catch (DatatypeConfigurationException e) {
 			 e.printStackTrace();
-		 }
-		 versionInfo.setVersionDate(calendar.toXMLFormat());
+		 }		
+		 
+		 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		 String str = format.format(calendar.toGregorianCalendar().getTime());
+		 versionInfo.setVersionDate(str);
 		 return versionInfo;
 	 }
 	 
