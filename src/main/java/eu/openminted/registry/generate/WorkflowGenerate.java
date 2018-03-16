@@ -42,11 +42,12 @@ public class WorkflowGenerate {
             step2.put("tool_id",component.getComponentID());
             step2.put("contend_id", component.getComponentID());
             step2.put("name",component.getName());
-            ObjectNode inputConnections = (ObjectNode) step2.get("input_connections");
-            ObjectNode input = objectMapper.createObjectNode();
-            input.put("id",1);
-            input.put("output_name","output");
-            inputConnections.set(component.getName() + "_InputFiles",input);
+            //ObjectNode inputConnections = (ObjectNode) step2.get("input_connections");
+            //ObjectNode input = objectMapper.createObjectNode();
+            //input.put("id",1);
+            //input.put("output_name","output");
+            //inputConnections.set(component.getName() + "_InputFiles",input);
+
             return node.toString();
         } catch (IOException e) {
             throw new ServiceException(e);

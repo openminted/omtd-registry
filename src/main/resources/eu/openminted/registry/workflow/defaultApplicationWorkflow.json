@@ -69,7 +69,7 @@
       "errors": null,
       "id": 2,
       "input_connections": {
-        "_InputFiles": {
+        "component_InputFiles": {
           "id": 1,
           "output_name": "output"
         }
