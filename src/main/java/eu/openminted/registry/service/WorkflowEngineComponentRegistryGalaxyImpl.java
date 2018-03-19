@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,7 @@ import eu.openminted.registry.domain.FrameworkEnum;
 import eu.openminted.workflows.galaxytool.Tool;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
+import eu.openminted.workflows.galaxywrappers.Utils;
 
 @Component
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry{
@@ -32,29 +34,40 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     @Autowired
     private GalaxyToolWrapperWriter galaxyToolWrapperWriter;
     
-	@Override
+    @Autowired
+    private DockerImageProvider dockerImageProvider;
+    
+    @Override
+
     public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
 		
 		WorkflowEngineComponent wec = new WorkflowEngineComponent();
 		
 		String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+		String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+
+		List<ComponentDistributionInfo> distributionInfos = componentMeta.getComponentInfo().getDistributionInfos();
 		String galaxyTrgFolder = "";
 		
 		// Prepare Galaxy wrapper generation&copying.
-        if(isDocker(componentMeta)) { // Docker-packaged components
+        if(Utils.isDocker(distributionInfos)) { // Docker-packaged components
         	logger.info("Registering component -> " + "Docker");
         	galaxyTrgFolder = "omtdDocker/";
-        }else{ // Non Docker-packaged components 
+        }else  if(Utils.isWebService(distributionInfos)){  // WS-packaged components
+        	logger.info("Registering component -> " + "WebService");
+        	galaxyTrgFolder = "omtdDocker/";
+    		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
+        }else{ // UIMA/GATE components 
         	String framework = componentMeta.getComponentInfo().getComponentCreationInfo().getFramework().value();
         	logger.info("Registering component -> " + framework);
         		
         	if(framework == FrameworkEnum.UIMA.value()){
         		galaxyTrgFolder = "omtdUIMA/";
-        		galaxyWrapperGenerator.setDockerImage("TO-DO");
+        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
         		
         	}else if(framework == FrameworkEnum.GATE.value()){
         		galaxyTrgFolder = "omtdGATE/";
-        		galaxyWrapperGenerator.setDockerImage("TO-DO");
+        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
         	}else{
         		logger.info("Registering component -> " + "error");
         	}
@@ -68,13 +81,13 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         
         // If succeeded copy it to Galaxy machine.
         if(tmpFileForWrapper != null){
-        	
             // Copy over NFS.
             copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }
         
         wec.setComponentID(tool.getId());
         wec.setComponentVersion(tool.getVersion());
+        wec.setName(resourceName);
         
         return wec;
     }
@@ -116,10 +129,12 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 			logger.debug(e);
 		}
 	}
-	
-    private boolean isDocker(eu.openminted.registry.domain.Component component){
-    	 ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
-         return distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE;
+    
+    private String getFolder(eu.openminted.registry.domain.Component componentMeta){
+    	boolean isApp = componentMeta.getComponentInfo().isApplication();
+    	String function = componentMeta.getComponentInfo().getFunctionInfo().getFunction().value();
+    	
+    	return "";
     }
     
 }

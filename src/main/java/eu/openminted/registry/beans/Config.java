@@ -8,6 +8,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 
+import eu.openminted.registry.service.DockerImageProviderImpl;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
@@ -21,6 +22,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
@@ -98,9 +101,24 @@ public class Config {
     }
 
     @Bean
+    public StringRedisSerializer stringRedisSerializer() {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        return stringRedisSerializer;
+    }
+
+    @Bean
+    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer() {
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer =
+                new GenericJackson2JsonRedisSerializer();
+        return genericJackson2JsonRedisJsonSerializer;
+    }
+
+    @Bean
     public RedisTemplate redisTemplate() {
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(connectionFactory());
+        template.setKeySerializer(stringRedisSerializer());
+        template.setValueSerializer(genericJackson2JsonRedisJsonSerializer());
         return template;
     }
 
@@ -121,24 +139,22 @@ public class Config {
    
     
     // Beans for Galaxy wrappers generation ...
-    
     @Bean
     public GalaxyWrapperGenerator galaxyWrapperGenerator() {
-        logger.info("galaxyWrapperGenerator");
+    	logger.info("Creating:" + GalaxyWrapperGenerator.class.getName());
         return new GalaxyWrapperGenerator();
     }
     
     @Bean
     public GalaxyToolWrapperWriter galaxyToolWrapperWriter() {
-        logger.info("GalaxyToolWrapperWriter");
+    	logger.info("Creating:" + GalaxyToolWrapperWriter.class.getName());
         return new GalaxyToolWrapperWriter();
     }
-   
-    /*
+    
     @Bean
-    public SSH galaxySSH() {
-        logger.info("Galaxy SSH");
-        return new SSH("","","","");
+    public DockerImageProviderImpl dockerImageProviderImpl() {
+        logger.info("Creating:" + DockerImageProviderImpl.class.getName());
+        return new DockerImageProviderImpl();
     }
-    */
+    
 }
