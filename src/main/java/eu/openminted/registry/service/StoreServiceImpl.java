@@ -111,6 +111,7 @@ public class StoreServiceImpl implements StoreService {
         return null;
     }
 
+    @Override
     public InputStream downloadFile(String path) {
         try {
             File temp = File.createTempFile("file", "tmp");
@@ -164,9 +165,4 @@ public class StoreServiceImpl implements StoreService {
         }
     }
 
-	@Override
-	public InputStream downloadFile(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

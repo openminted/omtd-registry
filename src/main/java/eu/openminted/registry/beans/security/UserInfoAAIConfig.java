@@ -11,13 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
 @PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
-@TestPropertySource("classpath:application-test.properties")
 @ComponentScan("eu.openminted.registry.service.aai")
 public class UserInfoAAIConfig {
 	static final Logger logger = LogManager.getLogger(UserInfoAAIConfig.class);

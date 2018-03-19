@@ -1,15 +1,12 @@
 package eu.openminted.registry.generate;
 
-import eu.openminted.registry.beans.security.UserInfoAAIConfig;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.Lexical;
-import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,35 +15,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ResourceUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import java.io.BufferedWriter;
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 	
-
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader=AnnotationConfigContextLoader.class)
@@ -113,28 +99,31 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    ReflectionTestUtils.setField(lcrMetadataGenerator, "aaiUserInfoRetriever", aaiUserService);
 		}
 		
-		private void printToFile(String filename, Lexical outputLCR) {
-					
-			try {
+		private void printToFile(String filename, Lexical outputLCR) throws JAXBException {
+											
+			File file = new File(filename);
+			JAXBContext jaxbContext = JAXBContext.newInstance(Lexical.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 				
-				File file = new File(filename);
-				JAXBContext jaxbContext = JAXBContext.newInstance(Lexical.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-				
-				// output pretty printed
-				jaxbMarshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.meta-share.org/OMTD-SHARE_XMLSchema http://www.meta-share.org/OMTD-SHARE_XMLSchema/v302/OMTD-SHARE-LexicalConceptualResource.xsd");
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);			
-				jaxbMarshaller.marshal(outputLCR, file);
-				jaxbMarshaller.marshal(outputLCR, System.out);
-
-			} catch (JAXBException e) {
-				e.printStackTrace();
-			}
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.meta-share.org/OMTD-SHARE_XMLSchema http://www.meta-share.org/OMTD-SHARE_XMLSchema/v302/OMTD-SHARE-LexicalConceptualResource.xsd");
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);			
+			jaxbMarshaller.marshal(outputLCR, file);
+			jaxbMarshaller.marshal(outputLCR, System.out);
+			
 			return;
 		}
 		
+		private Lexical readFromFile(String fileToLexical) throws JAXBException, FileNotFoundException {
+			// 
+			JAXBContext jaxbContext = JAXBContext.newInstance(Lexical.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			Lexical validatorLCR = (Lexical) jaxbUnmarshaller.unmarshal(ResourceUtils.getFile(this.getClass().getResource(fileToLexical)));
+			return validatorLCR;
+		}
+		
 		@Test
-		public void testWithMinimalCorpusMinimalComponent() throws IOException {
+		public void testWithMinimalCorpusMinimalComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -151,11 +140,11 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMinCorpusMinComponent.xml", outputLCR); 									
+			//printToFile("lcrMinCorpusMinComponent.xml", outputLCR); 					
 		}
 		
 		@Test
-		public void testWithMinimalCorpusDemimaxComponent() throws IOException {
+		public void testWithMinimalCorpusDemimaxComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -172,11 +161,11 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMinCorpusDemimaxComponent.xml", outputLCR); 									
+			//printToFile("lcrMinCorpusDemimaxComponent.xml", outputLCR); 									
 		}
 		
 		@Test
-		public void testWithMinimalCorpusMaxComponent() throws IOException {
+		public void testWithMinimalCorpusMaxComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -193,11 +182,11 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMinCorpusMaxComponent.xml", outputLCR); 									
+			//printToFile("lcrMinCorpusMaxComponent.xml", outputLCR); 									
 		}
 		
 		@Test
-		public void testWithMaximumCorpusMinimalComponent() throws IOException {
+		public void testWithMaximumCorpusMinimalComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -214,11 +203,11 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMaxCorpusMinComponent.xml", outputLCR); 									
+			//printToFile("lcrMaxCorpusMinComponent.xml", outputLCR); 									
 		}
 		
 		@Test
-		public void testWithMaximumCorpusDemimaxComponent() throws IOException {
+		public void testWithMaximumCorpusDemimaxComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -235,11 +224,11 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMaxCorpusDemimaxComponent.xml", outputLCR); 									
+			//printToFile("lcrMaxCorpusDemimaxComponent.xml", outputLCR); 									
 		}
 		
 		@Test
-		public void testWithMaximumCorpusMaxComponent() throws IOException {
+		public void testWithMaximumCorpusMaxComponent() throws IOException, JAXBException {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -256,7 +245,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		    Mockito.when(aaiUserService.getSurnameGivenName(14)).thenReturn(new ImmutablePair<>("Gkirtzou", "Katerina"));		   		
 			
 			Lexical outputLCR = lcrMetadataGenerator.generateLanguageConceptualResourceMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId);
-			printToFile("lcrMaxCorpusMaxComponent.xml", outputLCR); 									
+			//printToFile("lcrMaxCorpusMaxComponent.xml", outputLCR); 									
 		}
 
 		
