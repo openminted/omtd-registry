@@ -26,7 +26,7 @@ public class OperationPublisherApp {
 	private static String DEFAULT_BROKER_URL = "tcp://83.212.101.85:61616";//"tcp://<domain>:<port>";
 
 	//@Value("${workflows.execution:workflows.execution}")
-	private static String ORDER_QUEUE = "workflows.execution";	
+	private static String ORDER_QUEUE = "workflows.execution.test";	
  
     @Bean
     public ActiveMQConnectionFactory connectionFactory(){
