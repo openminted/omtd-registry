@@ -5,6 +5,7 @@ import eu.openminted.registry.core.domain.Facet;
 import eu.openminted.registry.core.domain.Value;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.common.regex.Regex;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class LabelGenerate {
 
-    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","dataFormat", "operationType"};
+    final private static String[] MAPPING_FILES = {"languageId","regionId","scriptId","variantId","licence","ontology"};
 
     private Map<String,Properties> mappings;
 
@@ -79,9 +82,10 @@ public class LabelGenerate {
             for(Value value : facet.getValues()) {
                 switch (facet.getField()) {
                     case "language" : value.setLabel(getLanguageLabel(value.getValue())); break;
-                    case "dataFormat" : value.setLabel(mappings.get("dataFormat").getProperty(sanitize(value.getValue())));break;
                     case "licence" : value.setLabel(mappings.get("licence").getProperty(sanitize(value.getValue()))); break;
-                    case "function" : value.setLabel(mappings.get("operationType").getProperty(sanitize(value.getValue()))); break;
+                    case "function" :
+                    case "annotationType" :
+                    case "dataFormat" : value.setLabel(mappings.get("ontology").getProperty(sanitize(value.getValue()))); break;
                     default : value.setLabel(capitalize(value.getValue()));
                 }
             }
