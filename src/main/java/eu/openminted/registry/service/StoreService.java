@@ -1,5 +1,7 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.domain.file.FileStats;
+
 import java.io.InputStream;
 
 public interface StoreService {
@@ -11,6 +13,9 @@ public interface StoreService {
      * @return
      */
     String uploadCorpus(String filename, InputStream inputStream);
+
+
+    FileStats uploadAuxiliary(String filename, InputStream inputStream);
 
     /**
      * Download the corpus.

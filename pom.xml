@@ -181,6 +181,19 @@
                             <goal>generate</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>fileStats</id>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/fileStats.json</sourceDirectory>
+                            <targetPackage>${project.groupId}.registry.domain.file</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                            <useLongIntegers>true</useLongIntegers>
+                            <includeConstructors>true</includeConstructors>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -200,6 +213,7 @@
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
                                 <pattern>eu.openminted.registry.domain.workflow.*</pattern>
+                                <pattern>eu.openminted.registry.domain.file.*</pattern>
                                 <pattern>eu.openminted.registry.domain.PublicationInfo</pattern>
                             </classPatterns>
                             <outputFile>target/operation.ts</outputFile>
