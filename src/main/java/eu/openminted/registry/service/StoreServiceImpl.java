@@ -1,7 +1,10 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.domain.file.FileStats;
+import eu.openminted.registry.domain.file.Info;
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -97,6 +105,51 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public FileStats uploadAuxiliary(String filename, InputStream inputStream) {
+        FileStats stats = new FileStats();
+
+        try {
+            stats.setCompressedFileSize((long) inputStream.available());
+            final String archiveId = storeClient.createArchive().getResponse();
+
+            logger.info("Creating archiveId " + archiveId);
+
+            stats.setArchiveId(archiveId);
+            stats.setFilename(filename);
+            Path directory = extractDirectory(inputStream);
+
+            List<File> results = Files.walk(directory)
+                    .parallel()
+                    .filter(Files::isRegularFile)
+                    .map(file -> uploadFile(file, archiveId,directory))
+                    .collect(Collectors.toList());
+            long size = results.stream().map(File::length).reduce(0L, (f1, f2) -> f1 + f2);
+            stats.setFileSize(size);
+            stats.setFileCount((long) results.size());
+            stats.setInfo(new ArrayList<>());
+            Map<String, Long> infos = results.stream()
+                    .collect(Collectors.groupingBy(file -> FilenameUtils.getExtension(file.getName()), Collectors.counting()));
+            infos.forEach((type, count) -> stats.getInfo().add(new Info(type, count)));
+
+            logger.info("Done uploading files");
+
+            storeClient.finalizeArchive(archiveId);
+            FileUtils.deleteDirectory(directory.toFile());
+        } catch (IOException e) {
+            logger.error("Error uploading corpus", e);
+        }
+
+        return stats;
+    }
+
+    private File uploadFile(Path file, String archiveId, Path base) {
+        String relativeName = base.relativize(file).toString();
+        storeClient.storeFile(file.toFile(), archiveId, relativeName);
+        logger.info("Uploading " + relativeName + " size " + file.toFile().length());
+        return file.toFile();
+    }
+
+    @Override
     public InputStream downloadCorpus(String archiveId) {
         try {
             File temp = File.createTempFile("cor", "tmp");
@@ -124,6 +177,39 @@ public class StoreServiceImpl implements StoreService {
         }
 
         return null;
+    }
+
+    private Path extractDirectory(InputStream inputStream) throws IOException {
+        File temp = File.createTempFile("aux", "tmp");
+        Path dest = Files.createTempDirectory("upload");
+        OutputStream fos = new BufferedOutputStream(new FileOutputStream(temp));
+        logger.info("Temp file " + temp.toString());
+        IOUtils.copyLarge(inputStream, fos);
+        fos.flush();
+        fos.close();
+        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(temp));
+        ZipEntry entry = zipIn.getNextEntry();
+
+        // iterates over entries in the zip file
+        while (entry != null) {
+            logger.info("Unzip " + entry.getName());
+            String filePath = dest + File.separator + entry.getName();
+            File unzippedFile = new File(filePath);
+            if (!entry.isDirectory()) {
+                new File(unzippedFile.getParent()).mkdirs();
+                unzippedFile.createNewFile();
+                // if the entry is a file, extracts it
+                extractFile(zipIn, unzippedFile);
+            } else {
+                // if the entry is a directory, make the directory
+                unzippedFile.mkdirs();
+            }
+            zipIn.closeEntry();
+            entry = zipIn.getNextEntry();
+        }
+        zipIn.close();
+        FileDeleteStrategy.FORCE.delete(temp);
+        return dest;
     }
 
     private void extractFile(ZipInputStream zipIn, File file) throws IOException {

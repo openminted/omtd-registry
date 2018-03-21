@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
+import com.google.gson.Gson;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
@@ -63,8 +64,8 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostAuthorize("returnObject.personIdentifier==authentication.sub")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.personIdentifier==principal['sub']")
     public WorkflowDefinition get(String id) {
         WorkflowDefinition workflow;
         try {
