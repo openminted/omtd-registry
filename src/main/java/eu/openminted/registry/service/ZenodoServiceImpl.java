@@ -1,13 +1,11 @@
 package eu.openminted.registry.service;
 
 
-import com.fasterxml.jackson.jaxrs.json.annotation.JSONP;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.store.restclient.StoreRESTClient;
-import jdk.nashorn.internal.parser.JSONParser;
 import net.sf.saxon.s9api.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -17,17 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +38,7 @@ public class ZenodoServiceImpl implements ZenodoService {
     private String token = "K0LLM8l9BoOjcAwhCtXpCN34bobz1sDWDJMlvj0o9gPckqYRlbQTvvJFchGF"; // sandbox
 //    private String token = "bYgBRgbwWE9YFY1t2nvErhBILtA7dzOqdun1qGOle4vhNPdAqQewCkmbJy7H"; // Zenodo
 
-
+    private final String xsl_file = "eu/openminted/registry/service/corpusMetadataToJson.xsl";
 
 
     @Autowired
@@ -58,35 +51,18 @@ public class ZenodoServiceImpl implements ZenodoService {
     @Qualifier("corpusService")
     ResourceCRUDService<Corpus> corpusService;
 
-    private ResponseEntity<String> postToZenodo(String url, String data) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token);
-
-        HttpEntity<String> request = new HttpEntity<>(data, headers);
-        logger.info("request: " + request.toString());
-
-        ResponseEntity<String> response = restTemplate.exchange( url, HttpMethod.POST, request , String.class );
-        return response;
-    }
-
-    private ResponseEntity<String> sendToZenodo(String url, String data, HttpMethod method) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token);
-
-        HttpEntity<String> request = new HttpEntity<>(data, headers);
-        logger.info(method.toString() + " request: " + request.toString());
-
-        ResponseEntity<String> response = restTemplate.exchange( url, method, request, String.class );
-        return response;
-    }
 
     @Override
     public String createDeposition() {
-        ResponseEntity<String> response = postToZenodo(server, "{}");
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("{}", headers);
+        logger.info("request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange( server, HttpMethod.POST, request , String.class );
         if (response.getStatusCode().value() == 201) {
             JSONObject res = new JSONObject(response.getBody());
             return res.get("id").toString();
@@ -168,7 +144,12 @@ public class ZenodoServiceImpl implements ZenodoService {
     public String publishCorpus(String corpusId) {
         String zenodo_metadata = createZenodoMetadata(corpusId);
         logger.info(zenodo_metadata);
-        String ret = createDeposition(zenodo_metadata);
+        String ret = createDeposition();
+        updateDeposition(ret, zenodo_metadata);
+        if (deleteDeposition(ret) == true) {
+            logger.info("deleted entry: " + ret);
+        }
+        ret = createDeposition(zenodo_metadata);
         ret = retrieveDeposition(ret);
         return ret;
     }
@@ -217,10 +198,11 @@ public class ZenodoServiceImpl implements ZenodoService {
         Processor processor = new Processor(false);
         XsltCompiler xsltCompiler = processor.newXsltCompiler();
         StreamSource stylesource =
-                new StreamSource(new File("/home/kostas/hdd/XSLT/jaxp-1_4_2-release-date/samples/xslt/data/corpusMetadataToJson.xsl"));
+                new StreamSource(new File(this.getClass().getClassLoader()
+                        .getResource(xsl_file).getFile()));
 
         XsltExecutable xsltExecutable;
-        String result = "";
+        String result = null;
         XdmNode source = null;
         try {
             xsltExecutable = xsltCompiler.compile(stylesource);
@@ -245,7 +227,10 @@ public class ZenodoServiceImpl implements ZenodoService {
         } catch (SaxonApiException e) {
             e.printStackTrace();
         }
-
+        if (result == null) {
+            logger.warn("createZenodoMetadata returned " + result);
+            return null;
+        }
         return new JSONObject(result).toString();
     }
 
