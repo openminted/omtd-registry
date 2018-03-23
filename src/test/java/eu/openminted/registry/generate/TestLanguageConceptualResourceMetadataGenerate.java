@@ -4,6 +4,7 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -44,7 +45,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		private LanguageConceptualResourceMetadataGenerate lcrMetadataGenerator;
 		
 		@Mock
-		private ResourceCRUDService<Corpus>  corpusService;// = Mockito.mock(ResourceCRUDService.class, Mockito.RETURNS_DEEP_STUBS);
+		private CorpusServiceImpl  corpusService;// = Mockito.mock(ResourceCRUDService.class, Mockito.RETURNS_DEEP_STUBS);
 
 		@Mock
 		private ResourceCRUDService<Component> componentService;

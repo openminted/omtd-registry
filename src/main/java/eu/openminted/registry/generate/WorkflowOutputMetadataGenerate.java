@@ -66,6 +66,7 @@ import eu.openminted.registry.domain.RightsStatementEnum;
 import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.VersionInfo;
+import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
 public abstract class WorkflowOutputMetadataGenerate {
@@ -73,7 +74,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 	 static final Logger logger = LogManager.getLogger(WorkflowOutputMetadataGenerate.class);
 	    
 	 @Autowired
-	 protected ResourceCRUDService<Corpus> corpusService;
+	 protected CorpusServiceImpl corpusService;
 		
 	 @Autowired
 	 @Qualifier("applicationService")

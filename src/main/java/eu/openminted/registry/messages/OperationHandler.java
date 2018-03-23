@@ -42,10 +42,11 @@ public class OperationHandler {
     @Autowired
     public ParserService parserPool;
 
-    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution}")
+    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution.test.katerina}")
     public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException {
         synchronized (OperationServiceImpl.class) {
-            logger.info(operationService);
+            logger.info("Operation Handler with " + operationService);
+            System.out.println("Received the message " + workflowExeMsg.toString());
             if (workflowExeMsg.getWorkflowStatus() == null) {
                 throw new NullPointerException("No status is set to WorkflowExecutionStatusMessage");
             }
