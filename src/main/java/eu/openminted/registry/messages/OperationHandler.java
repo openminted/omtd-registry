@@ -53,16 +53,19 @@ public class OperationHandler {
 
             // Set a workflow experiment for execution, ie create a new operation document
             if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
-                logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
+                //logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
+                casePending(workflowExeMsg); 
             }
             // Set a workflow experiment to started, ie update an operation document
             else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {
                 caseRunning(workflowExeMsg);
             }
-            // Set a workflow experiment to finished, ie update an operation document, create ouput corpus metadata
+            // Set a workflow experiment to finished, ie update an operation document, create output metadata
             else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {
-                caseFinished(workflowExeMsg);
-            } else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {
+                caseFinished(workflowExeMsg);               
+            }
+            // Set a workflow experiment to failed, ie update an operation document
+            else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {
                 caseFailed(workflowExeMsg);
             }
             // Set a workflow experiment to resumed, failed, paused, ie update an operation document
@@ -82,6 +85,34 @@ public class OperationHandler {
                 operationService.update(operation);
             }
         }
+    }
+    
+    private void casePending(WorkflowExecutionStatusMessage workflowExeMsg) {
+    	if (workflowExeMsg.getWorkflowExecutionID() == null) {
+    		throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.PENDING.toString());
+        }
+    	Operation operation = new Operation();
+    	// Id
+    	operation.setId(workflowExeMsg.getWorkflowExecutionID());
+    	// Status
+    	operation.setStatus(ExecutionStatus.Status.PENDING.toString());
+    	// Date of submitted
+    	Date date = new Date();
+    	date.setSubmitted(new java.util.Date());
+    	operation.setDate(date);
+    	// Input Corpus
+    	Corpus operationCorpus = new Corpus();
+    	operationCorpus.setInput(workflowExeMsg.getCorpusID());
+    	operation.setCorpus(operationCorpus);
+    	// Component
+    	operation.setComponent(workflowExeMsg.getWorkflowID());
+    	// User
+    	operation.setPerson(workflowExeMsg.getUserID());
+    	
+    	Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
+    	logger.info("Add Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+    	operationService.add(operation);
+    	
     }
 
     private void caseRunning(WorkflowExecutionStatusMessage workflowExeMsg) throws ResourceNotFoundException {
@@ -132,8 +163,8 @@ public class OperationHandler {
         operation.setCorpus(operationCorpus);
 
         // Add output corpus metadata to registry
+        logger.info("Adding output corpus to registry");
         corpusService.add(outputCorpusMeta);
-
 
         // Update operation to registry
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);

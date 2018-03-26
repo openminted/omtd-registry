@@ -98,7 +98,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
         AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
-        //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
+        logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);
 
         return corpusInfo;
@@ -106,21 +106,88 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
     private AnnotatedCorpusInfo generateAnnotatedCorpusInfo(Corpus inputCorpus, Component component) throws JsonProcessingException {
 
-        AnnotatedCorpusInfo annotatedCorpusInfo = new AnnotatedCorpusInfo();
+    	logger.info("In generateAnnotatedCorpusInfo");
+        AnnotatedCorpusInfo generatedAnnotatedCorpusInfo = new AnnotatedCorpusInfo();
 
-        // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
-        LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
-        annotatedCorpusInfo.setLingualityInfo(lingualityInfo);
-
-        // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
-        List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
-        annotatedCorpusInfo.setLanguages(languages);
-       	
+       
+        // inputCorpus is raw corpus
+        if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo() != null) {
+        	
+        	RawCorpusInfo rawCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo();
+        	
+        	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = rawCorpusInfo.getLingualityInfo();
+        	generatedAnnotatedCorpusInfo.setLingualityInfo(lingualityInfo);
+        	logger.info("Added lingualityInfo from raw corpus");
+        	
+        	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
+            List<LanguageInfo> languages = rawCorpusInfo.getLanguages();
+            generatedAnnotatedCorpusInfo.setLanguages(languages);
+            logger.info("Added languages from raw corpus");
+                        
+        	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
+    		List<TextClassificationInfo> textClassifications = rawCorpusInfo.getTextClassifications();
+    		generatedAnnotatedCorpusInfo.setTextClassifications(textClassifications);
+    	    logger.info("Added textClassifications from raw corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
+    		List<DomainInfo> domains = rawCorpusInfo.getDomains();
+    		generatedAnnotatedCorpusInfo.setDomains(domains);
+    	    logger.info("Added domains from raw corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
+    		List<TimeCoverageInfo> timeClassifications = rawCorpusInfo.getTimeClassifications();
+    		generatedAnnotatedCorpusInfo.setTimeClassifications(timeClassifications);
+    	    logger.info("Added timeClassifications from raw corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
+    		List<GeographicCoverageInfo> geographicClassifications = rawCorpusInfo.getGeographicClassifications();
+    		generatedAnnotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
+    	    logger.info("Added geographicClassifications from raw corpus");
+        }  
+        // inputCorpus is annotated corpus
+        else if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo() != null) {
+        	
+        	AnnotatedCorpusInfo annotatedCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo();
+        	
+        	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo	
+        	LingualityInfo lingualityInfo = annotatedCorpusInfo.getLingualityInfo();
+        	generatedAnnotatedCorpusInfo.setLingualityInfo(lingualityInfo);
+        	logger.info("Added lingualityInfo from annotated corpus");
+        	
+        	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
+            List<LanguageInfo> languages = annotatedCorpusInfo.getLanguages();
+            generatedAnnotatedCorpusInfo.setLanguages(languages);
+            logger.info("Added languages from annotated corpus");
+            
+            // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
+    		List<TextClassificationInfo> textClassifications = annotatedCorpusInfo.getTextClassifications();
+    		generatedAnnotatedCorpusInfo.setTextClassifications(textClassifications);
+    	    logger.info("Added textClassifications from annotated corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
+    		List<DomainInfo> domains = annotatedCorpusInfo.getDomains();
+    		generatedAnnotatedCorpusInfo.setDomains(domains);
+    	    logger.info("Added domains from annotated corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
+    		List<TimeCoverageInfo> timeClassifications = annotatedCorpusInfo.getTimeClassifications();
+    		generatedAnnotatedCorpusInfo.setTimeClassifications(timeClassifications);
+    	    logger.info("Added timeClassifications from annotated corpus");
+    		
+    		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
+    		List<GeographicCoverageInfo> geographicClassifications = annotatedCorpusInfo.getGeographicClassifications();
+    		generatedAnnotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
+    	    logger.info("Added geographicClassifications from annotated corpus");
+        }
+               	
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.annotations.annotationInfo
 		List<AnnotationInfo> annotations = new ArrayList<>();
 		AnnotationInfo annotationInfo = new AnnotationInfo();
+		logger.info("Adding annotationInfo");
 		
 		if (component.getComponentInfo().getOutputResourceInfo() != null) {
+			logger.info("Workflow has outputResourceInfo metadata.");
 			// annotatationInfo.annotationTypes
 			List<AnnotationTypeInfo> annotationTypes = component.getComponentInfo().getOutputResourceInfo().getAnnotationTypes();
 			// TODO Added a dummy node just for passing validation of add in registry 	
@@ -144,6 +211,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 			annotationInfo.setAnnotationResource(annotationResource);
 		}
 		else {
+			logger.info("Workflow does not has outputResourceInfo metadata. Add dummy node.");
 			// TODO Added a dummy node just for passing validation of add in registry 	
 			List<AnnotationTypeInfo> annotationTypes = new ArrayList<>();
 			AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
@@ -179,27 +247,13 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		annotationInfo.setAnnotationDate(annotationDate);
 				
 		annotations.add(annotationInfo);
-		annotatedCorpusInfo.setAnnotations(annotations);
+		generatedAnnotatedCorpusInfo.setAnnotations(annotations);
 
-		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
+		logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
 			
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
-		List<TextClassificationInfo> textClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTextClassifications();
-		annotatedCorpusInfo.setTextClassifications(textClassifications);
+		                
 		
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
-		List<DomainInfo> domains = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getDomains();
-		annotatedCorpusInfo.setDomains(domains);
-		
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
-		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
-		annotatedCorpusInfo.setTimeClassifications(timeClassifications);
-		
-		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
-		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
-		annotatedCorpusInfo.setGeographicClassifications(geographicClassifications);		                
-		
-		return annotatedCorpusInfo;
+		return generatedAnnotatedCorpusInfo;
 	}
     
     @Override    
