@@ -5,18 +5,26 @@ import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import net.sf.saxon.s9api.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-
+import org.apache.http.entity.ContentType;
+//import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -32,14 +40,18 @@ import java.util.regex.Pattern;
 @Service("zenodoService")
 public class ZenodoServiceImpl implements ZenodoService {
 
-    private Logger logger = Logger.getLogger(ZenodoServiceImpl.class);
-    private String server = "https://sandbox.zenodo.org/api/deposit/depositions"; // sandbox
-//    private String server = "https://zenodo.org/api/deposit/depositions"; // Zenodo
-    private String token = "K0LLM8l9BoOjcAwhCtXpCN34bobz1sDWDJMlvj0o9gPckqYRlbQTvvJFchGF"; // sandbox
-//    private String token = "bYgBRgbwWE9YFY1t2nvErhBILtA7dzOqdun1qGOle4vhNPdAqQewCkmbJy7H"; // Zenodo
+    private Logger logger = LogManager.getLogger(ZenodoServiceImpl.class);
 
-    private final String xsl_file = "eu/openminted/registry/service/corpusMetadataToJson.xsl";
+    private RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${zenodo.host}")
+    private String host;
+
+    @Value("${zenodo.token}")
+    private String token;
+
+    @Value("${zenodo.xsl}")
+    private String xsl_file;
 
     @Autowired
     StoreRESTClient storeClient;
@@ -53,44 +65,70 @@ public class ZenodoServiceImpl implements ZenodoService {
 
 
     @Override
+    public String publishCorpus(String corpusId) {
+        String zenodo_metadata = createZenodoMetadata(corpusId);
+        logger.info(zenodo_metadata);
+        String ret = createDeposition();
+        updateDeposition(ret, zenodo_metadata);
+        deleteDeposition(ret);
+        logger.info("deleted entry: " + ret);
+
+        ret = createDeposition(zenodo_metadata);
+        retrieveDeposition(ret);
+        File f = null;
+        try {
+            f = File.createTempFile("corpus", ".zip");
+
+            storeClient.downloadArchive(resolveCorpusArchive(corpusId), f.getAbsolutePath());
+            logger.info("downloaded file: "+f.getAbsolutePath()+" can write: "+ f.canWrite());
+            uploadFile(ret, f);
+            f.delete();
+//            publish(ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        JSONObject response = new JSONObject(ret);
+//        return response.get("id").toString();
+        return listDepositions();
+    }
+
+    @Override
     public String createDeposition() {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
 
         HttpEntity<String> request = new HttpEntity<>("{}", headers);
-        logger.info("request: " + request.toString());
+        logger.info("POST request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( server, HttpMethod.POST, request , String.class );
-        if (response.getStatusCode().value() == 201) {
-            JSONObject res = new JSONObject(response.getBody());
-            return res.get("id").toString();
+        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() != 201) {
+            throw new RuntimeException("Zenodo createDeposition error code: "+response.getStatusCode().value());
         }
-        return null;
+        JSONObject res = new JSONObject(response.getBody());
+        return res.get("id").toString();
     }
 
     @Override
     public String createDeposition(String metadata) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
 
         HttpEntity<String> request = new HttpEntity<>(metadata, headers);
-        logger.info("request: " + request.toString());
+        logger.info("POST request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( server, HttpMethod.POST, request , String.class );
-        if (response.getStatusCode().value() == 201) {
-            JSONObject res = new JSONObject(response.getBody());
-            return res.get("id").toString();
+        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() != 201) {
+            throw new RuntimeException("Zenodo createDeposition error code: "+response.getStatusCode().value());
         }
-        return null;
+        JSONObject res = new JSONObject(response.getBody());
+        return res.get("id").toString();
     }
 
     @Override
-    public String retrieveDeposition(String zenodo_id) {
-        RestTemplate restTemplate = new RestTemplate();
+    public String listDepositions() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
@@ -98,16 +136,32 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>("", headers);
         logger.info("GET request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( server+"/"+zenodo_id, HttpMethod.GET, request, String.class );
-        if (response.getStatusCode().value() == 200) {
-            return response.getBody();
+        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.GET, request, String.class );
+        if (response.getStatusCode().value() != 200) {
+            throw new RuntimeException("Zenodo listDepositions error code: "+response.getStatusCode().value());
         }
-        return null;
+        return response.getBody();
+    }
+
+    @Override
+    public String retrieveDeposition(String zenodo_id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("", headers);
+        logger.info("GET request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodo_id, HttpMethod.GET, request, String.class );
+        if (response.getStatusCode().value() != 200) {
+            throw new RuntimeException("Zenodo retrieveDeposition error code: "+response.getStatusCode().value());
+        }
+        return response.getBody();
     }
 
     @Override
     public String updateDeposition(String zenodo_id, String metadata) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
@@ -115,17 +169,17 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>(metadata, headers);
         logger.info("PUT request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( server+"/"+zenodo_id, HttpMethod.PUT, request, String.class );
-        if (response.getStatusCode().value() == 200) {
-            JSONObject res = new JSONObject(response.getBody());
-            return res.get("id").toString();
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodo_id, HttpMethod.PUT, request, String.class );
+        if (response.getStatusCode().value() != 200) {
+            throw new RuntimeException("Zenodo updateDeposition error code: "+response.getStatusCode().value());
         }
-        return null;
+        JSONObject res = new JSONObject(response.getBody());
+        return res.get("id").toString();
     }
 
     @Override
-    public boolean deleteDeposition(String zenodo_id) {
-        RestTemplate restTemplate = new RestTemplate();
+    public void deleteDeposition(String zenodo_id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
@@ -133,25 +187,148 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>("", headers);
         logger.info("DELETE request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( server+"/"+zenodo_id, HttpMethod.DELETE, request, String.class );
-        if (response.getStatusCode().value() == 201) {
-            return true;
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodo_id, HttpMethod.DELETE, request, String.class );
+        if (response.getStatusCode().value() != 204) {
+            throw new RuntimeException("Zenodo deleteDeposition error code: "+response.getStatusCode().value());
         }
-        return false;
     }
 
     @Override
-    public String publishCorpus(String corpusId) {
-        String zenodo_metadata = createZenodoMetadata(corpusId);
-        logger.info(zenodo_metadata);
-        String ret = createDeposition();
-        updateDeposition(ret, zenodo_metadata);
-        if (deleteDeposition(ret) == true) {
-            logger.info("deleted entry: " + ret);
+    public String uploadFile(String zenodoId, File file) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.set("Authorization", "Bearer " + token);
+
+//        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+//        try {
+//            builder.addBinaryBody(
+//                    "file",
+//                    new FileInputStream(file),
+//                    ContentType.APPLICATION_OCTET_STREAM,
+//                    file.getName());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        HttpEntity request = (HttpEntity) builder.build();
+
+        LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+        parts.add("file", new FileSystemResource(file));
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(parts, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/files", HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() != 201) {
+            throw new RuntimeException("Zenodo uploadFile error code: "+response.getStatusCode().value());
         }
-        ret = createDeposition(zenodo_metadata);
-        ret = retrieveDeposition(ret);
-        return ret;
+        JSONObject res = new JSONObject(response.getBody());
+        logger.info("uploadFile response:" + res.toString());
+        return res.get("id").toString();
+    }
+
+    @Override
+    public String sort(String zenodoId, JSONObject ids) {
+        // TODO method
+        return null;
+    }
+
+    @Override
+    public String retrieveFile(String zenodoId, String fileId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("", headers);
+        logger.info("GET request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.GET, request, String.class );
+        if (response.getStatusCode().value() != 200) {
+            throw new RuntimeException("Zenodo update error code: "+response.getStatusCode().value());
+        }
+        return response.getBody();
+    }
+
+    @Override
+    public String updateFile(String zenodoId, String fileId, String newName) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>(newName, headers);
+        logger.info("PUT request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.PUT, request, String.class );
+        if (response.getStatusCode().value() != 200) {
+            throw new RuntimeException("Zenodo updateFile error code: "+response.getStatusCode().value());
+        }
+        return response.getBody();
+    }
+
+    @Override
+    public void deleteFile(String zenodoId, String fileId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("", headers);
+        logger.info("DELETE request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.DELETE, request, String.class );
+        if (response.getStatusCode().value() != 204) {
+            throw new RuntimeException("Zenodo deleteFile error code: "+response.getStatusCode().value());
+        }
+    }
+
+    @Override
+    public void publish(String zenodoId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("{}", headers);
+        logger.info("POST request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/actions/publish", HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() != 202) {
+            throw new RuntimeException("Zenodo publish error code: "+response.getStatusCode().value());
+        }
+    }
+
+    @Override
+    public String edit(String zenodoId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("{}", headers);
+        logger.info("POST request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/actions/edit", HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() == 201) {
+            throw new RuntimeException("Zenodo edit error code: "+response.getStatusCode().value());
+        }
+        return response.getBody();
+    }
+
+    @Override
+    public void discard(String zenodoId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<String> request = new HttpEntity<>("{}", headers);
+        logger.info("POST request: " + request.toString());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host+"/"+zenodoId+"/actions/discard", HttpMethod.POST, request , String.class );
+        if (response.getStatusCode().value() != 201) {
+            throw new RuntimeException("Zenodo discard error code: "+response.getStatusCode().value());
+        }
     }
 
     /**
@@ -231,15 +408,7 @@ public class ZenodoServiceImpl implements ZenodoService {
             logger.warn("createZenodoMetadata returned " + result);
             return null;
         }
+        logger.info(result);
         return new JSONObject(result).toString();
-    }
-
-
-    private String zenodoPublish(String corpusId) {
-
-        String zenodo_metadata = createZenodoMetadata(corpusId);
-        logger.info(zenodo_metadata);
-
-        return null;
     }
 }
