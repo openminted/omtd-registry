@@ -63,29 +63,31 @@ public class ZenodoServiceImpl implements ZenodoService {
     public String publishCorpus(String corpusId) {
         String zenodo_metadata = createZenodoMetadata(corpusId);
         logger.info(zenodo_metadata);
-        String ret = createDeposition();
-        updateDeposition(ret, zenodo_metadata);
-        deleteDeposition(ret);
-        logger.info("deleted entry: " + ret);
+        String deposition_id;
+//        deposition_id = createDeposition();
+//        updateDeposition(deposition_id, zenodo_metadata);
+//        deleteDeposition(deposition_id);
+//        logger.info("deleted entry: " + deposition_id);
 
-        ret = createDeposition(zenodo_metadata);
-        retrieveDeposition(ret);
+        deposition_id = createDeposition(zenodo_metadata);
+//        retrieveDeposition(deposition_id);
         File f = null;
         try {
             f = File.createTempFile("corpus", ".zip");
-
             storeClient.downloadArchive(resolveCorpusArchive(corpusId), f.getAbsolutePath());
             logger.info("downloaded file: "+f.getAbsolutePath()+" can write: "+ f.canWrite());
-            uploadFile(ret, f);
+            uploadFile(deposition_id, f);
             f.delete();
-//            publish(ret);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-//        JSONObject response = new JSONObject(ret);
-//        return response.get("id").toString();
-        return listDepositions();
+            publish(deposition_id);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return "Could not publish corpus with id: "+corpusId;
+        }
+        return "Corpus Successfully Published";
     }
 
     @Override
@@ -194,18 +196,6 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.set("Authorization", "Bearer " + token);
-
-//        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//        try {
-//            builder.addBinaryBody(
-//                    "file",
-//                    new FileInputStream(file),
-//                    ContentType.APPLICATION_OCTET_STREAM,
-//                    file.getName());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        HttpEntity request = (HttpEntity) builder.build();
 
         LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("file", new FileSystemResource(file));
@@ -351,7 +341,8 @@ public class ZenodoServiceImpl implements ZenodoService {
 
 
     /**
-     *
+     * Downloads the metadata of a corpus with id = {@param corpusId}.
+     * Transforms the metadata to be compatible with <a href="http://developers.zenodo.org/?python#representation">Zenodo</a>.
      * @param corpusId
      * @return
      */
