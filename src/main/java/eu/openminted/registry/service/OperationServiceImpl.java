@@ -198,14 +198,18 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
         //Corpus input
         if (operation.getCorpus().getInput() != null) {
-            Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
-            records.put(operation.getCorpus().getInput(), input);
+           // Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
+           // records.put(operation.getCorpus().getInput(), input);
+            BaseMetadataRecord input = resolveIndividualResource(operation.getCorpus().getInput(), "resourceTypes", BaseMetadataRecord.class);
+        	records.put(operation.getCorpus().getInput(), input);            
         }
 
         //Corpus output
         if (operation.getCorpus().getOutput() != null) {
-            Corpus output = resolveIndividualResource(operation.getCorpus().getOutput(), "corpus", Corpus.class);
-            records.put(operation.getCorpus().getOutput(), output);
+            //Corpus output = resolveIndividualResource(operation.getCorpus().getOutput(), "corpus", Corpus.class);
+            //records.put(operation.getCorpus().getOutput(), output);      
+        	BaseMetadataRecord output = resolveIndividualResource(operation.getCorpus().getOutput(), "resourceTypes", BaseMetadataRecord.class);
+        	records.put(operation.getCorpus().getOutput(), output);
         }
 
         return records;
@@ -290,12 +294,12 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             throw new RuntimeException(e);
         }
 
-            logger.debug(url.toString());
-            ResponseEntity<String> executionId;
-            Operation operation;
+        logger.debug(url.toString());
+        ResponseEntity<String> executionId;
+        Operation operation;
         synchronized (OperationServiceImpl.class) {
-            logger.info("Starting workflow job");
-            logger.info(this);
+        	logger.info("Starting workflow job");
+        	logger.info(this);
             executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
             add(operation);

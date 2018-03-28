@@ -4,6 +4,7 @@
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level [%t] %highlight{%c{1}} - %msg%n"/>
     </Console>
+  
   </Appenders>
   <Loggers>
     <Root level="info">

@@ -1,6 +1,5 @@
 package eu.openminted.registry.beans.security;
 
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +37,7 @@ public class UserInfoAAIConfig {
 	
 	@Bean
 	public HttpEntity<String> getHttpEntity() {				
-		//logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
+		logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
 		
 		String plainCreds = aaiUserName + ":" + aaiUserPassword;
 		//logger.info(plainCreds);

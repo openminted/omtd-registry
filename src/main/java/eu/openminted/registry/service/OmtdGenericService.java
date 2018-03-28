@@ -62,9 +62,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     public T get(String id) {
         T resource;
         try {
-            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, id);
-            Resource res = searchService.searchId(getResourceType(), kv);
-            if(res==null) {
+        	SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, id);            	
+            Resource res = searchService.searchId(getResourceType(), kv);            
+            if(res==null) {           
                 return null;
             }
             resource = parserPool.deserialize(res, typeParameterClass).get();

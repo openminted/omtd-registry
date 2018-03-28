@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:componentMetadataRecord xmlns:ns0="http://www.meta-share.org/OMTD-SHARE_XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.meta-share.org/OMTD-SHARE_XMLSchema file:///E:/Work/Projects/OpenMinded/OMTD-SHARE/omtd-share-schema/Schema/OMTD-SHARE-Component.xsd">
+  <ns0:metadataHeaderInfo>
+    <ns0:metadataRecordIdentifier metadataIdentifierSchemeName="OMTD">c163d85f-f730-4bd4-9f69-a6916d3015a3</ns0:metadataRecordIdentifier>
+    <ns0:metadataCreationDate>2017-12-05+02:00</ns0:metadataCreationDate>
+    <ns0:metadataCreators>
+      <ns0:metadataCreator>
+        <ns0:surname>Gatsios</ns0:surname>
+        <ns0:givenName>Steve</ns0:givenName>
+        <ns0:personIdentifiers>
+          <ns0:personIdentifier personIdentifierSchemeName="other">0931731331613278@openminted.eu</ns0:personIdentifier>
+        </ns0:personIdentifiers>
+        <ns0:communicationInfo>
+          <ns0:emails><ns0:email>stevengatsios@gmail.com</ns0:email></ns0:emails>
+        </ns0:communicationInfo>
+        <ns0:affiliation>
+          <ns0:position>student</ns0:position>
+          <ns0:affiliatedOrganization>
+            <ns0:organizationNames>
+              <ns0:organizationName>Athena</ns0:organizationName>
+            </ns0:organizationNames>
+          </ns0:affiliatedOrganization>
+        </ns0:affiliation>
+      </ns0:metadataCreator>
+    </ns0:metadataCreators>
+    <ns0:metadataLastDateUpdated>2017-12-05+02:00</ns0:metadataLastDateUpdated>
+  </ns0:metadataHeaderInfo>
+  <ns0:componentInfo>
+    <ns0:resourceType>component</ns0:resourceType>
+    <ns0:identificationInfo>
+      <ns0:resourceNames>
+        <ns0:resourceName>ANNIE POS Tagger</ns0:resourceName>
+      </ns0:resourceNames>
+      <ns0:descriptions>
+        <ns0:description>Mark Hepple's Brill-style POS tagger</ns0:description>
+      </ns0:descriptions>
+      <ns0:resourceIdentifiers>
+        <ns0:resourceIdentifier resourceIdentifierSchemeName="maven">mvn:uk.ac.gate.plugins:annie:8.5-SNAPSHOT#gate.creole.POSTagger</ns0:resourceIdentifier>
+      </ns0:resourceIdentifiers>
+      <ns0:public>true</ns0:public>
+    </ns0:identificationInfo>
+    <ns0:versionInfo>
+      <ns0:version>8.5-SNAPSHOT</ns0:version>
+    </ns0:versionInfo>
+    <ns0:contactInfo>
+      <ns0:contactPoint>http://gate.ac.uk</ns0:contactPoint>
+      <ns0:contactType>landingPage</ns0:contactType>
+      <ns0:contactGroups>
+        <ns0:contactGroup>
+          <ns0:groupNames><ns0:groupName>GATE</ns0:groupName></ns0:groupNames>
+        </ns0:contactGroup>
+      </ns0:contactGroups>
+    </ns0:contactInfo>
+    <ns0:resourceDocumentations>
+      <ns0:resourceDocumentationInfo>
+        <ns0:documentationDescription>https://gate.ac.uk/sale/tao/splitch6.html#x9-1350006.6</ns0:documentationDescription>
+        <ns0:documentationType>onLineHelpURL</ns0:documentationType>
+      </ns0:resourceDocumentationInfo>
+     <ns0:resourceDocumentationInfo>
+       <ns0:documentationDescription>M. Hepple. Independence and commitment: Assumptions for rapid training and execution of rule-based POS taggers. In Proceedings of the 38th Annual Meeting of the Association for Computational Linguistics (ACL-2000), Hong Kong, October 2000</ns0:documentationDescription>
+       <ns0:documentationType>publication</ns0:documentationType>
+     </ns0:resourceDocumentationInfo>
+    </ns0:resourceDocumentations>
+    <ns0:resourceCreationInfo>
+      <ns0:resourceCreators>
+        <ns0:resourceCreator>
+          <ns0:actorType>group</ns0:actorType>
+          <ns0:relatedGroup>
+            <ns0:groupNames>
+              <ns0:groupName>GATE Team</ns0:groupName>
+            </ns0:groupNames>
+         </ns0:relatedGroup>
+        </ns0:resourceCreator>
+      </ns0:resourceCreators>
+    </ns0:resourceCreationInfo>
+    <ns0:application>false</ns0:application>
+    <ns0:functionInfo>
+      <ns0:function>http://w3id.org/meta-share/omtd-share/MorphologicalTagger</ns0:function>
+    </ns0:functionInfo>
+    <ns0:distributionInfos>
+      <ns0:componentDistributionInfo>
+        <ns0:componentDistributionForm>executableCode</ns0:componentDistributionForm>
+        <ns0:distributionLocation>mvn:uk.ac.gate.plugins:annie:8.5-SNAPSHOT#gate.creole.POSTagger</ns0:distributionLocation>
+        <ns0:operatingSystems><ns0:operatingSystem>os-independent</ns0:operatingSystem></ns0:operatingSystems>
+      </ns0:componentDistributionInfo>
+    </ns0:distributionInfos>
+    <ns0:rightsInfo>
+      <ns0:licenceInfos>
+        <ns0:licenceInfo>
+          <ns0:licence>LGPL-3.0</ns0:licence>
+        </ns0:licenceInfo>
+      </ns0:licenceInfos>
+      <ns0:rightsStatement>openAccess</ns0:rightsStatement>
+    </ns0:rightsInfo>
+    <ns0:parameterInfos>
+      <ns0:parameterInfo>
+        <ns0:parameterName>encoding</ns0:parameterName>
+        <ns0:parameterLabel>encoding</ns0:parameterLabel>
+        <ns0:parameterDescription>The encoding used for reading rules and lexicons</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>lexiconURL</ns0:parameterName>
+        <ns0:parameterLabel>lexiconURL</ns0:parameterLabel>
+        <ns0:parameterDescription>The URL to the lexicon file</ns0:parameterDescription>
+        <ns0:parameterType>other</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>resources/heptag/lexicon</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>rulesURL</ns0:parameterName>
+        <ns0:parameterLabel>rulesURL</ns0:parameterLabel>
+        <ns0:parameterDescription>The URL to the ruleset file</ns0:parameterDescription>
+        <ns0:parameterType>other</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>resources/heptag/ruleset</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>inputASName</ns0:parameterName>
+        <ns0:parameterLabel>inputASName</ns0:parameterLabel>
+        <ns0:parameterDescription>The annotation set to be used as input that must contain 'Token' and 'Sentence' annotations</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>baseTokenAnnotationType</ns0:parameterName>
+        <ns0:parameterLabel>baseTokenAnnotationType</ns0:parameterLabel>
+        <ns0:parameterDescription>The name of the base 'Token' annotation type</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>false</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>Token</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>baseSentenceAnnotationType</ns0:parameterName>
+        <ns0:parameterLabel>baseSentenceAnnotationType</ns0:parameterLabel>
+        <ns0:parameterDescription>The name of the base 'Sentence' annotation type</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>false</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>Sentence</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>outputAnnotationType</ns0:parameterName>
+        <ns0:parameterLabel>outputAnnotationType</ns0:parameterLabel>
+        <ns0:parameterDescription>The name of the annotation type where the new features should be added</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>false</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>Token</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>outputASName</ns0:parameterName>
+        <ns0:parameterLabel>outputASName</ns0:parameterLabel>
+        <ns0:parameterDescription>The annotation set to be used as output for POS annotations</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>lexiconSeparator</ns0:parameterName>
+        <ns0:parameterLabel>lexiconSeparator</ns0:parameterLabel>
+        <ns0:parameterDescription>Character used to separate lexicon entry from list of POS tags</ns0:parameterDescription>
+        <ns0:parameterType>string</ns0:parameterType>
+        <ns0:optional>false</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>failOnMissingInputAnnotations</ns0:parameterName>
+        <ns0:parameterLabel>failOnMissingInputAnnotations</ns0:parameterLabel>
+        <ns0:parameterDescription>Throw an exception when there are none of the required input annotations</ns0:parameterDescription>
+        <ns0:parameterType>boolean</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>true</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>posTagAllTokens</ns0:parameterName>
+        <ns0:parameterLabel>posTagAllTokens</ns0:parameterLabel>
+        <ns0:parameterDescription>Should all Tokens be POS tagged or just those within baseSentenceAnnotationType?</ns0:parameterDescription>
+        <ns0:parameterType>boolean</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+        <ns0:defaultValue>true</ns0:defaultValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>document</ns0:parameterName>
+        <ns0:parameterLabel>document</ns0:parameterLabel>
+        <ns0:parameterDescription>The document to process</ns0:parameterDescription>
+        <ns0:parameterType>other</ns0:parameterType>
+        <ns0:optional>false</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+      <ns0:parameterInfo>
+        <ns0:parameterName>corpus</ns0:parameterName>
+        <ns0:parameterLabel>corpus</ns0:parameterLabel>
+        <ns0:parameterDescription>The corpus containing the document to process</ns0:parameterDescription>
+        <ns0:parameterType>other</ns0:parameterType>
+        <ns0:optional>true</ns0:optional>
+        <ns0:multiValue>false</ns0:multiValue>
+      </ns0:parameterInfo>
+    </ns0:parameterInfos>
+    <ns0:inputContentResourceInfo>
+      <ns0:processingResourceType>document</ns0:processingResourceType>
+      <ns0:dataFormats>
+        <ns0:dataFormatInfo>
+          <ns0:dataFormat>http://w3id.org/meta-share/omtd-share/UimaCasFormat</ns0:dataFormat>
+        </ns0:dataFormatInfo>
+      </ns0:dataFormats>
+      <ns0:annotationTypes>
+        <ns0:annotationTypeInfo>
+          <ns0:annotationType>http://w3id.org/meta-share/omtd-share/Token</ns0:annotationType>
+        </ns0:annotationTypeInfo>
+        <ns0:annotationTypeInfo>
+          <ns0:annotationType>http://w3id.org/meta-share/omtd-share/Lemma</ns0:annotationType>
+        </ns0:annotationTypeInfo>
+      </ns0:annotationTypes>
+    </ns0:inputContentResourceInfo>
+    <ns0:outputResourceInfo>
+      <ns0:processingResourceType>document</ns0:processingResourceType>
+      <ns0:annotationTypes>
+        <ns0:annotationTypeInfo>
+          <ns0:annotationType>http://w3id.org/meta-share/omtd-share/Lemma</ns0:annotationType>
+        </ns0:annotationTypeInfo>
+      </ns0:annotationTypes>
+      <ns0:annotationResource>
+        <ns0:resourceNames>
+          <ns0:resourceName>Hepple tagger POS tagset</ns0:resourceName>
+        </ns0:resourceNames>
+        <ns0:resourceIdentifiers>
+          <ns0:resourceIdentifier resourceIdentifierSchemeName="URL">https://gate.ac.uk/sale/tao/splitap7.html#x39-786000G</ns0:resourceIdentifier>
+        </ns0:resourceIdentifiers>
+      </ns0:annotationResource>
+    </ns0:outputResourceInfo>
+    <ns0:previousAnnotationTypesPolicy>keep</ns0:previousAnnotationTypesPolicy>
+    <ns0:componentCreationInfo>
+      <ns0:framework>GATE</ns0:framework>
+      <ns0:implementationLanguage>Java</ns0:implementationLanguage>
+    </ns0:componentCreationInfo>
+  </ns0:componentInfo>
+</ns0:componentMetadataRecord>
