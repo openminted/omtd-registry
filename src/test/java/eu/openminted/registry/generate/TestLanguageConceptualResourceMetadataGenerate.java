@@ -124,7 +124,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMinimalCorpusMinimalComponent() throws IOException, JAXBException {
+		public void testWithMinimalCorpusMinimalComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -145,7 +145,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMinimalCorpusDemimaxComponent() throws IOException, JAXBException {
+		public void testWithMinimalCorpusDemimaxComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -166,7 +166,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMinimalCorpusMaxComponent() throws IOException, JAXBException {
+		public void testWithMinimalCorpusMaxComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -187,7 +187,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMaximumCorpusMinimalComponent() throws IOException, JAXBException {
+		public void testWithMaximumCorpusMinimalComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -208,7 +208,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMaximumCorpusDemimaxComponent() throws IOException, JAXBException {
+		public void testWithMaximumCorpusDemimaxComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");
@@ -229,7 +229,7 @@ public class  TestLanguageConceptualResourceMetadataGenerate {
 		}
 		
 		@Test
-		public void testWithMaximumCorpusMaxComponent() throws IOException, JAXBException {
+		public void testWithMaximumCorpusMaxComponent() throws IOException, JAXBException, Exception {
 			
 		
 			logger.info("Running Language/Conceptual Resource Metadata Generate");

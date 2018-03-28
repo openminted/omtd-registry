@@ -32,62 +32,59 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 	
     static final Logger logger = LogManager.getLogger(LanguageConceptualResourceMetadataGenerate.class);
     
-    public Lexical generateLanguageConceptualResourceMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException  {
+    public Lexical generateLanguageConceptualResourceMetadata(String inputCorpusId, String componentId, String userId, String outputResourceArchiveId) 
+    		throws IOException, NullPointerException  {
     	//eu.openminted.registry.domain.Lexical
     	Lexical lcr = new Lexical();
     	lcr.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String lcrOmtdId = lcr.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();    
-    	lcr.setLexicalConceptualResourceInfo(generateLanguageConceptualResourceInfo(lcrOmtdId, inputCorpusId, componentId, userId, outputCorpusArchiveId));
-    	logger.info("Output lrc metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
+    	lcr.setLexicalConceptualResourceInfo(generateLanguageConceptualResourceInfo(lcrOmtdId, inputCorpusId, componentId, userId, outputResourceArchiveId));
+    	//logger.info("Output lrc metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
     	return lcr;
     }
 
-    public LexicalConceptualResourceInfo generateLanguageConceptualResourceInfo(String lcrOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException {
-    	 // Get input corpus information
-        logger.info("Retrieving input corpus " + inputCorpusId);    
-        Corpus inputCorpus = corpusService.get(inputCorpusId);
-        logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
-
+    public LexicalConceptualResourceInfo generateLanguageConceptualResourceInfo(String lcrOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) 
+    		throws IOException, NullPointerException {
+    	 // Get input corpus information       		
+        Corpus inputCorpus = getInputCorpusMetadata(inputCorpusId);
         // Get component information
-        logger.info("Retrieving component " + componentId);
-        Component component = applicationService.get(componentId);
-        logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
+        Component component = getComponentMetadata(componentId);    	
         
         LexicalConceptualResourceInfo lcrInfo = new LexicalConceptualResourceInfo();
                
         ////////////////////////
         // IdentificationInfo      
         lcrInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-        logger.info("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
+        //logger.info("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
         
         /////////////////////////
         // VersionInfo     
         lcrInfo.setVersionInfo(generateVersionInfo());
-        logger.info("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
+        //logger.info("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
         
         //////////////////////////
         // ContactInfo       
         lcrInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
-        logger.info("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
+        //logger.info("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
 		        
 		//////////////////////////
 		// datasetDistributionInfo       
         List<DatasetDistributionInfo> distributionInfos = new ArrayList<>() ;
         distributionInfos.add(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
 		lcrInfo.setDistributionInfos(distributionInfos);
-		logger.info("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
+		//logger.info("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
 		
 		//////////////////////////
 		// rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         lcrInfo.setRightsInfo(rightsInfo);
-        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
         
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         lcrInfo.setResourceCreationInfo(resourceCreationInfo);
-        logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////////
         // lexicalConceptualResourceType
@@ -95,7 +92,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
         // OntologyAcquisition, OntologyEnhancement --> Ontology         
         if (componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_ONTOLOGY_ACQUISITION) ||
         	componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_ONTOLOGY_ENHANCEMENT)) {
-        	logger.info("Into ontology functionality");
+        	//logger.info("Into ontology functionality");
         	lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.ONTOLOGY);
         }
         // LexiconAquisitionFromCorpora, LexiconEnhancement, BilignualLexiconInduction --> Lexicon
@@ -104,12 +101,12 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
         		 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_EXTRACTOR_FROM_CORPORA) ||        
         		 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_ENHANCEMENT) ||
         		 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_BILINGUAL_LEXICON_INDUCTION) ) {
-        	logger.info("Into lexicon functionality");
+        	//logger.info("Into lexicon functionality");
         	lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.LEXICON);
         }       
         // rest --> other 
         else {
-        	logger.info("Into other functionality");
+        	//logger.info("Into other functionality");
         	lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.OTHER);
         }
         
@@ -118,13 +115,13 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 		List<RelationInfo> relations = new ArrayList<>();        		
 		relations.add(generateRelationInfo(component));
 		lcrInfo.setRelations(relations);
-		logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
+		//logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
 		
 		/////////////////////////////////////////////////
 		// lexicalConceptualResourceTextInfo
 		LexicalConceptualResourceTextInfo lcrTextInfo =  generateLexicalConceptualResourceTextInfo(inputCorpus, component);
 		lcrInfo.setLexicalConceptualResourceTextInfo(lcrTextInfo);
-		logger.info("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
+		//logger.info("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
 		        
         return(lcrInfo);
         		

@@ -198,14 +198,18 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
         //Corpus input
         if (operation.getCorpus().getInput() != null) {
-            Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
-            records.put(operation.getCorpus().getInput(), input);
+           // Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
+           // records.put(operation.getCorpus().getInput(), input);
+            BaseMetadataRecord input = resolveIndividualResource(operation.getCorpus().getInput(), "resourceTypes", BaseMetadataRecord.class);
+        	records.put(operation.getCorpus().getInput(), input);            
         }
 
         //Corpus output
         if (operation.getCorpus().getOutput() != null) {
-            Corpus output = resolveIndividualResource(operation.getCorpus().getOutput(), "corpus", Corpus.class);
-            records.put(operation.getCorpus().getOutput(), output);
+            //Corpus output = resolveIndividualResource(operation.getCorpus().getOutput(), "corpus", Corpus.class);
+            //records.put(operation.getCorpus().getOutput(), output);      
+        	BaseMetadataRecord output = resolveIndividualResource(operation.getCorpus().getOutput(), "resourceTypes", BaseMetadataRecord.class);
+        	records.put(operation.getCorpus().getOutput(), output);
         }
 
         return records;

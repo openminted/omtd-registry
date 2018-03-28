@@ -4,12 +4,20 @@ import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ParserService.ParserServiceTypes;
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.domain.LanguageDescription;
+import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.domain.ProcessingResourceTypeEnum;
 import eu.openminted.registry.domain.operation.Corpus;
 import eu.openminted.registry.domain.operation.Date;
 import eu.openminted.registry.domain.operation.Error;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
+import eu.openminted.registry.generate.LanguageConceptualResourceMetadataGenerate;
+import eu.openminted.registry.service.ComponentServiceImpl;
 import eu.openminted.registry.service.CorpusServiceImpl;
+import eu.openminted.registry.service.LanguageServiceImpl;
+import eu.openminted.registry.service.LexicalServiceImpl;
+import eu.openminted.registry.service.OmtdGenericService;
 import eu.openminted.registry.service.OperationService;
 import eu.openminted.registry.service.OperationServiceImpl;
 import eu.openminted.workflow.api.ExecutionStatus;
@@ -17,6 +25,7 @@ import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -31,19 +40,37 @@ public class OperationHandler {
     private static final Logger logger = LogManager.getLogger(OperationHandler.class);
 
     @Autowired
+    @Qualifier("operationService")
     private ResourceCRUDService<Operation> operationService;
 
     @Autowired
     private AnnotatedCorpusMetadataGenerate corpusMetadataGenerator;
 
     @Autowired
-    private CorpusServiceImpl corpusService;
+    @Qualifier("corpusService")
+    private  OmtdGenericService<eu.openminted.registry.domain.Corpus> corpusService;
+    
+    @Autowired
+    private LanguageConceptualResourceMetadataGenerate lexicalMetadataGenerator;
+    
+    @Autowired
+    @Qualifier("lexicalService")
+    private OmtdGenericService<Lexical> lexicalService;
+    
+    @Autowired
+    @Qualifier("languageService")
+    private  OmtdGenericService<LanguageDescription> languageDescriptionService;
+    
+    @Autowired
+    @Qualifier("applicationService")
+	private OmtdGenericService<eu.openminted.registry.domain.Component> applicationService;
+    //private ResourceCRUDService<Component> applicationService;
 
     @Autowired
     public ParserService parserPool;
 
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution.test.katerina}")
-    public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException {
+    public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException, Exception {
         synchronized (OperationServiceImpl.class) {
             logger.info("Operation Handler with " + operationService);
             System.out.println("Received the message " + workflowExeMsg.toString());
@@ -53,8 +80,8 @@ public class OperationHandler {
 
             // Set a workflow experiment for execution, ie create a new operation document
             if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
-                //logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
-                casePending(workflowExeMsg); 
+                logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
+                //casePending(workflowExeMsg); 
             }
             // Set a workflow experiment to started, ie update an operation document
             else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {
@@ -120,7 +147,6 @@ public class OperationHandler {
             throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.RUNNING.toString());
         }
         // Get operation object from registry
-
         Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 
         // Update operation
@@ -135,13 +161,15 @@ public class OperationHandler {
         operationService.update(operation);
     }
 
-    private void caseFinished(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException {
+    private void caseFinished(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException, NullPointerException {
         if (workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
             throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
         }
+     
         // Get operation object from registry
         Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
-
+        logger.debug("Retrieve operation " + operation.getId() + " to update to " + workflowExeMsg.getWorkflowStatus());
+        
         // Update operation
         operation.setStatus(ExecutionStatus.Status.FINISHED.toString());
         Date date = operation.getDate();
@@ -149,27 +177,71 @@ public class OperationHandler {
         operation.setDate(date);
 
         Corpus operationCorpus = operation.getCorpus();
+                      
+        logger.debug("Retrieving workflow metadata " + operation.getComponent());
+        eu.openminted.registry.domain.Component workflowMeta =  (eu.openminted.registry.domain.Component) applicationService.get(operation.getComponent());
+        if (workflowMeta == null) {
+        	logger.debug("Invalid workflow in operation, throw exception <" + operation.getComponent() + ">");
+        	throw new NullPointerException("Invalid workflow in operation <" + operation.getComponent() + ">");
+        }
+                
+        // Check what output resource is produced
+        String outputOmtdId = null; 
+		if (workflowMeta.getComponentInfo().getOutputResourceInfo() != null) {
+        	if (workflowMeta.getComponentInfo().getOutputResourceInfo().getProcessingResourceType().equals(ProcessingResourceTypeEnum.LANGUAGE_DESCRIPTION)) {
+        		// Generate output language description metadata
+        		logger.info("Generating metadata for language description from experiment " + workflowExeMsg.getWorkflowExecutionID());
+        		// TODO add generator for language description
+        		
+        	} else if (workflowMeta.getComponentInfo().getOutputResourceInfo().getProcessingResourceType().equals(ProcessingResourceTypeEnum.LEXICAL_CONCEPTUAL_RESOURCE)) {        		
+        		// Generate output lcr metadata
+        		logger.info("Generating metadata for lexical/conceptual resource from experiment " + workflowExeMsg.getWorkflowExecutionID());
+        		eu.openminted.registry.domain.Lexical outputLexicalMeta = lexicalMetadataGenerator.generateLanguageConceptualResourceMetadata(operationCorpus.getInput(),
+        				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+        	    // Add output lrc metadata to registry
+        	    logger.info("Adding output lexical/conceptual resource to registry");
+        	    lexicalService.add(outputLexicalMeta);
+        	    
+        	    // Get output omtd id
+        	    outputOmtdId = outputLexicalMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+        	} else {
+        		// By default it generates an annotated corpus
+        		// Generate output corpus metadata
+        		logger.info("Generating metadata for annotated corpus from experiment " + workflowExeMsg.getWorkflowExecutionID());
+        		eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
+        				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+        	    // Add output corpus metadata to registry
+        	    logger.info("Adding output corpus to registry");
+        	    corpusService.add(outputCorpusMeta);
+        	    
+        	    // Get output omtd id
+        	    outputOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
 
-        //TODO add service for other types of outputs, eg language/conceptual resource and language description
-        // Generate output corpus metadata
-        logger.info("Generating metadata for annotated corpus from experiment " + workflowExeMsg.getWorkflowExecutionID());
-        eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
-                operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
-
-
-        String outputCorpusOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
-        logger.info("Output corpus id :: " + outputCorpusOmtdId);
-        operationCorpus.setOutput(outputCorpusOmtdId);
-        operation.setCorpus(operationCorpus);
-
-        // Add output corpus metadata to registry
-        logger.info("Adding output corpus to registry");
-        corpusService.add(outputCorpusMeta);
+        	}
+		} else {
+    		// By default it generates an annotated corpus
+			// Generate output corpus metadata
+    		logger.info("Generating metadata for annotated corpus from experiment " + workflowExeMsg.getWorkflowExecutionID());
+    		eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
+    				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+    	    // Add output corpus metadata to registry
+    	    logger.info("Adding output corpus to registry");
+    	    corpusService.add(outputCorpusMeta);
+    	    
+    	    // Get output omtd id
+    	    outputOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+		}
+			
+        	
+		logger.debug("Output resource id :: " + outputOmtdId);
+        operationCorpus.setOutput(outputOmtdId);
+        operation.setCorpus(operationCorpus);      
 
         // Update operation to registry
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
         logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
         operationService.update(operation);
+        
     }
 
     private void caseFailed(WorkflowExecutionStatusMessage workflowExeMsg) throws ResourceNotFoundException {

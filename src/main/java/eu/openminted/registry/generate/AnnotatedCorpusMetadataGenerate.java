@@ -27,7 +27,8 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
     static final Logger logger = LogManager.getLogger(AnnotatedCorpusMetadataGenerate.class);
   
-    public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException  {
+    public Corpus generateAnnotatedCorpusMetadata(String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) 
+    		throws IOException, NullPointerException  {
     	Corpus corpus = new Corpus();
     	corpus.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String workingCorpusOmtdId = corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
@@ -37,52 +38,48 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
     }
 	
 	  
-    public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) throws IOException {
+    public CorpusInfo generateAnnotatedCorpusInfo(String corpusOmtdId, String inputCorpusId, String componentId, String userId, String outputCorpusArchiveId) 
+    		throws IOException, NullPointerException {
 
-        // Get input corpus information
-        logger.info("Retrieving input corpus " + inputCorpusId);
-        Corpus inputCorpus = corpusService.get(inputCorpusId);
-        //logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
-
+        // Get input corpus information       		
+        Corpus inputCorpus = getInputCorpusMetadata(inputCorpusId);
         // Get component information
-        logger.info("Retrieving component " + componentId);
-        Component component = applicationService.get(componentId);
-        //logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
-
+        Component component = getComponentMetadata(componentId);
+      
         // CorpusInfo
         CorpusInfo corpusInfo = new CorpusInfo();
 
         ////////////////////////
         // IdentificationInfo      
         corpusInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-        logger.info("Identification Info:\n" + mapper.writeValueAsString(corpusInfo.getIdentificationInfo()) +"\n");
+        //logger.info("Identification Info:\n" + mapper.writeValueAsString(corpusInfo.getIdentificationInfo()) +"\n");
 
         /////////////////////////
         // VersionInfo     
         corpusInfo.setVersionInfo(generateVersionInfo());
-        logger.info("Version info:\n" + mapper.writeValueAsString(corpusInfo.getVersionInfo())+"\n");
+        //logger.info("Version info:\n" + mapper.writeValueAsString(corpusInfo.getVersionInfo())+"\n");
 
         //////////////////////////
         // ContactInfo       
         corpusInfo.setContactInfo(generateContactInfo(userId, corpusOmtdId));
-        logger.info("Contact info::\n" + mapper.writeValueAsString(corpusInfo.getContactInfo()) + "\n");
+        //logger.info("Contact info::\n" + mapper.writeValueAsString(corpusInfo.getContactInfo()) + "\n");
 
         //////////////////////////
         // datasetDistributionInfo       
         corpusInfo.setDatasetDistributionInfo(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
-        logger.info("Distribution info:\n" + mapper.writeValueAsString(corpusInfo.getDatasetDistributionInfo())+"\n");
+        //logger.info("Distribution info:\n" + mapper.writeValueAsString(corpusInfo.getDatasetDistributionInfo())+"\n");
 
         //////////////////////////
         // rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         corpusInfo.setRightsInfo(rightsInfo);
-        logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
 
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         corpusInfo.setResourceCreationInfo(resourceCreationInfo);
-        logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////
         // relations.relationInfo
@@ -90,7 +87,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         relations.add(generateRelationInfo(inputCorpus));
         relations.add(generateRelationInfo(component));
         corpusInfo.setRelations(relations);
-        logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");                
+        //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");                
 
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
@@ -98,7 +95,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
         AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
-        logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
+        //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);
 
         return corpusInfo;
@@ -106,7 +103,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
     private AnnotatedCorpusInfo generateAnnotatedCorpusInfo(Corpus inputCorpus, Component component) throws JsonProcessingException {
 
-    	logger.info("In generateAnnotatedCorpusInfo");
+    	//logger.info("In generateAnnotatedCorpusInfo");
         AnnotatedCorpusInfo generatedAnnotatedCorpusInfo = new AnnotatedCorpusInfo();
 
        
@@ -118,32 +115,32 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo
         	LingualityInfo lingualityInfo = rawCorpusInfo.getLingualityInfo();
         	generatedAnnotatedCorpusInfo.setLingualityInfo(lingualityInfo);
-        	logger.info("Added lingualityInfo from raw corpus");
+        	//logger.info("Added lingualityInfo from raw corpus");
         	
         	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
             List<LanguageInfo> languages = rawCorpusInfo.getLanguages();
             generatedAnnotatedCorpusInfo.setLanguages(languages);
-            logger.info("Added languages from raw corpus");
+            //logger.info("Added languages from raw corpus");
                         
         	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
     		List<TextClassificationInfo> textClassifications = rawCorpusInfo.getTextClassifications();
     		generatedAnnotatedCorpusInfo.setTextClassifications(textClassifications);
-    	    logger.info("Added textClassifications from raw corpus");
+    	    //logger.info("Added textClassifications from raw corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
     		List<DomainInfo> domains = rawCorpusInfo.getDomains();
     		generatedAnnotatedCorpusInfo.setDomains(domains);
-    	    logger.info("Added domains from raw corpus");
+    	    //logger.info("Added domains from raw corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
     		List<TimeCoverageInfo> timeClassifications = rawCorpusInfo.getTimeClassifications();
     		generatedAnnotatedCorpusInfo.setTimeClassifications(timeClassifications);
-    	    logger.info("Added timeClassifications from raw corpus");
+    	    //logger.info("Added timeClassifications from raw corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
     		List<GeographicCoverageInfo> geographicClassifications = rawCorpusInfo.getGeographicClassifications();
     		generatedAnnotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
-    	    logger.info("Added geographicClassifications from raw corpus");
+    	    //logger.info("Added geographicClassifications from raw corpus");
         }  
         // inputCorpus is annotated corpus
         else if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo() != null) {
@@ -153,44 +150,44 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.lingualityInfo	
         	LingualityInfo lingualityInfo = annotatedCorpusInfo.getLingualityInfo();
         	generatedAnnotatedCorpusInfo.setLingualityInfo(lingualityInfo);
-        	logger.info("Added lingualityInfo from annotated corpus");
+        	//logger.info("Added lingualityInfo from annotated corpus");
         	
         	// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.languages
             List<LanguageInfo> languages = annotatedCorpusInfo.getLanguages();
             generatedAnnotatedCorpusInfo.setLanguages(languages);
-            logger.info("Added languages from annotated corpus");
+            //logger.info("Added languages from annotated corpus");
             
             // corpusSubtypeSpecificationInfo.annotatedCorpusInfo.textClassifications
     		List<TextClassificationInfo> textClassifications = annotatedCorpusInfo.getTextClassifications();
     		generatedAnnotatedCorpusInfo.setTextClassifications(textClassifications);
-    	    logger.info("Added textClassifications from annotated corpus");
+    	    //logger.info("Added textClassifications from annotated corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.domains
     		List<DomainInfo> domains = annotatedCorpusInfo.getDomains();
     		generatedAnnotatedCorpusInfo.setDomains(domains);
-    	    logger.info("Added domains from annotated corpus");
+    	    //logger.info("Added domains from annotated corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.timeClassifications
     		List<TimeCoverageInfo> timeClassifications = annotatedCorpusInfo.getTimeClassifications();
     		generatedAnnotatedCorpusInfo.setTimeClassifications(timeClassifications);
-    	    logger.info("Added timeClassifications from annotated corpus");
+    	    //logger.info("Added timeClassifications from annotated corpus");
     		
     		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.geographicClassifications
     		List<GeographicCoverageInfo> geographicClassifications = annotatedCorpusInfo.getGeographicClassifications();
     		generatedAnnotatedCorpusInfo.setGeographicClassifications(geographicClassifications);
-    	    logger.info("Added geographicClassifications from annotated corpus");
+    	    //logger.info("Added geographicClassifications from annotated corpus");
         }
                	
 		// corpusSubtypeSpecificationInfo.annotatedCorpusInfo.annotations.annotationInfo
 		List<AnnotationInfo> annotations = new ArrayList<>();
 		AnnotationInfo annotationInfo = new AnnotationInfo();
-		logger.info("Adding annotationInfo");
+		//logger.info("Adding annotationInfo");
 		
 		if (component.getComponentInfo().getOutputResourceInfo() != null) {
-			logger.info("Workflow has outputResourceInfo metadata.");
+			//logger.info("Workflow has outputResourceInfo metadata.");
 			// annotatationInfo.annotationTypes
 			List<AnnotationTypeInfo> annotationTypes = component.getComponentInfo().getOutputResourceInfo().getAnnotationTypes();
-			// TODO Added a dummy node just for passing validation of add in registry 	
+			// Added a dummy node just for passing validation of add in registry 	
 			if (annotationTypes.size() == 0) { 
 				AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
 				annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
@@ -211,8 +208,8 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 			annotationInfo.setAnnotationResource(annotationResource);
 		}
 		else {
-			logger.info("Workflow does not has outputResourceInfo metadata. Add dummy node.");
-			// TODO Added a dummy node just for passing validation of add in registry 	
+			//logger.info("Workflow does not has outputResourceInfo metadata. Add dummy node.");
+			// Added a dummy node just for passing validation of add in registry 	
 			List<AnnotationTypeInfo> annotationTypes = new ArrayList<>();
 			AnnotationTypeInfo annotationTypeInfo = new AnnotationTypeInfo();
 			annotationTypeInfo.setAnnotationType(AnnotationTypeType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEMMA);
@@ -249,7 +246,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		annotations.add(annotationInfo);
 		generatedAnnotatedCorpusInfo.setAnnotations(annotations);
 
-		logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
+		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
 			
 		                
 		

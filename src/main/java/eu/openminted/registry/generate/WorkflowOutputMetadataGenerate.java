@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -67,6 +68,7 @@ import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.VersionInfo;
 import eu.openminted.registry.service.CorpusServiceImpl;
+import eu.openminted.registry.service.OmtdGenericService;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
 public abstract class WorkflowOutputMetadataGenerate {
@@ -74,11 +76,12 @@ public abstract class WorkflowOutputMetadataGenerate {
 	 static final Logger logger = LogManager.getLogger(WorkflowOutputMetadataGenerate.class);
 	    
 	 @Autowired
-	 protected CorpusServiceImpl corpusService;
-		
+	 @Qualifier("corpusService")
+	 private  OmtdGenericService<eu.openminted.registry.domain.Corpus> corpusService;
+	 
 	 @Autowired
 	 @Qualifier("applicationService")
-	 protected ResourceCRUDService<Component> applicationService;
+	 private OmtdGenericService<eu.openminted.registry.domain.Component> applicationService;
 	 
 	 @Autowired
 	 protected UserInfoAAIRetrieve aaiUserInfoRetriever;
@@ -168,6 +171,31 @@ public abstract class WorkflowOutputMetadataGenerate {
 		return personInfo;
 		
 	 }
+	 
+	 protected Corpus getInputCorpusMetadata(String inputCorpusId) throws JsonProcessingException, NullPointerException {
+		 // Get input corpus information
+		 logger.info("Retrieving input corpus " + inputCorpusId);
+		 Corpus inputCorpus = corpusService.get(inputCorpusId);
+		 if (inputCorpus == null) {
+	        	logger.debug("Invalid input corpus, throw exception");
+	        	throw new NullPointerException("Invalid input corpus " + inputCorpusId);
+		 }
+		 logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
+		 return inputCorpus;
+	 }
+	 
+	 protected Component getComponentMetadata(String componentId) throws JsonProcessingException, NullPointerException {
+		 // Get component information
+		 logger.info("Retrieving component " + componentId);
+		 Component component = applicationService.get(componentId);
+		 if (component == null) {
+			 logger.debug("Invalid input component, throw exception");
+			 throw new NullPointerException("Invalid input component " + componentId);
+	     }
+		 logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
+		 return component;
+	 }
+	 
 	 
 	 protected abstract IdentificationInfo generateIdentificationInfo(Corpus inputCorpus, Component component);
 	 
@@ -332,7 +360,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 				}	
 				datasetDistributionInfo.setTextFormats(textFormats);
 			}
-			// TODO Added a dummy node just for passing validation of add in registry 		
+			// Added a dummy node just for passing validation of add in registry 		
 			else {
 				List<TextFormatInfo> textFormats = new ArrayList<>();
 				TextFormatInfo textFormatInfo = new TextFormatInfo();
@@ -343,7 +371,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 				datasetDistributionInfo.setTextFormats(textFormats);
 			}
 		}
-		// TODO Added a dummy node just for passing validation of add in registry		
+		// Added a dummy node just for passing validation of add in registry		
 		else {
 			List<TextFormatInfo> textFormats = new ArrayList<>();
 			TextFormatInfo textFormatInfo = new TextFormatInfo();
@@ -389,7 +417,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 		
 		// rightsInfo.licenceInfos.licenceInfo
 		List<LicenceInfo> licenceInfos = new ArrayList<>();
-		// TODO that license CC0 is chosen by default to avoid validation error
+		// license CC0 is chosen by default to avoid validation error
 		// User must select the appropriate license.
 		LicenceInfo licenceInfo = new LicenceInfo();
 		licenceInfo.setLicence(LicenceEnum.CC0_1_0);			
@@ -397,12 +425,12 @@ public abstract class WorkflowOutputMetadataGenerate {
 		rightsInfo.setLicenceInfos(licenceInfos);
 		
 		// rightsInfo.rightsStatement
-		// TODO that right statement restricted access is chosen by default to avoid validation error
+		// Right statement restricted access is chosen by default to avoid validation error
 		// User must select the appropriate right statement.
 		rightsInfo.setRightsStatement(RightsStatementEnum.RESTRICTED_ACCESS);
 		
 		// rightsInfo.attributionText
-		// TODO replace <annotated_corpus_licence when user selects the correct licence.
+		// Replace <annotated_corpus_licence when user selects the correct licence.
 		String attributionTextStart = generateAttributionTextStart();
 		String attributionText  = attributionTextStart + "processing of <input_corpus_name>(by <input_corpus_creator_name>) " +
 	       "performed under <input_corpus_licence> has been enabled by the OpenMinTeD infrastructure " +

@@ -117,7 +117,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	@Test
-	public void testWithMinimalCorpusMinimalComponent() throws IOException {
+	public void testWithMinimalCorpusMinimalComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");
@@ -138,7 +138,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	@Test
-	public void testWithMinimalCorpusMaximumComponent() throws IOException {
+	public void testWithMinimalCorpusMaximumComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");
@@ -161,7 +161,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 
 
 	@Test
-	public void testWithMinimalCorpusDemimaxComponent() throws IOException {
+	public void testWithMinimalCorpusDemimaxComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");
@@ -183,7 +183,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	@Test
-	public void testWithMaximumCorpusMinimalComponent() throws IOException {
+	public void testWithMaximumCorpusMinimalComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");
@@ -204,7 +204,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 	}
 	
 	@Test
-	public void testWithMaximumCorpusMaximumComponent() throws IOException {
+	public void testWithMaximumCorpusMaximumComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");
@@ -227,7 +227,7 @@ public class TestAnnotatedCorpusMetadataGenerate {
 
 
 	@Test
-	public void testWithMaximumCorpusDemimaxComponent() throws IOException {
+	public void testWithMaximumCorpusDemimaxComponent() throws IOException, Exception {
 		
 	
 		logger.info("Running Corpus Metadata Generate");

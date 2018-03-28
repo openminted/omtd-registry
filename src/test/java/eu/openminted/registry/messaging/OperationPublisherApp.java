@@ -39,7 +39,9 @@ public class OperationPublisherApp {
  
 	
 	// @Value("${jms.host}")
-    private String jmsHost = "tcp://83.212.101.85:61616";
+    private String jmsHost = "tcp://83.212.101.85:61616"; // dev 
+    		//"tcp://83.212.98.33:61616"; // beta 
+
 
     //@Value("${jms.prefix}")
     private String jmsPrefix = "registry";
@@ -85,20 +87,29 @@ public class OperationPublisherApp {
     }
 	
 			
-	private static String userID = "0931732115452907@openminted.eu"; //"0931731143127784@openminted.eu";
+	private static String userID = "0931731143127784@openminted.eu"; //"0931732115452907@openminted.eu"; 
 	// omtdid	
-	private static String corpusID = "8ed76a12-5d9c-4fb4-841c-9241f254ac53"; // Raw Corpus	
-			//"5a9ab090-1449-4e92-857d-198791b11384"; // Annotated Corpus  
+	private static String corpusID = "3adef061-f999-4a9c-b8de-68d3e223c4f9"; // Raw Corpus
+			// fFrom beta - 
+			//"8beb22bf-ce18-4100-a2b6-aa32a5fd31fb"; // Raw Corpus
+		
+	
+			// From dev -- http://83.212.101.85:9200 
+	 		//"3adef061-f999-4a9c-b8de-68d3e223c4f9"; // Raw Corpus	  
 
-			//"1cee8f5c-dda1-46f5-a069-68145f09c684";
-			// "6e92743a-8b2f-4e97-9f5b-8da8798181bc"; 
-			// "443b8640-8e42-4a31-b481-540107318975"; 
+	
 	
 	//omtdid
-	private static String workflowID = "3bd457ad-de46-4756-a151-8f3ef4f2e030"; // Prediction-InCorpus-OutCorpus 
-			//"290676a0-aaec-46d2-898a-0bbbba7a412c" ; // TrainerOfMachineLearningModels-InCorpus-OutCorpus
+	private static String workflowID = "76c33d5d-b85b-4bfc-9430-056844c97184"; //dev-Sentiment-NoInput-NoOutput 
+			//"6aecac98-df88-4e70-a873-dfe44f0b5662"; // dev-OntologyEnhancement2-NoInput-NoOutput 
+			//"6b17f03e-e550-4a1d-b5cd-d50691ac1867"; // dev-OntologyAcqV2-InCorpus-OutLRC 
+			 
+			// "8898dbad-cf84-4e57-82bb-6ef3a158aca1"; // OntologyEnhancement-InCorpus-OutLCR 
+			// "02149b02-8a92-4321-a987-6dea42e9c7a9" ; // OntologyAcquisition-InCorpus-OutputLCR 
+			// "209ea58d-5e1c-47ae-8207-99d2483f4ca8"; // dev-component
+			// From dev -- http://83.212.101.85:9200
+			
 	
-	// // TrainerOfMachineLearningModels-In-Out
 
 
 
@@ -112,11 +123,12 @@ public class OperationPublisherApp {
 				       		    
 		// Connect to jms 
 		JmsTemplate jmsQueueTemplate = (JmsTemplate) context.getBean("jmsQueueTemplate");
+	
 		
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage();
-        String workflowExecutionID = "WFE_ID10";//UUID.randomUUID().toString();  // operation_id
+        String workflowExecutionID = "WFE_ID9";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
