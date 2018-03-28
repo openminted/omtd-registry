@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -45,8 +46,8 @@ public class ZenodoServiceImpl implements ZenodoService {
     @Value("${zenodo.token}")
     private String token;
 
-    @Value("${zenodo.xsl}")
-    private String xsl_file;
+    @Value("classpath:eu/openminted/registry/service/corpusMetadataToJson.xsl")
+    private Resource xslFile;
 
     @Autowired
     StoreRESTClient storeClient;
@@ -63,7 +64,7 @@ public class ZenodoServiceImpl implements ZenodoService {
      * @param corpusId
      * @return
      */
-    private String test(String corpusId) {
+    private String test(String corpusId) throws IOException {
         String deposition_id = null;
         String zenodo_metadata = createZenodoMetadata(corpusId);
         deposition_id = createDeposition();
@@ -93,15 +94,14 @@ public class ZenodoServiceImpl implements ZenodoService {
 
     @Override
     public String publishCorpus(String corpusId) {
-        String zenodo_metadata = createZenodoMetadata(corpusId);
-        logger.info(zenodo_metadata);
         String deposition_id;
         String doi = null;
 
-        deposition_id = createDeposition(zenodo_metadata);
-
         File file;
         try {
+            String zenodo_metadata = createZenodoMetadata(corpusId);
+            logger.info(zenodo_metadata);
+            deposition_id = createDeposition(zenodo_metadata);
             file = File.createTempFile("corpus", ".zip");
             storeClient.downloadArchive(resolveCorpusArchive(corpusId), file.getAbsolutePath());
             uploadFile(deposition_id, file);
@@ -401,7 +401,7 @@ public class ZenodoServiceImpl implements ZenodoService {
      * @param corpusId
      * @return
      */
-    private String createZenodoMetadata(String corpusId) {
+    private String createZenodoMetadata(String corpusId) throws IOException {
         String corpusXML = "";
         Corpus corpus = corpusService.get(corpusId);
         try {
@@ -415,9 +415,7 @@ public class ZenodoServiceImpl implements ZenodoService {
 
         Processor processor = new Processor(false);
         XsltCompiler xsltCompiler = processor.newXsltCompiler();
-        StreamSource stylesource =
-                new StreamSource(new File(this.getClass().getClassLoader()
-                        .getResource(xsl_file).getFile()));
+        StreamSource stylesource = new StreamSource(xslFile.getFile());
 
         XsltExecutable xsltExecutable;
         String result = null;
