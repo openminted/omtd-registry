@@ -327,7 +327,14 @@
             <artifactId>spring-data-redis</artifactId>
 			<version>1.6.0.RELEASE</version>
         </dependency>
-    </dependencies>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.5.0.1</version>
+        </dependency>
+
+	</dependencies>
 	
 
 
