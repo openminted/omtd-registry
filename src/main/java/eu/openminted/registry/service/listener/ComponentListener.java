@@ -75,7 +75,7 @@ public class ComponentListener {
     @Around("execution (* eu.openminted.registry.service.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) && args(application)")
     public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
         if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
-            logger.info("application with id " + application.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue() + " has a workflow definition");
+            logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
             pjp.proceed();
             return application;
         }
