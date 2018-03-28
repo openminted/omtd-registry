@@ -14,7 +14,7 @@ public interface ZenodoService {
     /**
      * Create and publish a corpus deposition.
      * @param corpusId
-     * @return
+     * @return Zenodo deposition DOI
      */
     String publishCorpus(String corpusId);
 
@@ -22,17 +22,17 @@ public interface ZenodoService {
      * List all depositions for the currently authenticated user.
      * @return
      */
-    String listDepositions();
+    JSONObject listDepositions();
 
     /**
      * Create a new deposition resource.
-     * @return
+     * @return deposition ID
      */
     String createDeposition();
 
     /**
      * Create a new deposition resource with the given metadata.
-     * @return
+     * @return deposition ID
      */
     String createDeposition(String metadata);
 
@@ -40,7 +40,7 @@ public interface ZenodoService {
      * Retrieve a single deposition resource.
      * @return
      */
-    String retrieveDeposition(String zenodoId);
+    JSONObject retrieveDeposition(String zenodoId);
 
     /**
      * Update an existing deposition resource.
@@ -103,16 +103,16 @@ public interface ZenodoService {
      * Publish a deposition.
      * Note, once a deposition is published, you can no longer delete it.
      * @param zenodoId
-     * @return
+     * @return DOI of the deposition
      */
-    void publish(String zenodoId);
+    String publish(String zenodoId);
 
     /**
      * Unlock already submitted deposition for editing.
      * @param zenodoId
      * @return
      */
-    String edit(String zenodoId);
+    String edit(String zenodoId, String metadata);
 
     /**
      * Discard changes in the current editing session.
@@ -120,5 +120,12 @@ public interface ZenodoService {
      * @return
      */
     void discard(String zenodoId);
+
+    /**
+     * Clones a published deposition to a new unpublished version.
+     * @param zenodoId
+     * @return
+     */
+    String newVersion(String zenodoId);
 
 }
