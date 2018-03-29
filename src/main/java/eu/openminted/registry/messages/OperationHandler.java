@@ -69,7 +69,7 @@ public class OperationHandler {
     @Autowired
     public ParserService parserPool;
 
-    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution.test.katerina}")
+    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution}")
     public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException, Exception {
         synchronized (OperationServiceImpl.class) {
             logger.info("Operation Handler with " + operationService);
