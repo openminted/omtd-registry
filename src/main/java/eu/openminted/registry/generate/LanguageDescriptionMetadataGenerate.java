@@ -13,6 +13,7 @@ import eu.openminted.registry.domain.DatasetDistributionInfo;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LanguageDescription;
 import eu.openminted.registry.domain.LanguageDescriptionInfo;
+import eu.openminted.registry.domain.LanguageDescriptionTypeEnum;
 import eu.openminted.registry.domain.OperationType;
 import eu.openminted.registry.domain.RelationInfo;
 import eu.openminted.registry.domain.ResourceCreationInfo;
@@ -44,71 +45,61 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 		 // Get component information
 		 Component component = getComponentMetadata(componentId);    	
 		 
-		 LanguageDescriptionInfo lcrInfo = new LanguageDescriptionInfo();
+		 LanguageDescriptionInfo ldInfo = new LanguageDescriptionInfo();
 		 
 		 ////////////////////////
 		 // IdentificationInfo      
-		 lcrInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-		 logger.debug("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
+		 ldInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
+		 logger.debug("Identification Info:\n" + mapper.writeValueAsString(ldInfo.getIdentificationInfo()) +"\n");
 	        
 		 /////////////////////////
 		 // VersionInfo     
-		 lcrInfo.setVersionInfo(generateVersionInfo());
-		 logger.debug("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
+		 ldInfo.setVersionInfo(generateVersionInfo());
+		 logger.debug("Version info:\n" + mapper.writeValueAsString(ldInfo.getVersionInfo())+"\n");
 	        
 	     //////////////////////////
 		 // ContactInfo       
-		 lcrInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
-		 logger.debug("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
+		 ldInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
+		 logger.debug("Contact info::\n" + mapper.writeValueAsString(ldInfo.getContactInfo()) + "\n");
 			        
 		 //////////////////////////
 		 // datasetDistributionInfo       
 		 List<DatasetDistributionInfo> distributionInfos = new ArrayList<>() ;
 		 distributionInfos.add(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
-		 lcrInfo.setDistributionInfos(distributionInfos);
-		 logger.debug("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
+		 ldInfo.setDistributionInfos(distributionInfos);
+		 logger.debug("Distribution info:\n" + mapper.writeValueAsString(ldInfo.getDistributionInfos())+"\n");
 		 
 		 //////////////////////////
 		 // rightsInfo
 		 RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
-		 lcrInfo.setRightsInfo(rightsInfo);
+		 ldInfo.setRightsInfo(rightsInfo);
 		 logger.debug("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
 		 
 		 //////////////////////////
 		 // resourceCreationInfo
 		 ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
-		 lcrInfo.setResourceCreationInfo(resourceCreationInfo);
-		 //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+		 ldInfo.setResourceCreationInfo(resourceCreationInfo);
+		 logger.debug("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 		 
 		 //////////////////////////////
-		 // lexicalConceptualResourceType
+		 // languageDescriptionType
 		 OperationType componentOperation = component.getComponentInfo().getFunctionInfo().getFunction();                
-		 // OntologyAcquisition, OntologyEnhancement --> Ontology         
-		 if (componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_ONTOLOGY_ACQUISITION) ||
-				 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_ONTOLOGY_ENHANCEMENT)) {
-	        //logger.info("Into ontology functionality");
-		//	lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.ONTOLOGY);
-	     }	
-		 // LexiconAquisitionFromCorpora, LexiconEnhancement, BilignualLexiconInduction --> Lexicon
-		 else if (componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_ACQUISITION_FROM_CORPORA) || 
-				 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_EXTRACTION_FROM_LEXICA) ||
-				 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_EXTRACTOR_FROM_CORPORA) ||        
-				 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_LEXICON_ENHANCEMENT) ||
-				 componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_BILINGUAL_LEXICON_INDUCTION) ) {
-	        //logger.info("Into lexicon functionality");
-		//	lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.LEXICON);
-	     }       
+		 // TrainerOfMachineLearningModels --> mlModel
+		 if (componentOperation.equals(OperationType.HTTP___W3ID_ORG_META_SHARE_OMTD_SHARE_TRAINER_OF_MACHINE_LEARNING_MODELS))  {
+	        logger.debug("Into mlModel");
+			ldInfo.setLanguageDescriptionType(LanguageDescriptionTypeEnum.ML_MODEL);
+	     }	       
 		 // rest --> other 
 		 else {
-			 //logger.info("Into other functionality");
-			// lcrInfo.setLexicalConceptualResourceType(LexicalConceptualResourceTypeEnum.OTHER);
+			logger.debug("Into other functionality");
+			ldInfo.setLanguageDescriptionType(LanguageDescriptionTypeEnum.OTHER);
 	     }	
 	        
 		 //////////////////////////
 		 // relations.relationInfo
 		 List<RelationInfo> relations = new ArrayList<>();        		
 		 relations.add(generateRelationInfo(component));
-		 lcrInfo.setRelations(relations);
+		 ldInfo.setRelations(relations);
 		 //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
 		 
 		 /////////////////////////////////////////////////
@@ -117,7 +108,7 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 		// lcrInfo.setLexicalConceptualResourceTextInfo(lcrTextInfo);
 		 //logger.info("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
 		 
-		 return(lcrInfo);		
+		 return(ldInfo);		
 	}
 	
 	@Override
