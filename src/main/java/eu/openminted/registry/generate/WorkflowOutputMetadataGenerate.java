@@ -132,7 +132,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 		 PersonInfo personInfo = generatePersonInfo(userId, true);
 		 metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
-		 logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
+		 logger.debug("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 		 return metadataHeaderInfo;
 	 }
 	
@@ -175,12 +175,13 @@ public abstract class WorkflowOutputMetadataGenerate {
 	 protected Corpus getInputCorpusMetadata(String inputCorpusId) throws JsonProcessingException, NullPointerException {
 		 // Get input corpus information
 		 logger.info("Retrieving input corpus " + inputCorpusId);
+		 logger.debug("Corpus service" + corpusService);
 		 Corpus inputCorpus = corpusService.get(inputCorpusId);
 		 if (inputCorpus == null) {
-	        	logger.debug("Invalid input corpus, throw exception");
+	        	logger.info("Invalid input corpus, throw exception");
 	        	throw new NullPointerException("Invalid input corpus " + inputCorpusId);
 		 }
-		 logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
+		 logger.debug("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
 		 return inputCorpus;
 	 }
 	 
@@ -189,10 +190,10 @@ public abstract class WorkflowOutputMetadataGenerate {
 		 logger.info("Retrieving component " + componentId);
 		 Component component = applicationService.get(componentId);
 		 if (component == null) {
-			 logger.debug("Invalid input component, throw exception");
+			 logger.info("Invalid input component, throw exception");
 			 throw new NullPointerException("Invalid input component " + componentId);
 	     }
-		 logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
+		 logger.debug("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
 		 return component;
 	 }
 	 

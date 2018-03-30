@@ -39,7 +39,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
     	lcr.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String lcrOmtdId = lcr.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();    
     	lcr.setLexicalConceptualResourceInfo(generateLanguageConceptualResourceInfo(lcrOmtdId, inputCorpusId, componentId, userId, outputResourceArchiveId));
-    	//logger.info("Output lrc metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
+    	logger.debug("Output language description metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
     	return lcr;
     }
 
@@ -55,7 +55,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
         ////////////////////////
         // IdentificationInfo      
         lcrInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-        //logger.info("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
+        logger.debug("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
         
         /////////////////////////
         // VersionInfo     
