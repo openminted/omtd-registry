@@ -53,12 +53,12 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 		 /////////////////////////
 		 // VersionInfo     
 		 lcrInfo.setVersionInfo(generateVersionInfo());
-		 //logger.info("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
+		 logger.debug("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
 	        
 	     //////////////////////////
 		 // ContactInfo       
 		 lcrInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
-		 //logger.info("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
+		 logger.debug("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
 			        
 		 //////////////////////////
 		 // datasetDistributionInfo       
@@ -152,8 +152,7 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 
 	@Override
 	protected String generateWorkingResourceLandingPage(String resourceOmtdId) {
-		// TODO Auto-generated method stub
-		return null;
+		return landingPageDomain + "/landingPage/language/" + resourceOmtdId;
 	}
 
 	@Override
