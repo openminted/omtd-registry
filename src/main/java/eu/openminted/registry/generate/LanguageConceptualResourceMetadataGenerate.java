@@ -189,26 +189,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 	protected RelationInfo generateRelationInfo(Corpus inputCorpus) {
 		return null;
 	}
-	 
-	@Override 
-	protected RelationInfo generateRelationInfo(Component component) {
-			
-		RelationInfo relationInfo = new RelationInfo();
-		// relationType
-		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
-		
-		// relatedResource
-		RelatedResource rawCorpus = new RelatedResource();
-		ResourceIdentifier identifier = new ResourceIdentifier();
-		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
-		rawCorpus.setResourceIdentifiers(Collections.singletonList(identifier));
-//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
-		rawCorpus.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		relationInfo.setRelatedResource(rawCorpus);
-			
-		return relationInfo;
-	}
+	 	
 	
 	protected LexicalConceptualResourceTextInfo generateLexicalConceptualResourceTextInfo(Corpus inputCorpus, Component component) {
 

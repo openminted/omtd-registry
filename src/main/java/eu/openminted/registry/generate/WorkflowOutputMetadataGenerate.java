@@ -58,6 +58,7 @@ import eu.openminted.registry.domain.PersonInfo;
 import eu.openminted.registry.domain.ProcessMode;
 import eu.openminted.registry.domain.RelatedResource;
 import eu.openminted.registry.domain.RelationInfo;
+import eu.openminted.registry.domain.RelationTypeEnum;
 import eu.openminted.registry.domain.ResourceCreationInfo;
 import eu.openminted.registry.domain.ResourceIdentifier;
 import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
@@ -539,7 +540,23 @@ public abstract class WorkflowOutputMetadataGenerate {
 	}
 
 	protected abstract RelationInfo generateRelationInfo(Corpus inputCorpus);
-	protected abstract RelationInfo generateRelationInfo(Component component);
+	protected RelationInfo generateRelationInfo(Component component) {
+		RelationInfo relationInfo = new RelationInfo();
+		// relationType
+		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
+		
+		// relatedResource
+		RelatedResource rawCorpus = new RelatedResource();
+		ResourceIdentifier identifier = new ResourceIdentifier();
+		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+		rawCorpus.setResourceIdentifiers(Collections.singletonList(identifier));
+//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
+		rawCorpus.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
+		relationInfo.setRelatedResource(rawCorpus);
+			
+		return relationInfo;
+	}
 	
 	protected CreationInfo generateCreationInfo(Corpus inputCorpus, Component component) {
 		CreationInfo creationInfo = new CreationInfo();

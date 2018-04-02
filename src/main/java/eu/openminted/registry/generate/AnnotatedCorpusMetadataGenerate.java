@@ -271,28 +271,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		relationInfo.setRelatedResource(rawCorpus);
 		
 		return relationInfo;
-	}
-    
-    @Override        
-	protected RelationInfo generateRelationInfo(Component component) {
-		
-		RelationInfo relationInfo = new RelationInfo();
-		// relationType
-		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
-		
-		// relatedResource
-		RelatedResource componentRR = new RelatedResource();
-		ResourceIdentifier identifier = new ResourceIdentifier();
-		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
-		componentRR.setResourceIdentifiers(Collections.singletonList(identifier));
-//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
-		componentRR.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		relationInfo.setRelatedResource(componentRR);
-			
-		return relationInfo;
-	}
-	
+	}  
 
 	
 	@Override
