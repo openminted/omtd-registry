@@ -246,10 +246,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		annotations.add(annotationInfo);
 		generatedAnnotatedCorpusInfo.setAnnotations(annotations);
 
-		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
-			
-		                
-		
+		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");				                		
 		return generatedAnnotatedCorpusInfo;
 	}
     

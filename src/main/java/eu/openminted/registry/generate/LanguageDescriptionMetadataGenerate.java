@@ -2,28 +2,48 @@ package eu.openminted.registry.generate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import eu.openminted.registry.domain.AnnotatedCorpusInfo;
+import eu.openminted.registry.domain.AnnotationInfo;
+import eu.openminted.registry.domain.AnnotationTypeInfo;
+import eu.openminted.registry.domain.AnnotationTypeType;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.domain.CreationInfo;
 import eu.openminted.registry.domain.DatasetDistributionInfo;
+import eu.openminted.registry.domain.Date;
+import eu.openminted.registry.domain.DateCombination;
+import eu.openminted.registry.domain.DomainInfo;
+import eu.openminted.registry.domain.GeographicCoverageInfo;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LanguageDescription;
 import eu.openminted.registry.domain.LanguageDescriptionInfo;
 import eu.openminted.registry.domain.LanguageDescriptionTextInfo;
 import eu.openminted.registry.domain.LanguageDescriptionTypeEnum;
+import eu.openminted.registry.domain.LanguageInfo;
+import eu.openminted.registry.domain.LingualityInfo;
 import eu.openminted.registry.domain.ModelOperationInfo;
 import eu.openminted.registry.domain.OperationType;
+import eu.openminted.registry.domain.ProcessMode;
 import eu.openminted.registry.domain.ProcessingResourceTypeEnum;
+import eu.openminted.registry.domain.RawCorpusInfo;
 import eu.openminted.registry.domain.RelatedResource;
 import eu.openminted.registry.domain.RelationInfo;
 import eu.openminted.registry.domain.ResourceCreationInfo;
 import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.SizeUnitEnum;
+import eu.openminted.registry.domain.TextClassificationInfo;
+import eu.openminted.registry.domain.TimeCoverageInfo;
 
 
 public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataGenerate {
@@ -240,6 +260,66 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 	
 	private LanguageDescriptionTextInfo generateDescriptionTextInfo(Corpus inputCorpus, Component component) {
 		LanguageDescriptionTextInfo ldTextInfo = new LanguageDescriptionTextInfo();
+		
+		 // inputCorpus is raw corpus
+        if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo() != null) {
+        	
+        	RawCorpusInfo rawCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo();
+        	
+        	// languageDescriptionTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = rawCorpusInfo.getLingualityInfo();
+        	ldTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from raw corpus");
+        	
+        	// languageDescriptionTextInfo.languages
+            List<LanguageInfo> languages = rawCorpusInfo.getLanguages();
+            ldTextInfo.setLanguages(languages);
+            //logger.info("Added languages from raw corpus");
+                                    		
+    		// languageDescriptionTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(rawCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			ldTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// languageDescriptionTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(rawCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			ldTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+    		
+        }  
+        // inputCorpus is annotated corpus
+        else if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo() != null) {
+        	
+        	AnnotatedCorpusInfo annotatedCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo();
+        	
+        	// languageDescriptionTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = annotatedCorpusInfo.getLingualityInfo();
+        	ldTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from annotated corpus");
+        	
+        	// languageDescriptionTextInfo.languages
+            List<LanguageInfo> languages = annotatedCorpusInfo.getLanguages();
+            ldTextInfo.setLanguages(languages);
+            //logger.info("Added languages from annotated corpus");
+                    		
+            // languageDescriptionTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(annotatedCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			ldTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// languageDescriptionTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(annotatedCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			ldTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+        }
+        
+        // languageDescriptionTextInfo.creationInfo
+        CreationInfo creationInfo = generateCreationInfo(inputCorpus, component);
+		ldTextInfo.setCreationInfo(creationInfo);
 		return ldTextInfo;
 	}
 

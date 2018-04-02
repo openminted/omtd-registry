@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +45,7 @@ import eu.openminted.registry.domain.Date;
 import eu.openminted.registry.domain.DateCombination;
 import eu.openminted.registry.domain.Description;
 import eu.openminted.registry.domain.DistributionMediumEnum;
+import eu.openminted.registry.domain.GeographicCoverageInfo;
 import eu.openminted.registry.domain.GroupName;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LicenceEnum;
@@ -67,6 +69,7 @@ import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.RightsStatementEnum;
 import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
+import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
 import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.OmtdGenericService;
@@ -590,5 +593,35 @@ public abstract class WorkflowOutputMetadataGenerate {
 		creationInfo.setCreationSwComponents(creationSwComponents);
 		
 		return creationInfo;
+	}
+	
+	protected String generateTimeCoverage(List<TimeCoverageInfo> timeClassifications) {
+		String timeCoverage = null;
+		Iterator<TimeCoverageInfo> timeIter = timeClassifications.iterator();
+		while(timeIter.hasNext()) {
+			String sep = ", ";
+			if (timeCoverage == null) {
+				timeCoverage = "";
+				sep = "";
+			}
+			timeCoverage += sep + timeIter.next().getTimeCoverage();
+			
+		}
+		return timeCoverage;
+	}
+	
+	protected String generateGeoCoverage(List<GeographicCoverageInfo> geographicClassifications) {
+		String geoCoverage = null;
+		Iterator<GeographicCoverageInfo> geoIter = geographicClassifications.iterator();
+		while(geoIter.hasNext()) {
+			String sep = ", ";
+			if (geoCoverage == null) {
+				geoCoverage = "";
+				sep = "";
+			}
+			geoCoverage += sep + geoIter.next().getGeographicCoverage();
+			
+		}
+		return geoCoverage;
 	}
 }
