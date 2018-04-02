@@ -195,50 +195,63 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 
 		LexicalConceptualResourceTextInfo lcrTextInfo = new LexicalConceptualResourceTextInfo();
 
-		// lexicalConceptualResourceTextInfo.lingualityInfo
-		LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
-		lcrTextInfo.setLingualityInfo(lingualityInfo);
-
-		// lexicalConceptualResourceTextInfo.languages
-		List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
-		lcrTextInfo.setLanguages(languages);
-	       								
-			
-		// lexicalConceptualResourceTextInfo.timeCoverage
-		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
-		String timeCoverage = null;
-		Iterator<TimeCoverageInfo> timeIter = timeClassifications.iterator();
-		while(timeIter.hasNext()) {
-			String sep = ", ";
-			if (timeCoverage == null) {
-				timeCoverage = "";
-				sep = "";
-			}
-			timeCoverage += sep + timeIter.next().getTimeCoverage();
-			
-		}
-		if (timeCoverage != null) {
-			lcrTextInfo.setTimeCoverage(timeCoverage);
-		}
-
-		// lexicalConceptualResourceTextInfo.geographicClassifications
-		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
-		String geoCoverage = null;
-		Iterator<GeographicCoverageInfo> geoIter = geographicClassifications.iterator();
-		while(geoIter.hasNext()) {
-			String sep = ", ";
-			if (geoCoverage == null) {
-				geoCoverage = "";
-				sep = "";
-			}
-			geoCoverage += sep + geoIter.next().getGeographicCoverage();
-			
-		}
-		if (geoCoverage != null) {
-			lcrTextInfo.setGeographicCoverage(geoCoverage);
-		}
-	
-			                
+		// inputCorpus is raw corpus
+        if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo() != null) {
+        	
+        	RawCorpusInfo rawCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo();
+        	
+        	// lexicalConceptualResourceTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = rawCorpusInfo.getLingualityInfo();
+        	lcrTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from raw corpus");
+        	
+        	// lexicalConceptualResourceTextInfo.languages
+            List<LanguageInfo> languages = rawCorpusInfo.getLanguages();
+            lcrTextInfo.setLanguages(languages);
+            //logger.info("Added languages from raw corpus");
+                                    		
+    		// lexicalConceptualResourceTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(rawCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			lcrTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// lexicalConceptualResourceTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(rawCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			lcrTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+    		
+        }  
+        // inputCorpus is annotated corpus
+        else if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo() != null) {
+        	
+        	AnnotatedCorpusInfo annotatedCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo();
+        	
+        	// lexicalConceptualResourceTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = annotatedCorpusInfo.getLingualityInfo();
+        	lcrTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from annotated corpus");
+        	
+        	// lexicalConceptualResourceTextInfo.languages
+            List<LanguageInfo> languages = annotatedCorpusInfo.getLanguages();
+            lcrTextInfo.setLanguages(languages);
+            //logger.info("Added languages from annotated corpus");
+                    		
+            // lexicalConceptualResourceTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(annotatedCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			lcrTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// lexicalConceptualResourceTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(annotatedCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			lcrTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+        }
+		
+        // lexicalConceptualResourceTextInfo.creationInfo			                
 		CreationInfo creationInfo = generateCreationInfo(inputCorpus, component);
 		lcrTextInfo.setCreationInfo(creationInfo);
 		return lcrTextInfo;
