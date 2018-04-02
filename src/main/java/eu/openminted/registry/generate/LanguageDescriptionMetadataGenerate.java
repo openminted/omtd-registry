@@ -261,7 +261,7 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 	private LanguageDescriptionTextInfo generateDescriptionTextInfo(Corpus inputCorpus, Component component) {
 		LanguageDescriptionTextInfo ldTextInfo = new LanguageDescriptionTextInfo();
 		
-		 // inputCorpus is raw corpus
+		// inputCorpus is raw corpus
         if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo() != null) {
         	
         	RawCorpusInfo rawCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo();
