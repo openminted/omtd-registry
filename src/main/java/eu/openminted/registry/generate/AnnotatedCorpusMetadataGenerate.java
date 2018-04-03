@@ -2,9 +2,7 @@ package eu.openminted.registry.generate;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.Date;
 
@@ -21,7 +19,6 @@ import java.util.*;
  * Generator for annotated corpus when a workflow ends successfully at the
  * workflow engine.
  */
-
 @org.springframework.stereotype.Component
 public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGenerate {
 

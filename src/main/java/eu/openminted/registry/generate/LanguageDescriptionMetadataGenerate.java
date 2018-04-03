@@ -2,28 +2,17 @@ package eu.openminted.registry.generate;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import eu.openminted.registry.domain.AnnotatedCorpusInfo;
-import eu.openminted.registry.domain.AnnotationInfo;
-import eu.openminted.registry.domain.AnnotationTypeInfo;
-import eu.openminted.registry.domain.AnnotationTypeType;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.CreationInfo;
 import eu.openminted.registry.domain.DatasetDistributionInfo;
-import eu.openminted.registry.domain.Date;
-import eu.openminted.registry.domain.DateCombination;
-import eu.openminted.registry.domain.DomainInfo;
-import eu.openminted.registry.domain.GeographicCoverageInfo;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LanguageDescription;
 import eu.openminted.registry.domain.LanguageDescriptionInfo;
@@ -33,7 +22,6 @@ import eu.openminted.registry.domain.LanguageInfo;
 import eu.openminted.registry.domain.LingualityInfo;
 import eu.openminted.registry.domain.ModelOperationInfo;
 import eu.openminted.registry.domain.OperationType;
-import eu.openminted.registry.domain.ProcessMode;
 import eu.openminted.registry.domain.ProcessingResourceTypeEnum;
 import eu.openminted.registry.domain.RawCorpusInfo;
 import eu.openminted.registry.domain.RelatedResource;
@@ -42,10 +30,9 @@ import eu.openminted.registry.domain.ResourceCreationInfo;
 import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.SizeUnitEnum;
-import eu.openminted.registry.domain.TextClassificationInfo;
-import eu.openminted.registry.domain.TimeCoverageInfo;
 
 
+@org.springframework.stereotype.Component
 public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataGenerate {
 
 	 static final Logger logger = LogManager.getLogger(LanguageDescriptionMetadataGenerate.class);

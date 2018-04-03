@@ -1,30 +1,13 @@
 package eu.openminted.registry.generate;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
-import eu.openminted.registry.domain.Date;
-import eu.openminted.registry.service.CorpusServiceImpl;
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
-
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.io.IOException;
 import java.util.*;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+
 
 
 @org.springframework.stereotype.Component

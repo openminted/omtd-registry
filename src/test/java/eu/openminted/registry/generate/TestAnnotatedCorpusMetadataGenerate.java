@@ -33,9 +33,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
  
-@ActiveProfiles("test")
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+//@ActiveProfiles("test")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 public class TestAnnotatedCorpusMetadataGenerate {
 
 	static final Logger logger = Logger.getLogger(TestAnnotatedCorpusMetadataGenerate.class.getName());

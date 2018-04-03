@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.ActorInfo;
 import eu.openminted.registry.domain.ActorTypeEnum;
 import eu.openminted.registry.domain.CharacterEncodingEnum;
@@ -71,7 +70,6 @@ import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
-import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.OmtdGenericService;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 

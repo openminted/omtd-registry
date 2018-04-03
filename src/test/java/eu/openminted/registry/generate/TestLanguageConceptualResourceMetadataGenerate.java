@@ -35,9 +35,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 	
-@ActiveProfiles("test")
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+//@ActiveProfiles("test")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 public class  TestLanguageConceptualResourceMetadataGenerate {
 
 		static final Logger logger = Logger.getLogger(TestLanguageConceptualResourceMetadataGenerate.class.getName());

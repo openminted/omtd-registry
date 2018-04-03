@@ -1,6 +1,6 @@
 package eu.openminted.registry.messaging;
 
-import eu.openminted.registry.core.configuration.JmsConfiguration;
+
 import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
 
@@ -9,14 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -89,7 +84,8 @@ public class OperationPublisherApp {
 			
 	private static String userID = "0931731143127784@openminted.eu"; //"0931732115452907@openminted.eu"; 
 	// omtdid	
-	private static String corpusID = "3adef061-f999-4a9c-b8de-68d3e223c4f9"; // Raw Corpus
+	private static String corpusID = "b06ae3a4-375d-438d-8c64-33bd356f99ce"; // raw corpus 
+			//"3adef061-f999-4a9c-b8de-68d3e223c4f9"; // Raw Corpus
 			// fFrom beta - 
 			//"8beb22bf-ce18-4100-a2b6-aa32a5fd31fb"; // Raw Corpus
 		
@@ -100,7 +96,8 @@ public class OperationPublisherApp {
 	
 	
 	//omtdid
-	private static String workflowID = "76c33d5d-b85b-4bfc-9430-056844c97184"; //dev-Sentiment-NoInput-NoOutput 
+	private static String workflowID = "e6e97879-4970-4dc3-98c8-0500bf724459"; // dev-LanguageDescription-Input-Output
+			//"76c33d5d-b85b-4bfc-9430-056844c97184"; //dev-Sentiment-NoInput-NoOutput 
 			//"6aecac98-df88-4e70-a873-dfe44f0b5662"; // dev-OntologyEnhancement2-NoInput-NoOutput 
 			//"6b17f03e-e550-4a1d-b5cd-d50691ac1867"; // dev-OntologyAcqV2-InCorpus-OutLRC 
 			 
@@ -128,7 +125,7 @@ public class OperationPublisherApp {
 		//////////////////
 		// Step 1 - A workflow is set to PENDING in the workflow engine      
         WorkflowExecutionStatusMessage msgPended = new WorkflowExecutionStatusMessage();
-        String workflowExecutionID = "WFE_ID9";//UUID.randomUUID().toString();  // operation_id
+        String workflowExecutionID = "WFE_ID10";//UUID.randomUUID().toString();  // operation_id
         msgPended.setWorkflowExecutionID(workflowExecutionID);
 		msgPended.setWorkflowStatus(ExecutionStatus.Status.PENDING.toString());
 		msgPended.setCorpusID(corpusID);
