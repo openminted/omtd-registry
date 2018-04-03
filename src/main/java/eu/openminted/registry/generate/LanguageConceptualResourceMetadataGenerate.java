@@ -60,31 +60,31 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
         /////////////////////////
         // VersionInfo     
         lcrInfo.setVersionInfo(generateVersionInfo());
-        //logger.info("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
+        logger.debug("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
         
         //////////////////////////
         // ContactInfo       
         lcrInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
-        //logger.info("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
+        logger.debug("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
 		        
 		//////////////////////////
 		// datasetDistributionInfo       
         List<DatasetDistributionInfo> distributionInfos = new ArrayList<>() ;
         distributionInfos.add(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
 		lcrInfo.setDistributionInfos(distributionInfos);
-		//logger.info("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
+		logger.debug("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
 		
 		//////////////////////////
 		// rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         lcrInfo.setRightsInfo(rightsInfo);
-        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        logger.debug("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
         
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         lcrInfo.setResourceCreationInfo(resourceCreationInfo);
-        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        logger.debug("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////////
         // lexicalConceptualResourceType
@@ -115,17 +115,15 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 		List<RelationInfo> relations = new ArrayList<>();        		
 		relations.add(generateRelationInfo(component));
 		lcrInfo.setRelations(relations);
-		//logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
+		logger.debug("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
 		
 		/////////////////////////////////////////////////
 		// lexicalConceptualResourceTextInfo
 		LexicalConceptualResourceTextInfo lcrTextInfo =  generateLexicalConceptualResourceTextInfo(inputCorpus, component);
 		lcrInfo.setLexicalConceptualResourceTextInfo(lcrTextInfo);
-		//logger.info("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
+		logger.debug("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
 		        
-        return(lcrInfo);
-        		
-
+        return(lcrInfo);        		
     }
 
 	@Override

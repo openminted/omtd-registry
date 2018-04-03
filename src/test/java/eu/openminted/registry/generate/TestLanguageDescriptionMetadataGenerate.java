@@ -198,7 +198,7 @@ public class TestLanguageDescriptionMetadataGenerate {
 	    LanguageDescription output = ldMetadataGenerator.generateLanguageDescriptionMetadata(inputCorpusId, componentId, userId, outputCorpusArchiveId); 									
 	}
 	
-	@Test
+	//@Test
 	public void testWithMaximumCorpusMaxComponent() throws IOException, JAXBException, Exception {
 		
 	

@@ -58,7 +58,7 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 		 languageDescription.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
 		 String ldOmtdId = languageDescription.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();    
 		 languageDescription.setLanguageDescriptionInfo(generateLanguageDescriptionInfo(ldOmtdId, inputCorpusId, componentId, userId, outputResourceArchiveId));
-		 //logger.debug("Output lrc metadata::\n " + mapper.writeValueAsString(languageDescription)+"\n");
+		 //logger.debug("Output ld metadata::\n " + mapper.writeValueAsString(languageDescription)+"\n");
 		 return languageDescription;
 	 }
 
@@ -122,8 +122,11 @@ public class LanguageDescriptionMetadataGenerate extends WorkflowOutputMetadataG
 		 ///////////////////////////
 		 // modelOperationInfo
 		 if (ldInfo.getLanguageDescriptionType().equals(LanguageDescriptionTypeEnum.ML_MODEL)) {
-			 ldInfo.setModelOperationInfo(generateModelOperationInfo(inputCorpus, component));
-			 logger.debug("Model Operation info::\n" + mapper.writeValueAsString(ldInfo.getModelOperationInfo()) + "\n");   
+			 ModelOperationInfo modelOper = generateModelOperationInfo(inputCorpus, component);
+			 if (modelOper != null) {			 			 
+				 ldInfo.setModelOperationInfo(modelOper);
+				 logger.debug("Model Operation info::\n" + mapper.writeValueAsString(ldInfo.getModelOperationInfo()) + "\n");
+			 }
 		 } 
 		 		 
 		 //////////////////////////
