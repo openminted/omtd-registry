@@ -2,9 +2,7 @@ package eu.openminted.registry.generate;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.Date;
 
@@ -21,7 +19,6 @@ import java.util.*;
  * Generator for annotated corpus when a workflow ends successfully at the
  * workflow engine.
  */
-
 @org.springframework.stereotype.Component
 public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGenerate {
 
@@ -52,34 +49,34 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         ////////////////////////
         // IdentificationInfo      
         corpusInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-        //logger.info("Identification Info:\n" + mapper.writeValueAsString(corpusInfo.getIdentificationInfo()) +"\n");
+        logger.debug("Identification Info:\n" + mapper.writeValueAsString(corpusInfo.getIdentificationInfo()) +"\n");
 
         /////////////////////////
         // VersionInfo     
         corpusInfo.setVersionInfo(generateVersionInfo());
-        //logger.info("Version info:\n" + mapper.writeValueAsString(corpusInfo.getVersionInfo())+"\n");
+        logger.debug("Version info:\n" + mapper.writeValueAsString(corpusInfo.getVersionInfo())+"\n");
 
         //////////////////////////
         // ContactInfo       
         corpusInfo.setContactInfo(generateContactInfo(userId, corpusOmtdId));
-        //logger.info("Contact info::\n" + mapper.writeValueAsString(corpusInfo.getContactInfo()) + "\n");
+        logger.debug("Contact info::\n" + mapper.writeValueAsString(corpusInfo.getContactInfo()) + "\n");
 
         //////////////////////////
         // datasetDistributionInfo       
         corpusInfo.setDatasetDistributionInfo(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
-        //logger.info("Distribution info:\n" + mapper.writeValueAsString(corpusInfo.getDatasetDistributionInfo())+"\n");
+        logger.debug("Distribution info:\n" + mapper.writeValueAsString(corpusInfo.getDatasetDistributionInfo())+"\n");
 
         //////////////////////////
         // rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         corpusInfo.setRightsInfo(rightsInfo);
-        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        logger.debug("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
 
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         corpusInfo.setResourceCreationInfo(resourceCreationInfo);
-        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        logger.debug("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////
         // relations.relationInfo
@@ -87,7 +84,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
         relations.add(generateRelationInfo(inputCorpus));
         relations.add(generateRelationInfo(component));
         corpusInfo.setRelations(relations);
-        //logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");                
+        logger.debug("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");                
 
         ///////////////////////////
         // corpusSubtypeSpecificationInfo.annotatedCorpusInfo
@@ -95,7 +92,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 
         AnnotatedCorpusInfo annotatedCorpusInfo = generateAnnotatedCorpusInfo(inputCorpus, component);
         corpusSubtypeSpecificInfo.setAnnotatedCorpusInfo(annotatedCorpusInfo);
-        //logger.info("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
+        logger.debug("CorpusSubtypeSpecificInfo:\n" + mapper.writeValueAsString(corpusSubtypeSpecificInfo) + "\n");
         corpusInfo.setCorpusSubtypeSpecificInfo(corpusSubtypeSpecificInfo);
 
         return corpusInfo;
@@ -246,10 +243,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		annotations.add(annotationInfo);
 		generatedAnnotatedCorpusInfo.setAnnotations(annotations);
 
-		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");
-			
-		                
-		
+		//logger.info("Annotations " + mapper.writeValueAsString(annotationInfo) + "\n");				                		
 		return generatedAnnotatedCorpusInfo;
 	}
     
@@ -271,28 +265,7 @@ public class AnnotatedCorpusMetadataGenerate extends WorkflowOutputMetadataGener
 		relationInfo.setRelatedResource(rawCorpus);
 		
 		return relationInfo;
-	}
-    
-    @Override        
-	protected RelationInfo generateRelationInfo(Component component) {
-		
-		RelationInfo relationInfo = new RelationInfo();
-		// relationType
-		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
-		
-		// relatedResource
-		RelatedResource componentRR = new RelatedResource();
-		ResourceIdentifier identifier = new ResourceIdentifier();
-		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
-		componentRR.setResourceIdentifiers(Collections.singletonList(identifier));
-//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
-		componentRR.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		relationInfo.setRelatedResource(componentRR);
-			
-		return relationInfo;
-	}
-	
+	}  
 
 	
 	@Override

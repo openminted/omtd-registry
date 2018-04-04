@@ -1,30 +1,13 @@
 package eu.openminted.registry.generate;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
-
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.*;
-import eu.openminted.registry.domain.Date;
-import eu.openminted.registry.service.CorpusServiceImpl;
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
-
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.io.IOException;
 import java.util.*;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+
 
 
 @org.springframework.stereotype.Component
@@ -39,7 +22,7 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
     	lcr.setMetadataHeaderInfo(generateMetadataHeaderInfo(userId));
     	String lcrOmtdId = lcr.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();    
     	lcr.setLexicalConceptualResourceInfo(generateLanguageConceptualResourceInfo(lcrOmtdId, inputCorpusId, componentId, userId, outputResourceArchiveId));
-    	//logger.info("Output lrc metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
+    	logger.debug("Output language description metadata::\n " + mapper.writeValueAsString(lcr)+"\n");
     	return lcr;
     }
 
@@ -55,36 +38,36 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
         ////////////////////////
         // IdentificationInfo      
         lcrInfo.setIdentificationInfo(generateIdentificationInfo(inputCorpus, component));
-        //logger.info("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
+        logger.debug("Identification Info:\n" + mapper.writeValueAsString(lcrInfo.getIdentificationInfo()) +"\n");
         
         /////////////////////////
         // VersionInfo     
         lcrInfo.setVersionInfo(generateVersionInfo());
-        //logger.info("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
+        logger.debug("Version info:\n" + mapper.writeValueAsString(lcrInfo.getVersionInfo())+"\n");
         
         //////////////////////////
         // ContactInfo       
         lcrInfo.setContactInfo(generateContactInfo(userId, lcrOmtdId));
-        //logger.info("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
+        logger.debug("Contact info::\n" + mapper.writeValueAsString(lcrInfo.getContactInfo()) + "\n");
 		        
 		//////////////////////////
 		// datasetDistributionInfo       
         List<DatasetDistributionInfo> distributionInfos = new ArrayList<>() ;
         distributionInfos.add(generateDatasetDistributionInfo(inputCorpus, component, outputCorpusArchiveId));
 		lcrInfo.setDistributionInfos(distributionInfos);
-		//logger.info("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
+		logger.debug("Distribution info:\n" + mapper.writeValueAsString(lcrInfo.getDistributionInfos())+"\n");
 		
 		//////////////////////////
 		// rightsInfo
         RightsInfo rightsInfo = generateRightsInfo(inputCorpus, component);
         lcrInfo.setRightsInfo(rightsInfo);
-        //logger.info("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
+        logger.debug("Rights info:\n" + mapper.writeValueAsString(rightsInfo) + "\n");    
         
         //////////////////////////
         // resourceCreationInfo
         ResourceCreationInfo resourceCreationInfo = generateResourceCreationInfo(userId);
         lcrInfo.setResourceCreationInfo(resourceCreationInfo);
-        //logger.info("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
+        logger.debug("Resource Creation info::\n" + mapper.writeValueAsString(resourceCreationInfo) + "\n");
 
         //////////////////////////////
         // lexicalConceptualResourceType
@@ -115,17 +98,15 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 		List<RelationInfo> relations = new ArrayList<>();        		
 		relations.add(generateRelationInfo(component));
 		lcrInfo.setRelations(relations);
-		//logger.info("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
+		logger.debug("Resource Relation info::\n" + mapper.writeValueAsString(relations) + "\n");   
 		
 		/////////////////////////////////////////////////
 		// lexicalConceptualResourceTextInfo
 		LexicalConceptualResourceTextInfo lcrTextInfo =  generateLexicalConceptualResourceTextInfo(inputCorpus, component);
 		lcrInfo.setLexicalConceptualResourceTextInfo(lcrTextInfo);
-		//logger.info("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
+		logger.debug("Text info::\n" + mapper.writeValueAsString(lcrTextInfo) + "\n");
 		        
-        return(lcrInfo);
-        		
-
+        return(lcrInfo);        		
     }
 
 	@Override
@@ -150,14 +131,14 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 
 	@Override
 	protected String getWorkingResourceName(Corpus inputCorpus, Component component) {
-		String corpusName = "The lexical/conceptual resource generated by the processing of " + 
+		String lexicalName = "The lexical/conceptual resource generated by the processing of " + 
 				"[input_corpus_name] with [component_name]";
-		corpusName = corpusName.replaceAll("\\[input_corpus_name\\]", 
+		lexicalName = lexicalName.replaceAll("\\[input_corpus_name\\]", 
 				getInputCorpusName(inputCorpus));			
-		corpusName = corpusName .replaceAll("\\[component_name\\]", 
+		lexicalName = lexicalName .replaceAll("\\[component_name\\]", 
 				getComponentName(component));
 									
-		return corpusName;
+		return lexicalName;
 	}
 
 	@Override
@@ -182,82 +163,76 @@ public class LanguageConceptualResourceMetadataGenerate extends WorkflowOutputMe
 	
 	@Override
 	protected String generateAttributionTextStart(){
-		return "The language description generated by the ";
+		return "The language/conceptual resource generated by the ";
 	}
 	
 	@Override    
 	protected RelationInfo generateRelationInfo(Corpus inputCorpus) {
 		return null;
 	}
-	 
-	@Override 
-	protected RelationInfo generateRelationInfo(Component component) {
-			
-		RelationInfo relationInfo = new RelationInfo();
-		// relationType
-		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
-		
-		// relatedResource
-		RelatedResource rawCorpus = new RelatedResource();
-		ResourceIdentifier identifier = new ResourceIdentifier();
-		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
-		rawCorpus.setResourceIdentifiers(Collections.singletonList(identifier));
-//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
-		rawCorpus.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
-		relationInfo.setRelatedResource(rawCorpus);
-			
-		return relationInfo;
-	}
+	 	
 	
 	protected LexicalConceptualResourceTextInfo generateLexicalConceptualResourceTextInfo(Corpus inputCorpus, Component component) {
 
 		LexicalConceptualResourceTextInfo lcrTextInfo = new LexicalConceptualResourceTextInfo();
 
-		// lexicalConceptualResourceTextInfo.lingualityInfo
-		LingualityInfo lingualityInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLingualityInfo();
-		lcrTextInfo.setLingualityInfo(lingualityInfo);
-
-		// lexicalConceptualResourceTextInfo.languages
-		List<LanguageInfo> languages = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getLanguages();
-		lcrTextInfo.setLanguages(languages);
-	       								
-			
-		// lexicalConceptualResourceTextInfo.timeCoverage
-		List<TimeCoverageInfo> timeClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getTimeClassifications();
-		String timeCoverage = null;
-		Iterator<TimeCoverageInfo> timeIter = timeClassifications.iterator();
-		while(timeIter.hasNext()) {
-			String sep = ", ";
-			if (timeCoverage == null) {
-				timeCoverage = "";
-				sep = "";
-			}
-			timeCoverage += sep + timeIter.next().getTimeCoverage();
-			
-		}
-		if (timeCoverage != null) {
-			lcrTextInfo.setTimeCoverage(timeCoverage);
-		}
-
-		// lexicalConceptualResourceTextInfo.geographicClassifications
-		List<GeographicCoverageInfo> geographicClassifications = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo().getGeographicClassifications();
-		String geoCoverage = null;
-		Iterator<GeographicCoverageInfo> geoIter = geographicClassifications.iterator();
-		while(geoIter.hasNext()) {
-			String sep = ", ";
-			if (geoCoverage == null) {
-				geoCoverage = "";
-				sep = "";
-			}
-			geoCoverage += sep + geoIter.next().getGeographicCoverage();
-			
-		}
-		if (geoCoverage != null) {
-			lcrTextInfo.setGeographicCoverage(geoCoverage);
-		}
-	
-			                
+		// inputCorpus is raw corpus
+        if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo() != null) {
+        	
+        	RawCorpusInfo rawCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getRawCorpusInfo();
+        	
+        	// lexicalConceptualResourceTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = rawCorpusInfo.getLingualityInfo();
+        	lcrTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from raw corpus");
+        	
+        	// lexicalConceptualResourceTextInfo.languages
+            List<LanguageInfo> languages = rawCorpusInfo.getLanguages();
+            lcrTextInfo.setLanguages(languages);
+            //logger.info("Added languages from raw corpus");
+                                    		
+    		// lexicalConceptualResourceTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(rawCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			lcrTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// lexicalConceptualResourceTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(rawCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			lcrTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+    		
+        }  
+        // inputCorpus is annotated corpus
+        else if (inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo() != null) {
+        	
+        	AnnotatedCorpusInfo annotatedCorpusInfo = inputCorpus.getCorpusInfo().getCorpusSubtypeSpecificInfo().getAnnotatedCorpusInfo();
+        	
+        	// lexicalConceptualResourceTextInfo.lingualityInfo
+        	LingualityInfo lingualityInfo = annotatedCorpusInfo.getLingualityInfo();
+        	lcrTextInfo.setLingualityInfo(lingualityInfo);
+        	//logger.info("Added lingualityInfo from annotated corpus");
+        	
+        	// lexicalConceptualResourceTextInfo.languages
+            List<LanguageInfo> languages = annotatedCorpusInfo.getLanguages();
+            lcrTextInfo.setLanguages(languages);
+            //logger.info("Added languages from annotated corpus");
+                    		
+            // lexicalConceptualResourceTextInfo.timeCoverage    		
+            String timeCoverage = generateTimeCoverage(annotatedCorpusInfo.getTimeClassifications());
+    		if (timeCoverage != null) {
+    			lcrTextInfo.setTimeCoverage(timeCoverage);
+    		}
+    		
+    		// lexicalConceptualResourceTextInfo.geographicCoverage
+    		String geoCoverage = generateGeoCoverage(annotatedCorpusInfo.getGeographicClassifications());
+    		if (geoCoverage != null) {
+    			lcrTextInfo.setGeographicCoverage(geoCoverage);
+    		}
+        }
+		
+        // lexicalConceptualResourceTextInfo.creationInfo			                
 		CreationInfo creationInfo = generateCreationInfo(inputCorpus, component);
 		lcrTextInfo.setCreationInfo(creationInfo);
 		return lcrTextInfo;

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.ActorInfo;
 import eu.openminted.registry.domain.ActorTypeEnum;
 import eu.openminted.registry.domain.CharacterEncodingEnum;
@@ -44,6 +44,7 @@ import eu.openminted.registry.domain.Date;
 import eu.openminted.registry.domain.DateCombination;
 import eu.openminted.registry.domain.Description;
 import eu.openminted.registry.domain.DistributionMediumEnum;
+import eu.openminted.registry.domain.GeographicCoverageInfo;
 import eu.openminted.registry.domain.GroupName;
 import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.domain.LicenceEnum;
@@ -58,6 +59,7 @@ import eu.openminted.registry.domain.PersonInfo;
 import eu.openminted.registry.domain.ProcessMode;
 import eu.openminted.registry.domain.RelatedResource;
 import eu.openminted.registry.domain.RelationInfo;
+import eu.openminted.registry.domain.RelationTypeEnum;
 import eu.openminted.registry.domain.ResourceCreationInfo;
 import eu.openminted.registry.domain.ResourceIdentifier;
 import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
@@ -66,8 +68,8 @@ import eu.openminted.registry.domain.RightsInfo;
 import eu.openminted.registry.domain.RightsStatementEnum;
 import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
+import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
-import eu.openminted.registry.service.CorpusServiceImpl;
 import eu.openminted.registry.service.OmtdGenericService;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
@@ -132,7 +134,7 @@ public abstract class WorkflowOutputMetadataGenerate {
 		 PersonInfo personInfo = generatePersonInfo(userId, true);
 		 metadataHeaderInfo.getMetadataCreators().add(personInfo);
 	        
-		 logger.info("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
+		 logger.debug("MetadataHeaderInfo:\n" + mapper.writeValueAsString(metadataHeaderInfo) + "\n");
 		 return metadataHeaderInfo;
 	 }
 	
@@ -175,12 +177,13 @@ public abstract class WorkflowOutputMetadataGenerate {
 	 protected Corpus getInputCorpusMetadata(String inputCorpusId) throws JsonProcessingException, NullPointerException {
 		 // Get input corpus information
 		 logger.info("Retrieving input corpus " + inputCorpusId);
+		 logger.debug("Corpus service" + corpusService);
 		 Corpus inputCorpus = corpusService.get(inputCorpusId);
 		 if (inputCorpus == null) {
-	        	logger.debug("Invalid input corpus, throw exception");
+	        	logger.info("Invalid input corpus, throw exception");
 	        	throw new NullPointerException("Invalid input corpus " + inputCorpusId);
 		 }
-		 logger.info("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
+		 logger.debug("Input corpus:\n" + mapper.writeValueAsString(inputCorpus.getCorpusInfo()) +"\n");
 		 return inputCorpus;
 	 }
 	 
@@ -189,10 +192,10 @@ public abstract class WorkflowOutputMetadataGenerate {
 		 logger.info("Retrieving component " + componentId);
 		 Component component = applicationService.get(componentId);
 		 if (component == null) {
-			 logger.debug("Invalid input component, throw exception");
+			 logger.info("Invalid input component, throw exception");
 			 throw new NullPointerException("Invalid input component " + componentId);
 	     }
-		 logger.info("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
+		 logger.debug("Component:\n" + mapper.writeValueAsString(component.getComponentInfo()) +"\n");
 		 return component;
 	 }
 	 
@@ -538,7 +541,23 @@ public abstract class WorkflowOutputMetadataGenerate {
 	}
 
 	protected abstract RelationInfo generateRelationInfo(Corpus inputCorpus);
-	protected abstract RelationInfo generateRelationInfo(Component component);
+	protected RelationInfo generateRelationInfo(Component component) {
+		RelationInfo relationInfo = new RelationInfo();
+		// relationType
+		relationInfo.setRelationType(RelationTypeEnum.IS_CREATED_BY);
+		
+		// relatedResource
+		RelatedResource rawCorpus = new RelatedResource();
+		ResourceIdentifier identifier = new ResourceIdentifier();
+		identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+		identifier.setValue(component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+		rawCorpus.setResourceIdentifiers(Collections.singletonList(identifier));
+//		rawCorpus.setResourceIdentifiers(inputCorpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers());
+		rawCorpus.setResourceNames(component.getComponentInfo().getIdentificationInfo().getResourceNames());
+		relationInfo.setRelatedResource(rawCorpus);
+			
+		return relationInfo;
+	}
 	
 	protected CreationInfo generateCreationInfo(Corpus inputCorpus, Component component) {
 		CreationInfo creationInfo = new CreationInfo();
@@ -572,5 +591,35 @@ public abstract class WorkflowOutputMetadataGenerate {
 		creationInfo.setCreationSwComponents(creationSwComponents);
 		
 		return creationInfo;
+	}
+	
+	protected String generateTimeCoverage(List<TimeCoverageInfo> timeClassifications) {
+		String timeCoverage = null;
+		Iterator<TimeCoverageInfo> timeIter = timeClassifications.iterator();
+		while(timeIter.hasNext()) {
+			String sep = ", ";
+			if (timeCoverage == null) {
+				timeCoverage = "";
+				sep = "";
+			}
+			timeCoverage += sep + timeIter.next().getTimeCoverage();
+			
+		}
+		return timeCoverage;
+	}
+	
+	protected String generateGeoCoverage(List<GeographicCoverageInfo> geographicClassifications) {
+		String geoCoverage = null;
+		Iterator<GeographicCoverageInfo> geoIter = geographicClassifications.iterator();
+		while(geoIter.hasNext()) {
+			String sep = ", ";
+			if (geoCoverage == null) {
+				geoCoverage = "";
+				sep = "";
+			}
+			geoCoverage += sep + geoIter.next().getGeographicCoverage();
+			
+		}
+		return geoCoverage;
 	}
 }

@@ -13,12 +13,8 @@ import eu.openminted.registry.domain.operation.Error;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.generate.LanguageConceptualResourceMetadataGenerate;
-import eu.openminted.registry.service.ComponentServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
-import eu.openminted.registry.service.LanguageServiceImpl;
-import eu.openminted.registry.service.LexicalServiceImpl;
+import eu.openminted.registry.generate.LanguageDescriptionMetadataGenerate;
 import eu.openminted.registry.service.OmtdGenericService;
-import eu.openminted.registry.service.OperationService;
 import eu.openminted.registry.service.OperationServiceImpl;
 import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
@@ -62,10 +58,12 @@ public class OperationHandler {
     private  OmtdGenericService<LanguageDescription> languageDescriptionService;
     
     @Autowired
+    private LanguageDescriptionMetadataGenerate languageMetadataGenerator;
+    
+    @Autowired
     @Qualifier("applicationService")
 	private OmtdGenericService<eu.openminted.registry.domain.Component> applicationService;
-    //private ResourceCRUDService<Component> applicationService;
-
+    
     @Autowired
     public ParserService parserPool;
 
@@ -113,7 +111,9 @@ public class OperationHandler {
             }
         }
     }
-    
+    /*
+     * Function to be used only for testing reasons. 
+     */
     private void casePending(WorkflowExecutionStatusMessage workflowExeMsg) {
     	if (workflowExeMsg.getWorkflowExecutionID() == null) {
     		throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.PENDING.toString());
@@ -191,7 +191,14 @@ public class OperationHandler {
         	if (workflowMeta.getComponentInfo().getOutputResourceInfo().getProcessingResourceType().equals(ProcessingResourceTypeEnum.LANGUAGE_DESCRIPTION)) {
         		// Generate output language description metadata
         		logger.info("Generating metadata for language description from experiment " + workflowExeMsg.getWorkflowExecutionID());
-        		// TODO add generator for language description
+        		eu.openminted.registry.domain.LanguageDescription outputLanguageMeta = languageMetadataGenerator.generateLanguageDescriptionMetadata(operationCorpus.getInput(),
+        				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+        		// Add output ld metadata to registry
+        	    logger.info("Adding output language description to registry");
+        	    languageDescriptionService.add(outputLanguageMeta);
+        	    
+        	    // Get output omtd id
+        	    outputOmtdId = outputLanguageMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
         		
         	} else if (workflowMeta.getComponentInfo().getOutputResourceInfo().getProcessingResourceType().equals(ProcessingResourceTypeEnum.LEXICAL_CONCEPTUAL_RESOURCE)) {        		
         		// Generate output lcr metadata
