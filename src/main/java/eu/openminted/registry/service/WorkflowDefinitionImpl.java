@@ -173,7 +173,9 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     @Override
     public WorkflowDefinition createWorkflow() {
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        String workflowName = authentication.getSub() + " " +UUID.randomUUID().toString();
+        String sub = authentication.getSub().split("@")[0];
+        String workflowName = sub + "-" +UUID.randomUUID().toString();
+        logger.info("Created a new workflow with name " + workflowName);
         Workflow workflow = galaxyEditorInstance.getWorkflowsClient().createWorkflow(workflowName);
         WorkflowDefinition internalWorkflow = new WorkflowDefinition();
         internalWorkflow.setWorkflowId(workflow.getId());
