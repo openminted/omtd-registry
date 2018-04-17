@@ -79,15 +79,17 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         // Write wrapper.
         File tmpFileForWrapper = writeWrapperToDisk(tool, resourceID);
         
+        String wrapperFinalDest = "";
         // If succeeded copy it to Galaxy machine.
         if(tmpFileForWrapper != null){
             // Copy over NFS.
-            copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
+        	wrapperFinalDest = copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
         }
         
         wec.setComponentID(tool.getId());
         wec.setComponentVersion(tool.getVersion());
         wec.setName(resourceName);
+        wec.setLocation(wrapperFinalDest);
         
         return wec;
     }
@@ -111,8 +113,10 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         return tmpFileForWrapper;
 	}
 	
-	private void copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
-        try {
+	
+	private String copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
+        
+		try {
         	// Create parent folder if not exists. 
         	File parent = new File(galaxyRootTools + trgFolder);
         	if(!parent.exists()){
@@ -124,10 +128,13 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         	Path src = Paths.get(tmpForWrapper.getAbsolutePath());
         	Path trg = Paths.get(galaxyRootTools + trgFolder + tmpForWrapper.getName());
 			Files.copy(src, trg, StandardCopyOption.REPLACE_EXISTING);
-			
+
+			return trg.toFile().getAbsolutePath();
 		} catch (IOException e) {
 			logger.debug(e);
 		}
+		
+		return null;
 	}
     
     private String getFolder(eu.openminted.registry.domain.Component componentMeta){
