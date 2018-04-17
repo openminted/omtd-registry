@@ -2,9 +2,11 @@ package eu.openminted.registry.service;
 
 public class WorkflowEngineComponent {
 
+	private String name;
 	private String componentID;
 	private String componentVersion;
-	private String name;
+	
+	private String location;
 	
 	public WorkflowEngineComponent(){
 		
@@ -20,6 +22,14 @@ public class WorkflowEngineComponent {
 		this.componentID = componentID;
 		this.componentVersion = componentVersion;
 		this.name = name;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public String getComponentID() {
