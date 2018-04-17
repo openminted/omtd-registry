@@ -1,10 +1,12 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tools;
 
 import eu.openminted.registry.domain.file.FileStats;
+import eu.openminted.registry.service.StoreService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +23,7 @@ public class StoreController {
 
 
     @RequestMapping(value = "upload", method = RequestMethod.POST)
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<FileStats> uploadCorpus(@RequestParam("file") MultipartFile file) throws IOException {
         return new ResponseEntity<>(storeService.uploadAuxiliary(file.getName(), file.getInputStream()), HttpStatus.OK);
     }

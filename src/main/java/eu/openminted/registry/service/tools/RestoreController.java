@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tools;
 
 import eu.openminted.registry.core.service.RestoreService;
 import org.springframework.beans.factory.annotation.Autowired;

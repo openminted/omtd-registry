@@ -1,6 +1,9 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
-import eu.openminted.registry.domain.LanguageDescription;
+import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.service.AncillaryService;
+import eu.openminted.registry.service.StoreService;
+import eu.openminted.registry.service.ValidateInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +19,11 @@ import java.io.IOException;
  * Created by stefanos on 13/1/2017.
  */
 @RestController
-@RequestMapping("/request/language")
-public class LanguageController extends GenericRestController<LanguageDescription> {
+@RequestMapping("/request/lexical")
+public class LexicalController extends OmtdRestController<Lexical> {
 
     @Autowired
-    LanguageController(ValidateInterface<LanguageDescription> service) {
+    LexicalController(ValidateInterface<Lexical> service) {
         super(service);
     }
 
@@ -28,10 +31,10 @@ public class LanguageController extends GenericRestController<LanguageDescriptio
     private StoreService storeService;
 
     @RequestMapping(value = "zipUpload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<LanguageDescription> uploadCorpus(@RequestPart("file") MultipartFile file,
-                                               @RequestPart("language") LanguageDescription language) throws IOException {
+    public ResponseEntity<Lexical> uploadCorpus(@RequestPart("file") MultipartFile file,
+                                                            @RequestPart("lexical") Lexical lexical) throws IOException {
         String archiveId = storeService.uploadCorpus(file.getName(), file.getInputStream());
-        LanguageDescription corpusRet = ((AncillaryService<LanguageDescription>) service).uploadZip(language,archiveId);
+        Lexical corpusRet = ((AncillaryService<Lexical>) service).uploadZip(lexical,archiveId);
         return ResponseEntity.ok(corpusRet);
     }
 } 

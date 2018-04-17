@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +26,12 @@ public class GenericRestController<T> {
 
     private Logger logger = LogManager.getLogger(GenericRestController.class);
 
-    GenericRestController(ResourceCRUDService service) {
+    public GenericRestController(ResourceCRUDService service) {
         this.service = service;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<T> getComponent(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public ResponseEntity<T> get(@PathVariable("id") String id) throws ResourceNotFoundException {
         String id_decoded = id; //new String(Base64.getDecoder().decode(id));
         T component = service.get(id_decoded);
         if (component == null)
@@ -41,7 +42,7 @@ public class GenericRestController<T> {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<T> addComponent(@RequestBody T component) {
+    public ResponseEntity<T> add(@RequestBody T component) {
         T ret = service.add(component);
         return ResponseEntity.ok(ret);
 
@@ -49,21 +50,21 @@ public class GenericRestController<T> {
 
     @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<T> updateComponent(@RequestBody T component) throws ResourceNotFoundException {
+    public ResponseEntity<T> update(@RequestBody T component) throws ResourceNotFoundException {
         T ret = service.update(component);
         return new ResponseEntity<>(ret,HttpStatus.OK);
 
     }
 
     @RequestMapping(method = RequestMethod.DELETE, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<String> deleteComponent(@RequestBody T component) throws ResourceNotFoundException {
+    public ResponseEntity<String> delete(@RequestBody T component) throws ResourceNotFoundException {
         service.delete(component);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @RequestMapping(path = "all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getAllComponents(@RequestParam(required = false) Map<String,Object> allRequestParams) {
+    public ResponseEntity<Browsing> getAll(@RequestParam(required = false) Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
         filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
         filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);
@@ -83,7 +84,7 @@ public class GenericRestController<T> {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Browsing> getMyComponents(@RequestParam(required = false) Map<String,Object> allRequestParams) {
+    public ResponseEntity<Browsing> getMy(@RequestParam(required = false) Map<String,Object> allRequestParams) {
         FacetFilter filter = new FacetFilter();
         filter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
         filter.setFrom(allRequestParams.get("from") != null ? Integer.parseInt((String)allRequestParams.remove("from")) : 0);

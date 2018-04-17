@@ -1,6 +1,8 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.service.IncompleteCorpusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/request/incompleteCorpus")
-public class IncompleteCorpusController extends GenericRestController<Corpus>{
+public class IncompleteCorpusController extends GenericRestController<Corpus> {
 
     final private IncompleteCorpusService corpusService;
 

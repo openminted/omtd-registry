@@ -1,6 +1,7 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tools;
 
 import eu.openminted.registry.domain.MavenComponent;
+import eu.openminted.registry.service.MavenResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

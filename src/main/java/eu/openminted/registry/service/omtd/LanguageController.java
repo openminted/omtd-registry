@@ -1,7 +1,10 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.domain.LanguageDescription;
-import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.service.AncillaryService;
+import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.service.StoreService;
+import eu.openminted.registry.service.ValidateInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,11 @@ import java.io.IOException;
  * Created by stefanos on 13/1/2017.
  */
 @RestController
-@RequestMapping("/request/lexical")
-public class LexicalController extends OmtdRestController<Lexical> {
+@RequestMapping("/request/language")
+public class LanguageController extends GenericRestController<LanguageDescription> {
 
     @Autowired
-    LexicalController(ValidateInterface<Lexical> service) {
+    LanguageController(ValidateInterface<LanguageDescription> service) {
         super(service);
     }
 
@@ -29,10 +32,10 @@ public class LexicalController extends OmtdRestController<Lexical> {
     private StoreService storeService;
 
     @RequestMapping(value = "zipUpload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Lexical> uploadCorpus(@RequestPart("file") MultipartFile file,
-                                                            @RequestPart("lexical") Lexical lexical) throws IOException {
+    public ResponseEntity<LanguageDescription> uploadCorpus(@RequestPart("file") MultipartFile file,
+                                               @RequestPart("language") LanguageDescription language) throws IOException {
         String archiveId = storeService.uploadCorpus(file.getName(), file.getInputStream());
-        Lexical corpusRet = ((AncillaryService<Lexical>) service).uploadZip(lexical,archiveId);
+        LanguageDescription corpusRet = ((AncillaryService<LanguageDescription>) service).uploadZip(language,archiveId);
         return ResponseEntity.ok(corpusRet);
     }
 } 

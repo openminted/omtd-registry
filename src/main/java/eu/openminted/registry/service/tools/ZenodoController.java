@@ -1,5 +1,6 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tools;
 
+import eu.openminted.registry.service.ZenodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,8 +1,10 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.other;
 
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
+import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.service.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"workflow", "/request/workflow"})
-public class WorkflowDefinitionController extends GenericRestController<WorkflowDefinition> {
+public class WorkflowDefinitionController extends OtherRestController<WorkflowDefinition> {
 
     WorkflowService workflowService;
 

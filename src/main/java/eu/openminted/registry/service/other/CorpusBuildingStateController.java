@@ -1,8 +1,10 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.other;
 
 import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.service.CorpusBuildingStatusService;
+import eu.openminted.registry.service.GenericRestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/request/corpusbuildingstate")
-public class CorpusBuildingStateController extends GenericRestController<CorpusBuildingState>{
+public class CorpusBuildingStateController extends OtherRestController<CorpusBuildingState> {
 
     @Autowired
     CorpusBuildingStateController(ResourceCRUDService<CorpusBuildingState> service) {
