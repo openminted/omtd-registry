@@ -51,7 +51,7 @@ public class ComponentListener {
     @Qualifier("galaxyExecutorInstanceFactory")
     private GalaxyInstance galaxyExecutorInstance;
 
-    @Before("execution (* eu.openminted.registry.service.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) && args(component)")
+    @Before("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) && args(component)")
     public Component addComponentListener(Component component) {
 
         // Register it to workflow engine.
@@ -72,7 +72,7 @@ public class ComponentListener {
         return component;
     }
 
-    @Around("execution (* eu.openminted.registry.service.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) && args(application)")
+    @Around("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) && args(application)")
     public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
         if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
             logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
@@ -90,7 +90,7 @@ public class ComponentListener {
         return pjp.proceed(new Object[] {application});
     }
 
-    @After("execution (* eu.openminted.registry.service.ComponentServiceImpl.update(eu.openminted.registry.domain.Component)) && args(component)")
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component)) && args(component)")
     public void receiveStateTopicUpdated(Component component) throws ExecutionException, InterruptedException {
         exportDirectory(component);
     }

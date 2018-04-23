@@ -1,6 +1,7 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.domain.*;
+import eu.openminted.registry.service.AncillaryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -8,33 +9,34 @@ import org.springframework.stereotype.Service;
 /**
  * Created by stefanos on 13/1/2017.
  */
-@Service("languageService")
+@Service("lexicalService")
 @Primary
-public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements AncillaryService<LanguageDescription>{
+public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements AncillaryService<Lexical> {
 
-    public LanguageServiceImpl() {
-        super(LanguageDescription.class);
+    public LexicalServiceImpl() {
+        super(Lexical.class);
     }
 
     @Override
     public String getResourceType() {
-        return "language";
+        return "lexical";
     }
 
     @Value("${registry.host}/request/store/download?archiveId=")
     private String hostUrl;
 
     @Override
-    public LanguageDescription uploadZip(LanguageDescription ancillary, String archiveId) {
+    public Lexical uploadZip(Lexical ancillary, String archiveId) {
         String distributionLocation = hostUrl + archiveId;
-        for (DatasetDistributionInfo info : ancillary.getLanguageDescriptionInfo().getDistributionInfos()) {
+        for (DatasetDistributionInfo info : ancillary.getLexicalConceptualResourceInfo().getDistributionInfos()) {
             info.setDistributionLocation(distributionLocation);
         }
         ResourceIdentifier identifier = new ResourceIdentifier();
         identifier.setValue(archiveId);
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-        ancillary.getLanguageDescriptionInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
+        ancillary.getLexicalConceptualResourceInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
         super.add(ancillary);
         return ancillary;
     }
+
 }

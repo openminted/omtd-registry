@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import eu.openminted.registry.service.DockerImageProvider;
+import eu.openminted.registry.service.WorkflowEngineComponent;
+import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,7 @@ import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 import eu.openminted.workflows.galaxywrappers.Utils;
 
 @Component
-public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry{
+public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry {
 
     private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
     private String galaxyRootTools = "/opt/galaxy/tools/";

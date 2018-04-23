@@ -8,12 +8,11 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 
-import eu.openminted.registry.service.DockerImageProviderImpl;
+import eu.openminted.registry.service.tool.DockerImageProviderImpl;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,6 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;

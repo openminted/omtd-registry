@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.other;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,6 +15,7 @@ import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.operation.Operation;
+import eu.openminted.registry.service.OperationService;
 import eu.openminted.workflow.api.ExecutionStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -298,8 +299,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         ResponseEntity<String> executionId;
         Operation operation;
         synchronized (OperationServiceImpl.class) {
-        	logger.info("Starting workflow job");
-        	logger.info(this);
+        	logger.info(String.format("Starting workflow job archiveId [%s] workflowName [%s]",archiveId,workflowName));
             executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
             add(operation);

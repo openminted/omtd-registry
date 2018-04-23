@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 
 import eu.openminted.registry.core.domain.Browsing;
@@ -7,6 +7,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.CorpusContent;
 import eu.openminted.registry.domain.PublicationInfo;
+import eu.openminted.registry.service.CorpusContentService;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;

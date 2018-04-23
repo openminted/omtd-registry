@@ -34,7 +34,7 @@
 
         <security:custom-filter before="PRE_AUTH_FILTER" ref="openIdConnectAuthenticationFilter" />
 
-        <security:logout logout-url="/openid_logout" invalidate-session="true"/>
+        <security:logout logout-url="/openid_logout" invalidate-session="true" delete-cookies="SESSION" logout-success-url="${webapp.front}"/>
 
     </security:http>
 

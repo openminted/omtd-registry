@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.other;
 
 
 import eu.openminted.corpus.CorpusBuildingState;
@@ -6,6 +6,8 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.*;
+import eu.openminted.registry.service.CorpusBuildingStatusService;
+import eu.openminted.registry.service.omtd.OmtdGenericService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -27,7 +29,7 @@ import java.util.concurrent.Future;
  */
 @Service("corpusBuildingStateService")
 @Primary
-public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService{
+public class CorpusBuildingStateServiceImpl extends AbstractGenericService<CorpusBuildingState> implements ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService {
 
     @Autowired
     ResourceTypeService resourceTypeService;

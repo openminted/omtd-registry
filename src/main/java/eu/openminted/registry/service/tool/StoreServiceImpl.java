@@ -1,7 +1,8 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.domain.file.FileStats;
 import eu.openminted.registry.domain.file.Info;
+import eu.openminted.registry.service.StoreService;
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FileUtils;

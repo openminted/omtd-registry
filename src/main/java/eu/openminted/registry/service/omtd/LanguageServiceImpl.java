@@ -1,7 +1,7 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
-import eu.openminted.registry.core.domain.ResourceType;
 import eu.openminted.registry.domain.*;
+import eu.openminted.registry.service.AncillaryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -9,34 +9,33 @@ import org.springframework.stereotype.Service;
 /**
  * Created by stefanos on 13/1/2017.
  */
-@Service("lexicalService")
+@Service("languageService")
 @Primary
-public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements AncillaryService<Lexical> {
+public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements AncillaryService<LanguageDescription> {
 
-    public LexicalServiceImpl() {
-        super(Lexical.class);
+    public LanguageServiceImpl() {
+        super(LanguageDescription.class);
     }
 
     @Override
     public String getResourceType() {
-        return "lexical";
+        return "language";
     }
 
     @Value("${registry.host}/request/store/download?archiveId=")
     private String hostUrl;
 
     @Override
-    public Lexical uploadZip(Lexical ancillary, String archiveId) {
+    public LanguageDescription uploadZip(LanguageDescription ancillary, String archiveId) {
         String distributionLocation = hostUrl + archiveId;
-        for (DatasetDistributionInfo info : ancillary.getLexicalConceptualResourceInfo().getDistributionInfos()) {
+        for (DatasetDistributionInfo info : ancillary.getLanguageDescriptionInfo().getDistributionInfos()) {
             info.setDistributionLocation(distributionLocation);
         }
         ResourceIdentifier identifier = new ResourceIdentifier();
         identifier.setValue(archiveId);
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-        ancillary.getLexicalConceptualResourceInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
+        ancillary.getLanguageDescriptionInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
         super.add(ancillary);
         return ancillary;
     }
-
 }

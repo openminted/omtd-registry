@@ -1,12 +1,13 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.core.service.AbstractGenericService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.generate.LabelGenerate;
+import eu.openminted.registry.service.RequestService;
+import eu.openminted.registry.service.hotfix.AbstractPublicUsersGenericService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service("requestService")
-public class RequestServiceImpl extends AbstractGenericService implements RequestService {
+public class RequestServiceImpl extends AbstractPublicUsersGenericService implements RequestService {
 
     @Autowired
     SearchService searchService;
@@ -49,8 +50,14 @@ public class RequestServiceImpl extends AbstractGenericService implements Reques
     }
 
     @Override
+    public Browsing getResponseByFiltersAndUserElastic(FacetFilter filter, String user) {
+        Browsing ret = super.getResponseByFiltersAndUserElastic(filter, user);
+        labelGenerate.createLabels(ret);
+        return ret;
+    }
+
+    @Override
     public String getResourceType() {
         return RESOURCE_ALIAS;
     }
-
 }

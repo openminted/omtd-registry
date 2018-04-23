@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.omtd;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +15,13 @@ import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.generate.LabelGenerate;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
+import eu.openminted.registry.service.ValidateInterface;
+import eu.openminted.registry.service.hotfix.AbstractPublicUsersGenericService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.xml.bind.JAXBContext;
@@ -39,7 +42,7 @@ import java.util.concurrent.Future;
 /**
  * Created by stefanos on 30/6/2017.
  */
-public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractGenericService<T> implements ValidateInterface<T> {
+public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractPublicUsersGenericService<T> implements ValidateInterface<T> {
 
     private static Logger logger = LogManager.getLogger(OmtdGenericService.class);
 
@@ -78,9 +81,14 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     @Override
     public Browsing getAll(FacetFilter filter) {
         filter.getFilter().keySet().retainAll(getBrowseBy());
-        filter.addFilter("public", true);
-        filter.setBrowseBy(getBrowseBy());
-        Browsing ret = getResults(filter);
+        Browsing ret;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof OIDCAuthenticationToken) {
+            ret = getResponseByFiltersAndUserElastic(filter,((OIDCAuthenticationToken) authentication).getSub());
+        } else {
+            filter.addFilter("public",true);
+            ret = getResults(filter);
+        }
         labelGenerate.createLabels(ret);
         return ret;
     }

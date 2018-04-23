@@ -1,10 +1,11 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.service.ZenodoService;
 import eu.openminted.store.restclient.StoreRESTClient;
 import net.sf.saxon.s9api.*;
 import org.apache.commons.io.IOUtils;

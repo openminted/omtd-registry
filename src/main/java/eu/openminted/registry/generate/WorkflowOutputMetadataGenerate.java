@@ -70,7 +70,7 @@ import eu.openminted.registry.domain.SizeInfo;
 import eu.openminted.registry.domain.TextFormatInfo;
 import eu.openminted.registry.domain.TimeCoverageInfo;
 import eu.openminted.registry.domain.VersionInfo;
-import eu.openminted.registry.service.OmtdGenericService;
+import eu.openminted.registry.service.omtd.OmtdGenericService;
 import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 
 public abstract class WorkflowOutputMetadataGenerate {
