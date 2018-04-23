@@ -4,9 +4,12 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.service.RequestService;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +46,13 @@ public class RequestController {
             sort.put(orderField, order);
             facetFilter.setOrderBy(sort);
         }
-        Browsing browsing = requestService.getResponseByFiltersElastic(facetFilter);
+        Browsing browsing;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof OIDCAuthenticationToken) {
+            browsing = requestService.getResponseByFiltersAndUserElastic(facetFilter,((OIDCAuthenticationToken) authentication).getSub());
+        } else {
+            browsing = requestService.getResponseByFiltersElastic(facetFilter);
+        }
         return new ResponseEntity<>(browsing, HttpStatus.OK);
 
     }
