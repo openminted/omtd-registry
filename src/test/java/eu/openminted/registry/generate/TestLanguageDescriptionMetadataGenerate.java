@@ -1,37 +1,27 @@
 package eu.openminted.registry.generate;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
+import eu.openminted.registry.domain.Component;
+import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.domain.LanguageDescription;
+import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
+import eu.openminted.registry.service.omtd.ApplicationServiceImpl;
+import eu.openminted.registry.service.omtd.CorpusServiceImpl;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ResourceUtils;
 
-import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.domain.Component;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.LanguageDescription;
-import eu.openminted.registry.domain.Lexical;
-import eu.openminted.registry.service.ApplicationServiceImpl;
-import eu.openminted.registry.service.CorpusServiceImpl;
-import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 //@ActiveProfiles("test")
 //@RunWith(SpringJUnit4ClassRunner.class)
