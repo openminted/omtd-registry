@@ -33,13 +33,13 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
     }
 
     @Override
-    @PostAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(returnObject.body) and isAuthenticated() and @omtdPolicyService.isOwn(returnObject.body,principal['sub']))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(component) and isAuthenticated() and @omtdPolicyService.isOwn(component,principal['sub']))")
     public ResponseEntity<T> update(@RequestBody T component) throws ResourceNotFoundException {
         return super.update(component);
     }
 
     @Override
-    @PostAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(returnObject.body) and isAuthenticated() and @omtdPolicyService.isOwn(returnObject.body,principal['sub']))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(component) and isAuthenticated() and @omtdPolicyService.isOwn(component,principal['sub']))")
     public ResponseEntity<String> delete(@RequestBody T component) throws ResourceNotFoundException {
         return super.delete(component);
     }
