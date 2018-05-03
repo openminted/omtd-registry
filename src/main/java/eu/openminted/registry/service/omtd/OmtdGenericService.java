@@ -86,6 +86,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         if (authentication instanceof OIDCAuthenticationToken) {
             ret = getResponseByFiltersAndUserElastic(filter,((OIDCAuthenticationToken) authentication).getSub());
         } else {
+            filter.setBrowseBy(getBrowseBy());
             filter.addFilter("public",true);
             ret = getResults(filter);
         }
