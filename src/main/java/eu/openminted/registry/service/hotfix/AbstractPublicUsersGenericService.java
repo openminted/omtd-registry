@@ -62,11 +62,11 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         Client client = elastic.client();
         filter.setResourceType(getResourceType());
         filter.setBrowseBy(getBrowseBy());
-        logger.info("Personalized logger for " + user);
+        logger.trace("Personalized logger for " + user);
         Paging paging;
         int quantity = filter.getQuantity();
         BoolQueryBuilder qBuilder = createQueryBuilder(filter,user);
-        logger.info(qBuilder.toString());
+        logger.trace(qBuilder.toString());
         SearchRequestBuilder search = client.prepareSearch(filter.getResourceType()).
                 setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(qBuilder)
