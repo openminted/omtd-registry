@@ -14,14 +14,18 @@ import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.generate.AnnotatedCorpusMetadataGenerate;
 import eu.openminted.registry.generate.LanguageConceptualResourceMetadataGenerate;
 import eu.openminted.registry.generate.LanguageDescriptionMetadataGenerate;
+import eu.openminted.registry.mail.JavaMailer;
+import eu.openminted.registry.service.aai.UserInfoAAIRetrieve;
 import eu.openminted.registry.service.omtd.OmtdGenericService;
 import eu.openminted.registry.service.other.OperationServiceImpl;
 import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +38,9 @@ import java.util.concurrent.Future;
 public class OperationHandler {
 
     private static final Logger logger = LogManager.getLogger(OperationHandler.class);
+
+    @Value("${registry.host}")
+    private String registryHost;
 
     @Autowired
     @Qualifier("operationService")
@@ -63,9 +70,16 @@ public class OperationHandler {
     @Autowired
     @Qualifier("applicationService")
 	private OmtdGenericService<eu.openminted.registry.domain.Component> applicationService;
-    
+
+
+    @Autowired
+    protected UserInfoAAIRetrieve aaiUserInfoRetriever;
+
     @Autowired
     public ParserService parserPool;
+
+    @Autowired
+    private JavaMailer javaMailer;
 
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution}")
     public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws Exception {
@@ -163,7 +177,9 @@ public class OperationHandler {
     }
 
     private void caseFinished(WorkflowExecutionStatusMessage workflowExeMsg) throws IOException, ResourceNotFoundException, NullPointerException {
+
         if (workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getResultingCorpusID() == null) {
+            logger.debug("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
             throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FINISHED.toString());
         }
      
@@ -249,7 +265,26 @@ public class OperationHandler {
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
         logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
         operationService.update(operation);
-        
+        int coId = 0;
+        try {
+            coId = aaiUserInfoRetriever.getCoId( operation.getPerson());
+            Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);
+            String surname = userNames.getKey();
+            String givenName =  userNames.getValue();
+            String email = aaiUserInfoRetriever.getEmail(coId);
+            javaMailer.sendEmail(
+                    email,
+                    "[OpenMinTeD] the application execution has finished",
+                    "Dear "+ surname+",\n" +
+                            "\n" +
+                            "  an application you executed in OpenMinTeD has been successfully completed. For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
+                            "\n" +
+                            "Best regards,\n" +
+                            "The OpenMinTeD team");
+            logger.debug("Sent mail to " + email);
+        } catch (IOException e) {
+            logger.error("Could not send mail " + e.getMessage());
+        }
     }
 
     private void caseFailed(WorkflowExecutionStatusMessage workflowExeMsg) throws ResourceNotFoundException {
@@ -279,6 +314,30 @@ public class OperationHandler {
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
         logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
         operationService.update(operation);
+
+
+        int coId = 0;
+        try {
+            coId = aaiUserInfoRetriever.getCoId( operation.getPerson());
+            Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);
+            String surname = userNames.getKey();
+            String givenName =  userNames.getValue();
+            String email = aaiUserInfoRetriever.getEmail(coId);
+            javaMailer.sendEmail(
+                    email,
+                    "[OpenMinTeD] the application execution has failed",
+                    "Dear "+ surname+",\n" +
+                            "\n" +
+                            "  an application you executed in OpenMinTeD has failed. For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
+                            "\n" +
+                            "Best regards,\n" +
+                            "The OpenMinTeD team");
+            logger.debug("Sent mail to " + email);
+        } catch (IOException e) {
+            logger.error("Could not send mail " + e.getMessage());
+        }
+
     }
+
 
 }

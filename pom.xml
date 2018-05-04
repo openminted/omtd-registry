@@ -68,6 +68,16 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>registry-core-rest</artifactId>
 			<version>${registry.core.version}</version>
