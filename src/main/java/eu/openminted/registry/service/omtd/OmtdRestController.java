@@ -33,7 +33,8 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#component) and isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
+    @PreAuthorize("(isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
+//    not @omtdPolicyService.isPublic(#component) and
     public ResponseEntity<T> update(@RequestBody T component) throws ResourceNotFoundException {
         return super.update(component);
     }
