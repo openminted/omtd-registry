@@ -35,4 +35,8 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component>{
         return super.update(newResource);
     }
 
+    @Override
+    public void delete(Component component) {
+        super.delete(component);
+    }
 }
