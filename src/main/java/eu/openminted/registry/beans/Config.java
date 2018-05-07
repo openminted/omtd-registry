@@ -7,22 +7,16 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
-
 import eu.openminted.registry.service.tool.DockerImageProviderImpl;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
@@ -87,37 +81,6 @@ public class Config {
         authConfig.withUsername(dockerUsername);
         authConfig.withPassword(dockerPassword);
         return authConfig;
-    }
-
-    @Bean
-    JedisConnectionFactory connectionFactory() {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        jedisConnectionFactory.setHostName(host);
-        jedisConnectionFactory.setPort(Integer.parseInt(port));
-        if(password != null) jedisConnectionFactory.setPassword(password);
-        return jedisConnectionFactory;
-    }
-
-    @Bean
-    public StringRedisSerializer stringRedisSerializer() {
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        return stringRedisSerializer;
-    }
-
-    @Bean
-    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer() {
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer =
-                new GenericJackson2JsonRedisSerializer();
-        return genericJackson2JsonRedisJsonSerializer;
-    }
-
-    @Bean
-    public RedisTemplate redisTemplate() {
-        RedisTemplate template = new RedisTemplate();
-        template.setConnectionFactory(connectionFactory());
-        template.setKeySerializer(stringRedisSerializer());
-        template.setValueSerializer(genericJackson2JsonRedisJsonSerializer());
-        return template;
     }
 
     @Bean
