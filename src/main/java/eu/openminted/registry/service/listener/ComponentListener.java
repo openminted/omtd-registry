@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import eu.openminted.registry.core.service.ResourceCRUDService;
 
 @Aspect
 @org.springframework.stereotype.Component
@@ -51,28 +52,23 @@ public class ComponentListener {
     @Qualifier("galaxyExecutorInstanceFactory")
     private GalaxyInstance galaxyExecutorInstance;
 
-    @Before("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) && args(component)")
+    @Before("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component))) && args(component)")
     public Component addComponentListener(Component component) {
-
         // Register it to workflow engine.
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
-
-        // We do need the following ant more
-        /*
-        ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
-        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
-            String url = distributionInfo.getDistributionLocation();
-            dockerService.downloadDockerFlow(url);
-            String image_id = dockerService.uploadDockerFlow(url);
-            dockerService.deleteDockerFlow(url,image_id);
-        }
-
-        exportDirectory(resource);
-        */
         return component;
     }
 
-    @Around("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) && args(application)")
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(component)")
+    public Component deleteComponentListener(Component component) {
+        // Register it to workflow engine.
+        logger.info("Deleting component");
+        workflowEngineComponentReg.deleteTDMComponemtFromWorkflowEngine(component);
+        return component;
+    }
+
+    @Around("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.*(eu.openminted.registry.domain.Component)) && args(application)")
     public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
         if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
             logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
