@@ -1,6 +1,10 @@
 package eu.openminted.registry.service;
 
+import eu.openminted.registry.domain.Component;
+
 public interface WorkflowEngineComponentRegistry {
 
-	WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component component);
+	WorkflowEngineComponent registerTDMComponentToWorkflowEngine(Component component);
+
+	void deleteTDMComponemtFromWorkflowEngine(Component component);
 }
