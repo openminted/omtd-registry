@@ -64,7 +64,7 @@ public class ComponentListener {
     public Component deleteComponentListener(Component component) {
         // Register it to workflow engine.
         logger.info("Deleting component");
-        workflowEngineComponentReg.deleteTDMComponemtFromWorkflowEngine(component);
+        workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(component);
         return component;
     }
 
