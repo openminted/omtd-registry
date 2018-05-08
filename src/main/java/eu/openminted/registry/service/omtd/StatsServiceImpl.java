@@ -1,6 +1,5 @@
 package eu.openminted.registry.service.omtd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
@@ -36,7 +35,7 @@ public class StatsServiceImpl implements StatsService{
     SearchService searchService;
 
     @Autowired
-    private RedisTemplate<String, String> template;
+    private RedisTemplate<String, Totals> template;
 
     private final String redis_prefix = "totals:id:";
 
@@ -44,9 +43,9 @@ public class StatsServiceImpl implements StatsService{
     RestTemplate restTemplate;
 
     @Override
-    public String totals() throws IOException {
+    public Totals totals() throws IOException {
 
-        String totals = getContent();
+        Totals totals = getContent();
         if(totals!=null)
             return totals;
 
@@ -71,8 +70,8 @@ public class StatsServiceImpl implements StatsService{
             JSONObject responseJson = new JSONObject(restTemplate.postForEntity(contentHost + "content/browse/", entity, String.class).getBody());
             publications = Integer.parseInt(responseJson.get("totalHits").toString());
             Totals toReturn = new Totals(publications,components,applications);
-            addContent(new ObjectMapper().writeValueAsString(toReturn).replaceAll("\\\\", ""));
-            return new ObjectMapper().writeValueAsString(toReturn).replaceAll("\\\\", "");
+            addContent(toReturn);
+            return toReturn;
         }catch (HttpServerErrorException ex){
             logger.error("Request on "+contentHost +" failed", ex);
             throw new ServiceException(ex.getMessage());
@@ -81,7 +80,7 @@ public class StatsServiceImpl implements StatsService{
     }
 
 
-    private void addContent(String totals) {
+    private void addContent(Totals totals) {
         String key = redis_prefix + "stats";
         if (!template.hasKey(key)) {
             template.opsForList().leftPush(key, totals);
@@ -91,10 +90,10 @@ public class StatsServiceImpl implements StatsService{
     }
 
 
-    private String getContent() {
+    private Totals getContent() {
         String key = redis_prefix + "stats";
         if (template.hasKey(key)) {
-            String totals = template.opsForList().rightPop(key);
+            Totals totals = template.opsForList().rightPop(key);
             template.opsForList().leftPush(key,totals);
             return totals;
         } else {
