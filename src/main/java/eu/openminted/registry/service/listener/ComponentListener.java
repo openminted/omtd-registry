@@ -16,7 +16,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,7 +23,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import eu.openminted.registry.core.service.ResourceCRUDService;
 
 @Aspect
 @org.springframework.stereotype.Component
@@ -68,7 +66,8 @@ public class ComponentListener {
         return component;
     }
 
-    @Around("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.*(eu.openminted.registry.domain.Component)) && args(application)")
+    @Around("(execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.update(eu.openminted.registry.domain.Component))) && args(application)")
     public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
         if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
             logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
@@ -84,6 +83,13 @@ public class ComponentListener {
         //resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
         //application.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
         return pjp.proceed(new Object[] {application});
+    }
+
+    @After("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(application)")
+    public Component deleteApplicationListener(Component application) {
+        logger.info("Deleting application");
+        workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(application);
+        return application;
     }
 
     @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component)) && args(component)")
