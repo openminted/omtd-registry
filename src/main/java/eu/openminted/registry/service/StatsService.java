@@ -1,7 +1,5 @@
 package eu.openminted.registry.service;
 
-import eu.openminted.registry.domain.Totals;
-
 import java.io.IOException;
 
 /**
@@ -9,5 +7,5 @@ import java.io.IOException;
  */
 public interface StatsService{
 
-    Totals totals() throws IOException;
+    String totals() throws IOException;
 }

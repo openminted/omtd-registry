@@ -1,6 +1,8 @@
 package eu.openminted.registry.domain;
 
-public class Totals {
+import java.io.Serializable;
+
+public class Totals implements Serializable {
 
     private int publications = 0;
 
