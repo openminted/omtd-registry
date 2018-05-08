@@ -96,7 +96,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     }
 
     @Override
-    public void deleteTDMCompomemtFromWorkflowEngine(eu.openminted.registry.domain.Component component) {
+    public void deleteTDMComponentFromWorkflowEngine(eu.openminted.registry.domain.Component component) {
         String resourceID = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
         String folder = getWrapperFolder(component);
         try {
