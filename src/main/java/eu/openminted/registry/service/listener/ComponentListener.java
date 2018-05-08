@@ -16,7 +16,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -51,28 +50,24 @@ public class ComponentListener {
     @Qualifier("galaxyExecutorInstanceFactory")
     private GalaxyInstance galaxyExecutorInstance;
 
-    @Before("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) && args(component)")
+    @Before("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component))) && args(component)")
     public Component addComponentListener(Component component) {
-
         // Register it to workflow engine.
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
-
-        // We do need the following ant more
-        /*
-        ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
-        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
-            String url = distributionInfo.getDistributionLocation();
-            dockerService.downloadDockerFlow(url);
-            String image_id = dockerService.uploadDockerFlow(url);
-            dockerService.deleteDockerFlow(url,image_id);
-        }
-
-        exportDirectory(resource);
-        */
         return component;
     }
 
-    @Around("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) && args(application)")
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(component)")
+    public Component deleteComponentListener(Component component) {
+        // Register it to workflow engine.
+        logger.info("Deleting component");
+        workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(component);
+        return component;
+    }
+
+    @Around("(execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.update(eu.openminted.registry.domain.Component))) && args(application)")
     public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
         if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
             logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
@@ -88,6 +83,13 @@ public class ComponentListener {
         //resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
         //application.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
         return pjp.proceed(new Object[] {application});
+    }
+
+    @After("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(application)")
+    public Component deleteApplicationListener(Component application) {
+        logger.info("Deleting application");
+        workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(application);
+        return application;
     }
 
     @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component)) && args(component)")

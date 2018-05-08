@@ -1,5 +1,19 @@
 package eu.openminted.registry.service.tool;
 
+import eu.openminted.registry.domain.ComponentDistributionInfo;
+import eu.openminted.registry.domain.FrameworkEnum;
+import eu.openminted.registry.service.DockerImageProvider;
+import eu.openminted.registry.service.WorkflowEngineComponent;
+import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
+import eu.openminted.workflows.galaxytool.Tool;
+import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
+import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
+import eu.openminted.workflows.galaxywrappers.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,142 +23,154 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import eu.openminted.registry.service.DockerImageProvider;
-import eu.openminted.registry.service.WorkflowEngineComponent;
-import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import eu.openminted.registry.domain.ComponentDistributionFormEnum;
-import eu.openminted.registry.domain.ComponentDistributionInfo;
-import eu.openminted.registry.domain.FrameworkEnum;
-import eu.openminted.workflows.galaxytool.Tool;
-import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
-import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
-import eu.openminted.workflows.galaxywrappers.Utils;
-
 @Component
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry {
 
     private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
-    private String galaxyRootTools = "/opt/galaxy/tools/";
-    
+    private final static String galaxyRootTools = "/opt/galaxy/tools/";
+    private final static String prefix = "wrapper_";
+
     @Autowired
     private GalaxyWrapperGenerator galaxyWrapperGenerator;
-    
+
     @Autowired
     private GalaxyToolWrapperWriter galaxyToolWrapperWriter;
-    
+
     @Autowired
     private DockerImageProvider dockerImageProvider;
-    
+
     @Override
+    public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta) {
 
-    public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta){
-		
-		WorkflowEngineComponent wec = new WorkflowEngineComponent();
-		
-		String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
-		String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+        WorkflowEngineComponent wec = new WorkflowEngineComponent();
 
-		List<ComponentDistributionInfo> distributionInfos = componentMeta.getComponentInfo().getDistributionInfos();
-		String galaxyTrgFolder = "";
-		
-		// Prepare Galaxy wrapper generation&copying.
-        if(Utils.isDocker(distributionInfos)) { // Docker-packaged components
-        	logger.info("Registering component -> " + "Docker");
-        	galaxyTrgFolder = "omtdDocker/";
-        }else  if(Utils.isWebService(distributionInfos)){  // WS-packaged components
-        	logger.info("Registering component -> " + "WebService");
-        	galaxyTrgFolder = "omtdDocker/";
-    		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
-        }else{ // UIMA/GATE components 
-        	String framework = componentMeta.getComponentInfo().getComponentCreationInfo().getFramework().value();
-        	logger.info("Registering component -> " + framework);
-        		
-        	if(framework == FrameworkEnum.UIMA.value()){
-        		galaxyTrgFolder = "omtdUIMA/";
-        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
-        		
-        	}else if(framework == FrameworkEnum.GATE.value()){
-        		galaxyTrgFolder = "omtdGATE/";
-        		galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
-        	}else{
-        		logger.info("Registering component -> " + "error");
-        	}
+        String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+        String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+
+        List<ComponentDistributionInfo> distributionInfos = componentMeta.getComponentInfo().getDistributionInfos();
+        String galaxyTrgFolder = "";
+
+        // Prepare Galaxy wrapper generation&copying.
+        if (Utils.isDocker(distributionInfos)) { // Docker-packaged components
+            logger.info("Registering component -> " + "Docker");
+            galaxyTrgFolder = "omtdDocker/";
+        } else if (Utils.isWebService(distributionInfos)) {  // WS-packaged components
+            logger.info("Registering component -> " + "WebService");
+            galaxyTrgFolder = "omtdDocker/";
+            galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
+        } else { // UIMA/GATE components
+            String framework = componentMeta.getComponentInfo().getComponentCreationInfo().getFramework().value();
+            logger.info("Registering component -> " + framework);
+
+            if (framework == FrameworkEnum.UIMA.value()) {
+                galaxyTrgFolder = "omtdUIMA/";
+                galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
+
+            } else if (framework == FrameworkEnum.GATE.value()) {
+                galaxyTrgFolder = "omtdGATE/";
+                galaxyWrapperGenerator.setDockerImage(dockerImageProvider.getImage(componentMeta));
+            } else {
+                logger.info("Registering component -> " + "error");
+            }
         }
-        
+
         // Generate wrapper.
         Tool tool = galaxyWrapperGenerator.generate(componentMeta);
-        
+
         // Write wrapper.
         File tmpFileForWrapper = writeWrapperToDisk(tool, resourceID);
-        
+
         String wrapperFinalDest = "";
         // If succeeded copy it to Galaxy machine.
-        if(tmpFileForWrapper != null){
+        if (tmpFileForWrapper != null) {
             // Copy over NFS.
-        	wrapperFinalDest = copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder);
+            wrapperFinalDest = copyViaNFSToGalaxyToolsFolder(tmpFileForWrapper, galaxyTrgFolder, resourceID);
         }
-        
+
         wec.setComponentID(tool.getId());
         wec.setComponentVersion(tool.getVersion());
         wec.setName(resourceName);
         wec.setLocation(wrapperFinalDest);
-        
+
         return wec;
     }
-    
-	private File writeWrapperToDisk(Tool tool, String resourceID){
-		String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
+
+    @Override
+    public void deleteTDMComponentFromWorkflowEngine(eu.openminted.registry.domain.Component component) {
+        String resourceID = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+        String folder = getWrapperFolder(component);
+        try {
+            Files.deleteIfExists(getWrapperName(folder,resourceID));
+        } catch (IOException e) {
+            logger.error("Error deleting component",e);
+        }
+    }
+
+
+    private File writeWrapperToDisk(Tool tool, String resourceID) {
+        String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
         File tmpFileForWrapper = null;
         try {
-        	tmpFileForWrapper = File.createTempFile("wrapper_" + resourceID, ".xml");
-        	FileOutputStream fos = new FileOutputStream(tmpFileForWrapper);
-        	fos.write(wrapperXML.getBytes());
-        	fos.flush();
-        	fos.close();
-        	
-        	logger.info("Wrapper tmp:" + tmpFileForWrapper.getAbsolutePath());
-		} catch (IOException e) {
-			logger.debug(e);
-			return null;
-		}	
-        
-        return tmpFileForWrapper;
-	}
-	
-	
-	private String copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder){		
-        
-		try {
-        	// Create parent folder if not exists. 
-        	File parent = new File(galaxyRootTools + trgFolder);
-        	if(!parent.exists()){
-        		boolean mkdrs = parent.mkdirs();
-        		logger.info("copyViaNFSToGalaxyToolsFolder -> make parent:" + mkdrs);
-        	}
-        	
-        	// Copy 
-        	Path src = Paths.get(tmpForWrapper.getAbsolutePath());
-        	Path trg = Paths.get(galaxyRootTools + trgFolder + tmpForWrapper.getName());
-			Files.copy(src, trg, StandardCopyOption.REPLACE_EXISTING);
+            tmpFileForWrapper = File.createTempFile("wrapper_" + resourceID, ".xml");
+            FileOutputStream fos = new FileOutputStream(tmpFileForWrapper);
+            fos.write(wrapperXML.getBytes());
+            fos.flush();
+            fos.close();
 
-			return trg.toFile().getAbsolutePath();
-		} catch (IOException e) {
-			logger.debug(e);
-		}
-		
-		return null;
-	}
-    
-    private String getFolder(eu.openminted.registry.domain.Component componentMeta){
-    	boolean isApp = componentMeta.getComponentInfo().isApplication();
-    	String function = componentMeta.getComponentInfo().getFunctionInfo().getFunction().value();
-    	
-    	return "";
+            logger.info("Wrapper tmp:" + tmpFileForWrapper.getAbsolutePath());
+        } catch (IOException e) {
+            logger.debug(e);
+            return null;
+        }
+
+        return tmpFileForWrapper;
     }
-    
+
+
+    private String copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder, String resourceID) {
+
+        try {
+            // Create parent folder if not exists.
+            File parent = new File(galaxyRootTools + trgFolder);
+            if (!parent.exists()) {
+                boolean mkdrs = parent.mkdirs();
+                logger.info("copyViaNFSToGalaxyToolsFolder -> make parent:" + mkdrs);
+            }
+
+            // Copy
+            Path src = Paths.get(tmpForWrapper.getAbsolutePath());
+            Path trg = getWrapperName(trgFolder, resourceID);
+            Files.copy(src, trg, StandardCopyOption.REPLACE_EXISTING);
+
+            return trg.toFile().getAbsolutePath();
+        } catch (IOException e) {
+            logger.error("Error writing to galaxy NFS folder", e);
+        }
+        return null;
+    }
+
+    private static Path getWrapperName(String folder, String resourceID) {
+        return Paths.get(galaxyRootTools + folder + prefix + resourceID + ".xml");
+    }
+
+    private static String getWrapperFolder(eu.openminted.registry.domain.Component component) {
+        String ret = "";
+        List<ComponentDistributionInfo> distributionInfos = component.getComponentInfo().getDistributionInfos();
+        // Prepare Galaxy wrapper generation&copying.
+        if (Utils.isDocker(distributionInfos)) { // Docker-packaged components
+            ret = "omtdDocker/";
+        } else if (Utils.isWebService(distributionInfos)) {  // WS-packaged components
+            ret = "omtdDocker/";
+        } else { // UIMA/GATE components
+            String framework = component.getComponentInfo().getComponentCreationInfo().getFramework().value();
+            if (framework.equals(FrameworkEnum.UIMA.value())) {
+                ret = "omtdUIMA/";
+
+            } else if (framework.equals(FrameworkEnum.GATE.value())) {
+                ret = "omtdGATE/";
+            }
+        }
+        return ret;
+    }
+
 }
