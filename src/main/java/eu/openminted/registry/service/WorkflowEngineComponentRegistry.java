@@ -6,5 +6,5 @@ public interface WorkflowEngineComponentRegistry {
 
 	WorkflowEngineComponent registerTDMComponentToWorkflowEngine(Component component);
 
-	void deleteTDMComponemtFromWorkflowEngine(Component component);
+	void deleteTDMComponentFromWorkflowEngine(Component component);
 }
