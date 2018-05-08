@@ -10,6 +10,9 @@ public class Totals implements Serializable {
 
     private int applications = 0;
 
+    public Totals() {
+    }
+
     public Totals(int publications, int components, int applications) {
         this.publications = publications;
         this.components = components;
