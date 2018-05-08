@@ -1,7 +1,9 @@
 package eu.openminted.registry.service.omtd;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Totals;
 import eu.openminted.registry.service.StatsService;
 import org.apache.logging.log4j.LogManager;
@@ -9,12 +11,18 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 @Service("statsService")
 public class StatsServiceImpl implements StatsService{
@@ -28,11 +36,21 @@ public class StatsServiceImpl implements StatsService{
     SearchService searchService;
 
     @Autowired
+    private RedisTemplate<String, String> template;
+
+    private final String redis_prefix = "totals:id:";
+
+    @Autowired
     RestTemplate restTemplate;
 
     @Override
-//    @Cacheable("totals")
-    public Totals totals() throws IOException {
+    public String totals() throws IOException {
+
+        String totals = getContent();
+        if(totals!=null)
+            return totals;
+
+
         int publications = 0;
         int components = 0;
         int applications = 0;
@@ -44,10 +62,44 @@ public class StatsServiceImpl implements StatsService{
         filter.setResourceType("component");
         components = searchService.search(filter).getTotal();
 
-        JSONObject responseJson = new JSONObject(restTemplate.postForEntity(contentHost+"content/browse/","{\"params\":{}}",null));
-        publications = Integer.parseInt(responseJson.get("totalHits").toString());
+        try {
 
-        return new Totals(publications,components,applications);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> entity = new HttpEntity<>("{\"params\":{}}", headers);
+
+            JSONObject responseJson = new JSONObject(restTemplate.postForEntity(contentHost + "content/browse/", entity, String.class).getBody());
+            publications = Integer.parseInt(responseJson.get("totalHits").toString());
+            Totals toReturn = new Totals(publications,components,applications);
+            addContent(new ObjectMapper().writeValueAsString(toReturn).replaceAll("\\\\", ""));
+            return new ObjectMapper().writeValueAsString(toReturn).replaceAll("\\\\", "");
+        }catch (HttpServerErrorException ex){
+            logger.error("Request on "+contentHost +" failed", ex);
+            throw new ServiceException(ex.getMessage());
+        }
+
+    }
+
+
+    private void addContent(String totals) {
+        String key = redis_prefix + "stats";
+        if (!template.hasKey(key)) {
+            template.opsForList().leftPush(key, totals);
+            template.expire(key, 24, TimeUnit.HOURS);
+        }
+
+    }
+
+
+    private String getContent() {
+        String key = redis_prefix + "stats";
+        if (template.hasKey(key)) {
+            String totals = template.opsForList().rightPop(key);
+            template.opsForList().leftPush(key,totals);
+            return totals;
+        } else {
+            return null;
+        }
     }
 
 }
