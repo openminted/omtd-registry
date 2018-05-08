@@ -2,10 +2,12 @@ package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.GenericRestController;
 import eu.openminted.registry.service.ValidateInterface;
+import eu.openminted.registry.service.policy.PolicyInterface;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -33,8 +35,7 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
     }
 
     @Override
-    @PreAuthorize("(isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
-//    not @omtdPolicyService.isPublic(#component) and
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#component) and isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
     public ResponseEntity<T> update(@RequestBody T component) throws ResourceNotFoundException {
         return super.update(component);
     }
@@ -43,6 +44,32 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
     @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#component) and isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
     public ResponseEntity<String> delete(@RequestBody T component) throws ResourceNotFoundException {
         return super.delete(component);
+    }
+
+    @RequestMapping(path = "public/{id}", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<T> makePublic(@PathVariable("id") String id) throws ResourceNotFoundException {
+        T resource = service.get(id);
+        if(resource == null) {
+            throw new ResourceNotFoundException(id,service.getClass().getTypeName());
+        }
+        return ResponseEntity.ok(makePublicInternal(resource));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#resource) and @omtdPolicyService.isOwn(#resource,principal['sub']))")
+    private T makePublicInternal(T resource) throws ResourceNotFoundException {
+        if (resource instanceof Component) {
+            ((Component) resource).getComponentInfo().getIdentificationInfo().setPublic(true);
+        } else if (resource instanceof Corpus) {
+            ((Corpus) resource).getCorpusInfo().getIdentificationInfo().setPublic(true);
+        } else if (resource instanceof Lexical) {
+            ((Lexical) resource).getLexicalConceptualResourceInfo().getIdentificationInfo().setPublic(true);
+        } else if (resource instanceof LanguageDescription) {
+            ((LanguageDescription) resource).getLanguageDescriptionInfo().getIdentificationInfo().setPublic(true);
+        } else {
+            throw new ServiceException("ResourceType not supported");
+        }
+        return service.update(resource);
     }
 
     @Override
