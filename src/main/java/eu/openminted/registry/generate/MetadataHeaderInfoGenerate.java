@@ -46,14 +46,14 @@ public class MetadataHeaderInfoGenerate {
         info.setMetadataLastDateUpdated(calendar);
 
         //
-        // Set metadata record identifier
+        // Overwrite metadata record identifier
         //
-        if (info.getMetadataRecordIdentifier() == null) {
-            MetadataIdentifier identifier = new MetadataIdentifier();
-            identifier.setValue(UUID.randomUUID().toString());
-            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
-            info.setMetadataRecordIdentifier(identifier);
-        }
+
+        MetadataIdentifier identifier = new MetadataIdentifier();
+        identifier.setValue(UUID.randomUUID().toString());
+        identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
+        info.setMetadataRecordIdentifier(identifier);
+
 
         //
         // Set metadata creator
