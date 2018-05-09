@@ -39,7 +39,6 @@ public class MetadataHeaderInfoGenerate {
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
-        logger.info(info.getMetadataCreationDate().toString());
         if(info.getMetadataCreationDate() == null){
             info.setMetadataCreationDate(calendar);
         }
