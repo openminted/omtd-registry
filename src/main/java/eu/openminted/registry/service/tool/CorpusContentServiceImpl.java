@@ -244,12 +244,34 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     private void getCorpusFiles(CorpusContent content) {
         try {
             // retrieve all files inside the archive
-            content.setFilepaths(storeClient.listFiles(content.getArchiveId(),
-                    false, true, true));
+            List<String> filepaths = storeClient.listFiles(content.getArchiveId(),
+                    false, true, true);
+
+            // filter out files not inside the following folders: abstract, fulltext, metadata, annotations
+            for (String file : filepaths) {
+                if (!file.contains("/abstract/") && !file.contains("/fulltext/") &&
+                        !file.contains("/metadata/") && !file.contains("/annotations/")) {
+                    filepaths.remove(file);
+                }
+            }
+            content.setFilepaths(filepaths);
         } catch (Exception e) {
             logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Removes the first extension of a filename and any following extensions
+     * of the types .pdf .txt .xml .xmi
+     */
+    private String customRemoveExtension(String filename) {
+        do {
+            filename = FilenameUtils.removeExtension(filename);
+        } while (filename.toLowerCase().endsWith(".pdf") || filename.toLowerCase().endsWith(".txt") ||
+                filename.toLowerCase().endsWith(".xml") || filename.toLowerCase().endsWith(".xmi"));
+        return filename;
     }
 
 
@@ -276,7 +298,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
                 .map(Paths::get)
                 .collect(Collectors.toList());
 
-        // save for each publication the name (String) and a value (int)
+        // save, for each publication, the name (String) and a value (int)
         // which represents the existence/absence of abstract, fulltext, metadata and annotations.
         HashMap<String, Integer> publicationInfo = new HashMap<>();
 
@@ -289,7 +311,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
         for (Path file : paths) {
             String filename = file.getFileName().toString();
-            filename = FilenameUtils.removeExtension(filename);
+            filename = customRemoveExtension(filename);
             publicationId.add(filename);
             publicationInfo.putIfAbsent(filename, 0x0000);
 
