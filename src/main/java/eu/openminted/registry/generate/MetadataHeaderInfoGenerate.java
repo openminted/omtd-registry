@@ -81,21 +81,23 @@ public class MetadataHeaderInfoGenerate {
         //
         // Set affiliations
         //
-        authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
-            String[] organizationPosition = af.getAsString().split("@");
-            if (organizationPosition.length == 2) {
-                Affiliation affiliation = new Affiliation();
-                OrganizationInfo organizationInfo = new OrganizationInfo();
-                OrganizationName organizationName = new OrganizationName();
-                organizationName.setValue(organizationPosition[1]);
-                organizationInfo.getOrganizationNames().add(organizationName);
-                affiliation.setAffiliatedOrganization(organizationInfo);
-                affiliation.setPosition(organizationPosition[0]);
-                personInfo.setAffiliation(affiliation);
-            } else {
-                logger.warn("The provided affiliation was not in position@organization format");
-            }
-        });
+        if(authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION) != null) {
+            authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
+                String[] organizationPosition = af.getAsString().split("@");
+                if (organizationPosition.length == 2) {
+                    Affiliation affiliation = new Affiliation();
+                    OrganizationInfo organizationInfo = new OrganizationInfo();
+                    OrganizationName organizationName = new OrganizationName();
+                    organizationName.setValue(organizationPosition[1]);
+                    organizationInfo.getOrganizationNames().add(organizationName);
+                    affiliation.setAffiliatedOrganization(organizationInfo);
+                    affiliation.setPosition(organizationPosition[0]);
+                    personInfo.setAffiliation(affiliation);
+                } else {
+                    logger.warn("The provided affiliation was not in position@organization format");
+                }
+            });
+        }
 
         //
         // Set communication info
