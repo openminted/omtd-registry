@@ -15,16 +15,7 @@ public class OmtdPolicyService<T extends BaseMetadataRecord> implements PolicyIn
 
     @Override
     public boolean isPublic(T resource) {
-        if (resource instanceof Component) {
-            return ((Component) resource).getComponentInfo().getIdentificationInfo().isPublic();
-        } else if (resource instanceof Corpus) {
-            return ((Corpus) resource).getCorpusInfo().getIdentificationInfo().isPublic();
-        } else if (resource instanceof Lexical) {
-            return ((Lexical) resource).getLexicalConceptualResourceInfo().getIdentificationInfo().isPublic();
-        } else if (resource instanceof LanguageDescription) {
-            return ((LanguageDescription) resource).getLanguageDescriptionInfo().getIdentificationInfo().isPublic();
-        } else {
-            return false;
-        }
+        IdentificationInfo identificationInfo = OMTDResolver.resolveIdentificationInfo(resource);
+        return (identificationInfo != null) && identificationInfo.isPublic();
     }
 }
