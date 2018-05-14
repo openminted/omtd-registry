@@ -7,12 +7,14 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
-import eu.openminted.registry.core.service.AbstractGenericService;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.core.validation.ResourceValidator;
 import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.domain.OMTDResolver;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.generate.LabelGenerate;
 import eu.openminted.registry.generate.MetadataHeaderInfoGenerate;
 import eu.openminted.registry.service.ValidateInterface;
@@ -114,10 +116,16 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         } catch (DatatypeConfigurationException e) {
             throw new ServiceException(e);
         }
-
-
         String insertionId = resource.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
+        List<ResourceIdentifier> identifiers = OMTDResolver.resolveIdentificationInfo(resource).getResourceIdentifiers();
+        identifiers.removeIf(p -> p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OMTD));
+        ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
+        resourceIdentifier.setValue(insertionId);
+        resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+        identifiers.add(0,resourceIdentifier);
+
         Resource checkResource;
+
         try {
             //Check existence if resource
             SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, insertionId);
