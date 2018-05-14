@@ -50,7 +50,7 @@ public class ComponentListener {
     @Qualifier("galaxyExecutorInstanceFactory")
     private GalaxyInstance galaxyExecutorInstance;
 
-    @Before("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
+    @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
             "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component))) && args(component)")
     public Component addComponentListener(Component component) {
         // Register it to workflow engine.
