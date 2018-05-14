@@ -1,10 +1,13 @@
 package eu.openminted.registry.service.tool;
 
 
+import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.service.ZenodoService;
 import eu.openminted.store.restclient.StoreRESTClient;
 import net.sf.saxon.s9api.*;
@@ -109,6 +112,8 @@ public class ZenodoServiceImpl implements ZenodoService {
             file.delete();
 
             doi = publish(deposition_id);
+            insertDoiToMetadata(corpusId, doi);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -450,5 +455,20 @@ public class ZenodoServiceImpl implements ZenodoService {
         }
         logger.info(result);
         return new JSONObject(result).toString();
+    }
+
+    private void insertDoiToMetadata(String corpusId, String doi) throws IOException {
+        Corpus corpus = corpusService.get(corpusId);
+        ResourceIdentifier r = new ResourceIdentifier();
+        r.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.DOI);
+        r.setValue(doi);
+        corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(r);
+
+        try {
+            corpusService.update(corpus);
+            logger.info("Updated corpus metadata with DOI");
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
