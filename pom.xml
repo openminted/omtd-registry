@@ -48,6 +48,12 @@
             <groupId>eu.openminted</groupId>
             <artifactId>omtd-corpus-api</artifactId>
             <version>1.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>eu.openminted</groupId>
+                    <artifactId>omtd-store-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JAXB2 -->
         <dependency>
