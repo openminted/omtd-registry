@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
 import org.json.JSONObject;
 import org.postgresql.util.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -59,8 +58,7 @@ public class WebannoServiceImpl implements WebannoService{
         }
     }
 
-    @Override
-    public void deleteProject(String corpusId) {
+    private void deleteProject(String corpusId) {
         MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
         map.add("name", corpusId);
 
@@ -69,6 +67,14 @@ public class WebannoServiceImpl implements WebannoService{
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
         restTemplate.delete(webannoHost+"/projects/"+corpusId,request, String.class);
+
+    }
+
+    @Override
+    public void triggerRetrieval(long projectId) {
+
+
+
 
     }
 
