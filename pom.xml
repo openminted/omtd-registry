@@ -35,6 +35,22 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.hobsoft.spring</groupId>
+			<artifactId>spring-rest-template-logger</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>eu.openminted</groupId>-->
+			<!--<artifactId>omtd-store-api</artifactId>-->
+			<!--<version>0.0.1-SNAPSHOT</version>-->
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.springframework.boot</groupId>-->
+					<!--<artifactId>spring-boot-starter-web</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
+		<!--</dependency>-->
+		<dependency>
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-model</artifactId>
 			<version>${omtd.model.version}</version>
@@ -271,6 +287,12 @@
 			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-corpus-api</artifactId>
 			<version>${corpus.api.version}</version>
+			 <exclusions>
+				 <exclusion>
+					 <groupId>eu.openminted</groupId>
+					 <artifactId>omtd-store-api</artifactId>
+				 </exclusion>
+			 </exclusions>
 		 </dependency>
 		 <dependency>
 			<groupId>eu.openminted</groupId>
