@@ -20,10 +20,19 @@ public class WebannoController {
     WebannoService webannoService;
 
     @RequestMapping(value = "/webanno/done", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity stats() {
+    public ResponseEntity done_GET() {
             logger.info("Hello there!");
             return new ResponseEntity<>("hello",HttpStatus.OK);
 
     }
+
+    @RequestMapping(value = "/webanno/done", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity done_POST (    HttpServletRequest request, 
+	          			 HttpServletResponse response) {
+	   logger.info(request.toString());
+           logger.info("Hello there from POST!");
+           return new ResponseEntity<>("hello",HttpStatus.OK);
+    }
+
 
 }
