@@ -1,6 +1,8 @@
 package eu.openminted.registry.service.tools;
 
 import eu.openminted.registry.service.WebannoService;
+import eu.openminted.registry.service.requests.AnnotationStateChangeMessage;
+import eu.openminted.registry.service.requests.ProjectStateChangeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,9 @@ public class WebannoController {
     @Autowired
     WebannoService webannoService;
 
-    @RequestMapping(value = "/webanno/done", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity done_GET() {
-            logger.info("Hello there!");
-            return new ResponseEntity<>("hello",HttpStatus.OK);
-
-    }
-
     @RequestMapping(value = "/webanno/done", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity done_POST (    HttpServletRequest request,
-	          			 HttpServletResponse response) {
-	   logger.info(request.toString());
-           logger.info("Hello there from POST!");
+    public ResponseEntity done_POST (ProjectStateChangeMessage projectStateChangeMessage) {
+           webannoService.triggerRetrieval(projectStateChangeMessage.getProjectId());
            return new ResponseEntity<>("hello",HttpStatus.OK);
     }
 
