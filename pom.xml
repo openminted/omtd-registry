@@ -80,6 +80,12 @@
             <groupId>eu.openminted</groupId>
             <artifactId>omtd-corpus-api</artifactId>
             <version>${corpus.api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>eu.openminted</groupId>
+                    <artifactId>omtd-store-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
