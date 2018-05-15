@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class WebannoController {
 
@@ -27,7 +30,7 @@ public class WebannoController {
     }
 
     @RequestMapping(value = "/webanno/done", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity done_POST (    HttpServletRequest request, 
+    public ResponseEntity done_POST (    HttpServletRequest request,
 	          			 HttpServletResponse response) {
 	   logger.info(request.toString());
            logger.info("Hello there from POST!");
