@@ -2,7 +2,6 @@ package eu.openminted.registry.service.tool;
 
 
 import eu.openminted.registry.service.WebannoService;
-import eu.openminted.registry.templates.AuthorizedRestTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
@@ -36,12 +35,6 @@ public class WebannoServiceImpl implements WebannoService{
 
     @Value("${webanno.password}")
     private String webannoPassword;
-
-    @Autowired
-    AuthorizedRestTemplate authorizedRestTemplate;
-
-//    @Autowired
-//    eu.openminted.store.core.StoreService storeService;
 
     @Override
     public boolean createProject(String corpusId) {
