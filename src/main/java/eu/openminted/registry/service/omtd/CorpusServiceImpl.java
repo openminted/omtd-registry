@@ -1,5 +1,7 @@
 package eu.openminted.registry.service.omtd;
 
+import eu.openminted.registry.core.exception.ResourceNotFoundException;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.DistributionMediumEnum;
 import eu.openminted.registry.domain.ResourceIdentifier;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Primary
 public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements CorpusService {
 
-    @Value("${registry.host}/request/corpus/download?archiveId=")
+    @Value("${registry.host}/request/corpus/download/")
     private String hostUrl;
 
     private Logger logger = LogManager.getLogger(CorpusServiceImpl.class);
@@ -34,14 +36,23 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
 
     @Override
     public Corpus uploadZip(Corpus corpus, String archiveId) {
-        String distributionLocation = hostUrl + archiveId;
+        //Set the distributionLocation to the base path in order to pass the validation
+        String distributionLocation = hostUrl;
         corpus.getCorpusInfo().getDatasetDistributionInfo().setDistributionLocation(distributionLocation);
         corpus.getCorpusInfo().getDatasetDistributionInfo().setDistributionMedium(DistributionMediumEnum.DOWNLOADABLE);
         ResourceIdentifier identifier = new ResourceIdentifier();
         identifier.setValue(archiveId);
-        identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+        identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
+        identifier.setSchemeURI("archiveID");
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
         super.add(corpus);
+        corpus.getCorpusInfo().getDatasetDistributionInfo().
+                setDistributionLocation(hostUrl + corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+        try {
+            corpus = super.update(corpus);
+        } catch (ResourceNotFoundException e) {
+            throw new ServiceException(e);
+        }
         return corpus;
     }
 }

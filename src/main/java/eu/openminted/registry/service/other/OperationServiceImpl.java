@@ -16,6 +16,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.service.OperationService;
+import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.workflow.api.ExecutionStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -228,35 +229,6 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         return output;
     }
 
-    private String resolveApplicationWorkflow(String applicationId) {
-        Component application = applicationResolver.get(applicationId);
-        if (application == null) {
-            logger.error("Application with id " + applicationId + " not found");
-            throw new ServiceException("Application with id " + applicationId + " not found");
-        }
-        List<ResourceIdentifier> applicationIdentifiers = application.getComponentInfo().getIdentificationInfo().getResourceIdentifiers();
-        String workflowId = applicationIdentifiers.get(0).getValue();
-        logger.debug(workflowId);
-        return workflowId;
-    }
-
-    private String resolveCorpusArchive(String corpusId) {
-        final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
-        Corpus corpus = corpusResolver.get(corpusId);
-        if (corpus == null) {
-            logger.error("Corpus with id " + corpusId + " not found");
-            throw new ServiceException("Corpus with id " + corpusId + " not found");
-        }
-        String distributionLocation = corpus.getCorpusInfo().getDatasetDistributionInfo().getDistributionLocation();
-        Matcher archiveMatcher = pattern.matcher(distributionLocation);
-        if (!archiveMatcher.find()) {
-            throw new ServiceException("No archive Id was present");
-        }
-        String archiveId = archiveMatcher.group("archive");
-        logger.debug(archiveId);
-        return archiveId;
-    }
-
     private Operation createOperation(String corpusId, String applicationId, String workflowId) {
         Operation ret = new Operation();
         ret.setId(workflowId);
@@ -282,8 +254,8 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     @Override
     public String executeJob(String corpusId, String applicationId) {
 
-        String workflowName = resolveApplicationWorkflow(applicationId);
-        String archiveId = resolveCorpusArchive(corpusId);
+        String workflowName = OMTDUtils.resolveApplicationWorkflow(applicationResolver.get(applicationId));
+        String archiveId = OMTDUtils.resolveCorpusArchive(corpusResolver.get(corpusId));
         URL url;
         try {
             URIBuilder uriBuilder = new URIBuilder(workflowConfig.getWorkflowServiceHost());

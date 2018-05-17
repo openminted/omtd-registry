@@ -8,6 +8,7 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.CorpusContent;
 import eu.openminted.registry.domain.PublicationInfo;
 import eu.openminted.registry.service.CorpusContentService;
+import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
@@ -65,7 +66,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
     @Override
     public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
-        String archiveId = resolveCorpusArchive(corpusId);
+        String archiveId = OMTDUtils.resolveCorpusArchive(corpusService.get(corpusId));
 
         CorpusContent content = null;
         content = getContent(corpusId);
@@ -120,31 +121,6 @@ public class CorpusContentServiceImpl implements CorpusContentService {
             return null;
         }
     }
-
-
-    /**
-     * Resolves archiveId from corpusId.
-     *
-     * @param corpusId
-     * @return archiveId
-     */
-    private String resolveCorpusArchive(String corpusId) {
-        final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
-        Corpus corpus = corpusService.get(corpusId);
-        if (corpus == null) {
-            logger.error("Corpus with id " + corpusId + " not found");
-            throw new ServiceException("Corpus with id " + corpusId + " not found");
-        }
-        String distributionLocation = corpus.getCorpusInfo().getDatasetDistributionInfo().getDistributionLocation();
-        Matcher archiveMatcher = pattern.matcher(distributionLocation);
-        if (!archiveMatcher.find()) {
-            throw new ServiceException("No archive Id was present");
-        }
-        String archiveId = archiveMatcher.group("archive");
-        logger.debug(archiveId);
-        return archiveId;
-    }
-
 
     /**
      * Downloads metadata files to extract publication titles.

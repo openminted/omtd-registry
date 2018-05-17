@@ -2,6 +2,7 @@ package eu.openminted.registry.service.aai;
 
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.policy.PolicyInterface;
+import eu.openminted.registry.utils.OMTDUtils;
 import org.springframework.stereotype.Service;
 
 @Service("omtdPolicyService")
@@ -15,7 +16,7 @@ public class OmtdPolicyService<T extends BaseMetadataRecord> implements PolicyIn
 
     @Override
     public boolean isPublic(T resource) {
-        IdentificationInfo identificationInfo = OMTDResolver.resolveIdentificationInfo(resource);
+        IdentificationInfo identificationInfo = OMTDUtils.resolveIdentificationInfo(resource);
         return (identificationInfo != null) && identificationInfo.isPublic();
     }
 }

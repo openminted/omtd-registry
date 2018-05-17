@@ -9,6 +9,7 @@ import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.ResourceIdentifier;
 import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.service.ZenodoService;
+import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.restclient.StoreRESTClient;
 import net.sf.saxon.s9api.*;
 import org.apache.commons.io.IOUtils;
@@ -107,7 +108,7 @@ public class ZenodoServiceImpl implements ZenodoService {
             logger.info(zenodo_metadata);
             deposition_id = createDeposition(zenodo_metadata);
             file = File.createTempFile("corpus", ".zip");
-            storeClient.downloadArchive(resolveCorpusArchive(corpusId), file.getAbsolutePath());
+            storeClient.downloadArchive(OMTDUtils.resolveCorpusArchive(corpusService.get(corpusId)), file.getAbsolutePath());
             uploadFile(deposition_id, file);
             file.delete();
 
@@ -376,30 +377,6 @@ public class ZenodoServiceImpl implements ZenodoService {
 //        logger.info(response.toString());
         return res.get("id").toString();
     }
-
-    /**
-     * Resolves archiveId from corpusId.
-     *
-     * @param corpusId
-     * @return archiveId
-     */
-    private String resolveCorpusArchive(String corpusId) {
-        final Pattern pattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
-        Corpus corpus = corpusService.get(corpusId);
-        if (corpus == null) {
-            logger.error("Corpus with id " + corpusId + " not found");
-            throw new ServiceException("Corpus with id " + corpusId + " not found");
-        }
-        String distributionLocation = corpus.getCorpusInfo().getDatasetDistributionInfo().getDistributionLocation();
-        Matcher archiveMatcher = pattern.matcher(distributionLocation);
-        if (!archiveMatcher.find()) {
-            throw new ServiceException("No archive Id was present");
-        }
-        String archiveId = archiveMatcher.group("archive");
-        logger.debug(archiveId);
-        return archiveId;
-    }
-
 
     /**
      * Downloads the metadata of a corpus with id = {@param corpusId}.
