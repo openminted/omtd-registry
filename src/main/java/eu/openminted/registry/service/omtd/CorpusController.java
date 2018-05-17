@@ -3,6 +3,8 @@ package eu.openminted.registry.service.omtd;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.PublicationInfo;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.service.CorpusContentService;
 import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.StoreService;
@@ -27,8 +29,10 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/request/corpus")
@@ -90,6 +94,24 @@ public class CorpusController extends OmtdRestController<Corpus> {
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
         response.setContentType(mimeType);
         IOUtils.copyLarge(storeService.downloadCorpus(request.getParameter("archiveId")), response.getOutputStream());
+    }
+
+    @RequestMapping(value = "download/{corpusID}", method = RequestMethod.GET)
+    @ResponseBody
+    public void download(@PathVariable("corpusID") String corpusId , HttpServletResponse response) throws IOException {
+        Corpus corpus = service.get(corpusId);
+        String mimeType = "application/zip";
+        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers()
+                .stream()
+                .filter(p->p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) && "archiveID".equals(p.getSchemeURI()))
+                .findFirst();
+        if(!identifier.isPresent()) {
+            throw new ServiceException("ArchiveID not found");
+        }
+        String filename = identifier.get().getValue() + ".zip";
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+        response.setContentType(mimeType);
+        IOUtils.copyLarge(storeService.downloadCorpus(identifier.get().getValue()), response.getOutputStream());
     }
 
     @RequestMapping(value = "downloadFile", method = RequestMethod.GET)
