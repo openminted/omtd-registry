@@ -2,10 +2,14 @@ package eu.openminted.registry.service.listener;
 
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import eu.openminted.registry.core.service.ParserService;
+import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
+import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import eu.openminted.registry.generate.WorkflowGenerate;
 import eu.openminted.registry.service.WorkflowEngineComponent;
 import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
+import eu.openminted.registry.service.WorkflowService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,6 +24,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,18 +49,18 @@ public class ComponentListener {
     @Autowired
     private WorkflowEngineComponentRegistry workflowEngineComponentReg;
 
-    @Autowired
-    private WorkflowGenerate workflowGenerate;
 
-    @Autowired(required = false)
-    @Qualifier("galaxyExecutorInstanceFactory")
-    private GalaxyInstance galaxyExecutorInstance;
+
+    @Autowired
+    @Qualifier("applicationService")
+    private ResourceCRUDService<Component> applicationService;
 
     @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
             "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component))) && args(component)")
-    public Component addComponentListener(Component component) {
+    public Component addComponentListener(Component component) throws ExecutionException, InterruptedException {
         // Register it to workflow engine.
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
+        exportDirectory(component);
         return component;
     }
 
@@ -65,39 +71,6 @@ public class ComponentListener {
         workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(component);
         return component;
     }
-
-    @Around("(execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
-            "execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.update(eu.openminted.registry.domain.Component))) && args(application)")
-    public Object addApplicationListener(ProceedingJoinPoint pjp, Component application) throws Throwable {
-        if(application.getComponentInfo().getDistributionInfos().stream().anyMatch(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW)) {
-            logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
-            pjp.proceed();
-            return application;
-        }
-        // Register it to workflow engine.
-        WorkflowEngineComponent wec = workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(application);
-        String workflowDefinition = workflowGenerate.generateResource(wec);
-        galaxyExecutorInstance.getWorkflowsClient().importWorkflow(workflowDefinition);
-        //ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
-        //resourceIdentifier.setValue(wec.getComponentID());
-        //resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-        //application.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
-        return pjp.proceed(new Object[] {application});
-    }
-
-    @After("execution (* eu.openminted.registry.service.omtd.ApplicationServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(application)")
-    public Component deleteApplicationListener(Component application) {
-        logger.info("Deleting application");
-        workflowEngineComponentReg.deleteTDMComponentFromWorkflowEngine(application);
-        return application;
-    }
-
-    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component)) && args(component)")
-    public void receiveStateTopicUpdated(Component component) throws ExecutionException, InterruptedException {
-        exportDirectory(component);
-    }
-
-
 
     private void exportDirectory(Component component) throws ExecutionException, InterruptedException {
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);
@@ -150,4 +123,6 @@ public class ComponentListener {
             logger.error("Error writting in maven component's directory", e);
         }
     }
+
+
 }
