@@ -25,6 +25,9 @@ import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -254,14 +257,14 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
     @Override
     public String executeJob(String corpusId, String applicationId) {
 
-        String workflowName = OMTDUtils.resolveApplicationWorkflow(applicationResolver.get(applicationId));
+        Component application = applicationResolver.get(applicationId);
+        String workflowName = OMTDUtils.resolveApplicationWorkflow(application);
         String archiveId = OMTDUtils.resolveCorpusArchive(corpusResolver.get(corpusId));
         URL url;
         try {
             URIBuilder uriBuilder = new URIBuilder(workflowConfig.getWorkflowServiceHost());
             uriBuilder.setPath("/executeJob");
             uriBuilder.addParameter("corpusId",archiveId);
-            uriBuilder.addParameter("workflowId",workflowName);
             url = uriBuilder.build().toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
@@ -272,7 +275,10 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         Operation operation;
         synchronized (OperationServiceImpl.class) {
         	logger.info(String.format("Starting workflow job archiveId [%s] workflowName [%s]",archiveId,workflowName));
-            executionId = workflowRestTemplate.postForEntity(url.toString(), null, String.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+        	HttpEntity<Component> entity = new HttpEntity<>(application,headers);
+            executionId = workflowRestTemplate.postForEntity(url.toString(), entity, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
             add(operation);
             logger.info("Added operation with execution id " + executionId.getBody());

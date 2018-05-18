@@ -84,6 +84,9 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component>{
             String urlLocation = distLocation.get().getDistributionLocation();
             String workflowDefinition = urlLocation.substring(urlLocation.lastIndexOf("/") + 1);
             WorkflowDefinition definition = workflowService.get(workflowDefinition);
+            if(definition == null) {
+                throw new ServiceException("Workflow definition does not exist");
+            }
             insertApplicationWorkflowName(application,definition.getWorkflowName());
         } else {
             WorkflowEngineComponent wec = workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(application);
