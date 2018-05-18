@@ -86,7 +86,10 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         Browsing ret;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof OIDCAuthenticationToken) {
-            ret = getResponseByFiltersAndUserElastic(filter,((OIDCAuthenticationToken) authentication).getSub());
+            boolean hasAdminRole = authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+            String user = hasAdminRole ? "ROLE_ADMIN" : ((OIDCAuthenticationToken) authentication).getSub();
+            ret = getResponseByFiltersAndUserElastic(filter,user);
         } else {
             filter.setBrowseBy(getBrowseBy());
             filter.addFilter("public",true);

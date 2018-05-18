@@ -47,10 +47,12 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         } else {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
-        BoolQueryBuilder userQueryBuilder = new BoolQueryBuilder();
-        userQueryBuilder.should(QueryBuilders.termQuery("public", true));
-        userQueryBuilder.should(QueryBuilders.termQuery("personIdentifier", user));
-        qBuilder.must(userQueryBuilder);
+        if(!user.equals("ROLE_ADMIN")) {
+            BoolQueryBuilder userQueryBuilder = new BoolQueryBuilder();
+            userQueryBuilder.should(QueryBuilders.termQuery("public", true));
+            userQueryBuilder.should(QueryBuilders.termQuery("personIdentifier", user));
+            qBuilder.must(userQueryBuilder);
+        }
         for (Map.Entry<String, Object> filterSet : filter.getFilter().entrySet()) {
             qBuilder.must(QueryBuilders.termQuery(filterSet.getKey(), filterSet.getValue()));
         }
@@ -62,7 +64,7 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         Client client = elastic.client();
         filter.setResourceType(getResourceType());
         filter.setBrowseBy(getBrowseBy());
-        logger.trace("Personalized logger for " + user);
+        logger.info("Personalized logger for " + user);
         Paging paging;
         int quantity = filter.getQuantity();
         BoolQueryBuilder qBuilder = createQueryBuilder(filter,user);
