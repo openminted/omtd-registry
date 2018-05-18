@@ -256,7 +256,7 @@ public class OperationHandler {
     	    outputOmtdId = outputCorpusMeta.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue();
 		}
 			
-        	
+
 		logger.debug("Output resource id :: " + outputOmtdId);
         operationCorpus.setOutput(outputOmtdId);
         operation.setCorpus(operationCorpus);      
@@ -275,9 +275,10 @@ public class OperationHandler {
             javaMailer.sendEmail(
                     email,
                     "[OpenMinTeD] the application execution has finished",
-                    "Dear "+ surname+",\n" +
+                    "Dear "+ givenName+ " "+surname+",\n" +
                             "\n" +
-                            "  an application you executed in OpenMinTeD has been successfully completed. For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
+                            "  The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)+" you executed in OpenMinTeD has been successfully completed with output\" "+outputOmtdId+" \".\n" +
+                            " For more details, visit the <a href=\""+registryHost+"\">OpenMinTeD</a> site.\n" +
                             "\n" +
                             "Best regards,\n" +
                             "The OpenMinTeD team");
@@ -291,8 +292,16 @@ public class OperationHandler {
         if (workflowExeMsg.getWorkflowExecutionID() == null || workflowExeMsg.getError() == null) {
             throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + ExecutionStatus.Status.FAILED.toString());
         }
+
+
         // Get operation object from registry
         Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
+
+        eu.openminted.registry.domain.Component workflowMeta =  (eu.openminted.registry.domain.Component) applicationService.get(operation.getComponent());
+        if (workflowMeta == null) {
+            logger.debug("Invalid workflow in operation, throw exception <" + operation.getComponent() + ">");
+            throw new NullPointerException("Invalid workflow in operation <" + operation.getComponent() + ">");
+        }
 
         // Update status
         operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
@@ -328,7 +337,8 @@ public class OperationHandler {
                     "[OpenMinTeD] the application execution has failed",
                     "Dear "+ surname+",\n" +
                             "\n" +
-                            "  an application you executed in OpenMinTeD has failed. For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
+                            " The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)+" you executed in OpenMinTeD has failed." +
+                            "\n For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
                             "\n" +
                             "Best regards,\n" +
                             "The OpenMinTeD team");
