@@ -12,5 +12,5 @@ public interface WebannoService {
      */
     boolean createProject(String corpusId);
 
-    void triggerRetrieval(long projectId);
+    void triggerRetrieval(long projectId, String projectName);
 }
