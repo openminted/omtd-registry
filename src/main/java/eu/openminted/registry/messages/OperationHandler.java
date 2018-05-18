@@ -335,7 +335,7 @@ public class OperationHandler {
             javaMailer.sendEmail(
                     email,
                     "[OpenMinTeD] the application execution has failed",
-                    "Dear "+ surname+",\n" +
+                    "Dear "+ givenName + " " + surname+",\n" +
                             "\n" +
                             " The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)+" you executed in OpenMinTeD has failed." +
                             "\n For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
