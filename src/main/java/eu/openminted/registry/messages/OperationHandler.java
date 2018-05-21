@@ -277,7 +277,7 @@ public class OperationHandler {
                     "[OpenMinTeD] the application execution has finished",
                     "Dear "+ givenName+ " "+surname+",\n" +
                             "\n" +
-                            "  The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)+" you executed in OpenMinTeD has been successfully completed with output\" "+outputOmtdId+" \".\n" +
+                            "  The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue()+" you executed in OpenMinTeD has been successfully completed with output\" "+outputOmtdId+" \".\n" +
                             " For more details, visit the <a href=\""+registryHost+"\">OpenMinTeD</a> site.\n" +
                             "\n" +
                             "Best regards,\n" +
@@ -337,8 +337,8 @@ public class OperationHandler {
                     "[OpenMinTeD] the application execution has failed",
                     "Dear "+ givenName + " " + surname+",\n" +
                             "\n" +
-                            " The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)+" you executed in OpenMinTeD has failed." +
-                            "\n For more details, visit the <a href=\"...\">OpenMinTeD</a> site.\n" +
+                            " The application "+workflowMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue()+" you executed in OpenMinTeD has failed." +
+                            "\n For more details, visit the <a href=\""+registryHost+"\">OpenMinTeD</a> site.\n" +
                             "\n" +
                             "Best regards,\n" +
                             "The OpenMinTeD team");
