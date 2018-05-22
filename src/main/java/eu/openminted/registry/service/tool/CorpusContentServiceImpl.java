@@ -224,12 +224,11 @@ public class CorpusContentServiceImpl implements CorpusContentService {
                     false, true, true);
 
             // filter out files not inside the following folders: abstract, fulltext, metadata, annotations
-            for (String file : filepaths) {
-                if (!file.contains("/abstract/") && !file.contains("/fulltext/") &&
-                        !file.contains("/metadata/") && !file.contains("/annotations/")) {
-                    filepaths.remove(file);
-                }
+            if(filepaths == null) {
+                throw new ServiceException("Store did not return anything");
             }
+            filepaths.removeIf(file -> !file.contains("/abstract/") && !file.contains("/fulltext/") &&
+                    !file.contains("/metadata/") && !file.contains("/annotations/"));
             content.setFilepaths(filepaths);
         } catch (Exception e) {
             logger.error("Could not retrieve file names from endpoint: " + storeClient.getEndpoint());
