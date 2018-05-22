@@ -4,6 +4,7 @@ import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ParserService.ParserServiceTypes;
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.LanguageDescription;
 import eu.openminted.registry.domain.Lexical;
 import eu.openminted.registry.domain.ProcessingResourceTypeEnum;
@@ -82,47 +83,51 @@ public class OperationHandler {
     private JavaMailer javaMailer;
 
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.workflows.execution:workflows.execution}")
-    public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) throws Exception {
+    public void handleOperation(WorkflowExecutionStatusMessage workflowExeMsg) {
         synchronized (OperationServiceImpl.class) {
-            logger.info("Operation Handler with " + operationService);
-            String workflowMsg = parserPool.serialize(workflowExeMsg,ParserServiceTypes.JSON).get();
-            logger.info("Received the message " + workflowMsg);
-            if (workflowExeMsg.getWorkflowStatus() == null) {
-                throw new NullPointerException("No status is set to WorkflowExecutionStatusMessage");
-            }
-
-            // Set a workflow experiment for execution, ie create a new operation document
-            if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
-                logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
-                //casePending(workflowExeMsg); 
-            }
-            // Set a workflow experiment to started, ie update an operation document
-            else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {
-                caseRunning(workflowExeMsg);
-            }
-            // Set a workflow experiment to finished, ie update an operation document, create output metadata
-            else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {
-                caseFinished(workflowExeMsg);               
-            }
-            // Set a workflow experiment to failed, ie update an operation document
-            else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {
-                caseFailed(workflowExeMsg);
-            }
-            // Set a workflow experiment to resumed, failed, paused, ie update an operation document
-            else {
-                if (workflowExeMsg.getWorkflowExecutionID() == null) {
-                    throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+            try {
+                logger.info("Operation Handler with " + operationService);
+                String workflowMsg = parserPool.serialize(workflowExeMsg,ParserServiceTypes.JSON).get();
+                logger.info("Received the message " + workflowMsg);
+                if (workflowExeMsg.getWorkflowStatus() == null) {
+                    throw new NullPointerException("No status is set to WorkflowExecutionStatusMessage");
                 }
-                // Get operation object from registry
-                Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
+                // Set a workflow experiment for execution, ie create a new operation document
+                if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.PENDING.toString())) {
+                    logger.info("Ignoring and waiting PENDING for operation with id " + workflowExeMsg.getWorkflowExecutionID());
+                    //casePending(workflowExeMsg);
+                }
+                // Set a workflow experiment to started, ie update an operation document
+                else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.RUNNING.toString())) {
+                    caseRunning(workflowExeMsg);
+                }
+                // Set a workflow experiment to finished, ie update an operation document, create output metadata
+                else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FINISHED.toString())) {
+                    caseFinished(workflowExeMsg);
+                }
+                // Set a workflow experiment to failed, ie update an operation document
+                else if (workflowExeMsg.getWorkflowStatus().equalsIgnoreCase(ExecutionStatus.Status.FAILED.toString())) {
+                    caseFailed(workflowExeMsg);
+                }
+                // Set a workflow experiment to resumed, failed, paused, ie update an operation document
+                else {
+                    if (workflowExeMsg.getWorkflowExecutionID() == null) {
+                        throw new NullPointerException("Missing elements in WorkflowExecutionStatusMessage for status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+                    }
+                    // Get operation object from registry
+                    Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
 
-                // Update status
-                operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
+                    // Update status
+                    operation.setStatus(workflowExeMsg.getWorkflowStatus().toUpperCase());
 
-                // Update operation to registry
-                Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-                logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
-                operationService.update(operation);
+                    // Update operation to registry
+                    Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
+                    logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus().toUpperCase());
+                    operationService.update(operation);
+                }
+            } catch(Exception e) {
+                logger.error("operationHandler error",e);
+                throw new ServiceException(e);
             }
         }
     }
