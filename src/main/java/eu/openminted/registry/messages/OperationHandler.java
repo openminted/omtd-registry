@@ -217,6 +217,7 @@ public class OperationHandler {
         				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
         		// Add output ld metadata to registry
         	    logger.info("Adding output language description to registry");
+                outputLanguageMeta.getMetadataHeaderInfo().setRevision("output");
         	    languageDescriptionService.add(outputLanguageMeta);
         	    
         	    // Get output omtd id
@@ -229,6 +230,7 @@ public class OperationHandler {
         				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
         	    // Add output lrc metadata to registry
         	    logger.info("Adding output lexical/conceptual resource to registry");
+                outputLexicalMeta.getMetadataHeaderInfo().setRevision("output");
         	    lexicalService.add(outputLexicalMeta);
         	    
         	    // Get output omtd id
@@ -240,6 +242,7 @@ public class OperationHandler {
         		eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator.generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
         				operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
         	    // Add output corpus metadata to registry
+                outputCorpusMeta.getMetadataHeaderInfo().setRevision("output");
         	    logger.info("Adding output corpus to registry");
         	    corpusService.add(outputCorpusMeta);
         	    

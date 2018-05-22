@@ -26,8 +26,9 @@ public class MetadataHeaderInfoGenerate {
     static public MetadataHeaderInfo generate(MetadataHeaderInfo info) {
         if (info == null) {
             info = new MetadataHeaderInfo();
+        } else if (info.getRevision().equals("output")){
+            return info;
         }
-
         //
         // Set creation date and last date updated
         //
