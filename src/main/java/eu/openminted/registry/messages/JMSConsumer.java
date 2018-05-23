@@ -4,6 +4,7 @@ import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.other.CorpusBuildingStateServiceImpl;
 import eu.openminted.registry.service.omtd.IncompleteCorpusServiceImpl;
@@ -30,20 +31,25 @@ public class JMSConsumer {
 
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws UnknownHostException {
-        logger.info("State of corpus building: " + corpusBuildingState);
-        SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getId());
-        Resource resource = searchService.searchId("corpusbuildingstate", kv);
-        if (resource == null) {
-            corpusBuildingStateService.add(corpusBuildingState);
-        } else {
-            corpusBuildingStateService.update(corpusBuildingState);
-        }
-        if (corpusBuildingState.getCurrentStatus().equalsIgnoreCase(CorpusStatus.CREATED.toString())) {
-            String corpusId = corpusBuildingState.getId().split("@")[0];
-            Corpus incompleteCorpus = incompleteCorpusService.get(corpusId);
-            if (incompleteCorpus != null) {
-                incompleteCorpusService.move(corpusId);
+        try {
+            logger.info("State of corpus building: " + corpusBuildingState);
+            SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getId());
+            Resource resource = searchService.searchId("corpusbuildingstate", kv);
+            if (resource == null) {
+                corpusBuildingStateService.add(corpusBuildingState);
+            } else {
+                corpusBuildingStateService.update(corpusBuildingState);
             }
+            if (corpusBuildingState.getCurrentStatus().equalsIgnoreCase(CorpusStatus.CREATED.toString())) {
+                String corpusId = corpusBuildingState.getId().split("@")[0];
+                Corpus incompleteCorpus = incompleteCorpusService.get(corpusId);
+                if (incompleteCorpus != null) {
+                    incompleteCorpusService.move(corpusId);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error in moving corpus",e);
+            throw new ServiceException(e);
         }
     }
 }
