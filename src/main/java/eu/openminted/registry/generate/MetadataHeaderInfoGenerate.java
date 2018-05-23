@@ -48,11 +48,12 @@ public class MetadataHeaderInfoGenerate {
         //
         // Overwrite metadata record identifier
         //
-
-        MetadataIdentifier identifier = new MetadataIdentifier();
-        identifier.setValue(UUID.randomUUID().toString());
-        identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
-        info.setMetadataRecordIdentifier(identifier);
+        if(info.getRevision() == null || !info.getRevision().equals("incomplete")) {
+            MetadataIdentifier identifier = new MetadataIdentifier();
+            identifier.setValue(UUID.randomUUID().toString());
+            identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
+            info.setMetadataRecordIdentifier(identifier);
+        }
 
 
         //
