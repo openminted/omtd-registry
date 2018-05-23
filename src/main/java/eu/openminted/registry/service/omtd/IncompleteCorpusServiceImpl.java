@@ -29,6 +29,7 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
         logger.info("moving corpus with id " + corpusId);
         Corpus resource = this.get(corpusId);
         if (resource != null) {
+            resource.getMetadataHeaderInfo().setRevision("output");
             corpusService.add(resource);
         }
         this.delete(resource);
