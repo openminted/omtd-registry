@@ -36,6 +36,12 @@ public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> impl
     }
 
     @Override
+    public Corpus add(Corpus resource) {
+        resource.getMetadataHeaderInfo().setRevision("incomplete");
+        return super.add(resource);
+    }
+
+    @Override
     public String getResourceType() {
         return "incompletecorpus";
     }
