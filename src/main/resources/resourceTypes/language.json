@@ -21,7 +21,14 @@
       "multivalued": true,
       "name": "language",
       "label": "Language",
-      "path": "//*[local-name()='language']/text()",
+      "path": "//*[local-name()='languageTag']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "mediaType",
+      "label": "Media Type",
+      "path": "//*[local-name()='mediaType']/text()",
       "type": "java.lang.String"
     },
     {
@@ -33,43 +40,23 @@
     },
     {
       "multivalued": true,
-      "name": "lingualityType",
-      "label": "Linguality Type",
-      "path": "//*[local-name()='lingualityType']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "multilingualityType",
-      "label": "Multilinguality Type",
-      "path": "//*[local-name()='multilingualityType']/text()",
-      "type": "java.lang.String"
-    },
-    {
-      "multivalued": true,
-      "name": "domain",
-      "label": "Domain",
-      "path": "//*[local-name()='domain']/text()",
-      "type": "java.lang.String"
-    },
-    {
       "name": "rights",
-      "label": "Rights Statement",
-      "path": "//*[local-name()='rightsStatement']/text()",
+      "label": "Rights",
+      "path": "//*[local-name()='rightsStmtName']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "keyword",
-      "label": "Keyword",
-      "path": "//*[local-name()='keyword']/text()",
+      "name": "mimeType",
+      "label": "Mime Type",
+      "path": "//*[local-name()='mimeType']/text()",
       "type": "java.lang.String"
     },
     {
       "multivalued": true,
-      "name": "languageDescriptionType",
-      "label": "Language Description Resource Type",
-      "path": "//*[local-name()='languageDescriptionType']/text()",
+      "name": "dataFormatSpecific",
+      "label": "Data Format Specific",
+      "path": "//*[local-name()='dataFormatSpecific']/text()",
       "type": "java.lang.String"
     }
   ],

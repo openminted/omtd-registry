@@ -1,13 +1,14 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.MavenComponent;
 import eu.openminted.registry.domain.ObjectFactory;
+import eu.openminted.registry.service.MavenResolverService;
 import eu.openminted.share.annotations.util.DescriptorResolver;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Service;

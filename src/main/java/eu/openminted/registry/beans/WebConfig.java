@@ -3,7 +3,6 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +12,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -25,15 +23,8 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-//@ComponentScan({"eu.openminted.registry.beans", "eu.openminted.registry.core.controllers","eu.openminted.registry.service"})
-@ComponentScan({"eu.openminted.registry.core.controllers" ,"eu.openminted.registry.controllers"})
+@ComponentScan("eu.openminted.registry.controllers")
 public class WebConfig extends WebMvcConfigurerAdapter {
-
-    private static Logger logger = Logger.getLogger(WebConfig.class);
-
-    public WebConfig() {
-        super();
-    }
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -62,12 +53,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
 
+    @Bean
+    public Jaxb2RootElementHttpMessageConverter jaxbConverter() {
+        return new Jaxb2RootElementHttpMessageConverter();
+    }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        logger.error("Adding message converters");
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper()));
-        converters.add(new Jaxb2RootElementHttpMessageConverter());
+        converters.add(jaxbConverter());
         converters.add(stringHttpMessageConverter());
         super.configureMessageConverters(converters);
     }
@@ -79,11 +73,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        System.out.println("Add cors mapping");
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(false)
-                .allowedHeaders("*")
-                .allowedMethods("*");
+        registry.addMapping("/**");
     }
 }

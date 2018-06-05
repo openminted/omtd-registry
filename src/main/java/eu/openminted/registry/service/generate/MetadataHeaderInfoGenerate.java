@@ -3,8 +3,8 @@ package eu.openminted.registry.service.generate;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -21,13 +21,14 @@ public class MetadataHeaderInfoGenerate {
 
     private static final String SCOPE_AFFILIATION = "edu_person_scoped_affiliations";
 
-    private static Logger logger = LogManager.getLogger(MetadataHeaderInfoGenerate.class);
+    private static Logger logger = LoggerFactory.getLogger(MetadataHeaderInfoGenerate.class);
 
-    static public MetadataHeaderInfo generate(MetadataHeaderInfo info){
-        if(info == null) {
+    static public MetadataHeaderInfo generate(MetadataHeaderInfo info) {
+        if (info == null) {
             info = new MetadataHeaderInfo();
+        } else if (info.getRevision() != null && info.getRevision().equals("output")){
+            return info;
         }
-
         //
         // Set creation date and last date updated
         //
@@ -39,42 +40,50 @@ public class MetadataHeaderInfoGenerate {
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
-        info.setMetadataCreationDate(calendar);
+        if(info.getMetadataCreationDate() == null){
+            info.setMetadataCreationDate(calendar);
+        }
         info.setMetadataLastDateUpdated(calendar);
 
         //
-        // Set metadata record identifier
+        // Overwrite metadata record identifier
         //
-        if(info.getMetadataRecordIdentifier() == null) {
+        if(info.getRevision() == null || !info.getRevision().equals("incomplete")) {
             MetadataIdentifier identifier = new MetadataIdentifier();
             identifier.setValue(UUID.randomUUID().toString());
             identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
             info.setMetadataRecordIdentifier(identifier);
         }
 
+
         //
         // Set metadata creator
         //
-        if(info.getMetadataCreators().size() == 0) {
-            OIDCAuthenticationToken authentication;
-            try {
-                authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-            } catch (ClassCastException e) {
-                throw new ServiceException("User is not authenticated in order to generate metadata");
-            }
 
-            PersonInfo personInfo = new PersonInfo();
-            personInfo.setGivenName(authentication.getUserInfo().getGivenName());
-            personInfo.setSurname(authentication.getUserInfo().getFamilyName());
+        OIDCAuthenticationToken authentication;
+        try {
+            authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        } catch (ClassCastException e) {
+            throw new ServiceException("User is not authenticated in order to generate metadata");
+        }
 
-            PersonIdentifier personIdentifier = new PersonIdentifier();
-            personIdentifier.setValue(authentication.getSub());
-            personIdentifier.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
-            personInfo.getPersonIdentifiers().add(personIdentifier);
+        info.getMetadataCreators()
+                .removeIf(person -> person.getPersonIdentifiers().get(0).getValue().equals(authentication.getSub()));
 
-            //
-            // Set affiliations
-            //
+
+        PersonInfo personInfo = new PersonInfo();
+        personInfo.setGivenName(authentication.getUserInfo().getGivenName());
+        personInfo.setSurname(authentication.getUserInfo().getFamilyName());
+
+        PersonIdentifier personIdentifier = new PersonIdentifier();
+        personIdentifier.setValue(authentication.getSub());
+        personIdentifier.setPersonIdentifierSchemeName(PersonIdentifierSchemeNameEnum.OTHER);
+        personInfo.getPersonIdentifiers().add(personIdentifier);
+
+        //
+        // Set affiliations
+        //
+        if(authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION) != null) {
             authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
                 String[] organizationPosition = af.getAsString().split("@");
                 if (organizationPosition.length == 2) {
@@ -90,16 +99,20 @@ public class MetadataHeaderInfoGenerate {
                     logger.warn("The provided affiliation was not in position@organization format");
                 }
             });
+        }
 
-            //
-            // Set communication info
-            //
-            CommunicationInfo communicationInfo = new CommunicationInfo();
-            communicationInfo.getEmails().add(authentication.getUserInfo().getEmail());
-            personInfo.setCommunicationInfo(communicationInfo);
+        //
+        // Set communication info
+        //
+        CommunicationInfo communicationInfo = new CommunicationInfo();
+        communicationInfo.getEmails().add(authentication.getUserInfo().getEmail());
+        personInfo.setCommunicationInfo(communicationInfo);
 
+
+        {
             info.getMetadataCreators().add(personInfo);
         }
+
         return info;
     }
 }

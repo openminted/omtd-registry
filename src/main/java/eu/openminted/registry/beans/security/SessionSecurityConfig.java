@@ -1,6 +1,8 @@
 package eu.openminted.registry.beans.security;
 
 import com.google.common.collect.Sets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.model.RegisteredClient;
 import org.mitre.openid.connect.client.OIDCAuthenticationFilter;
@@ -13,49 +15,59 @@ import org.mitre.openid.connect.config.ServerConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @PropertySource({"classpath:application.properties", "classpath:registry.properties"})
-@ComponentScan
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(openIdConnectAuthenticationProvider());
-//    }
+@Order(2)
+public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    static final private Logger logger = LogManager.getLogger(SessionSecurityConfig.class);
 
-    //.exceptionHandling()
-    //                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
-    //                .and()
+    @Value("${webapp.front}")
+    private String webappFrontUrl;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("Register local");
+        auth.authenticationProvider(openIdConnectAuthenticationProvider());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(openIdConnectAuthenticationFilter(),
-                AbstractPreAuthenticatedProcessingFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
+        logger.info("Configure AAI Security Config");
+        http
+                .authenticationProvider(openIdConnectAuthenticationProvider())
+                .addFilterBefore(openIdConnectAuthenticationFilter(),
+                    AbstractPreAuthenticatedProcessingFilter.class)
+                .logout()
+                    .deleteCookies("SESSION")
+                    .invalidateHttpSession(true)
+                    .logoutUrl("/openid_logout")
+                    .logoutSuccessUrl(webappFrontUrl)
                 .and()
-                .authorizeRequests()
-                .anyRequest().permitAll();
+                    .authorizeRequests()
+                    .anyRequest()
+                    .permitAll()
+                .and()
+                    .csrf()
+                    .disable();
+
+        //authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
     }
 
     @Autowired
     public void registerGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("Register Global");
         auth.authenticationProvider(openIdConnectAuthenticationProvider());
     }
 

@@ -1,6 +1,11 @@
 package eu.openminted.registry.service.omtd;
 
+import eu.openminted.registry.domain.DatasetDistributionInfo;
 import eu.openminted.registry.domain.Lexical;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.service.AncillaryService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("lexicalService")
 @Primary
-public class LexicalServiceImpl extends OmtdGenericService<Lexical>{
+public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements AncillaryService<Lexical> {
 
     public LexicalServiceImpl() {
         super(Lexical.class);
@@ -18,6 +23,23 @@ public class LexicalServiceImpl extends OmtdGenericService<Lexical>{
     @Override
     public String getResourceType() {
         return "lexical";
+    }
+
+    @Value("${registry.host}/request/store/download?archiveId=")
+    private String hostUrl;
+
+    @Override
+    public Lexical uploadZip(Lexical ancillary, String archiveId) {
+        String distributionLocation = hostUrl + archiveId;
+        for (DatasetDistributionInfo info : ancillary.getLexicalConceptualResourceInfo().getDistributionInfos()) {
+            info.setDistributionLocation(distributionLocation);
+        }
+        ResourceIdentifier identifier = new ResourceIdentifier();
+        identifier.setValue(archiveId);
+        identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
+        ancillary.getLexicalConceptualResourceInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
+        super.add(ancillary);
+        return ancillary;
     }
 
 }

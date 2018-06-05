@@ -8,7 +8,7 @@ VERSION=${2:-master}
 function post_resourceType {
 	data=`cat $1 | sed "s/master/$VERSION/g"`
 	#echo ${data}
-	response=$(curl -X POST --write-out %{http_code} --silent --output /dev/null --data "$data" --header "Content-Type:application/json" http://$2:8080/omtd-registry/resourceType/)
+	response=$(curl -X POST --write-out %{http_code} --silent  --data "$data" --header "Content-Type: application/json" http://$2:8080/omtd-registry/resourceType)
 	if ((${response} >= 200 && ${response} < 300 )); then
 	colors="\e[32m"
 	UPLOADED="$1\n$UPLOADED"

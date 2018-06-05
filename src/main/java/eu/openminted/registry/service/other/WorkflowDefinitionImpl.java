@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.service.other;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,23 +10,27 @@ import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.AbstractGenericService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
-import org.apache.logging.log4j.Logger;
+import eu.openminted.registry.service.WorkflowService;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -37,14 +41,19 @@ import java.util.concurrent.ExecutionException;
 @Primary
 public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefinition> implements WorkflowService {
 
-    private static final String WORKFLOW_ID = "workflow_id";
+    private static final String WORKFLOW_ID = "openminted_id";
 
     private Logger logger = LogManager.getLogger(WorkflowDefinitionImpl.class);
 
     private ObjectMapper mapper;
 
-    @Autowired
-    private GalaxyInstance galaxyInstance;
+    @Autowired(required = false)
+    @Qualifier("galaxyInstanceFactory")
+    private GalaxyInstance galaxyEditorInstance;
+
+    @Autowired(required = false)
+    @Qualifier("galaxyExecutorInstanceFactory")
+    private GalaxyInstance galaxyExecutorInstance;
 
     public WorkflowDefinitionImpl() {
         super(WorkflowDefinition.class);
@@ -54,13 +63,17 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     }
 
     @Override
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostAuthorize("returnObject.personIdentifier==authentication.sub")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.personIdentifier==principal['sub']")
     public WorkflowDefinition get(String id) {
         WorkflowDefinition workflow;
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(WORKFLOW_ID, id);
-            workflow = parserPool.serialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
+            Resource workflowRes = searchService.searchId(getResourceType(), kv);
+            if(workflowRes==null) {
+                return null;
+            }
+            workflow = parserPool.deserialize(workflowRes, typeParameterClass).get();
         } catch (UnknownHostException | ExecutionException | InterruptedException e) {
             logger.fatal("Workflow get fatal error", e);
             throw new ServiceException(e);
@@ -83,47 +96,46 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     }
 
     @Override
-    public void add(WorkflowDefinition Workflow) {
+    public WorkflowDefinition add(WorkflowDefinition workflow) {
 
         Resource resourceDb = new Resource();
         try {
-            String serialized = mapper.writeValueAsString(Workflow);
+            workflow.setCreationDate(new Date());
+            workflow.setModificationDate(new Date());
+            String serialized = mapper.writeValueAsString(workflow);
             resourceDb.setPayloadFormat("json");
             resourceDb.setResourceType(resourceType);
             resourceDb.setVersion("not_set");
-            resourceDb.setId(Workflow.getWorkflowId());
+            resourceDb.setId(workflow.getOpenmintedId());
             resourceDb.setPayload(serialized);
+            resourceService.addResource(resourceDb);
+            return workflow;
         } catch (JsonProcessingException e) {
             logger.info("serializer exception", e);
             throw new ServiceException(e);
         }
-        try {
-            resourceService.addResource(resourceDb);
-        } catch (Exception e) {
-            logger.info("add Workflow", e);
-        }
-
     }
 
     @Override
-    public void update(WorkflowDefinition Workflow) {
+    public WorkflowDefinition update(WorkflowDefinition workflow) {
 
         Resource resourceDb;
         SearchService.KeyValue kv = new SearchService.KeyValue(
                 WORKFLOW_ID,
-                Workflow.getWorkflowId()
+                workflow.getOpenmintedId()
         );
         try {
             resourceDb = searchService.searchId(getResourceType(), kv);
             if (resourceDb == null) {
                 throw new ServiceException(getResourceType() + " with key " + kv.toString() + " does not exists");
             } else {
-                String serialized = mapper.writeValueAsString(Workflow);
+                workflow.setModificationDate(new Date());
+                String serialized = mapper.writeValueAsString(workflow);
                 //parserPool.deserialize(resourceDb, ParserService.ParserServiceTypes.JSON).get();
                 resourceDb.setPayloadFormat("json");
                 resourceDb.setPayload(serialized);
                 resourceService.updateResource(resourceDb);
-
+                return workflow;
             }
         } catch (IOException e) {
             logger.fatal("Workflow update fatal error", e);
@@ -137,7 +149,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(
                     WORKFLOW_ID,
-                    Workflow.getWorkflowId()
+                    Workflow.getOpenmintedId()
             );
             resourceDb = searchService.searchId(getResourceType(), kv);
             if (resourceDb == null) {
@@ -158,34 +170,92 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
 
 
     @Override
-    public String createWorkflow() {
+    public WorkflowDefinition createWorkflow() {
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        String workflowName = authentication.getSub() + " " +UUID.randomUUID().toString();
-        Workflow workflow = galaxyInstance.getWorkflowsClient().createWorkflow(workflowName);
+        String sub = authentication.getSub().split("@")[0];
+        String workflowName = sub + "-" +UUID.randomUUID().toString();
+        logger.info("Created a new workflow with name " + workflowName);
+        Workflow workflow = galaxyEditorInstance.getWorkflowsClient().createWorkflow(workflowName);
         WorkflowDefinition internalWorkflow = new WorkflowDefinition();
         internalWorkflow.setWorkflowId(workflow.getId());
-        internalWorkflow.setCreationDate(new Date());
-        internalWorkflow.setModificationDate(new Date());
         internalWorkflow.setWorkflowName(workflowName);
         internalWorkflow.setWorkflowDefinition("{\"name\": \"" + workflowName + "\", \"steps\": {}, \"annotation\": \"\"}");
         internalWorkflow.setOpenmintedId(UUID.randomUUID().toString());
         internalWorkflow.setPersonIdentifier(authentication.getSub());
         add(internalWorkflow);
-        return workflow.getId();
+        return internalWorkflow;
     }
 
     @Override
-    public String updateWorkflow(String openmintedId) {
-        WorkflowDefinition workflowDefinition = get(openmintedId);
-        String definition = galaxyInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId());
+    public WorkflowDefinition updateWorkflow(String omtdId) throws ResourceNotFoundException {
+        WorkflowDefinition workflowDefinition = get(omtdId);
+        //EXPORT WORKFLOW FROM EDITOR
+        String definition = galaxyEditorInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId());
+        //DELETE WORKFLOW FROM EDITOR
+        deleteEditorWorkflow(workflowDefinition.getWorkflowId());
+        workflowDefinition.setWorkflowId(null);
+        //IMPORT WORKFLOW TO EXECUTOR IF EXISTS DELETE IT
+        if(workflowDefinition.getExecutorId() != null) {
+            deleteExecutorWorkflow(workflowDefinition.getExecutorId());
+            workflowDefinition.setExecutorId(null);
+        }
+        Workflow executorWorkflow = galaxyExecutorInstance.getWorkflowsClient().importWorkflow(definition);
+        workflowDefinition.setExecutorId(executorWorkflow.getId());
         workflowDefinition.setWorkflowDefinition(definition);
+        //UPDATE WORKFLOW DEFINITION
         update(workflowDefinition);
-        return "https://dev.openminted.eu/home";
+        return workflowDefinition;
     }
 
     @Override
-    public void deleteWorkflow(String workflowId) {
-        galaxyInstance.getWorkflowsClient().deleteWorkflow(workflowId);
+    public String deleteWorkflow(String omtdId) throws ResourceNotFoundException {
+        WorkflowDefinition workflow = get(omtdId);
+        logger.info("Delete workflow from workflow with id " + workflow.getWorkflowId());
+        if(workflow.getWorkflowId() == null){
+            throw new ServiceException("Workflow with omtdid : " + omtdId + "does not exist");
+        }
+        String workflowId = workflow.getWorkflowId();
+        if(workflow.getWorkflowId() != null) {
+            galaxyEditorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
+            workflow.setWorkflowId(null);
+            update(workflow);
+            logger.info("Editor workflow with id " + workflowId + " was deleted.");
+        } else {
+            logger.info("No workflow to delete in workflow definition " + omtdId);
+        }
+        return workflowId;
     }
 
+    @Override
+    public WorkflowDefinition restoreWorkflow(String omtdId) throws ResourceNotFoundException {
+        WorkflowDefinition workflow = get(omtdId);
+        logger.info("Restore workflow from workflow with id " + workflow.getOpenmintedId());
+        if(workflow.getWorkflowId() == null) {
+            Workflow galaxyWorkflow = galaxyEditorInstance.getWorkflowsClient().importWorkflow(workflow.getWorkflowDefinition());
+            workflow.setWorkflowId(galaxyWorkflow.getId());
+            update(workflow);
+            logger.debug("Workflow with ID" + omtdId + " already exists in galaxy editor");
+        }
+        return workflow;
+    }
+
+    private String deleteEditorWorkflow(String workflowId) {
+        galaxyEditorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
+        return workflowId;
+    }
+
+    private String deleteExecutorWorkflow(String workflowId) {
+        galaxyExecutorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
+        return workflowId;
+    }
+
+    @Override
+    public List<String> deleteAll() {
+        List<String> ret = new ArrayList<>();
+        List<Workflow> workflows = galaxyEditorInstance.getWorkflowsClient().getWorkflows();
+        for(Workflow workflow : workflows) {
+            ret.add(deleteEditorWorkflow(workflow.getId()));
+        }
+        return ret;
+    }
 }
