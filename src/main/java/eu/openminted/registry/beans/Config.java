@@ -69,10 +69,9 @@ public class Config {
                 .withMaxTotalConnections(100)
                 .withMaxPerRouteConnections(10);
 
-        DockerClient dockerClient = DockerClientBuilder.getInstance(config)
+        return DockerClientBuilder.getInstance(config)
                 .withDockerCmdExecFactory(dockerCmdExecFactory)
                 .build();
-        return dockerClient;
     }
 
     @Bean
