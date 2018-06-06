@@ -4,6 +4,7 @@ import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import eu.openminted.registry.service.WorkflowService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"workflow", "/request/workflow"})
+@Api(value = "/request/workflow", description = "Operations about Galaxy workflows.", tags="Galaxy Workflows")
 public class WorkflowDefinitionController extends OtherRestController<WorkflowDefinition> {
 
     WorkflowService workflowService;

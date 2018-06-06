@@ -9,6 +9,7 @@ import eu.openminted.registry.service.CorpusContentService;
 import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.StoreService;
 import eu.openminted.registry.service.ValidateInterface;
+import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.parser.ParseContext;
@@ -35,6 +36,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/request/corpus")
+@Api(value = "/request/corpus", description = "Operations about OMTD Corpora.",tags="Corpora")
 public class CorpusController extends OmtdRestController<Corpus> {
 
     @Autowired

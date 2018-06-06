@@ -4,6 +4,7 @@ import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.service.CorpusBuildingStatusService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/request/corpusbuildingstate")
+@Api(value = "/request/corpusbuildingstate", description = "Operations about OMTD corpus building states.", tags="Corpus Building State")
 public class CorpusBuildingStateController extends OtherRestController<CorpusBuildingState> {
 
     @Autowired

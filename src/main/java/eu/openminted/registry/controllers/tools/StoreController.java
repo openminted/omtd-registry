@@ -2,6 +2,7 @@ package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.domain.file.FileStats;
 import eu.openminted.registry.service.StoreService;
+import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/request/store")
+@Api(description = "Upload and Download Files", tags="Store")
 public class StoreController {
 
     @Autowired

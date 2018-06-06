@@ -1,8 +1,10 @@
 package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.core.service.DumpService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 @RestController
+@Api(hidden = true)
+@ApiIgnore
 public class DumpController {
 
     @Autowired

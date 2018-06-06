@@ -2,6 +2,7 @@ package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.core.service.SearchService;
+import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@Api(description = "Returns user Details", tags="User")
 public class UserController {
 
     @Autowired
