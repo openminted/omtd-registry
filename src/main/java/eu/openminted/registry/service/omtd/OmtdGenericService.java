@@ -182,7 +182,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
                 calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregory);
                 newResource.getMetadataHeaderInfo().setMetadataLastDateUpdated(calendar);
                 T old = parserPool.deserialize(oldResource, typeParameterClass).get();
-                T insert = newResource;//deepMerge(old, newResource);
+                T insert = deepMerge(old, newResource);
                 String serialized = parserPool.serialize(insert, ParserService.ParserServiceTypes.XML).get();
 
                 if (!serialized.equals("failed")) {
