@@ -1,31 +1,22 @@
 package eu.openminted.registry.service.listener;
 
-import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
-import eu.openminted.registry.domain.workflow.WorkflowDefinition;
-import eu.openminted.registry.generate.WorkflowGenerate;
-import eu.openminted.registry.service.WorkflowEngineComponent;
+import eu.openminted.registry.service.DockerService;
 import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
-import eu.openminted.registry.service.WorkflowService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,6 +39,9 @@ public class ComponentListener {
 
     @Autowired
     private WorkflowEngineComponentRegistry workflowEngineComponentReg;
+
+    @Autowired
+    private DockerService dockerService;
 
 
 
@@ -90,6 +84,9 @@ public class ComponentListener {
 
             logger.info("Found maven component, saving @ "+ filePath);
         }else if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
+            String url = distributionInfo.getDistributionLocation();
+            dockerService.downloadDockerFlow(url);
+
             filePath = dockerDataPath+"/";
             logger.info("Found docker component, saving @ "+ filePath);
         }else {

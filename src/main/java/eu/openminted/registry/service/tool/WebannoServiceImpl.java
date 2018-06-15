@@ -85,9 +85,14 @@ public class WebannoServiceImpl implements WebannoService{
             return false;
         }
         String newCorpusId = tempIdentifier.getValue();
-
+        String oldCorpusId = newCorpusId;
 
         newCorpusId = storeClient.cloneArchive(newCorpusId).getResponse();
+
+        if(newCorpusId==null){
+            logger.info("Failed to clone archive with id: "+oldCorpusId);
+            return false;
+        }
 
         ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
         resourceIdentifier.setSchemeURI("archiveID");

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.openminted.registry.domain.ObjectFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,12 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
+
+    @Value("${webanno.username}")
+    private String username;
+
+    @Value("${webanno.password}")
+    private String password;
 
     public WebConfig() {
         super();
@@ -80,4 +87,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         RestTemplateBuilder builder = new RestTemplateBuilder();
         return builder.build();
     }
+
 }
