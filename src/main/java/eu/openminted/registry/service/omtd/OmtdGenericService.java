@@ -234,7 +234,10 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     }
 
     static Map deepMergeLocal(Map original, Map newMap) {
-        for (Object key : newMap.keySet()) {
+        Set merge = new HashSet();
+        merge.addAll(original.keySet());
+        merge.addAll(newMap.keySet());
+        for (Object key : merge) {
             if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
                 Map originalChild = (Map) original.get(key);
                 Map newChild = (Map) newMap.get(key);
