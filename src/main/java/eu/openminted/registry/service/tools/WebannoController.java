@@ -26,4 +26,5 @@ public class WebannoController {
     public void done_POST (ProjectStateChangeMessage projectStateChangeMessage) {
         webannoService.triggerRetrieval(projectStateChangeMessage.getProjectId(), projectStateChangeMessage.getProjectName());
     }
+
 }
