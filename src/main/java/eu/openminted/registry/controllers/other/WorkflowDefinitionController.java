@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping({"workflow", "/request/workflow"})
+@RequestMapping({"/request/workflow"})
 @Api(value = "/request/workflow", description = "Operations about Galaxy workflows.", tags="Galaxy Workflows")
 public class WorkflowDefinitionController extends OtherRestController<WorkflowDefinition> {
 

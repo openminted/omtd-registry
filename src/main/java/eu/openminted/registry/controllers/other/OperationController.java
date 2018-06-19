@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping({"operation", "/request/operation"})
+@RequestMapping({"/request/operation"})
 @Api(value = "/request/operation", description = "Creates and controls the operations executed on Galaxy", tags="Operations")
 public class OperationController extends OtherRestController<Operation> {
 
