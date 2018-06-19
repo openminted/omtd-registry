@@ -35,10 +35,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -236,7 +233,10 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
     }
 
     static Map deepMergeLocal(Map original, Map newMap) {
-        for (Object key : newMap.keySet()) {
+        Set merge = new HashSet();
+        merge.addAll(original.keySet());
+        merge.addAll(newMap.keySet());
+        for (Object key : merge) {
             if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
                 Map originalChild = (Map) original.get(key);
                 Map newChild = (Map) newMap.get(key);

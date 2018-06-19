@@ -34,7 +34,7 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
         http.requestMatcher(new RequestHeaderRequestMatcher("Authorization"))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .and().exceptionHandling().and()
                 .authenticationProvider(openIdConnectAuthenticationProvider)
                 .addFilterBefore(filter,
                         AbstractPreAuthenticatedProcessingFilter.class).authorizeRequests().anyRequest().permitAll();
