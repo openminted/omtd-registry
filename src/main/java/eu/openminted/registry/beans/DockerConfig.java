@@ -3,24 +3,20 @@ package eu.openminted.registry.beans;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.DockerCmdExecFactory;
 import com.github.dockerjava.api.model.AuthConfig;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.*;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 /**
  * Created by stefanos on 14/6/2017.
  */
 
 @Configuration
-@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class DockerConfig {
 
     private static Logger logger = Logger.getLogger(DockerConfig.class);
@@ -43,7 +39,7 @@ public class DockerConfig {
     @Bean
     public DockerClient dockerClient() {
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost("tcp://"+dockerHost)
+                .withDockerHost("tcp://" + dockerHost)
                 .withDockerTlsVerify(false)
                 .build();
 
@@ -70,7 +66,7 @@ public class DockerConfig {
     @Bean
     public GalaxyInstance galaxyInstanceFactory() {
         logger.info("Connected to galaxy in host " + galaxyHost);
-        GalaxyInstance galaxy = GalaxyInstanceFactory.get(galaxyHost,galaxyAPI);
+        GalaxyInstance galaxy = GalaxyInstanceFactory.get(galaxyHost, galaxyAPI);
         return galaxy;
     }
 

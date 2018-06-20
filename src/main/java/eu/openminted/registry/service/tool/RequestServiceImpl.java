@@ -19,15 +19,12 @@ import java.util.Map;
 @Service("requestService")
 public class RequestServiceImpl extends AbstractPublicUsersGenericService implements RequestService {
 
+    final private static Logger logger = LogManager.getLogger(RequestServiceImpl.class);
+    final private static String RESOURCE_ALIAS = "resourceTypes";
     @Autowired
     SearchService searchService;
-
     @Autowired
     LabelGenerate labelGenerate;
-
-    final private static Logger logger = LogManager.getLogger(RequestServiceImpl.class);
-
-    final private static String RESOURCE_ALIAS = "resourceTypes";
 
     public RequestServiceImpl() {
         super(BaseMetadataRecord.class);
@@ -36,7 +33,7 @@ public class RequestServiceImpl extends AbstractPublicUsersGenericService implem
     @SuppressWarnings("unchecked")
     public Browsing getResponseByFiltersElastic(FacetFilter filter) {
         filter.getFilter().keySet().retainAll(getBrowseBy());
-        filter.addFilter("public",true);
+        filter.addFilter("public", true);
         filter.setBrowseBy(getBrowseBy());
         Browsing<BaseMetadataRecord> ret = getResults(filter);
         labelGenerate.createLabels(ret);
@@ -44,9 +41,9 @@ public class RequestServiceImpl extends AbstractPublicUsersGenericService implem
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String,List<?>> getResourceGroupedElastic(FacetFilter filter, String category) throws ServiceException {
-        filter.addFilter("public",true);
-        return getResultsGrouped(filter,category);
+    public Map<String, List<?>> getResourceGroupedElastic(FacetFilter filter, String category) throws ServiceException {
+        filter.addFilter("public", true);
+        return getResultsGrouped(filter, category);
     }
 
     @Override

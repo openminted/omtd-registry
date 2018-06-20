@@ -23,7 +23,7 @@ public class WorkflowGenerate {
 
     WorkflowGenerate() {
         objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT,true);
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
@@ -35,12 +35,12 @@ public class WorkflowGenerate {
             ObjectNode step0 = (ObjectNode) node.path("steps").path("0");
             ObjectNode step1 = (ObjectNode) node.path("steps").path("1");
             ObjectNode step2 = (ObjectNode) node.path("steps").path("2");
-            step0.put("uuid",UUID.randomUUID().toString());
-            step1.put("uuid",UUID.randomUUID().toString());
-            step2.put("uuid",UUID.randomUUID().toString());
-            step2.put("tool_id",component.getComponentID());
+            step0.put("uuid", UUID.randomUUID().toString());
+            step1.put("uuid", UUID.randomUUID().toString());
+            step2.put("uuid", UUID.randomUUID().toString());
+            step2.put("tool_id", component.getComponentID());
             step2.put("contend_id", component.getComponentID());
-            step2.put("name",component.getName());
+            step2.put("name", component.getName());
             //ObjectNode inputConnections = (ObjectNode) step2.get("input_connections");
             //ObjectNode input = objectMapper.createObjectNode();
             //input.put("id",1);

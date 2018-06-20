@@ -9,17 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import javax.xml.bind.*;
+import java.io.*;
+import java.util.concurrent.*;
 
 /**
  * Created by stefanos on 26/6/2017.
@@ -27,12 +19,10 @@ import java.util.concurrent.Future;
 @Component("parserPool")
 public class ParserPool implements ParserService {
 
-    private ExecutorService executor;
-
     private static Logger logger = LogManager.getLogger(ParserPool.class);
-
     @Autowired
     JAXBContext omtdJAXBContext;
+    private ExecutorService executor;
 
     public ParserPool() {
         executor = Executors.newCachedThreadPool();

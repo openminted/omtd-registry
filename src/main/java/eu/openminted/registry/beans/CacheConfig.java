@@ -34,7 +34,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(host);
         jedisConnectionFactory.setPort(Integer.parseInt(port));
-        if(password != null) jedisConnectionFactory.setPassword(password);
+        if (password != null) jedisConnectionFactory.setPassword(password);
         return jedisConnectionFactory;
     }
 
@@ -63,7 +63,7 @@ public class CacheConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
         // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(60*60*24);
+        cacheManager.setDefaultExpiration(60 * 60 * 24);
         return cacheManager;
     }
 

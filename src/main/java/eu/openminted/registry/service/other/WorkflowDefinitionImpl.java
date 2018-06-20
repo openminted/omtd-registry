@@ -7,13 +7,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.beans.Workflow;
-import eu.openminted.registry.core.domain.Browsing;
-import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.domain.*;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
-import eu.openminted.registry.core.service.AbstractGenericService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import eu.openminted.registry.service.WorkflowService;
 import org.apache.logging.log4j.LogManager;
@@ -28,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -70,7 +63,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(WORKFLOW_ID, id);
             Resource workflowRes = searchService.searchId(getResourceType(), kv);
-            if(workflowRes==null) {
+            if (workflowRes == null) {
                 return null;
             }
             workflow = parserPool.deserialize(workflowRes, typeParameterClass).get();
@@ -90,7 +83,8 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
 
     @Override
     public Browsing getMy(FacetFilter filter) {
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext()
+                .getAuthentication();
         filter.addFilter("personIdentifier", authentication.getSub());
         return getResults(filter);
     }
@@ -171,15 +165,17 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
 
     @Override
     public WorkflowDefinition createWorkflow() {
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext()
+                .getAuthentication();
         String sub = authentication.getSub().split("@")[0];
-        String workflowName = sub + "-" +UUID.randomUUID().toString();
+        String workflowName = sub + "-" + UUID.randomUUID().toString();
         logger.info("Created a new workflow with name " + workflowName);
         Workflow workflow = galaxyEditorInstance.getWorkflowsClient().createWorkflow(workflowName);
         WorkflowDefinition internalWorkflow = new WorkflowDefinition();
         internalWorkflow.setWorkflowId(workflow.getId());
         internalWorkflow.setWorkflowName(workflowName);
-        internalWorkflow.setWorkflowDefinition("{\"name\": \"" + workflowName + "\", \"steps\": {}, \"annotation\": \"\"}");
+        internalWorkflow.setWorkflowDefinition("{\"name\": \"" + workflowName + "\", \"steps\": {}, \"annotation\": " +
+                "\"\"}");
         internalWorkflow.setOpenmintedId(UUID.randomUUID().toString());
         internalWorkflow.setPersonIdentifier(authentication.getSub());
         add(internalWorkflow);
@@ -190,12 +186,13 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     public WorkflowDefinition updateWorkflow(String omtdId) throws ResourceNotFoundException {
         WorkflowDefinition workflowDefinition = get(omtdId);
         //EXPORT WORKFLOW FROM EDITOR
-        String definition = galaxyEditorInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId());
+        String definition = galaxyEditorInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId
+                ());
         //DELETE WORKFLOW FROM EDITOR
         deleteEditorWorkflow(workflowDefinition.getWorkflowId());
         workflowDefinition.setWorkflowId(null);
         //IMPORT WORKFLOW TO EXECUTOR IF EXISTS DELETE IT
-        if(workflowDefinition.getExecutorId() != null) {
+        if (workflowDefinition.getExecutorId() != null) {
             deleteExecutorWorkflow(workflowDefinition.getExecutorId());
             workflowDefinition.setExecutorId(null);
         }
@@ -211,11 +208,11 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     public String deleteWorkflow(String omtdId) throws ResourceNotFoundException {
         WorkflowDefinition workflow = get(omtdId);
         logger.info("Delete workflow from workflow with id " + workflow.getWorkflowId());
-        if(workflow.getWorkflowId() == null){
+        if (workflow.getWorkflowId() == null) {
             throw new ServiceException("Workflow with omtdid : " + omtdId + "does not exist");
         }
         String workflowId = workflow.getWorkflowId();
-        if(workflow.getWorkflowId() != null) {
+        if (workflow.getWorkflowId() != null) {
             galaxyEditorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
             workflow.setWorkflowId(null);
             update(workflow);
@@ -230,8 +227,9 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     public WorkflowDefinition restoreWorkflow(String omtdId) throws ResourceNotFoundException {
         WorkflowDefinition workflow = get(omtdId);
         logger.info("Restore workflow from workflow with id " + workflow.getOpenmintedId());
-        if(workflow.getWorkflowId() == null) {
-            Workflow galaxyWorkflow = galaxyEditorInstance.getWorkflowsClient().importWorkflow(workflow.getWorkflowDefinition());
+        if (workflow.getWorkflowId() == null) {
+            Workflow galaxyWorkflow = galaxyEditorInstance.getWorkflowsClient().importWorkflow(workflow
+                    .getWorkflowDefinition());
             workflow.setWorkflowId(galaxyWorkflow.getId());
             update(workflow);
             logger.debug("Workflow with ID" + omtdId + " already exists in galaxy editor");
@@ -253,7 +251,7 @@ public class WorkflowDefinitionImpl extends AbstractGenericService<WorkflowDefin
     public List<String> deleteAll() {
         List<String> ret = new ArrayList<>();
         List<Workflow> workflows = galaxyEditorInstance.getWorkflowsClient().getWorkflows();
-        for(Workflow workflow : workflows) {
+        for (Workflow workflow : workflows) {
             ret.add(deleteEditorWorkflow(workflow.getId()));
         }
         return ret;

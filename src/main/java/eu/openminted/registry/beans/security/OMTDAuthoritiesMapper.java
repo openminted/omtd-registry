@@ -19,10 +19,8 @@ import java.util.*;
 @Component
 public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
 
-    private static Logger logger = LogManager.getLogger(OMTDAuthoritiesMapper.class);
-
     final private static String ROLE_CLAIMS = "edu_person_entitlements";
-
+    private static Logger logger = LogManager.getLogger(OMTDAuthoritiesMapper.class);
     private Map<String, SimpleGrantedAuthority> userRolesMap;
 
     public OMTDAuthoritiesMapper() throws IOException {
@@ -31,7 +29,7 @@ public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
         String filename = "/eu/openminted/registry/maps/aaiRoles.xml";
         org.springframework.core.io.Resource resource = new ClassPathResource(filename);
         properties.loadFromXML(resource.getInputStream());
-        for (final String name: properties.stringPropertyNames()) {
+        for (final String name : properties.stringPropertyNames()) {
             userRolesMap.put(name, new SimpleGrantedAuthority(properties.getProperty(name)));
         }
     }

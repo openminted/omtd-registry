@@ -8,12 +8,10 @@ import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 @Configuration
-@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class GalaxyConfig {
 
     static final private Logger logger = LogManager.getLogger(GalaxyConfig.class);

@@ -7,16 +7,12 @@ import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.model.RegisteredClient;
 import org.mitre.openid.connect.client.OIDCAuthenticationFilter;
 import org.mitre.openid.connect.client.OIDCAuthenticationProvider;
-import org.mitre.openid.connect.client.service.ClientConfigurationService;
-import org.mitre.openid.connect.client.service.IssuerService;
-import org.mitre.openid.connect.client.service.ServerConfigurationService;
+import org.mitre.openid.connect.client.service.*;
 import org.mitre.openid.connect.client.service.impl.*;
 import org.mitre.openid.connect.config.ServerConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,9 +28,20 @@ import java.util.Map;
 public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
 
     static final private Logger logger = LogManager.getLogger(SessionSecurityConfig.class);
-
+    @Autowired
+    OMTDAuthoritiesMapper omtdAuthoritiesMapper;
     @Value("${webapp.front}")
     private String webappFrontUrl;
+    @Value("${oidc.issuer}")
+    private String oidcIssuer;
+    @Value("${oidc.secret}")
+    private String oidcSecret;
+    @Value("${oidc.id}")
+    private String oidcId;
+    @Value("${webapp.home}")
+    private String webappHome;
+    @Value("${webapp.front}")
+    private String webappFront;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,19 +55,19 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authenticationProvider(openIdConnectAuthenticationProvider())
                 .addFilterBefore(openIdConnectAuthenticationFilter(),
-                    AbstractPreAuthenticatedProcessingFilter.class)
+                        AbstractPreAuthenticatedProcessingFilter.class)
                 .logout()
-                    .deleteCookies("SESSION")
-                    .invalidateHttpSession(true)
-                    .logoutUrl("/openid_logout")
-                    .logoutSuccessUrl(webappFrontUrl)
+                .deleteCookies("SESSION")
+                .invalidateHttpSession(true)
+                .logoutUrl("/openid_logout")
+                .logoutSuccessUrl(webappFrontUrl)
                 .and()
-                    .authorizeRequests()
-                    .anyRequest()
-                    .permitAll()
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll()
                 .and()
-                    .csrf()
-                    .disable();
+                .csrf()
+                .disable();
 
         //authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
     }
@@ -70,24 +77,6 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
         logger.info("Register Global");
         auth.authenticationProvider(openIdConnectAuthenticationProvider());
     }
-
-    @Autowired
-    OMTDAuthoritiesMapper omtdAuthoritiesMapper;
-
-    @Value("${oidc.issuer}")
-    private String oidcIssuer;
-
-    @Value("${oidc.secret}")
-    private String oidcSecret;
-
-    @Value("${oidc.id}")
-    private String oidcId;
-
-    @Value("${webapp.home}")
-    private String webappHome;
-
-    @Value("${webapp.front}")
-    private String webappFront;
 
     @Bean
     OIDCAuthenticationProvider openIdConnectAuthenticationProvider() {

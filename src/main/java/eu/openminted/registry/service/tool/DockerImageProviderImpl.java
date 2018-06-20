@@ -9,27 +9,27 @@ import org.springframework.core.env.Environment;
 
 public class DockerImageProviderImpl implements DockerImageProvider {
 
-	public final static String dockerImageProperty = "docker.image";
-	
-	@Autowired
-	Environment env;
-	
-	@Override
-	public String getImage(Component metaComponent) {
-		String imageName = "NOT FOUND";
-		
-		String imageSelector = "";
-		
-		if(Utils.isWebService(metaComponent.getComponentInfo().getDistributionInfos())){
-			imageSelector = ComponentDistributionFormEnum.WEB_SERVICE.value();
-			
-		}else{
-			imageSelector = metaComponent.getComponentInfo().getComponentCreationInfo().getFramework().value();
-		}
-		
-		imageName = env.getProperty(dockerImageProperty + "." + imageSelector);
-		
-		return imageName;
-	}
+    public final static String dockerImageProperty = "docker.image";
+
+    @Autowired
+    Environment env;
+
+    @Override
+    public String getImage(Component metaComponent) {
+        String imageName = "NOT FOUND";
+
+        String imageSelector = "";
+
+        if (Utils.isWebService(metaComponent.getComponentInfo().getDistributionInfos())) {
+            imageSelector = ComponentDistributionFormEnum.WEB_SERVICE.value();
+
+        } else {
+            imageSelector = metaComponent.getComponentInfo().getComponentCreationInfo().getFramework().value();
+        }
+
+        imageName = env.getProperty(dockerImageProperty + "." + imageSelector);
+
+        return imageName;
+    }
 
 }

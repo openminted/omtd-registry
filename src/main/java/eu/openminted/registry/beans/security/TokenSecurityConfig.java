@@ -30,7 +30,8 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        GenericFilterBean filter = new ApiKeyAuthorizationFilter(serverConfigurationService,openIdConnectAuthenticationProvider);
+        GenericFilterBean filter = new ApiKeyAuthorizationFilter(serverConfigurationService,
+                openIdConnectAuthenticationProvider);
         http.requestMatcher(new RequestHeaderRequestMatcher("Authorization"))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

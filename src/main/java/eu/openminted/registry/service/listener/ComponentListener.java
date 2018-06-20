@@ -8,14 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,19 +29,20 @@ public class ComponentListener {
     private String dockerDataPath;
 
     @Autowired
-    private  ParserService parserPool;
+    private ParserService parserPool;
 
     @Autowired
     private WorkflowEngineComponentRegistry workflowEngineComponentReg;
-
 
 
     @Autowired
     @Qualifier("applicationService")
     private ResourceCRUDService<Component> applicationService;
 
-    @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain.Component)) || " +
-            "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry.domain.Component))) && args(component)")
+    @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
+            ".Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry" +
+            ".domain.Component))) && args(component)")
     public Component addComponentListener(Component component) throws ExecutionException, InterruptedException {
         // Register it to workflow engine.
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
@@ -54,7 +50,8 @@ public class ComponentListener {
         return component;
     }
 
-    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.delete(eu.openminted.registry.domain.Component)) && args(component)")
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.delete(eu.openminted.registry" +
+            ".domain.Component)) && args(component)")
     public Component deleteComponentListener(Component component) {
         // Register it to workflow engine.
         logger.info("Deleting component");
@@ -63,7 +60,8 @@ public class ComponentListener {
     }
 
     private void exportDirectory(Component component) throws ExecutionException, InterruptedException {
-        ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0);
+        ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo()
+                .getResourceIdentifiers().get(0);
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
 
         String filePath = "";
@@ -76,31 +74,31 @@ public class ComponentListener {
             String groupId = matcher.group(1);
             String artifactId = matcher.group(2);
             String version = matcher.group(3);
-            filePath = mavenDataPath+"/"+groupId+"/"+artifactId+"/"+version+"/";
+            filePath = mavenDataPath + "/" + groupId + "/" + artifactId + "/" + version + "/";
 
-            logger.info("Found maven component, saving @ "+ filePath);
-        }else if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
-            filePath = dockerDataPath+"/";
-            logger.info("Found docker component, saving @ "+ filePath);
-        }else {
-            return ;
+            logger.info("Found maven component, saving @ " + filePath);
+        } else if (distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
+            filePath = dockerDataPath + "/";
+            logger.info("Found docker component, saving @ " + filePath);
+        } else {
+            return;
         }
 
         File f = new File(filePath);
 
-        if(!f.exists()) {
-            try{
-                if(f.mkdirs()) {
+        if (!f.exists()) {
+            try {
+                if (f.mkdirs()) {
 //                    logger.info("Directory Created");
                 } else {
 //                    logger.info("Directory is not created");
                 }
-            } catch(Exception e){
-                logger.error("Error creating directory " +filePath+" component", e);
+            } catch (Exception e) {
+                logger.error("Error creating directory " + filePath + " component", e);
             }
         }
 
-        f = new File(filePath+component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue()+".xml");
+        f = new File(filePath + component.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue() + ".xml");
 
         try {
             FileWriter fw = new FileWriter(f.getAbsolutePath());

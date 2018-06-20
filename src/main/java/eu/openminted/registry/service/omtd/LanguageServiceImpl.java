@@ -1,9 +1,6 @@
 package eu.openminted.registry.service.omtd;
 
-import eu.openminted.registry.domain.DatasetDistributionInfo;
-import eu.openminted.registry.domain.LanguageDescription;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.AncillaryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -14,7 +11,11 @@ import org.springframework.stereotype.Service;
  */
 @Service("languageService")
 @Primary
-public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements AncillaryService<LanguageDescription> {
+public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements
+        AncillaryService<LanguageDescription> {
+
+    @Value("${registry.host}/request/store/download?archiveId=")
+    private String hostUrl;
 
     public LanguageServiceImpl() {
         super(LanguageDescription.class);
@@ -24,9 +25,6 @@ public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription>
     public String getResourceType() {
         return "language";
     }
-
-    @Value("${registry.host}/request/store/download?archiveId=")
-    private String hostUrl;
 
     @Override
     public LanguageDescription uploadZip(LanguageDescription ancillary, String archiveId) {

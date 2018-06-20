@@ -7,12 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.datatype.*;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by stefanos on 16/6/2017.
@@ -26,7 +23,7 @@ public class MetadataHeaderInfoGenerate {
     static public MetadataHeaderInfo generate(MetadataHeaderInfo info) {
         if (info == null) {
             info = new MetadataHeaderInfo();
-        } else if (info.getRevision() != null && info.getRevision().equals("output")){
+        } else if (info.getRevision() != null && info.getRevision().equals("output")) {
             return info;
         }
         //
@@ -40,7 +37,7 @@ public class MetadataHeaderInfoGenerate {
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
-        if(info.getMetadataCreationDate() == null){
+        if (info.getMetadataCreationDate() == null) {
             info.setMetadataCreationDate(calendar);
         }
         info.setMetadataLastDateUpdated(calendar);
@@ -48,7 +45,7 @@ public class MetadataHeaderInfoGenerate {
         //
         // Overwrite metadata record identifier
         //
-        if(info.getRevision() == null || !info.getRevision().equals("incomplete")) {
+        if (info.getRevision() == null || !info.getRevision().equals("incomplete")) {
             MetadataIdentifier identifier = new MetadataIdentifier();
             identifier.setValue(UUID.randomUUID().toString());
             identifier.setMetadataIdentifierSchemeName(MetadataIdentifierSchemeNameEnum.OMTD);
@@ -83,7 +80,7 @@ public class MetadataHeaderInfoGenerate {
         //
         // Set affiliations
         //
-        if(authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION) != null) {
+        if (authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION) != null) {
             authentication.getUserInfo().getSource().getAsJsonArray(SCOPE_AFFILIATION).forEach(af -> {
                 String[] organizationPosition = af.getAsString().split("@");
                 if (organizationPosition.length == 2) {

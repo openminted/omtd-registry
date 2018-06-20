@@ -15,10 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -32,7 +29,8 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
 
     private AuthenticationProvider authenticationProvider;
 
-    public ApiKeyAuthorizationFilter(ServerConfigurationService serverConfigurationService, OIDCAuthenticationProvider openIdConnectAuthenticationProvider) {
+    public ApiKeyAuthorizationFilter(ServerConfigurationService serverConfigurationService,
+                                     OIDCAuthenticationProvider openIdConnectAuthenticationProvider) {
 //        super("/**");
 //        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/**"));
         this.serverConfigurationService = serverConfigurationService;
@@ -40,7 +38,8 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res,
+                         FilterChain chain) throws IOException, ServletException {
         logger.info("Attempt Authentication");
         HttpServletRequest request = (HttpServletRequest) req;
         String jwt = resolveToken(request);
@@ -51,9 +50,9 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
             String subject = idToken.getJWTClaimsSet().getSubject();
             String accessToken = idToken.getParsedString();
             ServerConfiguration serverConfig = serverConfigurationService.getServerConfiguration(issuer);
-            token = new PendingOIDCAuthenticationToken(subject,issuer,serverConfig,idToken,accessToken,null);
+            token = new PendingOIDCAuthenticationToken(subject, issuer, serverConfig, idToken, accessToken, null);
         } catch (Exception e) {
-            logger.error("JWT Error",e);
+            logger.error("JWT Error", e);
             throw new BadCredentialsException("JWT is not valid");
         }
         Authentication auth = this.authenticationProvider.authenticate(token);

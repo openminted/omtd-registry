@@ -3,19 +3,13 @@ package eu.openminted.registry.beans;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import org.springframework.context.annotation.*;
+import springfox.documentation.builders.*;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.ApiKeyVehicle;
-import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
@@ -25,7 +19,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableSwagger2
-@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class SwaggerConfig {
 
 
@@ -39,7 +33,7 @@ public class SwaggerConfig {
     ServletContext context;
 
     private RelativePathProvider pathProvider() {
-        if(isLocalhost) {
+        if (isLocalhost) {
             return new RelativePathProvider(context);
         } else {
             return new RelativePathProvider(context) {

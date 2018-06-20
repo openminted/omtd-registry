@@ -2,10 +2,7 @@ package eu.openminted.registry.service.omtd;
 
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.DistributionMediumEnum;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +44,8 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
         super.add(corpus);
         corpus.getCorpusInfo().getDatasetDistributionInfo().
-                setDistributionLocation(hostUrl + corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().getValue());
+                setDistributionLocation(hostUrl + corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier()
+                        .getValue());
         try {
             corpus = super.update(corpus);
         } catch (ResourceNotFoundException e) {

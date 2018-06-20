@@ -5,21 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 @Component
 public class JavaMailer {
@@ -89,7 +80,8 @@ public class JavaMailer {
 
                 try {
                     HashMap<String, Object> result;
-                    result = new ObjectMapper().readValue(conn.getInputStream(), new TypeReference<HashMap<String, Object>>() {
+                    result = new ObjectMapper().readValue(conn.getInputStream(), new TypeReference<HashMap<String,
+                            Object>>() {
                     });
                     accessToken = (String) result.get("access_token");
                     tokenExpires = System.currentTimeMillis() + (((Number) result.get("expires_in")).intValue() * 1000);
@@ -118,7 +110,7 @@ public class JavaMailer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             System.out.println("Token expired");
         }
     }

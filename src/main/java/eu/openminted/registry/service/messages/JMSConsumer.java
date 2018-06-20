@@ -3,9 +3,7 @@ package eu.openminted.registry.service.messages;
 import eu.openminted.corpus.CorpusBuildingState;
 import eu.openminted.corpus.CorpusStatus;
 import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.service.IncompleteCorpusService;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +29,8 @@ public class JMSConsumer {
     @Autowired
     private IncompleteCorpusService incompleteCorpusService;
 
-    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
+    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state" +
+            ".topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws UnknownHostException {
         try {
             logger.info("State of corpus building: " + corpusBuildingState);
@@ -50,7 +49,7 @@ public class JMSConsumer {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error in moving corpus",e);
+            logger.error("Error in moving corpus", e);
             throw new ServiceException(e);
         }
     }

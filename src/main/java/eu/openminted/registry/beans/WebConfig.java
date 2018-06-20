@@ -3,19 +3,14 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -25,6 +20,11 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan("eu.openminted.registry.controllers")
 public class WebConfig extends WebMvcConfigurerAdapter {
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -42,7 +42,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public StringHttpMessageConverter stringHttpMessageConverter() {
-        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName
+                ("UTF-8"));
         stringHttpMessageConverter.setSupportedMediaTypes(
                 Arrays.asList(
                         MediaType.APPLICATION_XML,
@@ -51,7 +52,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         );
         return stringHttpMessageConverter;
     }
-
 
     @Bean
     public Jaxb2RootElementHttpMessageConverter jaxbConverter() {
@@ -64,11 +64,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         converters.add(jaxbConverter());
         converters.add(stringHttpMessageConverter());
         super.configureMessageConverters(converters);
-    }
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Override

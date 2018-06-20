@@ -2,15 +2,11 @@ package eu.openminted.registry.service.hotfix;
 
 import eu.openminted.registry.core.configuration.ElasticConfiguration;
 import eu.openminted.registry.core.domain.*;
-import eu.openminted.registry.core.service.AbstractGenericService;
-import eu.openminted.registry.core.service.ResourceTypeService;
-import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.core.service.*;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -23,21 +19,18 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-abstract public class AbstractPublicUsersGenericService<T> extends AbstractGenericService<T>{
+abstract public class AbstractPublicUsersGenericService<T> extends AbstractGenericService<T> {
 
     final private static Logger logger = LogManager.getLogger(AbstractPublicUsersGenericService.class);
+    @Autowired
+    ResourceTypeService resourceTypeService;
+    @Autowired
+    private ElasticConfiguration elastic;
+    private Map<String, ResourceType> resourceTypeCache = new HashMap<>();
 
     public AbstractPublicUsersGenericService(Class<T> typeParameterClass) {
         super(typeParameterClass);
     }
-
-    @Autowired
-    ResourceTypeService resourceTypeService;
-
-    @Autowired
-    private ElasticConfiguration elastic;
-
-    private Map<String,ResourceType> resourceTypeCache = new HashMap<>();
 
     @Deprecated
     private static BoolQueryBuilder createQueryBuilder(FacetFilter filter, String user) {
@@ -47,7 +40,7 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         } else {
             qBuilder.must(QueryBuilders.matchAllQuery());
         }
-        if(!user.equals("ROLE_ADMIN")) {
+        if (!user.equals("ROLE_ADMIN")) {
             BoolQueryBuilder userQueryBuilder = new BoolQueryBuilder();
             userQueryBuilder.should(QueryBuilders.termQuery("public", true));
             userQueryBuilder.should(QueryBuilders.termQuery("personIdentifier", user));
@@ -67,14 +60,14 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         logger.info("Personalized logger for " + user);
         Paging paging;
         int quantity = filter.getQuantity();
-        BoolQueryBuilder qBuilder = createQueryBuilder(filter,user);
+        BoolQueryBuilder qBuilder = createQueryBuilder(filter, user);
         logger.trace(qBuilder.toString());
         SearchRequestBuilder search = client.prepareSearch(filter.getResourceType()).
                 setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(qBuilder)
                 .setFrom(filter.getFrom()).setSize(quantity).setExplain(false);
 
-        if(filter.getOrderBy() != null) {
+        if (filter.getOrderBy() != null) {
             for (Map.Entry<String, Object> order : filter.getOrderBy().entrySet()) {
                 Map op = (Map) order.getValue();
                 search.addSort(order.getKey(), SortOrder.fromString(op.get("order").toString()));
@@ -87,20 +80,21 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         SearchResponse response = search.execute().actionGet();
 
         List<Resource> results = new ArrayList<>();
-        quantity = Math.min(quantity,(int)response.getHits().getHits().length);
-        for(int i = 0 ; i < quantity; ++i) {
+        quantity = Math.min(quantity, (int) response.getHits().getHits().length);
+        for (int i = 0; i < quantity; ++i) {
             Resource res = new Resource();
-            for(String value : Arrays.asList("id","resourceType","payload", "payloadFormat", "version")) {
+            for (String value : Arrays.asList("id", "resourceType", "payload", "payloadFormat", "version")) {
                 try {
-                    if(!value.equals("resourceType"))
-                        PropertyUtils.setProperty(res, value, response.getHits().getAt(i).getSource().get(value).toString());
+                    if (!value.equals("resourceType"))
+                        PropertyUtils.setProperty(res, value, response.getHits().getAt(i).getSource().get(value)
+                                .toString());
                     else {
                         String resourceType = response.getHits().getAt(i).getSource().get(value).toString();
-                        if(resourceTypeCache.get(resourceType) == null)
-                            resourceTypeCache.put(resourceType,resourceTypeService.getResourceType(resourceType));
+                        if (resourceTypeCache.get(resourceType) == null)
+                            resourceTypeCache.put(resourceType, resourceTypeService.getResourceType(resourceType));
                         res.setResourceType(resourceTypeCache.get(resourceType));
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     break;
                 }
             }
@@ -133,7 +127,7 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
                     filter.getFrom() + results.size(), results, occurrences);
         }
 
-        return getTempResults(paging,filter);
+        return getTempResults(paging, filter);
     }
 
     @Deprecated
@@ -145,21 +139,22 @@ abstract public class AbstractPublicUsersGenericService<T> extends AbstractGener
         List<Facet> facetsCollection;
         try {
             futureResults = new ArrayList<>(paging.getResults().size());
-            for(Object res : paging.getResults()) {
+            for (Object res : paging.getResults()) {
                 Resource resource = (Resource) res;
-                futureResults.add(parserPool.deserialize(resource,typeParameterClass));
+                futureResults.add(parserPool.deserialize(resource, typeParameterClass));
             }
             overall = paging.getOccurrences();
             facetsCollection = createFacetCollection(overall);
-            for(Future<T> res : futureResults) {
+            for (Future<T> res : futureResults) {
                 result.add(res.get());
             }
-        } catch (InterruptedException | ExecutionException e ) {
+        } catch (InterruptedException | ExecutionException e) {
             logger.fatal(e);
             e.printStackTrace();
             throw new ServiceException(e);
         }
-        browsing = new Browsing<>(paging.getTotal(), filter.getFrom(), filter.getFrom() + result.size(), result, facetsCollection);
+        browsing = new Browsing<>(paging.getTotal(), filter.getFrom(), filter.getFrom() + result.size(), result,
+                facetsCollection);
         return browsing;
     }
 

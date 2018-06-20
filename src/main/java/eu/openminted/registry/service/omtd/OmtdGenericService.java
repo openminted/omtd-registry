@@ -3,17 +3,11 @@ package eu.openminted.registry.service.omtd;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import eu.openminted.registry.core.domain.Browsing;
-import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.domain.*;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
-import eu.openminted.registry.core.service.ParserService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.core.validation.ResourceValidator;
-import eu.openminted.registry.domain.BaseMetadataRecord;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.ValidateInterface;
 import eu.openminted.registry.service.generate.LabelGenerate;
 import eu.openminted.registry.service.generate.MetadataHeaderInfoGenerate;
@@ -23,18 +17,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.*;
+import javax.xml.datatype.*;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -42,19 +32,15 @@ import java.util.concurrent.Future;
 /**
  * Created by stefanos on 30/6/2017.
  */
-@Lazy
-public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractPublicUsersGenericService<T> implements ValidateInterface<T> {
-
-    private static Logger logger = LogManager.getLogger(OmtdGenericService.class);
+public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends AbstractPublicUsersGenericService<T>
+        implements ValidateInterface<T> {
 
     private static final String OMTD_ID = "omtdid";
-
-    @Autowired
-    private ResourceValidator resourceValidator;
-
+    private static Logger logger = LogManager.getLogger(OmtdGenericService.class);
     @Autowired
     LabelGenerate labelGenerate;
-
+    @Autowired
+    private ResourceValidator resourceValidator;
     @Autowired
     private JAXBContext omtdJAXBContext;
 
@@ -62,13 +48,36 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         super(typeParameterClass);
     }
 
+    static Map deepMergeLocal(Map original, Map newMap) {
+        Set merge = new HashSet();
+        merge.addAll(original.keySet());
+        merge.addAll(newMap.keySet());
+        for (Object key : merge) {
+            if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
+                Map originalChild = (Map) original.get(key);
+                Map newChild = (Map) newMap.get(key);
+                original.put(key, deepMergeLocal(originalChild, newChild));
+            } else if (newMap.get(key) instanceof List && original.get(key) instanceof List) {
+                if (((List) original.get(key)).isEmpty()) {
+                    logger.trace("Removed list " + key);
+                    original.put(key, null);
+                } else {
+                    original.put(key, newMap.get(key));
+                }
+            } else {
+                original.put(key, newMap.get(key));
+            }
+        }
+        return original;
+    }
+
     @Override
     public T get(String id) {
         T resource;
         try {
-        	SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, id);            	
-            Resource res = searchService.searchId(getResourceType(), kv);            
-            if(res==null) {           
+            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, id);
+            Resource res = searchService.searchId(getResourceType(), kv);
+            if (res == null) {
                 return null;
             }
             resource = parserPool.deserialize(res, typeParameterClass).get();
@@ -88,10 +97,10 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             boolean hasAdminRole = authentication.getAuthorities().stream()
                     .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
             String user = hasAdminRole ? "ROLE_ADMIN" : ((OIDCAuthenticationToken) authentication).getSub();
-            ret = getResponseByFiltersAndUserElastic(filter,user);
+            ret = getResponseByFiltersAndUserElastic(filter, user);
         } else {
             filter.setBrowseBy(getBrowseBy());
-            filter.addFilter("public",true);
+            filter.addFilter("public", true);
             ret = getResults(filter);
         }
         labelGenerate.createLabels(ret);
@@ -100,7 +109,8 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
     @Override
     public Browsing getMy(FacetFilter filter) {
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext()
+                .getAuthentication();
         filter.addFilter("personIdentifier", authentication.getSub());
         return getResults(filter);
     }
@@ -124,7 +134,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
         resourceIdentifier.setValue(insertionId);
         resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
-        identifiers.add(0,resourceIdentifier);
+        identifiers.add(0, resourceIdentifier);
 
         Resource checkResource;
 
@@ -173,7 +183,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
             oldResource = searchService.searchId(getResourceType(), kv);
             Resource resource = new Resource();
             if (oldResource == null) {
-                throw new ResourceNotFoundException(kv.getValue(),getResourceType());
+                throw new ResourceNotFoundException(kv.getValue(), getResourceType());
             } else {
                 GregorianCalendar gregory = new GregorianCalendar();
                 gregory.setTime(new Date());
@@ -232,29 +242,6 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         return mapper.convertValue(original, typeParameterClass);
     }
 
-    static Map deepMergeLocal(Map original, Map newMap) {
-        Set merge = new HashSet();
-        merge.addAll(original.keySet());
-        merge.addAll(newMap.keySet());
-        for (Object key : merge) {
-            if (newMap.get(key) instanceof Map && original.get(key) instanceof Map) {
-                Map originalChild = (Map) original.get(key);
-                Map newChild = (Map) newMap.get(key);
-                original.put(key, deepMergeLocal(originalChild, newChild));
-            } else if (newMap.get(key) instanceof List && original.get(key) instanceof List) {
-                if (((List) original.get(key)).isEmpty()) {
-                    logger.trace("Removed list " + key);
-                    original.put(key, null);
-                } else {
-                    original.put(key, newMap.get(key));
-                }
-            } else {
-                original.put(key, newMap.get(key));
-            }
-        }
-        return original;
-    }
-
     @Override
     public Boolean validate(T resource) {
         String resource_;
@@ -263,7 +250,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         } catch (InterruptedException | ExecutionException e) {
             throw new ServiceException(e);
         }
-        return resourceValidator.validateXML(getResourceType(),resource_);
+        return resourceValidator.validateXML(getResourceType(), resource_);
     }
 
     @Override
