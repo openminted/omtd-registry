@@ -179,6 +179,11 @@ public class DockerServiceImpl implements DockerService {
 
     private void privateRegistryDownload(String url){
         DockerImage image = parseLocation(url);
+
+        logger.info(image.domain);
+        logger.info(image.name);
+        logger.info(image.version);
+
         PullImageCmd pullImageCmd = dockerClient.pullImageCmd(image.name);
         pullImageCmd.withTag(image.version);
         AuthConfig authConfigPull = new AuthConfig();
