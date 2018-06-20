@@ -18,7 +18,6 @@ import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.search.sort.SortOrder;
 import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
 import org.json.JSONObject;
 import org.postgresql.util.Base64;
@@ -269,7 +268,7 @@ public class WebannoServiceImpl implements WebannoService{
 
     private Corpus findIdentifier(int projectId,String identifierName) {
         try {
-            Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", SortOrder.valueOf("ASC"));
+            Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", "ASC");
             if(paging==null) {
                 return null;
             }
