@@ -12,6 +12,8 @@ public interface RequestService {
 
 	Browsing getResponseByFiltersElastic(FacetFilter filter) throws ServiceException;
 
+	Browsing getResponseByFiltersAndUserElastic(FacetFilter filter, String user) throws ServiceException;
+
 	Map<String,List<?>> getResourceGroupedElastic(FacetFilter filter, String category) throws ServiceException;
 
 }

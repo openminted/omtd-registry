@@ -6,13 +6,13 @@ import eu.openminted.registry.domain.Corpus;
 /**
  * Created by stefanos on 3/12/18.
  */
-public interface CorpusService extends ResourceCRUDService<Corpus> {
+public interface AncillaryService<T> extends ResourceCRUDService<T> {
 
     /**
      * Sets the archiveId as a distribution location of the corpus and as a resource identifier.
-     * @param corpus to be filled with the archiveId
-     * @param archiveId of the corpus
-     * @return the corpus filled.
+     * @param ancillary to be filled with the archiveId
+     * @param archiveId of the uploaded zip
+     * @return the resource filled.
      */
-    Corpus uploadZip(Corpus corpus, String archiveId);
+    T uploadZip(T ancillary, String archiveId);
 }

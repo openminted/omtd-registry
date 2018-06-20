@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "personIdentifier": {
+      "type": "string"
+    },
+    "archiveId": {
+      "type": "string"
+    },
+    "compressedFileSize": {
+      "type": "integer"
+    },
+    "fileSize": {
+      "type": "integer"
+    },
+    "fileCount": {
+      "type": "integer"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "info": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fileType": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

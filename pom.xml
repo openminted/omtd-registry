@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.openminted</groupId>
     <artifactId>omtd-registry-api</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -29,7 +29,7 @@
         <rename.exec.skip>true</rename.exec.skip>
         <description.exec.skip>true</description.exec.skip>
         <typescript.exec.skip>true</typescript.exec.skip>
-        <registry.core.version>1.4.3-SNAPSHOT</registry.core.version>
+        <registry.core.version>1.4.6-SNAPSHOT</registry.core.version>
         <omtd.model.version>3.0.2-SNAPSHOT</omtd.model.version>
     </properties>
     <dependencies>
@@ -48,6 +48,12 @@
             <groupId>eu.openminted</groupId>
             <artifactId>omtd-corpus-api</artifactId>
             <version>1.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>eu.openminted</groupId>
+                    <artifactId>omtd-store-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JAXB2 -->
         <dependency>
@@ -72,6 +78,11 @@
             <artifactId>junit-toolbox</artifactId>
             <version>2.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
         </dependency>
     </dependencies>
 
@@ -181,6 +192,19 @@
                             <goal>generate</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>fileStats</id>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/fileStats.json</sourceDirectory>
+                            <targetPackage>${project.groupId}.registry.domain.file</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                            <useLongIntegers>true</useLongIntegers>
+                            <includeConstructors>true</includeConstructors>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -200,6 +224,8 @@
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
                                 <pattern>eu.openminted.registry.domain.workflow.*</pattern>
+                                <pattern>eu.openminted.registry.domain.file.*</pattern>
+                                <pattern>eu.openminted.registry.domain.PublicationInfo</pattern>
                             </classPatterns>
                             <outputFile>target/operation.ts</outputFile>
                             <outputKind>module</outputKind>
