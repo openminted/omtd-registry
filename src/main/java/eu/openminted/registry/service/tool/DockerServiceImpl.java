@@ -51,7 +51,7 @@ public class DockerServiceImpl implements DockerService {
     private String geranosEndpoint;
 
     final private String DEFAULT_PULL_SOURCE = "https://index.docker.io/v1";
-    final private Pattern pattern = Pattern.compile("^(?:(?<name>[^\\.]+?)|(?<host>[\\w\\d\\.]+?)\\/)?(?<image>[\\w\\d.-]+)(?::(?<version>[\\w\\d\\.]+))?$");
+    final private Pattern pattern = Pattern.compile("^(?:(?<name>[^\\.]*?)|(?<host>[\\w\\d\\.]*?)\\/)?(?<image>[\\w\\d.-]+)(?::(?<version>[\\w\\d\\.]+))?$");
 
     @Autowired
     DockerClient dockerClient;
@@ -69,7 +69,7 @@ public class DockerServiceImpl implements DockerService {
         image.domain = matcher.group("host") != null ? matcher.group("host") : DEFAULT_PULL_SOURCE;
         if (matcher.group("image") != null){
             image.name = matcher.group("image");
-            if(matcher.group("name")==null) {
+            if(matcher.group("name")==null || matcher.group("name").isEmpty()) {
                 if (!image.name.contains("/")) {
                     image.name = "library/".concat(image.name);
                 }
