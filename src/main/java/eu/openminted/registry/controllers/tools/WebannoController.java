@@ -1,8 +1,7 @@
 package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.service.WebannoService;
-import eu.openminted.registry.controllers.requests.ProjectStateChangeMessage;
-import io.swagger.annotations.Api;
+import eu.openminted.registry.service.requests.ProjectStateChangeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletContext;
 
 @RestController
-@Api(description = "Webanno Utils", tags="Webanno")
 public class WebannoController {
 
     private Logger logger = LogManager.getLogger(WebannoController.class);
@@ -28,4 +26,5 @@ public class WebannoController {
     public void done_POST (ProjectStateChangeMessage projectStateChangeMessage) {
         webannoService.triggerRetrieval(projectStateChangeMessage.getProjectId(), projectStateChangeMessage.getProjectName());
     }
+
 }
