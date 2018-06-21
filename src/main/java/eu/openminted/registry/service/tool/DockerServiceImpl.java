@@ -32,7 +32,7 @@ public class DockerServiceImpl implements DockerService {
     private String OPENMINTED_REPO;
 
     final private String DEFAULT_PULL_SOURCE = "https://index.docker.io/v1";
-    final private Pattern pattern = Pattern.compile("^(?:(?<host>[\\w\\d\\.]+)\\/)?(?<image>[\\w\\d.-]+)(?::(?<version>[\\w\\d\\.]+))?$");
+    final private Pattern pattern = Pattern.compile("^(?:(?<name>[^\\.]*?)|(?<host>[\\w\\d\\.]*?)\\/)?(?<image>[\\w\\d.-]+)(?::(?<version>[\\w\\d\\.]+))?$");
 
 
     @Autowired
@@ -48,6 +48,15 @@ public class DockerServiceImpl implements DockerService {
         image.domain = matcher.group("host") != null ? matcher.group("host") : DEFAULT_PULL_SOURCE;
         if (matcher.group("image") != null)
             image.name = matcher.group("image");
+            if(matcher.group("name")==null || matcher.group("name").isEmpty()) {
+                if (!image.name.contains("/")) {
+                    image.name = "library/".concat(image.name);
+                }
+            }else{
+                image.name =  matcher.group("name").concat(image.name);
+            }
+        }
+
         if (matcher.group("version") != null)
             image.version = matcher.group("version");
         else {
@@ -115,6 +124,26 @@ public class DockerServiceImpl implements DockerService {
     @Override
     public void downloadDockerFlow(String url) {
         DockerImage image = parseLocation(url);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-API-KEY",geranosApiKey);
+        headers.setAccept(MediaType.parseMediaTypes("application/vnd.docker.distribution.manifest.v2+json"));
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        restTemplate.put(geranosEndpoint+"/geranos/heavy/docker/pull?image="+image.name+":"+image.version, request, String.class);
+
+
+    }
+
+    private void privateRegistryDownload(String url){
+        DockerImage image = parseLocation(url);
+
+        logger.info(image.domain);
+        logger.info(image.name);
+        logger.info(image.version);
+
         PullImageCmd pullImageCmd = dockerClient.pullImageCmd(image.name);
         pullImageCmd.withTag(image.version);
         AuthConfig authConfigPull = new AuthConfig();
