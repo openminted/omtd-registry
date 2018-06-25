@@ -18,7 +18,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("eu.openminted.registry.controllers")
+@ComponentScan({"eu.openminted.registry.controllers","eu.openminted.registry.core.controllers"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
