@@ -3,39 +3,27 @@ package eu.openminted.registry.beans;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.openminted.registry.domain.ObjectFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebMvc
+@ComponentScan("eu.openminted.registry.controllers")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Value("${webanno.username}")
-    private String username;
-
-    @Value("${webanno.password}")
-    private String password;
-
-    public WebConfig() {
-        super();
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Override
@@ -54,7 +42,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public StringHttpMessageConverter stringHttpMessageConverter() {
-        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName
+                ("UTF-8"));
         stringHttpMessageConverter.setSupportedMediaTypes(
                 Arrays.asList(
                         MediaType.APPLICATION_XML,
@@ -69,11 +58,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new Jaxb2RootElementHttpMessageConverter();
     }
 
-    @Bean
-    JAXBContext omtdJAXBContext() throws JAXBException {
-        return JAXBContext.newInstance(ObjectFactory.class);
-    }
-
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new MappingJackson2HttpMessageConverter(objectMapper()));
@@ -82,10 +66,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.configureMessageConverters(converters);
     }
 
-    @Bean(name = "restTemplate")
-    RestTemplate restTemplate() {
-        RestTemplateBuilder builder = new RestTemplateBuilder();
-        return builder.build();
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
     }
-
 }

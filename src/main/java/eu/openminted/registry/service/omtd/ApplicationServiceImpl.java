@@ -5,10 +5,8 @@ import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
-import eu.openminted.registry.generate.WorkflowGenerate;
-import eu.openminted.registry.service.WorkflowEngineComponent;
-import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
-import eu.openminted.registry.service.WorkflowService;
+import eu.openminted.registry.service.*;
+import eu.openminted.registry.service.generate.WorkflowGenerate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.net.URL;
 import java.util.Optional;
 
 @Service("applicationService")
 @Primary
-public class ApplicationServiceImpl extends OmtdGenericService<Component>{
+public class ApplicationServiceImpl extends OmtdGenericService<Component> {
 
     private static Logger logger = LogManager.getLogger(ApplicationServiceImpl.class);
 
@@ -49,7 +46,7 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component>{
 
     @Override
     public Component add(Component resource) {
-        if(!resource.getComponentInfo().isApplication()){
+        if (!resource.getComponentInfo().isApplication()) {
             throw new ServiceException("Expected an application not a component");
         }
         try {
@@ -63,7 +60,7 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component>{
 
     @Override
     public Component update(Component newResource) throws ResourceNotFoundException {
-        if(!newResource.getComponentInfo().isApplication()){
+        if (!newResource.getComponentInfo().isApplication()) {
             throw new ServiceException("Cannot update an application to a component");
         }
         newResource = insertOMTDSpecificResources(newResource);
@@ -77,22 +74,25 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component>{
         super.delete(component);
     }
 
-    private Component insertOMTDSpecificResources(Component application){
-        Optional<ComponentDistributionInfo> distLocation = application.getComponentInfo().getDistributionInfos().stream().filter(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum.GALAXY_WORKFLOW).findFirst();
-        if(distLocation.isPresent()) {
-            logger.info("application with id " + application.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue() + " has a workflow definition");
+    private Component insertOMTDSpecificResources(Component application) {
+        Optional<ComponentDistributionInfo> distLocation = application.getComponentInfo().getDistributionInfos()
+                .stream().filter(dist -> dist.getComponentDistributionForm() == ComponentDistributionFormEnum
+                        .GALAXY_WORKFLOW).findFirst();
+        if (distLocation.isPresent()) {
+            logger.info("application with id " + application.getComponentInfo().getIdentificationInfo()
+                    .getResourceNames().get(0).getValue() + " has a workflow definition");
             String urlLocation = distLocation.get().getDistributionLocation();
             String workflowDefinition = urlLocation.substring(urlLocation.lastIndexOf("/") + 1);
             WorkflowDefinition definition = workflowService.get(workflowDefinition);
-            if(definition == null) {
+            if (definition == null) {
                 throw new ServiceException("Workflow definition does not exist");
             }
-            insertApplicationWorkflowName(application,definition.getWorkflowName());
+            insertApplicationWorkflowName(application, definition.getWorkflowName());
         } else {
             WorkflowEngineComponent wec = workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(application);
             String workflowDefinition = workflowGenerate.generateResource(wec);
             galaxyExecutorInstance.getWorkflowsClient().importWorkflow(workflowDefinition);
-            insertApplicationWorkflowName(application,wec.getName());
+            insertApplicationWorkflowName(application, wec.getName());
         }
         return application;
 

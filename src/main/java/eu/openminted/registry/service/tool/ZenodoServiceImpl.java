@@ -4,10 +4,7 @@ package eu.openminted.registry.service.tool;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.ZenodoService;
 import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.restclient.StoreRESTClient;
@@ -16,9 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -31,8 +26,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by spyroukostas on 16-Mar-2018.
@@ -41,31 +34,25 @@ import java.util.regex.Pattern;
 @Service("zenodoService")
 public class ZenodoServiceImpl implements ZenodoService {
 
-    private Logger logger = LogManager.getLogger(ZenodoServiceImpl.class);
-
-    private RestTemplate restTemplate = new RestTemplate();
-
-    @Value("${zenodo.host}")
-    private String host;
-
-    @Value("${zenodo.token}")
-    private String token;
-
-    @Value("classpath:eu/openminted/registry/service/corpusMetadataToJson.xsl")
-    private Resource xslFile;
-
     @Autowired
     StoreRESTClient storeClient;
-
     @Autowired
     ParserService parserPool;
-
     @Autowired
     @Qualifier("corpusService")
     ResourceCRUDService<Corpus> corpusService;
+    private Logger logger = LogManager.getLogger(ZenodoServiceImpl.class);
+    private RestTemplate restTemplate = new RestTemplate();
+    @Value("${zenodo.host}")
+    private String host;
+    @Value("${zenodo.token}")
+    private String token;
+    @Value("classpath:eu/openminted/registry/service/corpusMetadataToJson.xsl")
+    private Resource xslFile;
 
     /**
      * Function that tests all Zenodo methods.
+     *
      * @param corpusId
      * @return
      */
@@ -108,7 +95,8 @@ public class ZenodoServiceImpl implements ZenodoService {
             logger.info(zenodo_metadata);
             deposition_id = createDeposition(zenodo_metadata);
             file = File.createTempFile("corpus", ".zip");
-            storeClient.downloadArchive(OMTDUtils.resolveCorpusArchive(corpusService.get(corpusId)), file.getAbsolutePath());
+            storeClient.downloadArchive(OMTDUtils.resolveCorpusArchive(corpusService.get(corpusId)), file
+                    .getAbsolutePath());
             uploadFile(deposition_id, file);
             file.delete();
 
@@ -133,9 +121,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>("{}", headers);
         logger.info("POST request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.POST, request , String.class );
+        ResponseEntity<String> response = restTemplate.exchange(host, HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo createDeposition error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo createDeposition error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
         return res.get("id").toString();
@@ -150,9 +138,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>(metadata, headers);
         logger.info("createDeposition : POST request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.POST, request , String.class );
+        ResponseEntity<String> response = restTemplate.exchange(host, HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo createDeposition error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo createDeposition error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
 //        logger.info(response);
@@ -168,9 +156,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<String> request = new HttpEntity<>("", headers);
         logger.info("GET request: " + request.toString());
 
-        ResponseEntity<String> response = restTemplate.exchange( host, HttpMethod.GET, request, String.class );
+        ResponseEntity<String> response = restTemplate.exchange(host, HttpMethod.GET, request, String.class);
         if (response.getStatusCode().value() != 200) {
-            throw new RuntimeException("Zenodo listDepositions error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo listDepositions error code: " + response.getStatusCode().value());
         }
         return new JSONObject(response.getBody());
     }
@@ -185,9 +173,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("GET request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodo_id, HttpMethod.GET, request, String.class );
+                host + "/" + zenodo_id, HttpMethod.GET, request, String.class);
         if (response.getStatusCode().value() != 200) {
-            throw new RuntimeException("Zenodo retrieveDeposition error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo retrieveDeposition error code: " + response.getStatusCode().value());
         }
         return new JSONObject(response.getBody());
     }
@@ -202,9 +190,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("PUT request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodo_id, HttpMethod.PUT, request, String.class );
+                host + "/" + zenodo_id, HttpMethod.PUT, request, String.class);
         if (response.getStatusCode().value() != 200) {
-            throw new RuntimeException("Zenodo updateDeposition error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo updateDeposition error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
         return res.get("id").toString();
@@ -220,9 +208,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("DELETE request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodo_id, HttpMethod.DELETE, request, String.class );
+                host + "/" + zenodo_id, HttpMethod.DELETE, request, String.class);
         if (response.getStatusCode().value() != 204) {
-            throw new RuntimeException("Zenodo deleteDeposition error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo deleteDeposition error code: " + response.getStatusCode().value());
         }
     }
 
@@ -237,9 +225,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(parts, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/files", HttpMethod.POST, request , String.class );
+                host + "/" + zenodoId + "/files", HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo uploadFile error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo uploadFile error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
 //        logger.info("uploadFile response:" + res.toString());
@@ -262,9 +250,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("retrieveFile : GET request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.GET, request, String.class );
+                host + "/" + zenodoId + "/files/" + fileId, HttpMethod.GET, request, String.class);
         if (response.getStatusCode().value() != 200) {
-            throw new RuntimeException("Zenodo update error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo update error code: " + response.getStatusCode().value());
         }
         return response.getBody();
     }
@@ -284,10 +272,10 @@ public class ZenodoServiceImpl implements ZenodoService {
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(parts, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.PUT, request, String.class );
+                host + "/" + zenodoId + "/files/" + fileId, HttpMethod.PUT, request, String.class);
         if (response.getStatusCode().value() != 200) {
             logger.error(response.toString());
-            throw new RuntimeException("Zenodo updateFile error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo updateFile error code: " + response.getStatusCode().value());
         }
         return response.getBody();
     }
@@ -302,9 +290,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("deleteFile : DELETE request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/files/"+fileId, HttpMethod.DELETE, request, String.class );
+                host + "/" + zenodoId + "/files/" + fileId, HttpMethod.DELETE, request, String.class);
         if (response.getStatusCode().value() != 204) {
-            throw new RuntimeException("Zenodo deleteFile error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo deleteFile error code: " + response.getStatusCode().value());
         }
     }
 
@@ -318,9 +306,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("publish : POST request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/actions/publish", HttpMethod.POST, request , String.class );
+                host + "/" + zenodoId + "/actions/publish", HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 202) {
-            throw new RuntimeException("Zenodo publish error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo publish error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
         return res.get("doi").toString();
@@ -336,9 +324,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("POST request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/actions/edit", HttpMethod.POST, request , String.class );
+                host + "/" + zenodoId + "/actions/edit", HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo edit error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo edit error code: " + response.getStatusCode().value());
         }
         return response.getBody();
     }
@@ -353,9 +341,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("POST request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/actions/discard", HttpMethod.POST, request , String.class );
+                host + "/" + zenodoId + "/actions/discard", HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo discard error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo discard error code: " + response.getStatusCode().value());
         }
     }
 
@@ -369,9 +357,9 @@ public class ZenodoServiceImpl implements ZenodoService {
         logger.info("POST request: " + request.toString());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host+"/"+zenodoId+"/actions/newversion", HttpMethod.POST, request , String.class );
+                host + "/" + zenodoId + "/actions/newversion", HttpMethod.POST, request, String.class);
         if (response.getStatusCode().value() != 201) {
-            throw new RuntimeException("Zenodo discard error code: "+response.getStatusCode().value());
+            throw new RuntimeException("Zenodo discard error code: " + response.getStatusCode().value());
         }
         JSONObject res = new JSONObject(response.getBody());
 //        logger.info(response.toString());
@@ -380,7 +368,9 @@ public class ZenodoServiceImpl implements ZenodoService {
 
     /**
      * Downloads the metadata of a corpus with id = {@param corpusId}.
-     * Transforms the metadata to be compatible with <a href="http://developers.zenodo.org/?python#representation">Zenodo</a>.
+     * Transforms the metadata to be compatible with
+     * <a href="http://developers.zenodo.org/?python#representation">Zenodo</a>.
+     *
      * @param corpusId
      * @return
      */

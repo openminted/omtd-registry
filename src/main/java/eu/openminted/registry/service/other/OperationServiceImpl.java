@@ -6,13 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import eu.openminted.registry.beans.WorkflowConfig;
-import eu.openminted.registry.core.domain.Browsing;
-import eu.openminted.registry.core.domain.FacetFilter;
-import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.AbstractGenericService;
-import eu.openminted.registry.core.service.ResourceCRUDService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.core.domain.*;
+import eu.openminted.registry.core.service.*;
 import eu.openminted.registry.domain.*;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.service.OperationService;
@@ -25,25 +20,17 @@ import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.*;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by stefanos on 30/6/2017.
@@ -105,7 +92,8 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
     @Override
     public Browsing getMy(FacetFilter filter) {
-        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext()
+                .getAuthentication();
         filter.addFilter("personIdentifier", authentication.getSub());
         Browsing browsing = getResults(filter);
         return applicationJoinForOperations(browsing);
@@ -150,7 +138,8 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
                 resourceService.updateResource(resourceDb);
                 return operation;
             }
-        } catch (IOException e) { //| ExecutionException | InterruptedException   e) { //| | JsonProcessingException | UnknownHostException  |
+        } catch (IOException e) { //| ExecutionException | InterruptedException   e) { //| | JsonProcessingException
+            // | UnknownHostException  |
             logger.fatal("operation update fatal error", e);
             throw new ServiceException(e);
         }
@@ -190,7 +179,8 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
             fatOperation.setResources(resolveOperationResources(operation));
             operations.add(fatOperation);
         }
-        return new Browsing<>(browsing.getTotal(), browsing.getFrom(), browsing.getTo(), operations, browsing.getFacets());
+        return new Browsing<>(browsing.getTotal(), browsing.getFrom(), browsing.getTo(), operations, browsing
+                .getFacets());
     }
 
     private Map<String, BaseMetadataRecord> resolveOperationResources(Operation operation) {
@@ -203,18 +193,20 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
 
         //Corpus input
         if (operation.getCorpus().getInput() != null) {
-           // Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
-           // records.put(operation.getCorpus().getInput(), input);
-            BaseMetadataRecord input = resolveIndividualResource(operation.getCorpus().getInput(), "resourceTypes", BaseMetadataRecord.class);
-        	records.put(operation.getCorpus().getInput(), input);            
+            // Corpus input = resolveIndividualResource(operation.getCorpus().getInput(), "corpus", Corpus.class);
+            // records.put(operation.getCorpus().getInput(), input);
+            BaseMetadataRecord input = resolveIndividualResource(operation.getCorpus().getInput(), "resourceTypes",
+                    BaseMetadataRecord.class);
+            records.put(operation.getCorpus().getInput(), input);
         }
 
         //Corpus output
         if (operation.getCorpus().getOutput() != null) {
             //Corpus output = resolveIndividualResource(operation.getCorpus().getOutput(), "corpus", Corpus.class);
             //records.put(operation.getCorpus().getOutput(), output);      
-        	BaseMetadataRecord output = resolveIndividualResource(operation.getCorpus().getOutput(), "resourceTypes", BaseMetadataRecord.class);
-        	records.put(operation.getCorpus().getOutput(), output);
+            BaseMetadataRecord output = resolveIndividualResource(operation.getCorpus().getOutput(), "resourceTypes",
+                    BaseMetadataRecord.class);
+            records.put(operation.getCorpus().getOutput(), output);
         }
 
         return records;
@@ -264,7 +256,7 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         try {
             URIBuilder uriBuilder = new URIBuilder(workflowConfig.getWorkflowServiceHost());
             uriBuilder.setPath("/executeJob");
-            uriBuilder.addParameter("corpusId",archiveId);
+            uriBuilder.addParameter("corpusId", archiveId);
             url = uriBuilder.build().toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
@@ -274,10 +266,11 @@ public class OperationServiceImpl extends AbstractGenericService<Operation> impl
         ResponseEntity<String> executionId;
         Operation operation;
         synchronized (OperationServiceImpl.class) {
-        	logger.info(String.format("Starting workflow job archiveId [%s] workflowName [%s]",archiveId,workflowName));
+            logger.info(String.format("Starting workflow job archiveId [%s] workflowName [%s]", archiveId,
+                    workflowName));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-        	HttpEntity<Component> entity = new HttpEntity<>(application,headers);
+            HttpEntity<Component> entity = new HttpEntity<>(application, headers);
             executionId = workflowRestTemplate.postForEntity(url.toString(), entity, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
             add(operation);

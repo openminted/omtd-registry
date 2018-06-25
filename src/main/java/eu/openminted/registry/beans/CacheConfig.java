@@ -18,8 +18,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 
 @Configuration
 @EnableCaching
-public class CacheConfig extends CachingConfigurerSupport{
-
+public class CacheConfig extends CachingConfigurerSupport {
 
     @Value("${redis.host}")
     private String host;
@@ -35,11 +34,9 @@ public class CacheConfig extends CachingConfigurerSupport{
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(host);
         jedisConnectionFactory.setPort(Integer.parseInt(port));
-        if(password != null) jedisConnectionFactory.setPassword(password);
+        if (password != null) jedisConnectionFactory.setPassword(password);
         return jedisConnectionFactory;
     }
-
-
 
     @Bean
     public JdkSerializationRedisSerializer jdkSerializationRedisSerializer() {
@@ -66,7 +63,7 @@ public class CacheConfig extends CachingConfigurerSupport{
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
         // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(60*60*24);
+        cacheManager.setDefaultExpiration(60 * 60 * 24);
         return cacheManager;
     }
 

@@ -24,30 +24,28 @@ import java.util.Date;
 //@Component
 public class PopulateSchemaBean {
 
-    @Autowired
-    ResourceTypeService resourceTypeService;
+    private static String ANTPATH = "classpath:resourceTypes/*.json";
 
 //    @Autowired
 //    RequestMappingHandlerAdapter adapter;
-
-    private static String ANTPATH = "classpath:resourceTypes/*.json";
-
     private static Logger logger = LogManager.getLogger(PopulateSchemaBean.class);
+    @Autowired
+    ResourceTypeService resourceTypeService;
 
     @PostConstruct
     public void afterPropertiesSet() throws Exception {
         logger.info("Initializing schema");
         ClassLoader cl = this.getClass().getClassLoader();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
-        Resource[] resources = resolver.getResources(ANTPATH) ;
-        for (Resource resource: resources){
+        Resource[] resources = resolver.getResources(ANTPATH);
+        for (Resource resource : resources) {
             addResourceType(resource);
         }
     }
 
     private void addResourceType(Resource type) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResourceType resourceType = mapper.readValue(type.getInputStream(),ResourceType.class);
+        ResourceType resourceType = mapper.readValue(type.getInputStream(), ResourceType.class);
         ResourceType existing = resourceTypeService.getResourceType(resourceType.getName());
         if (existing == null) {
             resourceType.setCreationDate(new Date());

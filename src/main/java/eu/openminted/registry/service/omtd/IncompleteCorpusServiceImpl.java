@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 @Primary
 public class IncompleteCorpusServiceImpl extends OmtdGenericService<Corpus> implements IncompleteCorpusService {
 
-    private Logger logger = LogManager.getLogger(IncompleteCorpusServiceImpl.class);
-
     @Autowired
     ResourceCRUDService<Corpus> corpusService;
+    private Logger logger = LogManager.getLogger(IncompleteCorpusServiceImpl.class);
 
     public IncompleteCorpusServiceImpl() {
         super(Corpus.class);

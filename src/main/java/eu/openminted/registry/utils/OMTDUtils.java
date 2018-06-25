@@ -12,9 +12,8 @@ import java.util.regex.Pattern;
 
 public class OMTDUtils {
 
+    final static private Pattern oldPattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
     private static Logger logger = LogManager.getLogger(OMTDUtils.class);
-
-    final static  private Pattern oldPattern = Pattern.compile(".*?\\?archiveId=(?<archive>[\\d\\w-]+)$");
 
     static public IdentificationInfo resolveIdentificationInfo(BaseMetadataRecord resource) {
         if (resource instanceof Component) {
@@ -47,9 +46,10 @@ public class OMTDUtils {
         if (!archiveMatcher.find()) {
             Optional<ResourceIdentifier> resourceIdentifier = corpus.getCorpusInfo()
                     .getIdentificationInfo().getResourceIdentifiers()
-                    .stream().filter(r -> r.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER)
-                    && r.getSchemeURI().equals("archiveID")).findAny();
-            if(resourceIdentifier.isPresent()) {
+                    .stream().filter(r -> r.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum
+                            .OTHER)
+                            && r.getSchemeURI().equals("archiveID")).findAny();
+            if (resourceIdentifier.isPresent()) {
                 archiveId = resourceIdentifier.get().getValue();
             } else {
                 throw new ServiceException("No archive Id was present");
@@ -67,9 +67,11 @@ public class OMTDUtils {
             logger.error("Application with id not found");
             throw new ServiceException("Application with id not found");
         }
-        List<ResourceIdentifier> applicationIdentifiers = application.getComponentInfo().getIdentificationInfo().getResourceIdentifiers();
+        List<ResourceIdentifier> applicationIdentifiers = application.getComponentInfo().getIdentificationInfo()
+                .getResourceIdentifiers();
         Optional<ResourceIdentifier> workflowIdentifier = applicationIdentifiers.stream()
-                .filter(identifier -> identifier.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER)
+                .filter(identifier -> identifier.getResourceIdentifierSchemeName().equals
+                        (ResourceIdentifierSchemeNameEnum.OTHER)
                         && identifier.getSchemeURI().equals("workflowName")).findAny();
         if (!workflowIdentifier.isPresent()) {
             throw new ServiceException("No workflow name found in this application");

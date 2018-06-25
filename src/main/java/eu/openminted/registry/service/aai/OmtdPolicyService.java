@@ -1,6 +1,7 @@
 package eu.openminted.registry.service.aai;
 
-import eu.openminted.registry.domain.*;
+import eu.openminted.registry.domain.BaseMetadataRecord;
+import eu.openminted.registry.domain.IdentificationInfo;
 import eu.openminted.registry.service.policy.PolicyInterface;
 import eu.openminted.registry.utils.OMTDUtils;
 import org.springframework.stereotype.Service;

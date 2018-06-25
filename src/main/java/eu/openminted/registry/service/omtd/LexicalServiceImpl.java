@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 @Primary
 public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements AncillaryService<Lexical> {
 
+    @Value("${registry.host}/request/store/download?archiveId=")
+    private String hostUrl;
+
     public LexicalServiceImpl() {
         super(Lexical.class);
     }
@@ -21,9 +24,6 @@ public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements A
     public String getResourceType() {
         return "lexical";
     }
-
-    @Value("${registry.host}/request/store/download?archiveId=")
-    private String hostUrl;
 
     @Override
     public Lexical uploadZip(Lexical ancillary, String archiveId) {

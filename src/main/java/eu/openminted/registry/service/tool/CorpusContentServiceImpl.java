@@ -4,9 +4,7 @@ package eu.openminted.registry.service.tool;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.CorpusContent;
-import eu.openminted.registry.domain.PublicationInfo;
+import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusContentService;
 import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.common.StoreResponse;
@@ -24,21 +22,14 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -49,20 +40,16 @@ import java.util.stream.Collectors;
 @Primary
 public class CorpusContentServiceImpl implements CorpusContentService {
 
-    private Logger logger = Logger.getLogger(CorpusContentServiceImpl.class);
-
+    private final String redis_prefix = "corpuscontent:id:";
     @Autowired
     StoreRESTClient storeClient;
 
     @Autowired
     @Qualifier("corpusService")
     ResourceCRUDService<Corpus> corpusService;
-
+    private Logger logger = Logger.getLogger(CorpusContentServiceImpl.class);
     @Autowired
     private RedisTemplate<String, CorpusContent> template;
-
-    private final String redis_prefix = "corpuscontent:id:";
-
 
     @Override
     public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
@@ -224,7 +211,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
                     false, true, true);
 
             // filter out files not inside the following folders: abstract, fulltext, metadata, annotations
-            if(filepaths == null) {
+            if (filepaths == null) {
                 throw new ServiceException("Store did not return anything");
             }
             filepaths.removeIf(file -> !file.contains("/abstract/") && !file.contains("/fulltext/") &&

@@ -1,30 +1,40 @@
 package eu.openminted.registry.beans.security;
 
 import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTClaimsSet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.client.OIDCAuthoritiesMapper;
-import org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority;
 import org.mitre.openid.connect.model.UserInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Created by stefanos on 23/6/2017.
  */
+@Component
 public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
 
-    private static Logger logger = LoggerFactory.getLogger(OMTDAuthoritiesMapper.class);
-
     final private static String ROLE_CLAIMS = "edu_person_entitlements";
+    private static Logger logger = LogManager.getLogger(OMTDAuthoritiesMapper.class);
+    private Map<String, SimpleGrantedAuthority> userRolesMap;
 
-    private Map<String,SimpleGrantedAuthority> userRolesMap;
+    public OMTDAuthoritiesMapper() throws IOException {
+        userRolesMap = new HashMap<>();
+        Properties properties = new Properties();
+        String filename = "/eu/openminted/registry/maps/aaiRoles.xml";
+        org.springframework.core.io.Resource resource = new ClassPathResource(filename);
+        properties.loadFromXML(resource.getInputStream());
+        for (final String name : properties.stringPropertyNames()) {
+            userRolesMap.put(name, new SimpleGrantedAuthority(properties.getProperty(name)));
+        }
+    }
 
-    OMTDAuthoritiesMapper(Map<String,String> userRoles) {
+    OMTDAuthoritiesMapper(Map<String, String> userRoles) {
         userRolesMap = new HashMap<>();
         userRoles.forEach((omtdRole, appRole) -> userRolesMap.put(omtdRole, new SimpleGrantedAuthority(appRole)));
     }
@@ -33,7 +43,7 @@ public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
     public Collection<? extends GrantedAuthority> mapAuthorities(JWT idToken, UserInfo userInfo) {
         Set<GrantedAuthority> out = new HashSet<>();
         out.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if(userInfo.getSource().getAsJsonArray(ROLE_CLAIMS) != null) {
+        if (userInfo.getSource().getAsJsonArray(ROLE_CLAIMS) != null) {
             userInfo.getSource().getAsJsonArray(ROLE_CLAIMS).forEach(role -> {
                 SimpleGrantedAuthority authority = userRolesMap.get(role.getAsString());
                 if (authority != null) {

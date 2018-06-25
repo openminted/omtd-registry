@@ -3,15 +3,9 @@ package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.ParserService;
-import eu.openminted.registry.core.service.SearchService;
-import eu.openminted.registry.core.service.ServiceException;
-import eu.openminted.registry.domain.Corpus;
-import eu.openminted.registry.domain.ResourceIdentifier;
-import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
-import eu.openminted.registry.service.CorpusService;
-import eu.openminted.registry.service.IncompleteCorpusService;
-import eu.openminted.registry.service.WebannoService;
+import eu.openminted.registry.core.service.*;
+import eu.openminted.registry.domain.*;
+import eu.openminted.registry.service.*;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
@@ -40,47 +34,38 @@ import java.util.concurrent.ExecutionException;
 
 
 @Service("webannoService")
-public class WebannoServiceImpl implements WebannoService{
-
-    private Logger logger = LogManager.getLogger(WebannoServiceImpl.class);
-
-    private RestTemplate restTemplate = new RestTemplateBuilder().customizers(new LoggingCustomizer()).build();
-
-    @Value("${webanno.host:https://webanno.openminted.eu/api/v2}")
-    private String webannoHost;
-
-    @Value("${webanno.username}")
-    private String webannoUsername;
-
-    @Value("${webanno.password}")
-    private String webannoPassword;
-
-    @Autowired
-    CorpusService corpusService;
-
-    @Autowired
-    IncompleteCorpusService incompleteCorpusService;
-
-    @Autowired
-    SearchService searchService;
-
-    @Autowired
-    StoreRESTClient storeClient;
+public class WebannoServiceImpl implements WebannoService {
 
     @Autowired
     public ParserService parserPool;
+    @Autowired
+    CorpusService corpusService;
+    @Autowired
+    IncompleteCorpusService incompleteCorpusService;
+    @Autowired
+    SearchService searchService;
+    @Autowired
+    StoreRESTClient storeClient;
+    private Logger logger = LogManager.getLogger(WebannoServiceImpl.class);
+    private RestTemplate restTemplate = new RestTemplateBuilder().customizers(new LoggingCustomizer()).build();
+    @Value("${webanno.host:https://webanno.openminted.eu/api/v2}")
+    private String webannoHost;
+    @Value("${webanno.username}")
+    private String webannoUsername;
+    @Value("${webanno.password}")
+    private String webannoPassword;
 
     @Override
     public boolean createProject(String corpusId) {
 
 
         Corpus corpus = corpusService.get(corpusId);
-        if(corpus==null)
+        if (corpus == null)
             return false;
 
-        ResourceIdentifier tempIdentifier = find(corpus,"archiveID");
-        if(tempIdentifier==null) {
-            logger.info("ArchiveID not found in corpus with id:"+corpusId);
+        ResourceIdentifier tempIdentifier = find(corpus, "archiveID");
+        if (tempIdentifier == null) {
+            logger.info("ArchiveID not found in corpus with id:" + corpusId);
             return false;
         }
         String newCorpusId = tempIdentifier.getValue();
@@ -88,8 +73,8 @@ public class WebannoServiceImpl implements WebannoService{
 
         newCorpusId = storeClient.cloneArchive(newCorpusId).getResponse();
 
-        if(newCorpusId==null){
-            logger.info("Failed to clone archive with id: "+oldCorpusId);
+        if (newCorpusId == null) {
+            logger.info("Failed to clone archive with id: " + oldCorpusId);
             return false;
         }
 
@@ -99,45 +84,47 @@ public class WebannoServiceImpl implements WebannoService{
         resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().remove(tempIdentifier);
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
-        
+
         String projectName = corpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         map.add("name", projectName);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Basic "+basicAuth());
+        headers.add("Authorization", "Basic " + basicAuth());
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        ResponseEntity response = restTemplate.postForEntity(webannoHost+"/projects",request, String.class);
-        if(response.getStatusCode() == HttpStatus.CREATED) {
+        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
+        if (response.getStatusCode() == HttpStatus.CREATED) {
 
             int projectId = new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
 
             resourceIdentifier = new ResourceIdentifier();
             resourceIdentifier.setSchemeURI("projectID");
-            resourceIdentifier.setValue(projectId+"");
+            resourceIdentifier.setValue(projectId + "");
             resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
             corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
 
-            File metadata_zip = new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId + ".zip");
+            File metadata_zip = new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId
+                    + ".zip");
             File metadata_dir = new File(FilenameUtils.removeExtension(metadata_zip.toString()) + "/annotations");
             if (!metadata_dir.exists()) {
                 metadata_zip.getParentFile().mkdirs();
-                logger.info("Searching @ " + storeClient.getEndpoint() + "    with arguments id:" + newCorpusId + "   path:" + metadata_zip.toString());
+                logger.info("Searching @ " + storeClient.getEndpoint() + "    with arguments id:" + newCorpusId + "  " +
+                        " path:" + metadata_zip.toString());
                 StoreResponse responseStore = storeClient.fetchAnnotations(newCorpusId, metadata_zip.toString());
                 if (responseStore.getResponse().equals("true")) {
                     try {
-                        deleteFiles(newCorpusId,"fulltext");
+                        deleteFiles(newCorpusId, "fulltext");
                         File save_dir = new File(metadata_zip.getParent().toString());
                         ZipToDir.unpackToWorkDir(metadata_zip, save_dir);
                         for (File file : metadata_dir.listFiles()) {
-                            if(FilenameUtils.getExtension(file.getName()).equals("xmi")) {
+                            if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
                                 uploadDocument(projectId, file);
                             }
                         }
-                        storeClient.moveFile(newCorpusId,"annotations","fulltext");
-                        deleteFiles(newCorpusId,"annotations");
+                        storeClient.moveFile(newCorpusId, "annotations", "fulltext");
+                        deleteFiles(newCorpusId, "annotations");
                         corpus.getMetadataHeaderInfo().setRevision("output");
                         incompleteCorpusService.add(corpus);
                         save_dir.delete();
@@ -147,7 +134,8 @@ public class WebannoServiceImpl implements WebannoService{
                         return false;
                     } finally { // delete zip file
                         try {
-                            new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId).delete();
+                            new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId)
+                                    .delete();
                         } catch (Exception e) {
                             logger.error("Failed deleting .zip", e);
                         }
@@ -156,7 +144,7 @@ public class WebannoServiceImpl implements WebannoService{
             }
 
             return true;
-        }else {
+        } else {
             logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
             logger.error(response.getBody().toString());
             return false;
@@ -166,70 +154,71 @@ public class WebannoServiceImpl implements WebannoService{
     @Override
     public void triggerRetrieval(long projectId, String projectName) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Basic "+basicAuth());
+        headers.add("Authorization", "Basic " + basicAuth());
 
         HttpEntity request = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(webannoHost+"/projects/"+Math.toIntExact(projectId)+"/export.zip", HttpMethod.GET, request, byte[].class);
-        if(response.getStatusCode() == HttpStatus.OK) {
+        ResponseEntity<byte[]> response = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
+                (projectId) + "/export.zip", HttpMethod.GET, request, byte[].class);
+        if (response.getStatusCode() == HttpStatus.OK) {
             try {
-                File temp = new File(System.getProperty("java.io.tmpdir") +"/"+ projectName + ".zip");
+                File temp = new File(System.getProperty("java.io.tmpdir") + "/" + projectName + ".zip");
                 Files.write(temp.toPath(), response.getBody());
-                Corpus corpus = findIdentifier(Math.toIntExact(projectId),"projectID");
-                if(corpus!=null){
+                Corpus corpus = findIdentifier(Math.toIntExact(projectId), "projectID");
+                if (corpus != null) {
                     String archiveId = findId(corpus, "archiveID");
                     File save_dir = new File(temp.getParent());
                     ZipToDir.unpackToWorkDir(temp, save_dir);
-                    File annotations_dir = new File(save_dir.getAbsolutePath()+"/source");
+                    File annotations_dir = new File(save_dir.getAbsolutePath() + "/source");
                     for (File file : annotations_dir.listFiles()) {
-                        if(FilenameUtils.getExtension(file.getName()).equals("xmi")) {
-                            storeClient.storeFile(file,archiveId,"annotations/"+file.getName());
+                        if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
+                            storeClient.storeFile(file, archiveId, "annotations/" + file.getName());
                         }
                     }
                     storeClient.finalizeArchive(archiveId);
-                    String omtdId = findId(corpus,"OMTD");
-                    if(omtdId!=null)
+                    String omtdId = findId(corpus, "OMTD");
+                    if (omtdId != null)
                         incompleteCorpusService.move(omtdId);
                     else
                         logger.debug("Could not find identifier OMTD of corpus");
-                }else
+                } else
                     logger.debug("Could not find identifier archiveID of corpus");
 
                 deleteProject(Math.toIntExact(projectId));
             } catch (IOException e) {
                 logger.error(e);
             }
-        }else {
+        } else {
             logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
             logger.error(response.getBody().toString());
         }
 
 
-
     }
 
-    private void deleteFiles(String corpusId, String folder){
-        List<String> listFiles = storeClient.listFiles(corpusId+"/"+folder,false,false,true);
-        for(String file : listFiles){
+    private void deleteFiles(String corpusId, String folder) {
+        List<String> listFiles = storeClient.listFiles(corpusId + "/" + folder, false, false, true);
+        for (String file : listFiles) {
             logger.info("Deleting :" + file);
-            storeClient.deleteFile(corpusId,folder+"/"+file.split("/")[2]);
+            storeClient.deleteFile(corpusId, folder + "/" + file.split("/")[2]);
         }
     }
 
-    private void uploadDocument(int projectId, File file){
-        MultiValueMap<String, Object> map= new LinkedMultiValueMap<String, Object>();
+    private void uploadDocument(int projectId, File file) {
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
         map.add("name", file.getName());
         map.add("format", "xmi");
         map.add("content", new FileSystemResource(file));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Basic "+basicAuth());
+        headers.add("Authorization", "Basic " + basicAuth());
 
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(map, headers);
-        ResponseEntity response = restTemplate.postForEntity(webannoHost+"/projects/"+String.valueOf(projectId)+"/documents",request, String.class);
+        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects/" + String.valueOf(projectId) +
+                "/documents", request, String.class);
 
-        if(response.getStatusCode()!=HttpStatus.CREATED) {
-            logger.info("Could not upload " + file.getName()+ " @ Webanno. Moving on to the next one");
-        }else{
+        if (response.getStatusCode() != HttpStatus.CREATED) {
+            logger.info("Could not upload " + file.getName() + " @ Webanno. Moving on to the next one");
+        } else {
             logger.info("Uploaded " + file.getName());
         }
 
@@ -238,45 +227,51 @@ public class WebannoServiceImpl implements WebannoService{
     private void deleteProject(int projectId) {
         logger.info("Deleting " + projectId + "   " + basicAuth());
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Basic "+basicAuth());
+        headers.add("Authorization", "Basic " + basicAuth());
 
 
         HttpEntity request = new HttpEntity<>(headers);
-        restTemplate.delete(webannoHost+"/projects/"+projectId,headers, String.class);
+        restTemplate.delete(webannoHost + "/projects/" + projectId, headers, String.class);
 
     }
 
-    private String findId(Corpus corpus,String idType){
-        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers()
+    private String findId(Corpus corpus, String idType) {
+        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo()
+                .getResourceIdentifiers()
                 .stream()
-                .filter(p->p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) && idType.equals(p.getSchemeURI()))
+                .filter(p -> p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) &&
+                        idType.equals(p.getSchemeURI()))
                 .findFirst();
-        if(!identifier.isPresent()) {
+        if (!identifier.isPresent()) {
             return null;
-        }else{
+        } else {
             return identifier.get().getValue();
         }
     }
 
-    private ResourceIdentifier find(Corpus corpus, String idType){
-        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers()
+    private ResourceIdentifier find(Corpus corpus, String idType) {
+        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo()
+                .getResourceIdentifiers()
                 .stream()
-                .filter(p->p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) && idType.equals(p.getSchemeURI()))
+                .filter(p -> p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) &&
+                        idType.equals(p.getSchemeURI()))
                 .findFirst();
         return identifier.orElse(null);
     }
 
-    private Corpus findIdentifier(int projectId,String identifierName) {
+    private Corpus findIdentifier(int projectId, String identifierName) {
         try {
             Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", "ASC");
             if(paging==null) {
                 return null;
             }
 
-            for(Resource res: (List<Resource>) paging.getResults()) {
+            for (Resource res : (List<Resource>) paging.getResults()) {
                 Corpus corpus = parserPool.deserialize(res, Corpus.class).get();
-                for (ResourceIdentifier resourceIdentifier : corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers()){
-                    if (resourceIdentifier.getSchemeURI()!=null && resourceIdentifier.getSchemeURI().equals(identifierName) && Integer.parseInt(resourceIdentifier.getValue()) == projectId) {
+                for (ResourceIdentifier resourceIdentifier : corpus.getCorpusInfo().getIdentificationInfo()
+                        .getResourceIdentifiers()) {
+                    if (resourceIdentifier.getSchemeURI() != null && resourceIdentifier.getSchemeURI().equals
+                            (identifierName) && Integer.parseInt(resourceIdentifier.getValue()) == projectId) {
                         return corpus;
                     }
                 }
@@ -290,7 +285,7 @@ public class WebannoServiceImpl implements WebannoService{
     }
 
 
-    private String basicAuth(){
-        return new String(Base64.encodeBytes((webannoUsername+":"+webannoPassword).getBytes()).getBytes());
+    private String basicAuth() {
+        return new String(Base64.encodeBytes((webannoUsername + ":" + webannoPassword).getBytes()).getBytes());
     }
 }

@@ -15,6 +15,7 @@ for i in application component corpus incompletecorpus language lexical corpusbu
 	curl -X DELETE http://$1:8080/omtd-registry/resourceType/$i
 done
 
+
 psql -h $1 -Uvrasidas registry <<endOfMessage
 delete from schemadatabase where originalurl like '%.xsd';
 endOfMessage

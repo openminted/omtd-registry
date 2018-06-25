@@ -4,10 +4,7 @@ import eu.openminted.registry.domain.file.FileStats;
 import eu.openminted.registry.domain.file.Info;
 import eu.openminted.registry.service.StoreService;
 import eu.openminted.store.restclient.StoreRESTClient;
-import org.apache.commons.io.FileDeleteStrategy;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -122,14 +117,15 @@ public class StoreServiceImpl implements StoreService {
             List<File> results = Files.walk(directory)
                     .parallel()
                     .filter(Files::isRegularFile)
-                    .map(file -> uploadFile(file, archiveId,directory))
+                    .map(file -> uploadFile(file, archiveId, directory))
                     .collect(Collectors.toList());
             long size = results.stream().map(File::length).reduce(0L, (f1, f2) -> f1 + f2);
             stats.setFileSize(size);
             stats.setFileCount((long) results.size());
             stats.setInfo(new ArrayList<>());
             Map<String, Long> infos = results.stream()
-                    .collect(Collectors.groupingBy(file -> FilenameUtils.getExtension(file.getName()), Collectors.counting()));
+                    .collect(Collectors.groupingBy(file -> FilenameUtils.getExtension(file.getName()), Collectors
+                            .counting()));
             infos.forEach((type, count) -> stats.getInfo().add(new Info(type, count)));
 
             logger.info("Done uploading files");
@@ -228,7 +224,8 @@ public class StoreServiceImpl implements StoreService {
         }
     }
 
-    private void iterateThroughDirectories(StoreRESTClient storeClient, String archiveId, File file, String parent) throws IOException {
+    private void iterateThroughDirectories(StoreRESTClient storeClient, String archiveId, File file,
+                                           String parent) throws IOException {
         if (file.getName().matches("^\\.[_|A-Z|a-z|0-9].*")
                 || file.getName().matches(".*[M|m][A|a][C|c][O|o][S|s][X|x].*")) {
 

@@ -2,15 +2,16 @@ package eu.openminted.registry.beans;
 
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
+import eu.openminted.registry.service.tool.DockerImageProviderImpl;
+import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
+import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 
 @Configuration
-@PropertySource(value = { "classpath:application.properties", "classpath:registry.properties"} )
+@PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class GalaxyConfig {
 
     static final private Logger logger = LogManager.getLogger(GalaxyConfig.class);
@@ -37,5 +38,24 @@ public class GalaxyConfig {
     public GalaxyInstance galaxyExecutorInstanceFactory() {
         logger.info("Connected to galaxy executor in host " + galaxyEditorHost);
         return GalaxyInstanceFactory.get(galaxyExecutorHost, galaxyExecutorAPI);
+    }
+
+    // Beans for Galaxy wrappers generation ...
+    @Bean
+    public GalaxyWrapperGenerator galaxyWrapperGenerator() {
+        logger.info("Creating:" + GalaxyWrapperGenerator.class.getName());
+        return new GalaxyWrapperGenerator();
+    }
+
+    @Bean
+    public GalaxyToolWrapperWriter galaxyToolWrapperWriter() {
+        logger.info("Creating:" + GalaxyToolWrapperWriter.class.getName());
+        return new GalaxyToolWrapperWriter();
+    }
+
+    @Bean
+    public DockerImageProviderImpl dockerImageProviderImpl() {
+        logger.info("Creating:" + DockerImageProviderImpl.class.getName());
+        return new DockerImageProviderImpl();
     }
 }

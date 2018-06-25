@@ -2,34 +2,24 @@ package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.domain.ComponentDistributionInfo;
 import eu.openminted.registry.domain.FrameworkEnum;
-import eu.openminted.registry.service.DockerImageProvider;
-import eu.openminted.registry.service.WorkflowEngineComponent;
-import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
+import eu.openminted.registry.service.*;
 import eu.openminted.workflows.galaxytool.Tool;
-import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
-import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
-import eu.openminted.workflows.galaxywrappers.Utils;
+import eu.openminted.workflows.galaxywrappers.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.file.*;
 import java.util.List;
 
 @Component
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry {
 
-    private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
     private final static String galaxyRootTools = "/opt/galaxy/tools/";
     private final static String prefix = "wrapper_";
-
+    private static Logger logger = LogManager.getLogger(WorkflowEngineComponentRegistry.class);
     @Autowired
     private GalaxyWrapperGenerator galaxyWrapperGenerator;
 
@@ -39,13 +29,40 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     @Autowired
     private DockerImageProvider dockerImageProvider;
 
+    private static Path getWrapperName(String folder, String resourceID) {
+        return Paths.get(galaxyRootTools + folder + prefix + resourceID + ".xml");
+    }
+
+    private static String getWrapperFolder(eu.openminted.registry.domain.Component component) {
+        String ret = "";
+        List<ComponentDistributionInfo> distributionInfos = component.getComponentInfo().getDistributionInfos();
+        // Prepare Galaxy wrapper generation&copying.
+        if (Utils.isDocker(distributionInfos)) { // Docker-packaged components
+            ret = "omtdDocker/";
+        } else if (Utils.isWebService(distributionInfos)) {  // WS-packaged components
+            ret = "omtdDocker/";
+        } else { // UIMA/GATE components
+            String framework = component.getComponentInfo().getComponentCreationInfo().getFramework().value();
+            if (framework.equals(FrameworkEnum.UIMA.value())) {
+                ret = "omtdUIMA/";
+
+            } else if (framework.equals(FrameworkEnum.GATE.value())) {
+                ret = "omtdGATE/";
+            }
+        }
+        return ret;
+    }
+
     @Override
-    public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(eu.openminted.registry.domain.Component componentMeta) {
+    public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(
+            eu.openminted.registry.domain.Component componentMeta) {
 
         WorkflowEngineComponent wec = new WorkflowEngineComponent();
 
-        String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
-        String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
+        String resourceID = componentMeta.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0)
+                .getValue();
+        String resourceName = componentMeta.getComponentInfo().getIdentificationInfo().getResourceNames().get(0)
+                .getValue();
 
         List<ComponentDistributionInfo> distributionInfos = componentMeta.getComponentInfo().getDistributionInfos();
         String galaxyTrgFolder = "";
@@ -97,15 +114,15 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 
     @Override
     public void deleteTDMComponentFromWorkflowEngine(eu.openminted.registry.domain.Component component) {
-        String resourceID = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0).getValue();
+        String resourceID = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0)
+                .getValue();
         String folder = getWrapperFolder(component);
         try {
-            Files.deleteIfExists(getWrapperName(folder,resourceID));
+            Files.deleteIfExists(getWrapperName(folder, resourceID));
         } catch (IOException e) {
-            logger.error("Error deleting component",e);
+            logger.error("Error deleting component", e);
         }
     }
-
 
     private File writeWrapperToDisk(Tool tool, String resourceID) {
         String wrapperXML = galaxyToolWrapperWriter.serialize(tool);
@@ -125,7 +142,6 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
 
         return tmpFileForWrapper;
     }
-
 
     private String copyViaNFSToGalaxyToolsFolder(File tmpForWrapper, String trgFolder, String resourceID) {
 
@@ -147,30 +163,6 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
             logger.error("Error writing to galaxy NFS folder", e);
         }
         return null;
-    }
-
-    private static Path getWrapperName(String folder, String resourceID) {
-        return Paths.get(galaxyRootTools + folder + prefix + resourceID + ".xml");
-    }
-
-    private static String getWrapperFolder(eu.openminted.registry.domain.Component component) {
-        String ret = "";
-        List<ComponentDistributionInfo> distributionInfos = component.getComponentInfo().getDistributionInfos();
-        // Prepare Galaxy wrapper generation&copying.
-        if (Utils.isDocker(distributionInfos)) { // Docker-packaged components
-            ret = "omtdDocker/";
-        } else if (Utils.isWebService(distributionInfos)) {  // WS-packaged components
-            ret = "omtdDocker/";
-        } else { // UIMA/GATE components
-            String framework = component.getComponentInfo().getComponentCreationInfo().getFramework().value();
-            if (framework.equals(FrameworkEnum.UIMA.value())) {
-                ret = "omtdUIMA/";
-
-            } else if (framework.equals(FrameworkEnum.GATE.value())) {
-                ret = "omtdGATE/";
-            }
-        }
-        return ret;
     }
 
 }

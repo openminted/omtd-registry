@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
  */
 @Service("languageService")
 @Primary
-public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements AncillaryService<LanguageDescription> {
+public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription> implements
+        AncillaryService<LanguageDescription> {
+
+    @Value("${registry.host}/request/store/download?archiveId=")
+    private String hostUrl;
 
     public LanguageServiceImpl() {
         super(LanguageDescription.class);
@@ -21,9 +25,6 @@ public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription>
     public String getResourceType() {
         return "language";
     }
-
-    @Value("${registry.host}/request/store/download?archiveId=")
-    private String hostUrl;
 
     @Override
     public LanguageDescription uploadZip(LanguageDescription ancillary, String archiveId) {
