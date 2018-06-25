@@ -1,7 +1,7 @@
 package eu.openminted.registry.controllers.tools;
 
+import eu.openminted.registry.controllers.requests.ProjectStateChangeMessage;
 import eu.openminted.registry.service.WebannoService;
-import eu.openminted.registry.service.requests.ProjectStateChangeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
