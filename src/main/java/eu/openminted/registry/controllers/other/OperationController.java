@@ -1,9 +1,9 @@
-package eu.openminted.registry.service.other;
+package eu.openminted.registry.controllers.other;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.operation.Operation;
-import eu.openminted.registry.service.GenericRestController;
 import eu.openminted.registry.service.OperationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping({"operation", "/request/operation"})
+@RequestMapping({"/request/operation"})
+@Api(value = "/request/operation", description = "Creates and controls the operations executed on Galaxy", tags="Operations")
 public class OperationController extends OtherRestController<Operation> {
 
     @Autowired

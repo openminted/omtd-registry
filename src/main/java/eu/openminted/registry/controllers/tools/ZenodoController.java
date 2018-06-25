@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.tools;
+package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.service.ZenodoService;
 import org.springframework.beans.factory.annotation.Autowired;

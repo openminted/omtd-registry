@@ -1,4 +1,4 @@
-package eu.openminted.registry.service;
+package eu.openminted.registry.controllers;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

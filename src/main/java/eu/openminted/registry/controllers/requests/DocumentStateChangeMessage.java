@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.requests;
+package eu.openminted.registry.controllers.requests;
 
 public class DocumentStateChangeMessage {
 

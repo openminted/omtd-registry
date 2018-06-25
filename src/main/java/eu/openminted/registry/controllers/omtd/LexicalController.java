@@ -1,9 +1,10 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.domain.Lexical;
 import eu.openminted.registry.service.AncillaryService;
 import eu.openminted.registry.service.StoreService;
 import eu.openminted.registry.service.ValidateInterface;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/request/lexical")
+@Api(value = "/request/lexical", description = "Operations about OMTD Annotation Resources.", tags="Annotation Resources")
 public class LexicalController extends OmtdRestController<Lexical> {
 
     @Autowired

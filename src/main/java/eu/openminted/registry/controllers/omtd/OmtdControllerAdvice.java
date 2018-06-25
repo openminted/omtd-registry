@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.exception.ServerError;
 import org.apache.logging.log4j.Logger;

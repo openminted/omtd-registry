@@ -1,10 +1,11 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.domain.LanguageDescription;
 import eu.openminted.registry.service.AncillaryService;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.StoreService;
 import eu.openminted.registry.service.ValidateInterface;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/request/language")
+@Api(value = "/request/language", description = "Operations about OMTD Models and Grammars.",tags="Models and Grammars")
 public class LanguageController extends GenericRestController<LanguageDescription> {
 
     @Autowired

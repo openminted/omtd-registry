@@ -1,4 +1,4 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.domain.Corpus;
@@ -9,6 +9,7 @@ import eu.openminted.registry.service.CorpusContentService;
 import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.StoreService;
 import eu.openminted.registry.service.ValidateInterface;
+import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.parser.ParseContext;
@@ -29,13 +30,13 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/request/corpus")
+@Api(value = "/request/corpus", description = "Operations about OMTD Corpora.",tags="Corpora")
 public class CorpusController extends OmtdRestController<Corpus> {
 
     @Autowired

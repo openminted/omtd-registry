@@ -1,7 +1,8 @@
-package eu.openminted.registry.service.tools;
+package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.domain.MavenComponent;
 import eu.openminted.registry.service.MavenResolverService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Api(description = "Resolve mvn coordinates.", tags="Maven Resolver")
 public class MavenResolverController {
 
     @Autowired

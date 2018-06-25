@@ -1,9 +1,10 @@
-package eu.openminted.registry.service.tools;
+package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.ResourceService;
 import eu.openminted.registry.service.RequestService;
+import io.swagger.annotations.Api;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Api(description = "Search all OMTD resources", tags="Search")
 public class RequestController {
 
     @Autowired

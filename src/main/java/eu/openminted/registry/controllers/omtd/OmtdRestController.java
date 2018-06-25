@@ -1,13 +1,11 @@
-package eu.openminted.registry.service.omtd;
+package eu.openminted.registry.controllers.omtd;
 
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
-import eu.openminted.registry.service.GenericRestController;
+import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.ValidateInterface;
-import eu.openminted.registry.service.policy.PolicyInterface;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
