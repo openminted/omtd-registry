@@ -2,15 +2,23 @@ package eu.openminted.registry.service.listener;
 
 import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
+import eu.openminted.registry.service.DockerService;
 import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.*;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,12 +40,33 @@ public class ComponentListener {
     private ParserService parserPool;
 
     @Autowired
+    private DockerService dockerService;
+
+    @Autowired
     private WorkflowEngineComponentRegistry workflowEngineComponentReg;
 
 
     @Autowired
     @Qualifier("applicationService")
     private ResourceCRUDService<Component> applicationService;
+
+    @Before("(execution (* eu.openminted.registry.service.omtd.*.add(eu.openminted.registry.domain" +
+            ".Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
+            ".domain.Component))) && args(component)")
+    public Component adddComponentListener(Component component) throws ExecutionException, InterruptedException {
+        ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo()
+                .getResourceIdentifiers().get(0);
+        ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
+        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
+            try{
+                dockerService.getSizeOfImage(distributionInfo.getDistributionLocation());
+            }catch (ServiceException e){
+                throw new ServiceException(e.getMessage());
+            }
+        }
+        return null;
+    }
 
     @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
             ".Component)) || " +
@@ -78,6 +107,14 @@ public class ComponentListener {
 
             logger.info("Found maven component, saving @ " + filePath);
         } else if (distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE) {
+            String url = distributionInfo.getDistributionLocation();
+            if(dockerService.getSizeOfImage(url)>0) {
+                DockerRunnable dockerRunnable = new DockerRunnable(url);
+                new Thread(dockerRunnable).start();
+            }else{
+
+            }
+
             filePath = dockerDataPath + "/";
             logger.info("Found docker component, saving @ " + filePath);
         } else {
@@ -112,5 +149,17 @@ public class ComponentListener {
         }
     }
 
+    public class DockerRunnable implements Runnable {
+
+        private String url;
+
+        public DockerRunnable(String url) {
+            this.url = url;
+        }
+
+        public void run() {
+            dockerService.downloadDockerFlow(url);
+        }
+    }
 
 }
