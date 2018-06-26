@@ -33,7 +33,7 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
         GenericFilterBean filter = new ApiKeyAuthorizationFilter(serverConfigurationService,
                 openIdConnectAuthenticationProvider);
         http.requestMatcher(new RequestHeaderRequestMatcher("Authorization"))
-                .sessionManagement()
+                .csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().and()
                 .authenticationProvider(openIdConnectAuthenticationProvider)
