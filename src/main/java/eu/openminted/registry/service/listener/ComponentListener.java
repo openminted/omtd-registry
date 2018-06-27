@@ -60,10 +60,12 @@ public class ComponentListener {
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
             try{
+                logger.info("Hellooooo");
                 dockerService.getSizeOfImage(distributionInfo.getDistributionLocation());
             }catch (ServiceException e){
                 throw new ServiceException(e.getMessage());
             }
+
         }
         return component;
     }
