@@ -8,7 +8,9 @@ import eu.openminted.registry.service.DockerService;
 import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +69,13 @@ public class ComponentListener {
         return component;
     }
 
-    @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
+    @Around("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
             ".Component)) || " +
             "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry" +
             ".domain.Component))) && args(component)")
-    public Component addComponentListener(Component component) throws ExecutionException, InterruptedException {
+    public Component addComponentListener(ProceedingJoinPoint pjp, Component component) throws Throwable {
         // Register it to workflow engine.
+        pjp.proceed();
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
         exportDirectory(component);
         return component;
