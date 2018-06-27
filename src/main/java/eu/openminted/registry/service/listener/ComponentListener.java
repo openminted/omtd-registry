@@ -55,8 +55,6 @@ public class ComponentListener {
             "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
             ".domain.Component))) && args(component)")
     public Component adddComponentListener(Component component) throws ServiceException{
-        ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo()
-                .getResourceIdentifiers().get(0);
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
             try{
