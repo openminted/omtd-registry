@@ -65,7 +65,7 @@ public class ComponentListener {
                 throw new ServiceException(e.getMessage());
             }
         }
-        return null;
+        return component;
     }
 
     @After("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
