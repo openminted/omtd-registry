@@ -9,6 +9,7 @@ import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.api.model.PushResponseItem;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
+import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.service.DockerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -234,45 +235,50 @@ public class DockerServiceImpl implements DockerService {
         public String version;
     }
 
-    private int getSizeOfImage(String url){
-        DockerImage image = parseLocation(url);
-        if(image.domain.equals(DEFAULT_PULL_SOURCE)){
-            ResponseEntity response = restTemplate.getForEntity("https://auth.docker.io/token?service=registry.docker.io&scope=repository:"+image.name+":*",String.class);
-            String token = new JSONObject(response.getBody().toString()).getString("token");
+    @Override
+    public int getSizeOfImage(String url) throws ServiceException{
+        try {
+            DockerImage image = parseLocation(url);
+            if (image.domain.equals(DEFAULT_PULL_SOURCE)) {
+                ResponseEntity response = restTemplate.getForEntity("https://auth.docker.io/token?service=registry.docker.io&scope=repository:" + image.name + ":*", String.class);
+                String token = new JSONObject(response.getBody().toString()).getString("token");
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization","Bearer "+token);
-            headers.setAccept(MediaType.parseMediaTypes("application/vnd.docker.distribution.manifest.v2+json"));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Bearer " + token);
+                headers.setAccept(MediaType.parseMediaTypes("application/vnd.docker.distribution.manifest.v2+json"));
 
-            MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+                MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-            response = restTemplate.exchange("https://registry.hub.docker.com/v2/"+image.name+"/manifests/"+image.version, HttpMethod.GET, request, String.class);
+                response = restTemplate.exchange("https://registry.hub.docker.com/v2/" + image.name + "/manifests/" + image.version, HttpMethod.GET, request, String.class);
 
-            JSONArray jsonArray = new JSONObject(response.getBody().toString()).getJSONArray("layers");
+                JSONArray jsonArray = new JSONObject(response.getBody().toString()).getJSONArray("layers");
 
-            int size=0;
-            for(int i=0; i<jsonArray.length();i++)
-                size+= jsonArray.getJSONObject(i).getInt("size");
+                int size = 0;
+                for (int i = 0; i < jsonArray.length(); i++)
+                    size += jsonArray.getJSONObject(i).getInt("size");
 
-            return size;
-        }else{
-            MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization","Basic "+new String(Base64.encodeBytes((dockerUsername+":"+dockerPassword).getBytes()).getBytes()));
-            headers.setAccept(MediaType.parseMediaTypes("application/vnd.docker.distribution.manifest.v2+json"));
+                return size;
+            } else {
+                MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Basic " + new String(Base64.encodeBytes((dockerUsername + ":" + dockerPassword).getBytes()).getBytes()));
+                headers.setAccept(MediaType.parseMediaTypes("application/vnd.docker.distribution.manifest.v2+json"));
 
 
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-            ResponseEntity response = restTemplate.exchange("http://"+image.domain+"/v2/"+image.name+"/manifests/"+image.version, HttpMethod.GET, request, String.class);
-            JSONArray jsonArray = new JSONObject(response.getBody().toString()).getJSONArray("layers");
+                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+                ResponseEntity response = restTemplate.exchange("http://" + image.domain + "/v2/" + image.name + "/manifests/" + image.version, HttpMethod.GET, request, String.class);
+                JSONArray jsonArray = new JSONObject(response.getBody().toString()).getJSONArray("layers");
 
-            int size=0;
-            for(int i=0; i<jsonArray.length();i++)
-                size+= jsonArray.getJSONObject(i).getInt("size");
+                int size = 0;
+                for (int i = 0; i < jsonArray.length(); i++)
+                    size += jsonArray.getJSONObject(i).getInt("size");
 
-            return size;
+                return size;
+            }
+        }catch (Exception e){
+            throw new ServiceException("Not authorized to access image or image not found");
         }
     }
 }
