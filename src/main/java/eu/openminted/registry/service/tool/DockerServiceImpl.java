@@ -236,7 +236,7 @@ public class DockerServiceImpl implements DockerService {
     }
 
     @Override
-    public int getSizeOfImage(String url){
+    public int getSizeOfImage(String url) throws ServiceException{
         try {
             DockerImage image = parseLocation(url);
             if (image.domain.equals(DEFAULT_PULL_SOURCE)) {
@@ -278,7 +278,7 @@ public class DockerServiceImpl implements DockerService {
                 return size;
             }
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException("Not authorized to access image or image not found");
         }
     }
 }

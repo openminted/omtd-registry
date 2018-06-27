@@ -54,16 +54,15 @@ public class ComponentListener {
             ".Component)) || " +
             "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
             ".domain.Component))) && args(component)")
-    public Component adddComponentListener(Component component) throws ExecutionException, InterruptedException {
+    public Component adddComponentListener(Component component) throws ServiceException{
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo()
                 .getResourceIdentifiers().get(0);
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
             try{
-                logger.info("Hellooooo");
                 dockerService.getSizeOfImage(distributionInfo.getDistributionLocation());
             }catch (ServiceException e){
-                throw new ServiceException(e.getMessage());
+                throw new ServiceException("Docker not found or not authorized to view");
             }
 
         }
