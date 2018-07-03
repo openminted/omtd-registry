@@ -1,0 +1,75 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdid",
+      "path": "//*[local-name()='metadataHeaderInfo']/*[local-name()='metadataRecordIdentifier']/text()",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "public",
+      "path": "//*[local-name()='public']/text()",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "multivalued": true,
+      "name": "personIdentifier",
+      "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "language",
+      "label": "Language",
+      "path": "//*[local-name()='languageTag']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "mediaType",
+      "label": "Media Type",
+      "path": "//*[local-name()='mediaType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "licence",
+      "label": "Licence",
+      "path": "//*[local-name()='licence']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "rights",
+      "label": "Rights",
+      "path": "//*[local-name()='rightsStmtName']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "mimeType",
+      "label": "Mime Type",
+      "path": "//*[local-name()='mimeType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "dataFormatSpecific",
+      "label": "Data Format Specific",
+      "path": "//*[local-name()='dataFormatSpecific']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "lexicalConceptualResourceType",
+      "label": "Lexical Conceptual Resource Type",
+      "path": "//*[local-name()='lexicalConceptualResourceType']/text()",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "lexical",
+  "aliasGroup": "resourceTypes",
+  "payloadType": "xml",
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share-schema/master/Schema/OMTD-SHARE-LexicalConceptualResource.xsd"
+}

@@ -1,0 +1,88 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdid",
+      "path": "//*[local-name()='metadataHeaderInfo']/*[local-name()='metadataRecordIdentifier']/text()",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "public",
+      "path": "//*[local-name()='public']/text()",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "multivalued": true,
+      "name": "personIdentifier",
+      "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "language",
+      "label": "Language",
+      "path": "//*[local-name()='language']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "licence",
+      "label": "Licence",
+      "path": "//*[local-name()='licence']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "lingualityType",
+      "label": "Linguality Type",
+      "path": "//*[local-name()='lingualityType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "multilingualityType",
+      "label": "Multilinguality Type",
+      "path": "//*[local-name()='multilingualityType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "domain",
+      "label": "Domain",
+      "path": "//*[local-name()='domain']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "corpusSubtype",
+      "label": "Corpus Subtype",
+      "path": "//*[local-name()='corpusSubtype']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "annotationType",
+      "label": "Annotation Type",
+      "path": "//*[local-name()='annotationType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rights",
+      "label": "Rights Statement",
+      "path": "//*[local-name()='rightsStatement']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "keyword",
+      "label": "Keyword",
+      "path": "//*[local-name()='keyword']/text()",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "incompletecorpus",
+  "aliasGroup": null,
+  "payloadType": "xml",
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share-schema/master/Schema/OMTD-SHARE-Corpus.xsd"
+}

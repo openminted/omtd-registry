@@ -10,15 +10,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/target/
+target/
 
 *.iml
 .idea
 
 #eclipse ignore files
-.settings/
-.project
-.classpath
+*.settings/
+*.project
+*.classpath
 bin/
 
 #test inactive folder

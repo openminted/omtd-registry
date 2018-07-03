@@ -1,0 +1,100 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdid",
+      "path": "//*[local-name()='metadataHeaderInfo']/*[local-name()='metadataRecordIdentifier']/text()",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "public",
+      "path": "//*[local-name()='public']/text()",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "multivalued": true,
+      "name": "personIdentifier",
+      "path": "//*[local-name()='metadataHeaderInfo']//*[local-name()='personIdentifier']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "language",
+      "label": "Language",
+      "path": "//*[local-name()='language']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "licence",
+      "label": "Licence",
+      "path": "//*[local-name()='licence']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rights",
+      "label": "Rights Statement",
+      "path": "//*[local-name()='rightsStatement']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "componentDistributionMedium",
+      "label": "Component Distribution Medium",
+      "path": "//*[local-name()='componentDistributionForm']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "processingResourceType",
+      "label": "Processing Resource Type",
+      "path": "//*[local-name()='outputResourceInfo']/*[local-name()='processingResourceType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "dataFormat",
+      "label": "Data Format",
+      "path": "//*[local-name()='outputResourceInfo']//*[local-name()='dataFormat']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "annotationType",
+      "label": "Annotation Type",
+      "path": "//*[local-name()='outputResourceInfo']//*[local-name()='annotationType']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "framework",
+      "label": "Framework",
+      "path": "//*[local-name()='framework']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "function",
+      "label": "Function",
+      "path": "//*[local-name()='function']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "keyword",
+      "label": "Keyword",
+      "path": "//*[local-name()='keyword']/text()",
+      "type": "java.lang.String"
+    },
+    {
+      "multivalued": true,
+      "name": "domain",
+      "label": "Domain",
+      "path": "//*[local-name()='domain']/text()",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "application",
+  "aliasGroup": "resourceTypes",
+  "payloadType": "xml",
+  "schemaUrl": "https://raw.githubusercontent.com/openminted/omtd-share-schema/master/Schema/OMTD-SHARE-Component.xsd"
+}
