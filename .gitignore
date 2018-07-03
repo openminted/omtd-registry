@@ -23,3 +23,8 @@ bin/
 
 #test inactive folder
 inactive/
+
+bin/
+*.pyc
+*.ts
+*.log
