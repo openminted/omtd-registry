@@ -14,7 +14,6 @@ public class LabelGenerate {
 
     final private static String[] MAPPING_FILES = {"languageId", "regionId", "scriptId", "variantId", "licence",
             "ontology"};
-
     private Map<String, Properties> mappings;
 
     LabelGenerate() throws IOException {
@@ -28,7 +27,8 @@ public class LabelGenerate {
         }
     }
 
-    static private String sanitize(String value) {
+    static private String sanitize(String value)
+    {
         value = value.replaceAll("([a-z])([A-Z])", "$1_$2");
         return value.replaceAll("[-!$%^&*()_+|~=`{}\\[\\]:\";'<>?,./]", "_").toUpperCase();
     }
