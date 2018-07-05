@@ -14,13 +14,13 @@ public interface ZenodoService {
     /**
      * Create and publish a corpus deposition.
      * @param corpusId
-     * @return Zenodo deposition DOI
+     * @return String Zenodo deposition DOI
      */
     String publishCorpus(String corpusId);
 
     /**
      * List all depositions for the currently authenticated user.
-     * @return
+     * @return depositions
      */
     JSONObject listDepositions();
 
@@ -38,20 +38,19 @@ public interface ZenodoService {
 
     /**
      * Retrieve a single deposition resource.
-     * @return
+     * @return deposition
      */
     JSONObject retrieveDeposition(String zenodoId);
 
     /**
      * Update an existing deposition resource.
-     * @return
+     * @return String
      */
     String updateDeposition(String zenodoId, String metadata);
 
     /**
      * Delete an existing deposition resource.
      * Note, only unpublished depositions may be deleted.
-     * @return
      */
     void deleteDeposition(String zenodoId);
 
@@ -59,7 +58,7 @@ public interface ZenodoService {
      * Upload a new file.
      * @param zenodoId
      * @param file
-     * @return
+     * @return the file uploaded
      */
     String uploadFile(String zenodoId, File file);
 
@@ -68,7 +67,7 @@ public interface ZenodoService {
      * By default, the first file is shown in the file preview.
      * @param zenodoId
      * @param ids
-     * @return
+     * @return String
      */
     String sort(String zenodoId, JSONObject ids);
 
@@ -76,7 +75,7 @@ public interface ZenodoService {
      * Retrieve a single deposition file.
      * @param zenodoId
      * @param fileId
-     * @return
+     * @return String
      */
     String retrieveFile(String zenodoId, String fileId);
 
@@ -86,7 +85,7 @@ public interface ZenodoService {
      * @param zenodoId
      * @param fileId
      * @param newName
-     * @return
+     * @return String
      */
     String updateFile(String zenodoId, String fileId, String newName);
 
@@ -95,7 +94,6 @@ public interface ZenodoService {
      * Note, only deposition files for unpublished depositions may be deleted.
      * @param zenodoId
      * @param fileId
-     * @return
      */
     void deleteFile(String zenodoId, String fileId);
 
@@ -110,21 +108,20 @@ public interface ZenodoService {
     /**
      * Unlock already submitted deposition for editing.
      * @param zenodoId
-     * @return
+     * @return String
      */
     String edit(String zenodoId, String metadata);
 
     /**
      * Discard changes in the current editing session.
      * @param zenodoId
-     * @return
      */
     void discard(String zenodoId);
 
     /**
      * Clones a published deposition to a new unpublished version.
      * @param zenodoId
-     * @return
+     * @return String
      */
     String newVersion(String zenodoId);
 
