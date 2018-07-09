@@ -34,7 +34,7 @@ public class UserInfoAAIConfig {
 
     @Bean
     public HttpEntity<String> getHttpEntity() {
-        logger.info("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
+        logger.debug("Creating Http Entity with user <" + aaiUserName + "> and password <" + aaiUserPassword + ">");
 
         String plainCreds = aaiUserName + ":" + aaiUserPassword;
         //logger.info(plainCreds);

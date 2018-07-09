@@ -126,7 +126,12 @@ public class StoreServiceImpl implements StoreService {
             Map<String, Long> infos = results.stream()
                     .collect(Collectors.groupingBy(file -> FilenameUtils.getExtension(file.getName()), Collectors
                             .counting()));
-            infos.forEach((type, count) -> stats.getInfo().add(new Info(type, count)));
+            infos.forEach((type, count) -> {
+                Info info = new Info();
+                info.setCount(count);
+                info.setFileType(type);
+                stats.getInfo().add(info);
+            });
 
             logger.info("Done uploading files");
 

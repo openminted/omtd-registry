@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.client.OIDCAuthenticationProvider;
 import org.mitre.openid.connect.client.service.ServerConfigurationService;
+import org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService;
 import org.mitre.openid.connect.config.ServerConfiguration;
 import org.mitre.openid.connect.model.PendingOIDCAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -40,7 +41,7 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
-        logger.info("Attempt Authentication");
+        logger.debug("Attempt Authentication");
         HttpServletRequest request = (HttpServletRequest) req;
         String jwt = resolveToken(request);
         PendingOIDCAuthenticationToken token;
@@ -49,8 +50,8 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
             String issuer = idToken.getJWTClaimsSet().getIssuer();
             String subject = idToken.getJWTClaimsSet().getSubject();
             String accessToken = idToken.getParsedString();
-            ServerConfiguration serverConfig = serverConfigurationService.getServerConfiguration(issuer);
-            token = new PendingOIDCAuthenticationToken(subject, issuer, serverConfig, idToken, accessToken, null);
+            ServerConfiguration config = serverConfigurationService.getServerConfiguration(issuer);
+            token = new PendingOIDCAuthenticationToken(subject, issuer, config, idToken, accessToken, null);
         } catch (Exception e) {
             logger.error("JWT Error", e);
             throw new BadCredentialsException("JWT is not valid");
@@ -68,13 +69,5 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
             return jwt;
         }
         return null;
-    }
-
-    public ServerConfigurationService getServerConfigurationService() {
-        return serverConfigurationService;
-    }
-
-    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
-        this.serverConfigurationService = serverConfigurationService;
     }
 }

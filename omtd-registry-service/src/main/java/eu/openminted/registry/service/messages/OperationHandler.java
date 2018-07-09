@@ -107,7 +107,7 @@ public class OperationHandler {
 
                     // Update operation to registry
                     Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-                    logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg
+                    logger.info("Update Operation " + operation.getOmtdId() + " to status " + workflowExeMsg
                             .getWorkflowStatus().toUpperCase());
                     operationService.update(operation);
                 }
@@ -128,7 +128,7 @@ public class OperationHandler {
         }
         Operation operation = new Operation();
         // Id
-        operation.setId(workflowExeMsg.getWorkflowExecutionID());
+        operation.setOmtdId(workflowExeMsg.getWorkflowExecutionID());
         // Status
         operation.setStatus(ExecutionStatus.Status.PENDING.toString());
         // Date of submitted
@@ -142,10 +142,10 @@ public class OperationHandler {
         // Component
         operation.setComponent(workflowExeMsg.getWorkflowID());
         // User
-        operation.setPerson(workflowExeMsg.getUserID());
+        operation.setPersonIdentifier(workflowExeMsg.getUserID());
 
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-        logger.info("Add Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus()
+        logger.info("Add Operation " + operation.getOmtdId() + " to status " + workflowExeMsg.getWorkflowStatus()
                 .toUpperCase());
         operationService.add(operation);
 
@@ -167,7 +167,7 @@ public class OperationHandler {
 
         // Update operation to registry
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-        logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus()
+        logger.info("Update Operation " + operation.getOmtdId() + " to status " + workflowExeMsg.getWorkflowStatus()
                 .toUpperCase());
         operationService.update(operation);
     }
@@ -185,7 +185,7 @@ public class OperationHandler {
 
         // Get operation object from registry
         Operation operation = operationService.get(workflowExeMsg.getWorkflowExecutionID());
-        logger.debug("Retrieve operation " + operation.getId() + " to update to " + workflowExeMsg.getWorkflowStatus());
+        logger.debug("Retrieve operation " + operation.getOmtdId() + " to update to " + workflowExeMsg.getWorkflowStatus());
 
         // Update operation
         operation.setStatus(ExecutionStatus.Status.FINISHED.toString());
@@ -213,7 +213,7 @@ public class OperationHandler {
                         .getWorkflowExecutionID());
                 eu.openminted.registry.domain.LanguageDescription outputLanguageMeta = languageMetadataGenerator
                         .generateLanguageDescriptionMetadata(operationCorpus.getInput(),
-                        operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+                        operation.getComponent(), operation.getPersonIdentifier(), workflowExeMsg.getResultingCorpusID());
                 // Add output ld metadata to registry
                 logger.info("Adding output language description to registry");
                 outputLanguageMeta.getMetadataHeaderInfo().setRevision("output");
@@ -229,7 +229,7 @@ public class OperationHandler {
                         .getWorkflowExecutionID());
                 eu.openminted.registry.domain.Lexical outputLexicalMeta = lexicalMetadataGenerator
                         .generateLanguageConceptualResourceMetadata(operationCorpus.getInput(),
-                        operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+                        operation.getComponent(), operation.getPersonIdentifier(), workflowExeMsg.getResultingCorpusID());
                 // Add output lrc metadata to registry
                 logger.info("Adding output lexical/conceptual resource to registry");
                 outputLexicalMeta.getMetadataHeaderInfo().setRevision("output");
@@ -244,7 +244,7 @@ public class OperationHandler {
                         .getWorkflowExecutionID());
                 eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator
                         .generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
-                        operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+                        operation.getComponent(), operation.getPersonIdentifier(), workflowExeMsg.getResultingCorpusID());
                 // Add output corpus metadata to registry
                 outputCorpusMeta.getMetadataHeaderInfo().setRevision("output");
                 logger.info("Adding output corpus to registry");
@@ -261,7 +261,7 @@ public class OperationHandler {
                     .getWorkflowExecutionID());
             eu.openminted.registry.domain.Corpus outputCorpusMeta = corpusMetadataGenerator
                     .generateAnnotatedCorpusMetadata(operationCorpus.getInput(),
-                    operation.getComponent(), operation.getPerson(), workflowExeMsg.getResultingCorpusID());
+                    operation.getComponent(), operation.getPersonIdentifier(), workflowExeMsg.getResultingCorpusID());
             // Add output corpus metadata to registry
             logger.info("Adding output corpus to registry");
             corpusService.add(outputCorpusMeta);
@@ -277,12 +277,12 @@ public class OperationHandler {
 
         // Update operation to registry
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-        logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus()
+        logger.info("Update Operation " + operation.getOmtdId() + " to status " + workflowExeMsg.getWorkflowStatus()
                 .toUpperCase());
         operationService.update(operation);
         int coId = 0;
         try {
-            coId = aaiUserInfoRetriever.getCoId(operation.getPerson());
+            coId = aaiUserInfoRetriever.getCoId(operation.getPersonIdentifier());
             Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);
             String surname = userNames.getKey();
             String givenName = userNames.getValue();
@@ -340,14 +340,14 @@ public class OperationHandler {
 
         // Update operation to registry
         Future<String> operationString = parserPool.serialize(operation, ParserServiceTypes.JSON);
-        logger.info("Update Operation " + operation.getId() + " to status " + workflowExeMsg.getWorkflowStatus()
+        logger.info("Update Operation " + operation.getOmtdId() + " to status " + workflowExeMsg.getWorkflowStatus()
                 .toUpperCase());
         operationService.update(operation);
 
 
         int coId = 0;
         try {
-            coId = aaiUserInfoRetriever.getCoId(operation.getPerson());
+            coId = aaiUserInfoRetriever.getCoId(operation.getPersonIdentifier());
             Pair<String, String> userNames = aaiUserInfoRetriever.getSurnameGivenName(coId);
             String surname = userNames.getKey();
             String givenName = userNames.getValue();

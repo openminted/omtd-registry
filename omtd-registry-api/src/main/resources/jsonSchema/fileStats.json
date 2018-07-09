@@ -1,9 +1,10 @@
 {
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
+  "extends": {
+    "$ref": "identifiableResource.json"
+  },
   "properties": {
-    "personIdentifier": {
-      "type": "string"
-    },
     "archiveId": {
       "type": "string"
     },

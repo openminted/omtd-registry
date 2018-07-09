@@ -42,17 +42,6 @@
             <artifactId>omtd-model</artifactId>
             <version>${omtd.model.version}</version>
         </dependency>
-        <dependency>
-            <groupId>eu.openminted</groupId>
-            <artifactId>omtd-corpus-api</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>eu.openminted</groupId>
-                    <artifactId>omtd-store-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!-- JAXB2 -->
         <dependency>
             <groupId>org.jvnet.jaxb2_commons</groupId>
@@ -136,7 +125,18 @@
                             <targetPackage>${project.groupId}.registry.domain.file</targetPackage>
                             <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
                             <useLongIntegers>true</useLongIntegers>
-                            <includeConstructors>true</includeConstructors>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>corpusStatus</id>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/resources/jsonSchema/corpusBuildingState.json</sourceDirectory>
+                            <targetPackage>${project.groupId}.registry.domain.connector</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                            <useLongIntegers>true</useLongIntegers>
                         </configuration>
                         <goals>
                             <goal>generate</goal>
@@ -158,11 +158,14 @@
                             <jsonLibrary>jackson2</jsonLibrary>
                             <outputFileType>implementationFile</outputFileType>
                             <mapClasses>asClasses</mapClasses>
+                            <customTypeNaming>eu.openminted.registry.domain.base.ResourceIdentifier:Identifiable</customTypeNaming>
                             <classPatterns>
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
                                 <pattern>eu.openminted.registry.domain.workflow.*</pattern>
                                 <pattern>eu.openminted.registry.domain.file.*</pattern>
                                 <pattern>eu.openminted.registry.domain.PublicationInfo</pattern>
+                                <pattern>eu.openminted.registry.domain.base.ResourceIdentifier</pattern>
+                                <pattern>eu.openminted.registry.domain.connector.CorpusBuildingState</pattern>
                             </classPatterns>
                             <outputFile>target/operation.ts</outputFile>
                             <outputKind>module</outputKind>

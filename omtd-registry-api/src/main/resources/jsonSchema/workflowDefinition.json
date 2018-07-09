@@ -1,11 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "extends": {
+    "$ref": "identifiableResource.json"
+  },
   "properties": {
-    "openminted_id": {
-      "description": "OMTD Internal Identifier",
-      "title": "ID",
-      "type": "string"
-    },
     "workflow_id": {
       "description": "Workflow Identifier in the galaxy editor",
       "title": "ID",
@@ -19,11 +17,6 @@
     "workflowName": {
       "description": "Name of the workflow",
       "title": "name",
-      "type": "string"
-    },
-    "personIdentifier": {
-      "description": "Person Identifier",
-      "title": "ID",
       "type": "string"
     },
     "creationDate": {
@@ -45,8 +38,6 @@
     }
   },
   "required": [
-    "openminted_id",
-    "personIdentifier",
     "creationDate",
     "modificationDate"
   ],

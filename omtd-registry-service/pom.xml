@@ -206,17 +206,6 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.openminted</groupId>
-			<artifactId>omtd-corpus-api</artifactId>
-			<version>${corpus.api.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>eu.openminted</groupId>
-					<artifactId>omtd-store-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>eu.openminted</groupId>
 			<artifactId>omtd-utils-files</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -312,9 +301,14 @@
 				<configuration>
 					<warName>omtd-registry</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
 				</configuration>
 			</plugin>
-
 		</plugins>
 		<finalName>omtd-registry</finalName>
 	</build>

@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "extends": {
+    "$ref": "identifiableResource.json"
+  },
+  "properties": {
+    "connector": {
+      "description": "The name of the current content-connector",
+      "title": "Content Connector",
+      "type": "string"
+    },
+    "totalHits": {
+      "description": "Number of total publications found in current content connector",
+      "title": "Total Hits",
+      "type": "integer"
+    },
+    "totalFulltext": {
+      "description": "Number of total full text documents",
+      "title": "Total full text",
+      "type": "integer"
+    },
+    "totalRejected": {
+      "description": "Number of publications rejected (either not having fulltext or they are dedup etc)",
+      "title": "Total rejected publications",
+      "type": "integer"
+    },
+    "currentStatus": {
+      "description": "Status of current corpus building process",
+      "title": "Current corpus status",
+      "type": "string",
+      "enum": [
+        "INITIATING",
+        "SUBMITTED",
+        "EMPTY",
+        "PROCESSING",
+        "PROCESSING_METADATA",
+        "PROCESSING_FULLTEXT",
+        "CREATED",
+        "CANCELED",
+        "DELETED",
+        "FAILED"
+      ]
+    },
+    "metadataProgress": {
+      "description": "Number of metadata processed",
+      "title": "Metadata Progress",
+      "type": "integer"
+    },
+    "fulltextProgress": {
+      "description": "Number of full text documents processed",
+      "title": "Fulltext Progress",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id",
+    "connector"
+  ],
+  "type": "object"
+}
+

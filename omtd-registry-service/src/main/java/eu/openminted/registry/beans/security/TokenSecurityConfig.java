@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.client.OIDCAuthenticationProvider;
 import org.mitre.openid.connect.client.service.ServerConfigurationService;
+import org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -38,6 +39,9 @@ public class TokenSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().and()
                 .authenticationProvider(openIdConnectAuthenticationProvider)
                 .addFilterBefore(filter,
-                        AbstractPreAuthenticatedProcessingFilter.class).authorizeRequests().anyRequest().permitAll();
+                        AbstractPreAuthenticatedProcessingFilter.class)
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +41,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
     private String oidcId;
     @Value("${webapp.home}")
     private String webappHome;
-    @Value("${webapp.front}")
-    private String webappFront;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -92,26 +92,6 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
         return ret;
     }
 
-    @Bean
-    ServerConfiguration aaiServerConfiguration() {
-        ServerConfiguration serverConfiguration = new ServerConfiguration();
-        serverConfiguration.setIssuer(oidcIssuer);
-        serverConfiguration.setAuthorizationEndpointUri(oidcIssuer + "authorize");
-        serverConfiguration.setTokenEndpointUri(oidcIssuer + "token");
-        serverConfiguration.setUserInfoUri(oidcIssuer + "userinfo");
-        serverConfiguration.setJwksUri(oidcIssuer + "jwk");
-        serverConfiguration.setRevocationEndpointUri(oidcIssuer + "revoke");
-        return serverConfiguration;
-    }
-
-    @Bean
-    ServerConfigurationService serverConfigurationService() {
-        Map<String, ServerConfiguration> properties = new HashMap<>();
-        properties.put(oidcIssuer, aaiServerConfiguration());
-        StaticServerConfigurationService ret = new StaticServerConfigurationService();
-        ret.setServers(properties);
-        return ret;
-    }
 
     @Bean
     RegisteredClient platformClient() {
@@ -122,6 +102,13 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
         ret.setTokenEndpointAuthMethod(ClientDetailsEntity.AuthMethod.SECRET_BASIC);
         ret.setRedirectUris(Sets.newHashSet(webappHome));
         return ret;
+    }
+
+    @Bean
+    ServerConfigurationService serverConfigurationService() {
+        DynamicServerConfigurationService serverConfigurationService = new DynamicServerConfigurationService();
+        serverConfigurationService.setWhitelist(Collections.singleton(this.oidcIssuer));
+        return serverConfigurationService;
     }
 
     @Bean
@@ -142,7 +129,7 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
         ret.setClientConfigurationService(clientConfigurationService());
         ret.setAuthRequestOptionsService(new StaticAuthRequestOptionsService());
         ret.setAuthRequestUrlBuilder(new PlainAuthRequestUrlBuilder());
-        ret.setAuthenticationSuccessHandler(new FrontEndLinkURIAuthenticationSuccessHandler(webappFront));
+        ret.setAuthenticationSuccessHandler(new FrontEndLinkURIAuthenticationSuccessHandler(webappFrontUrl));
         return ret;
     }
 

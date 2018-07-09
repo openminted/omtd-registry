@@ -1,7 +1,7 @@
 package eu.openminted.registry.service;
 
 
-import eu.openminted.corpus.CorpusBuildingState;
+import eu.openminted.registry.domain.connector.CorpusBuildingState;
 
 import java.util.List;
 
