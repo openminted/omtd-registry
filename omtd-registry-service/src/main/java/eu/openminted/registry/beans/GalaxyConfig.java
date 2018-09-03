@@ -67,6 +67,8 @@ public class GalaxyConfig {
         logger.info("Creating:" + SectionGen.class.getName());
         OWLOntManager ontManager = new OWLOntManager();
         ontManager.load();
-        return new SectionGen(ontManager);
+        
+        SectionGen sg = new SectionGen(ontManager); 
+        return sg;
     }
 }
