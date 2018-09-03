@@ -184,7 +184,8 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         try {
         	Path wrapperName = getWrapperName(folder, resourceID);
         	logger.info("wrapperName:" + wrapperName.toFile().getAbsolutePath());
-            Files.deleteIfExists(wrapperName);
+            boolean deleted = Files.deleteIfExists(wrapperName);
+        	logger.info("wrapperName:" + wrapperName.toFile().getAbsolutePath() + " " + deleted);
         } catch (IOException e) {
             logger.error("Error deleting component", e);
         }
