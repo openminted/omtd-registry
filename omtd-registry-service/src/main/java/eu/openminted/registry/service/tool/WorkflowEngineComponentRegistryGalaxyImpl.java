@@ -40,6 +40,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         return Paths.get(galaxyRootTools + folder + prefix + resourceID + ".xml");
     }
 
+    /*
     private static String getWrapperFolder(eu.openminted.registry.domain.Component component) {
         String ret = "";
         List<ComponentDistributionInfo> distributionInfos = component.getComponentInfo().getDistributionInfos();
@@ -59,6 +60,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
         }
         return ret;
     }
+    */
 
     @Override
     public WorkflowEngineComponent registerTDMComponentToWorkflowEngine(
@@ -176,10 +178,13 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     public void deleteTDMComponentFromWorkflowEngine(eu.openminted.registry.domain.Component component) {
         String resourceID = component.getComponentInfo().getIdentificationInfo().getResourceIdentifiers().get(0)
                 .getValue();
-        String folder = getWrapperFolder(component);
+        //String folder = getWrapperFolder(component);
+        String folder = selectGalaxyTrgFolder(component);
         //TO-DO replace the above with selectGalaxyTrgFolder(...)
         try {
-            Files.deleteIfExists(getWrapperName(folder, resourceID));
+        	Path wrapperName = getWrapperName(folder, resourceID);
+        	logger.info("wrapperName:" + wrapperName.toFile().getAbsolutePath());
+            Files.deleteIfExists(wrapperName);
         } catch (IOException e) {
             logger.error("Error deleting component", e);
         }
