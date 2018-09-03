@@ -130,7 +130,7 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     	String galaxyTrgFolderName = "";
   
     	//galaxyTrgFolderName = selectGalaxyTrgFolderBasedOnHowItIsDistributed(componentMeta);
-    	galaxyTrgFolderName = selectGalaxyTrgFolderBasedOnOMTDOntology(componentMeta);
+    	galaxyTrgFolderName = selectGalaxyTrgFolderBasedOnOMTDOntology(componentMeta) + "/";
     	
         return galaxyTrgFolderName;
     }
