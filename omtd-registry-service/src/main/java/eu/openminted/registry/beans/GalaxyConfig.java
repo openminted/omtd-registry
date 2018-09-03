@@ -2,6 +2,9 @@ package eu.openminted.registry.beans;
 
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstance;
 import com.github.jmchilton.blend4j.galaxy.GalaxyInstanceFactory;
+
+import eu.openminted.omtdshareontology.OWLOntManager;
+import eu.openminted.omtdshareontology.SectionGen;
 import eu.openminted.registry.service.tool.DockerImageProviderImpl;
 import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
 import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
@@ -57,5 +60,13 @@ public class GalaxyConfig {
     public DockerImageProviderImpl dockerImageProviderImpl() {
         logger.info("Creating:" + DockerImageProviderImpl.class.getName());
         return new DockerImageProviderImpl();
+    }
+    
+    @Bean
+    public SectionGen sectionGenImpl() {
+        logger.info("Creating:" + SectionGen.class.getName());
+        OWLOntManager ontManager = new OWLOntManager();
+        ontManager.load();
+        return new SectionGen(ontManager);
     }
 }
