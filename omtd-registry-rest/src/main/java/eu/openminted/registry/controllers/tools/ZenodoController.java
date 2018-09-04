@@ -16,7 +16,7 @@ public class ZenodoController {
     @Autowired
     public ZenodoService zenodoService;
 
-    @RequestMapping(path="/publishCorpus/{corpusId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(path="/publishCorpus/{corpusId}", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public String publishCorpus(@PathVariable(value="corpusId") String corpusId) {
         return zenodoService.publishCorpus(corpusId);
     }
