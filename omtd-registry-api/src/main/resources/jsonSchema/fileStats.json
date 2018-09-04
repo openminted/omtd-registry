@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "extends": {
+    "$ref": "identifiableResource.json"
+  },
+  "properties": {
+    "archiveId": {
+      "type": "string"
+    },
+    "compressedFileSize": {
+      "type": "integer"
+    },
+    "fileSize": {
+      "type": "integer"
+    },
+    "fileCount": {
+      "type": "integer"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "info": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fileType": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

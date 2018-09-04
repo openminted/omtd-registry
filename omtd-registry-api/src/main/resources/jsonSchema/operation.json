@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "extends": {
+    "$ref": "identifiableResource.json"
+  },
+  "properties": {
+    "component": {
+      "description": "The id of the application component that was executed.",
+      "title": "Component ID",
+      "type": "string"
+    },
+    "corpus": {
+      "properties": {
+        "input": {
+          "description": "The id of the input corpus.",
+          "title": "Input Corpus ID",
+          "type": "string"
+        },
+        "output": {
+          "description": "The id of the result corpus.",
+          "title": "Output Corpus ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "type": "object"
+    },
+    "errors": {
+      "type": "array",
+      "description": "A List of error messages",
+      "items": {
+        "type": "object",
+        "description": "The Error Object",
+        "properties": {
+          "message": {
+            "description": "The error message.",
+            "title": "Error message",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "The time the error occured.",
+            "title": "Error Date",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "message",
+          "timestamp"
+        ]
+      }
+    },
+    "date": {
+      "properties": {
+        "finished": {
+          "description": "When the workflow was finished.",
+          "title": "Finished Date",
+          "type": "string",
+          "format": "date-time"
+        },
+        "started": {
+          "description": "When the workflow was started.",
+          "title": "Started Date",
+          "type": "string",
+          "format": "date-time"
+        },
+        "submitted": {
+          "description": "When the workflow was submitted.",
+          "title": "Submitted Date",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "submitted"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "description": "The status of the operation",
+      "title": "Operation status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "component",
+    "person",
+    "date",
+    "corpus",
+    "status"
+  ],
+  "type": "object"
+}
