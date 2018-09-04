@@ -3,9 +3,15 @@ package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.core.domain.Paging;
 import eu.openminted.registry.core.domain.Resource;
-import eu.openminted.registry.core.service.*;
-import eu.openminted.registry.domain.*;
-import eu.openminted.registry.service.*;
+import eu.openminted.registry.core.service.ParserService;
+import eu.openminted.registry.core.service.SearchService;
+import eu.openminted.registry.core.service.ServiceException;
+import eu.openminted.registry.domain.Corpus;
+import eu.openminted.registry.domain.ResourceIdentifier;
+import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
+import eu.openminted.registry.service.CorpusService;
+import eu.openminted.registry.service.IncompleteCorpusService;
+import eu.openminted.registry.service.WebannoService;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
@@ -27,6 +33,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
@@ -157,36 +165,51 @@ public class WebannoServiceImpl implements WebannoService {
         headers.add("Authorization", "Basic " + basicAuth());
 
         HttpEntity request = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
-                (projectId) + "/export.zip", HttpMethod.GET, request, byte[].class);
+        ResponseEntity<String> response = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
+                (projectId) + "/documents", HttpMethod.GET, request, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
-            try {
-                File temp = new File(System.getProperty("java.io.tmpdir") + "/" + projectName + ".zip");
-                Files.write(temp.toPath(), response.getBody());
-                Corpus corpus = findIdentifier(Math.toIntExact(projectId), "projectID");
-                if (corpus != null) {
-                    String archiveId = findId(corpus, "archiveID");
-                    File save_dir = new File(temp.getParent());
-                    ZipToDir.unpackToWorkDir(temp, save_dir);
-                    File annotations_dir = new File(save_dir.getAbsolutePath() + "/source");
-                    for (File file : annotations_dir.listFiles()) {
-                        if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
-                            storeClient.storeFile(file, archiveId, "annotations/" + file.getName());
-                        }
-                    }
-                    storeClient.finalizeArchive(archiveId);
-                    String omtdId = findId(corpus, "OMTD");
-                    if (omtdId != null)
-                        incompleteCorpusService.move(omtdId);
-                    else
-                        logger.debug("Could not find identifier OMTD of corpus");
-                } else
-                    logger.debug("Could not find identifier archiveID of corpus");
+           JSONObject jsonObject = new JSONObject(response.getBody());
+           for(int i=0; i < jsonObject.getJSONArray("body").length();i++){
+               JSONObject temp = jsonObject.getJSONArray("body").getJSONObject(i);
+               if(temp.getString("state").equals("CURATION-COMPLETE")){
+                   ResponseEntity<byte[]> responsePerDoc = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
+                           (projectId) + "/documents/"+temp.getInt("id")+"/curation", HttpMethod.GET, request, byte[].class);
+                   if(response.getStatusCode().value()==200){
+                       try {
+                           logger.info("Got dat doc wit neim " + temp.getString("name"));
+                           String disposition =  responsePerDoc.getHeaders().get("Content-Disposition").get(0);
+                           String fileName = disposition.replaceFirst("(?i)^.*filename=\"?([^\"]+)\"?.*$", "$1");//get the filename from the Content-Disposition header
+                           fileName = URLDecoder.decode(fileName, String.valueOf(StandardCharsets.ISO_8859_1));
+                           File tempFile = new File(System.getProperty("java.io.tmpdir") + "/" + fileName);
+                           Files.write(tempFile.toPath(), responsePerDoc.getBody());
+                           Corpus corpus = findIdentifier(Math.toIntExact(projectId), "projectID");
+                           if (corpus != null) {
+                               String archiveId = findId(corpus, "archiveID");
+                               File save_dir = new File(tempFile.getParent());
+                               logger.info("Unpacking " + tempFile.getName() + " to "+ save_dir.getName());
+                               ZipToDir.unpackToWorkDir(tempFile, save_dir);
+                               File annotation = new File(save_dir.getAbsolutePath() + "/" + temp.getString("name"));
+                               logger.info("Going to save @ annotations/" + annotation.getName() + " with archiveID " + archiveId);
+                               storeClient.storeFile(annotation.getAbsoluteFile(), archiveId, "annotations/" + annotation.getName());
 
-                deleteProject(Math.toIntExact(projectId));
-            } catch (IOException e) {
-                logger.error(e);
-            }
+                               storeClient.finalizeArchive(archiveId);
+                               String omtdId = findId(corpus, "OMTD");
+                               if (omtdId != null)
+                                   incompleteCorpusService.move(omtdId);
+                               else
+                                   logger.debug("Could not find identifier OMTD of corpus");
+                           } else
+                               logger.debug("Could not find identifier projectID of corpus");
+
+                           deleteProject(Math.toIntExact(projectId));
+                       } catch (IOException e) {
+                           logger.error(e);
+                       }
+                   }
+               }else{
+                   //ignore
+               }
+           }
         } else {
             logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
             logger.error(response.getBody().toString());
@@ -261,11 +284,11 @@ public class WebannoServiceImpl implements WebannoService {
 
     private Corpus findIdentifier(int projectId, String identifierName) {
         try {
-            Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", "ASC");
+
+            Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","corpus");
             if(paging==null) {
                 return null;
             }
-
             for (Resource res : (List<Resource>) paging.getResults()) {
                 Corpus corpus = parserPool.deserialize(res, Corpus.class).get();
                 for (ResourceIdentifier resourceIdentifier : corpus.getCorpusInfo().getIdentificationInfo()
@@ -283,6 +306,52 @@ public class WebannoServiceImpl implements WebannoService {
 
         return null;
     }
+
+    /*
+     * OLD METHOD
+     *  HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth());
+
+        HttpEntity request = new HttpEntity<>(headers);
+        ResponseEntity<byte[]> response = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
+                (projectId) + "/export.zip", HttpMethod.GET, request, byte[].class);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            try {
+                File temp = new File(System.getProperty("java.io.tmpdir") + "/" + projectName + ".zip");
+                Files.write(temp.toPath(), response.getBody());
+                Corpus corpus = findIdentifier(Math.toIntExact(projectId), "projectID");
+                if (corpus != null) {
+                    String archiveId = findId(corpus, "archiveID");
+                    File save_dir = new File(temp.getParent());
+                    ZipToDir.unpackToWorkDir(temp, save_dir);
+                    File annotations_dir = new File(save_dir.getAbsolutePath() + "/source");
+                    for (File file : annotations_dir.listFiles()) {
+                        if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
+                            storeClient.storeFile(file, archiveId, "annotations/" + file.getName());
+                        }
+                    }
+                    storeClient.finalizeArchive(archiveId);
+                    String omtdId = findId(corpus, "OMTD");
+                    if (omtdId != null)
+                        incompleteCorpusService.move(omtdId);
+                    else
+                        logger.debug("Could not find identifier OMTD of corpus");
+                } else
+                    logger.debug("Could not find identifier archiveID of corpus");
+
+                deleteProject(Math.toIntExact(projectId));
+            } catch (IOException e) {
+                logger.error(e);
+            }
+        } else {
+            logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
+            logger.error(response.getBody().toString());
+        }
+
+     */
+
+
+
 
 
     private String basicAuth() {
