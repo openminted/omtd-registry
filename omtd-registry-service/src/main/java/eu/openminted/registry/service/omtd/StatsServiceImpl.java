@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +38,6 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public Totals totals() throws IOException {
-
         Totals totals = getContent();
         if (totals != null)
             return totals;
@@ -73,12 +73,23 @@ public class StatsServiceImpl implements StatsService {
 
     }
 
+    @Scheduled(fixedDelay = 5*60*1000)//5mins
+    @Override
+    public void scheduled(){
+        logger.info("Checking for totals");
+        try {
+            totals();
+        } catch (IOException e) {
+            logger.warn("Failed to execute scheduled task for totals",e);
+        }
+    }
+
 
     private void addContent(Totals totals) {
         String key = redis_prefix + "stats";
         if (!template.hasKey(key)) {
             template.opsForList().leftPush(key, totals);
-            template.expire(key, 24, TimeUnit.HOURS);
+            template.expire(key, 10, TimeUnit.MINUTES);
         }
 
     }

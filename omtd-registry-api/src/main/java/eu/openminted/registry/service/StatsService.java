@@ -9,5 +9,7 @@ import java.io.IOException;
  */
 public interface StatsService{
 
+    void scheduled();
+
     Totals totals() throws IOException;
 }
