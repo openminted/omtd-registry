@@ -1,21 +1,30 @@
 package eu.openminted.registry.service.tool;
 
-import eu.openminted.omtdshareontology.OWLOntManager;
-import eu.openminted.omtdshareontology.Section;
-import eu.openminted.omtdshareontology.SectionGen;
-import eu.openminted.registry.domain.ComponentDistributionInfo;
-import eu.openminted.registry.domain.FrameworkEnum;
-import eu.openminted.registry.service.*;
-import eu.openminted.workflows.galaxytool.Tool;
-import eu.openminted.workflows.galaxywrappers.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.List;
+import eu.openminted.omtdshareontology.Section;
+import eu.openminted.omtdshareontology.SectionGen;
+import eu.openminted.registry.domain.ComponentDistributionInfo;
+import eu.openminted.registry.domain.FrameworkEnum;
+import eu.openminted.registry.service.DockerImageProvider;
+import eu.openminted.registry.service.WorkflowEngineComponent;
+import eu.openminted.registry.service.WorkflowEngineComponentRegistry;
+import eu.openminted.workflows.galaxytool.Tool;
+import eu.openminted.workflows.galaxywrappers.GalaxyToolWrapperWriter;
+import eu.openminted.workflows.galaxywrappers.GalaxyWrapperGenerator;
+import eu.openminted.workflows.galaxywrappers.Utils;
 
 @Component
 public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngineComponentRegistry {
@@ -127,11 +136,12 @@ public class WorkflowEngineComponentRegistryGalaxyImpl implements WorkflowEngine
     
     private String selectGalaxyTrgFolder(eu.openminted.registry.domain.Component componentMeta){
         List<ComponentDistributionInfo> distributionInfos = componentMeta.getComponentInfo().getDistributionInfos();
-    	String galaxyTrgFolderName = "";
+    	String galaxyTrgFolderName = "Nothing";
   
     	//galaxyTrgFolderName = selectGalaxyTrgFolderBasedOnHowItIsDistributed(componentMeta);
     	galaxyTrgFolderName = selectGalaxyTrgFolderBasedOnOMTDOntology(componentMeta) + "/";
     	
+    	logger.info("selected galaxyTrgFolderName: " + galaxyTrgFolderName);
         return galaxyTrgFolderName;
     }
     
