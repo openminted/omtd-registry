@@ -1,22 +1,20 @@
 package eu.openminted.registry.domain;
 
-import java.io.Serializable;
-
-public class Totals implements Serializable {
+public class Totals{
 
     private int publications = 0;
 
-    private int components = 0;
+    private Components components;
 
-    private int applications = 0;
+    private Applications applications;
 
     public Totals() {
     }
 
-    public Totals(int publications, int components, int applications) {
+    public Totals(int publications, int components_public, int applications_public, int components_private, int applications_private) {
         this.publications = publications;
-        this.components = components;
-        this.applications = applications;
+        applications = new Applications(applications_public, applications_private);
+        components = new Components(components_public, components_private);
     }
 
     public int getPublications() {
@@ -27,19 +25,82 @@ public class Totals implements Serializable {
         this.publications = publications;
     }
 
-    public int getComponents() {
+    public Components getComponents() {
         return components;
     }
 
-    public void setComponents(int components) {
+    public void setComponents(Components components) {
         this.components = components;
     }
 
-    public int getApplications() {
+    public Applications getApplications() {
         return applications;
     }
 
-    public void setApplications(int applications) {
+    public void setApplications(Applications applications) {
         this.applications = applications;
+    }
+
+    static public class Components{
+        private int pub=0;
+
+        private int priv=0;
+
+        public Components() {
+
+        }
+
+        public Components(int pub, int priv) {
+            this.pub = pub;
+            this.priv = priv;
+        }
+
+        public int getPub() {
+            return pub;
+        }
+
+        public void setPub(int pub) {
+            this.pub = pub;
+        }
+
+        public int getPriv() {
+            return priv;
+        }
+
+        public void setPriv(int priv) {
+            this.priv = priv;
+        }
+    }
+
+    static public class Applications{
+
+        private int pub=0;
+
+        private int priv=0;
+
+        public Applications() {
+
+        }
+
+        public Applications(int pub, int priv) {
+            this.pub = pub;
+            this.priv = priv;
+        }
+
+        public int getPub() {
+            return pub;
+        }
+
+        public void setPub(int pub) {
+            this.pub = pub;
+        }
+
+        public int getPriv() {
+            return priv;
+        }
+
+        public void setPriv(int priv) {
+            this.priv = priv;
+        }
     }
 }

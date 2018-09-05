@@ -30,9 +30,12 @@ public class StatsServiceImpl implements StatsService {
     SearchService searchService;
     @Autowired
     RestTemplate restTemplate;
+
     private Logger logger = LogManager.getLogger(StatsServiceImpl.class);
+
     @Value("${content.host}")
     private String contentHost;
+
     @Autowired
     private RedisTemplate<String, Totals> template;
 
@@ -44,15 +47,29 @@ public class StatsServiceImpl implements StatsService {
 
 
         int publications = 0;
-        int components = 0;
-        int applications = 0;
+        int components_public = 0;
+        int applications_public = 0;
+        int components_private = 0;
+        int applications_private = 0;
 
         FacetFilter filter = new FacetFilter("", "application", 0, 1, new HashMap<>(), Arrays.asList(""), null);
+        filter.addFilter("public",true);
 
-        applications = searchService.search(filter).getTotal();
+        applications_public = searchService.search(filter).getTotal();
+
+        filter.getFilter().replace("public",false);
+
+        applications_private = searchService.search(filter).getTotal();
+
 
         filter.setResourceType("component");
-        components = searchService.search(filter).getTotal();
+        components_private = searchService.search(filter).getTotal();
+
+
+        filter.getFilter().replace("public",true);
+
+        components_public = searchService.search(filter).getTotal();
+
 
         try {
 
@@ -63,8 +80,9 @@ public class StatsServiceImpl implements StatsService {
             JSONObject responseJson = new JSONObject(restTemplate.postForEntity(contentHost + "content/browse/",
                     entity, String.class).getBody());
             publications = Integer.parseInt(responseJson.get("totalHits").toString());
-            Totals toReturn = new Totals(publications, components, applications);
+            Totals toReturn = new Totals(publications, components_public, applications_public, components_private, applications_private);
             addContent(toReturn);
+
             return toReturn;
         } catch (HttpServerErrorException ex) {
             logger.error("Request on " + contentHost + " failed", ex);

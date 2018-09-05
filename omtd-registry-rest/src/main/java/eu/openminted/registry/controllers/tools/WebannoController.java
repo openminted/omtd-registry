@@ -24,13 +24,13 @@ public class WebannoController {
     WebannoService webannoService;
 
     @RequestMapping(value = "/webanno/done", method = RequestMethod.POST)
-    public void done_POST (ProjectStateChangeMessage projectStateChangeMessage) {
+    public void done (ProjectStateChangeMessage projectStateChangeMessage) {
         webannoService.triggerRetrieval(projectStateChangeMessage.getProjectId(), projectStateChangeMessage.getProjectName());
     }
 
 
-    @RequestMapping(value = "/webanno/done/{id}/{hello}", method = RequestMethod.GET)
-    public void done_GET (@PathVariable("id") String id, @PathVariable("hello") String hello) {
-        webannoService.triggerRetrieval(Integer.parseInt(id), hello);
+    @RequestMapping(value = "/webanno/create/{id}", method = RequestMethod.GET)
+    public void create (@PathVariable("id") String id) {
+        webannoService.createProject(id);
     }
 }
