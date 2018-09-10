@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -29,30 +30,46 @@ public class StatsServiceImpl implements StatsService {
     SearchService searchService;
     @Autowired
     RestTemplate restTemplate;
+
     private Logger logger = LogManager.getLogger(StatsServiceImpl.class);
+
     @Value("${content.host}")
     private String contentHost;
+
     @Autowired
     private RedisTemplate<String, Totals> template;
 
     @Override
     public Totals totals() throws IOException {
-
         Totals totals = getContent();
         if (totals != null)
             return totals;
 
 
         int publications = 0;
-        int components = 0;
-        int applications = 0;
+        int components_public = 0;
+        int applications_public = 0;
+        int components_private = 0;
+        int applications_private = 0;
 
         FacetFilter filter = new FacetFilter("", "application", 0, 1, new HashMap<>(), Arrays.asList(""), null);
+        filter.addFilter("public",true);
 
-        applications = searchService.search(filter).getTotal();
+        applications_public = searchService.search(filter).getTotal();
+
+        filter.getFilter().replace("public",false);
+
+        applications_private = searchService.search(filter).getTotal();
+
 
         filter.setResourceType("component");
-        components = searchService.search(filter).getTotal();
+        components_private = searchService.search(filter).getTotal();
+
+
+        filter.getFilter().replace("public",true);
+
+        components_public = searchService.search(filter).getTotal();
+
 
         try {
 
@@ -63,8 +80,9 @@ public class StatsServiceImpl implements StatsService {
             JSONObject responseJson = new JSONObject(restTemplate.postForEntity(contentHost + "content/browse/",
                     entity, String.class).getBody());
             publications = Integer.parseInt(responseJson.get("totalHits").toString());
-            Totals toReturn = new Totals(publications, components, applications);
+            Totals toReturn = new Totals(publications, components_public, applications_public, components_private, applications_private);
             addContent(toReturn);
+
             return toReturn;
         } catch (HttpServerErrorException ex) {
             logger.error("Request on " + contentHost + " failed", ex);
@@ -73,12 +91,23 @@ public class StatsServiceImpl implements StatsService {
 
     }
 
+    @Scheduled(fixedDelay = 5*60*1000)//5mins
+    @Override
+    public void scheduled(){
+        logger.info("Checking for totals");
+        try {
+            totals();
+        } catch (IOException e) {
+            logger.warn("Failed to execute scheduled task for totals",e);
+        }
+    }
+
 
     private void addContent(Totals totals) {
         String key = redis_prefix + "stats";
         if (!template.hasKey(key)) {
             template.opsForList().leftPush(key, totals);
-            template.expire(key, 24, TimeUnit.HOURS);
+            template.expire(key, 10, TimeUnit.MINUTES);
         }
 
     }
