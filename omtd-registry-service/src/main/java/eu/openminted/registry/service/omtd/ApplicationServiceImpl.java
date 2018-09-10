@@ -9,6 +9,7 @@ import eu.openminted.registry.service.*;
 import eu.openminted.registry.service.generate.WorkflowGenerate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -45,26 +46,26 @@ public class ApplicationServiceImpl extends OmtdGenericService<Component> {
     }
 
     @Override
-    public Component add(Component resource) {
+    public Component add(Component resource, OIDCAuthenticationToken auth) {
         if (!resource.getComponentInfo().isApplication()) {
             throw new ServiceException("Expected an application not a component");
         }
         try {
-            super.add(resource);
+            super.add(resource,auth);
             resource = insertOMTDSpecificResources(resource);
-            return this.update(resource);
+            return this.update(resource,auth);
         } catch (Throwable e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Component update(Component newResource) throws ResourceNotFoundException {
+    public Component update(Component newResource, OIDCAuthenticationToken auth) throws ResourceNotFoundException {
         if (!newResource.getComponentInfo().isApplication()) {
             throw new ServiceException("Cannot update an application to a component");
         }
         newResource = insertOMTDSpecificResources(newResource);
-        return super.update(newResource);
+        return super.update(newResource,auth);
     }
 
     @Override

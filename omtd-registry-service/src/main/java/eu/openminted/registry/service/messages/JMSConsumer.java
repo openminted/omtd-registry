@@ -7,6 +7,7 @@ import eu.openminted.registry.domain.connector.CorpusBuildingState;
 import eu.openminted.registry.service.IncompleteCorpusService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
@@ -23,7 +24,7 @@ public class JMSConsumer {
 
     @Autowired
     @Qualifier("corpusBuildingStateService")
-    private ResourceCRUDService<CorpusBuildingState> corpusBuildingStateService;
+    private ResourceCRUDService<CorpusBuildingState, OIDCAuthenticationToken> corpusBuildingStateService;
 
     @Autowired
     private IncompleteCorpusService incompleteCorpusService;
@@ -36,9 +37,9 @@ public class JMSConsumer {
             SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getOmtdId());
             Resource resource = searchService.searchId("corpusbuildingstate", kv);
             if (resource == null) {
-                corpusBuildingStateService.add(corpusBuildingState);
+                corpusBuildingStateService.add(corpusBuildingState,null);
             } else {
-                corpusBuildingStateService.update(corpusBuildingState);
+                corpusBuildingStateService.update(corpusBuildingState,null);
             }
             if (corpusBuildingState.getCurrentStatus().equals(CorpusBuildingState.CurrentStatus.CREATED)) {
                 String corpusId = corpusBuildingState.getOmtdId().split("@")[0];

@@ -6,6 +6,7 @@ import eu.openminted.registry.domain.*;
 import eu.openminted.registry.service.CorpusService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -42,15 +43,20 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
         identifier.setSchemeURI("archiveID");
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
-        super.add(corpus);
+        super.add(corpus,null);
         corpus.getCorpusInfo().getDatasetDistributionInfo().
                 setDistributionLocation(hostUrl + corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier()
                         .getValue());
         try {
-            corpus = super.update(corpus);
+            corpus = super.update(corpus,null);
         } catch (ResourceNotFoundException e) {
             throw new ServiceException(e);
         }
         return corpus;
+    }
+
+    @Override
+    public Corpus add(Corpus resource, OIDCAuthenticationToken auth) {
+        return super.add(resource,auth);
     }
 }

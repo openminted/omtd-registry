@@ -1,8 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/corpusBuildingState.json",
   "extends": {
     "$ref": "identifiableResource.json"
   },
+  "allOf": [
+    {
+      "$ref": "identifiableResource.json"
+    }
+  ],
   "properties": {
     "connector": {
       "description": "The name of the current content-connector",

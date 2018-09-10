@@ -2,21 +2,26 @@ package eu.openminted.registry.beans.security;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
+import eu.openminted.registry.core.exception.ServerError;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.mitre.openid.connect.client.OIDCAuthenticationProvider;
 import org.mitre.openid.connect.client.service.ServerConfigurationService;
-import org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService;
 import org.mitre.openid.connect.config.ServerConfiguration;
 import org.mitre.openid.connect.model.PendingOIDCAuthenticationToken;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -52,13 +57,16 @@ public class ApiKeyAuthorizationFilter extends GenericFilterBean {
             String accessToken = idToken.getParsedString();
             ServerConfiguration config = serverConfigurationService.getServerConfiguration(issuer);
             token = new PendingOIDCAuthenticationToken(subject, issuer, config, idToken, accessToken, null);
+            Authentication auth = this.authenticationProvider.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            chain.doFilter(req, res);
         } catch (Exception e) {
             logger.error("JWT Error", e);
-            throw new BadCredentialsException("JWT is not valid");
+            res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            ObjectMapper mapper = new ObjectMapper();
+            res.getWriter().append(mapper.writeValueAsString(new ServerError(((HttpServletRequest) req).getRequestURI(),e)));
         }
-        Authentication auth = this.authenticationProvider.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        chain.doFilter(req, res);
+
     }
 
 

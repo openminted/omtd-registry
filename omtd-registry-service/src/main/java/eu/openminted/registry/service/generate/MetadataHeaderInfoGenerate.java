@@ -1,15 +1,17 @@
 package eu.openminted.registry.service.generate;
 
-import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.*;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 
-import javax.xml.datatype.*;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
-import java.util.*;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
 /**
  * Created by stefanos on 16/6/2017.
@@ -20,7 +22,7 @@ public class MetadataHeaderInfoGenerate {
 
     private static Logger logger = LoggerFactory.getLogger(MetadataHeaderInfoGenerate.class);
 
-    static public MetadataHeaderInfo generate(MetadataHeaderInfo info) {
+    static public MetadataHeaderInfo generate(MetadataHeaderInfo info, Authentication authentication) {
         if (info == null) {
             info = new MetadataHeaderInfo();
         } else if (info.getRevision() != null && info.getRevision().equals("output")) {
@@ -52,22 +54,20 @@ public class MetadataHeaderInfoGenerate {
             info.setMetadataRecordIdentifier(identifier);
         }
 
-
         //
         // Set metadata creator
         //
-
-        OIDCAuthenticationToken authentication;
-        try {
-            authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        } catch (ClassCastException e) {
-            throw new ServiceException("User is not authenticated in order to generate metadata");
+        if(authentication != null) {
+            final OIDCAuthenticationToken oidcToken = (OIDCAuthenticationToken) authentication;
+            info.getMetadataCreators()
+                    .removeIf(person -> person.getPersonIdentifiers().get(0).getValue().equals(oidcToken.getSub()));
+            PersonInfo personInfo = generateUserInfo(oidcToken);
+            info.getMetadataCreators().add(personInfo);
         }
+        return info;
+    }
 
-        info.getMetadataCreators()
-                .removeIf(person -> person.getPersonIdentifiers().get(0).getValue().equals(authentication.getSub()));
-
-
+    private static PersonInfo generateUserInfo(OIDCAuthenticationToken authentication) {
         PersonInfo personInfo = new PersonInfo();
         personInfo.setGivenName(authentication.getUserInfo().getGivenName());
         personInfo.setSurname(authentication.getUserInfo().getFamilyName());
@@ -104,12 +104,6 @@ public class MetadataHeaderInfoGenerate {
         CommunicationInfo communicationInfo = new CommunicationInfo();
         communicationInfo.getEmails().add(authentication.getUserInfo().getEmail());
         personInfo.setCommunicationInfo(communicationInfo);
-
-
-        {
-            info.getMetadataCreators().add(personInfo);
-        }
-
-        return info;
+        return personInfo;
     }
 }

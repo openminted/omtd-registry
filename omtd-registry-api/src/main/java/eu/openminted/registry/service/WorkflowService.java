@@ -3,10 +3,13 @@ package eu.openminted.registry.service;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
+import org.mitre.openid.connect.model.UserInfo;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
-public interface WorkflowService extends ResourceCRUDService<WorkflowDefinition>  {
+public interface WorkflowService extends ResourceCRUDService<WorkflowDefinition,OIDCAuthenticationToken>  {
 
     /**
      * Create a new empty workflow.

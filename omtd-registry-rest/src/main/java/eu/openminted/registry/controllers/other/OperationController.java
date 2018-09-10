@@ -4,6 +4,7 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.service.OperationService;
 import io.swagger.annotations.Api;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OperationController extends OtherRestController<Operation> {
 
     @Autowired
-    OperationController(ResourceCRUDService<Operation> service) {
+    OperationController(ResourceCRUDService<Operation,OIDCAuthenticationToken> service) {
         super(service);
     }
 

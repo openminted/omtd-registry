@@ -10,7 +10,7 @@ public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{SecurityRootConfig.class, UserInfoAAIConfig.class, SessionConfig.class, DockerConfig
                 .class, ServiceConfig.class, StoreRestConfig.class, CacheConfig.class, GalaxyConfig.class,
-                WorkflowConfig.class}; //
+                WorkflowConfig.class, AdminToolsConfig.class}; //
     }
 
     @Override

@@ -1,6 +1,7 @@
 package eu.openminted.registry.beans.security;
 
 import com.nimbusds.jwt.JWT;
+import eu.openminted.registry.core.service.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.client.OIDCAuthoritiesMapper;
@@ -42,6 +43,9 @@ public class OMTDAuthoritiesMapper implements OIDCAuthoritiesMapper {
     @Override
     public Collection<? extends GrantedAuthority> mapAuthorities(JWT idToken, UserInfo userInfo) {
         Set<GrantedAuthority> out = new HashSet<>();
+        if(userInfo==null) {
+            throw new ServiceException("Could not validate JWT Token");
+        }
         out.add(new SimpleGrantedAuthority("ROLE_USER"));
         if (userInfo.getSource().getAsJsonArray(ROLE_CLAIMS) != null) {
             userInfo.getSource().getAsJsonArray(ROLE_CLAIMS).forEach(role -> {

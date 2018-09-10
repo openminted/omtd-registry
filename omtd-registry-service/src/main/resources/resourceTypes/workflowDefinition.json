@@ -6,8 +6,8 @@
       "type": "java.lang.String"
     },
     {
-      "name": "openminted_id",
-      "path": "$.openminted_id",
+      "name": "omtdId",
+      "path": "$.omtdId",
       "type": "java.lang.String",
       "primaryKey" : true
     }
@@ -16,5 +16,5 @@
   "name": "workflow",
   "aliasGroup" : null,
   "payloadType": "json",
-  "schema": "{\"$schema\": \"http:\/\/json-schema.org\/draft-04\/schema#\",\"properties\": {\"openminted_id\": {\"description\": \"OMTD Internal Identifier\",\"title\": \"ID\",\"type\": \"string\"},\"workflow_id\": {\"description\": \"Workflow Identifier in the galaxy editor\",\"title\": \"ID\",\"type\": \"string\"},\"executor_id\": {\"description\": \"Workflow Identifier in the galaxy executor\",\"title\": \"ID\",\"type\": \"string\"},\"workflowName\": {\"description\": \"Name of the workflow\",\"title\": \"name\",\"type\": \"string\"},\"personIdentifier\": {\"description\": \"Person Identifier\",\"title\": \"ID\",\"type\": \"string\"},\"creationDate\": {\"description\": \"When the workflow was created.\",\"title\": \"Creation Date\",\"type\": \"string\",\"format\": \"date-time\"},\"modificationDate\": {\"description\": \"When the workflow was edited.\",\"title\": \"Modification Date\",\"type\": \"string\",\"format\": \"date-time\"},\"workflowDefinition\": {\"description\": \"The definition of the workflow.\",\"title\": \"workflow Definition\",\"type\": \"string\"}},\"required\": [\"openminted_id\",\"personIdentifier\",\"creationDate\",\"modificationDate\"],\"type\": \"object\"}"
+  "schema": "{\r\n  \"$schema\": \"http:\/\/json-schema.org\/draft-04\/schema#\",\r\n  \"id\": \"https:\/\/raw.githubusercontent.com\/openminted\/omtd-registry\/develop\/omtd-registry-api\/src\/main\/resources\/jsonSchema\/workflowDefinition.json\",\r\n  \"extends\": {\r\n    \"$ref\": \"identifiableResource.json\"\r\n  },\r\n  \"allOf\": [\r\n    {\r\n      \"$ref\": \"identifiableResource.json\"\r\n    }\r\n  ],\r\n  \"properties\": {\r\n    \"workflow_id\": {\r\n      \"description\": \"Workflow Identifier in the galaxy editor\",\r\n      \"title\": \"ID\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"executor_id\": {\r\n      \"description\": \"Workflow Identifier in the galaxy executor\",\r\n      \"title\": \"ID\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"workflowName\": {\r\n      \"description\": \"Name of the workflow\",\r\n      \"title\": \"name\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"creationDate\": {\r\n      \"description\": \"When the workflow was created.\",\r\n      \"title\": \"Creation Date\",\r\n      \"type\": \"string\",\r\n      \"format\": \"date-time\"\r\n    },\r\n    \"modificationDate\": {\r\n      \"description\": \"When the workflow was edited.\",\r\n      \"title\": \"Modification Date\",\r\n      \"type\": \"string\",\r\n      \"format\": \"date-time\"\r\n    },\r\n    \"workflowDefinition\": {\r\n      \"description\": \"The definition of the workflow.\",\r\n      \"title\": \"workflow Definition\",\r\n      \"type\": \"string\"\r\n    }\r\n  },\r\n  \"required\": [\r\n    \"creationDate\",\r\n    \"modificationDate\"\r\n  ],\r\n  \"type\": \"object\"\r\n}"
 }

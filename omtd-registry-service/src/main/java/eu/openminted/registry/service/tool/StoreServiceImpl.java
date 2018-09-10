@@ -105,7 +105,7 @@ public class StoreServiceImpl implements StoreService {
         FileStats stats = new FileStats();
 
         try {
-            stats.setCompressedFileSize((long) inputStream.available());
+            stats.setSizeOnDisk((long) inputStream.available());
             final String archiveId = storeClient.createArchive().getResponse();
 
             logger.info("Creating archiveId " + archiveId);
@@ -120,7 +120,7 @@ public class StoreServiceImpl implements StoreService {
                     .map(file -> uploadFile(file, archiveId, directory))
                     .collect(Collectors.toList());
             long size = results.stream().map(File::length).reduce(0L, (f1, f2) -> f1 + f2);
-            stats.setFileSize(size);
+            stats.setSize(size);
             stats.setFileCount((long) results.size());
             stats.setInfo(new ArrayList<>());
             Map<String, Long> infos = results.stream()

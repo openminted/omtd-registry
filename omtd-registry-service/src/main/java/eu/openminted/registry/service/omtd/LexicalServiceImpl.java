@@ -35,7 +35,7 @@ public class LexicalServiceImpl extends OmtdGenericService<Lexical> implements A
         identifier.setValue(archiveId);
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
         ancillary.getLexicalConceptualResourceInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
-        super.add(ancillary);
+        super.add(ancillary,null);
         return ancillary;
     }
 

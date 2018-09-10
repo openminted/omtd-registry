@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +51,7 @@ public class ComponentListener {
 
     @Autowired
     @Qualifier("applicationService")
-    private ResourceCRUDService<Component> applicationService;
+    private ResourceCRUDService<Component, OIDCAuthenticationToken> applicationService;
 
     @Before("(execution (* eu.openminted.registry.service.omtd.*.add(eu.openminted.registry.domain" +
             ".Component)) || " +
@@ -90,7 +91,7 @@ public class ComponentListener {
         return component;
     }
 
-    private void exportDirectory(Component component) throws ExecutionException, InterruptedException {
+    private void exportDirectory(Component component) {
         ResourceIdentifier resourceIdentifier = component.getComponentInfo().getIdentificationInfo()
                 .getResourceIdentifiers().get(0);
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
@@ -142,7 +143,7 @@ public class ComponentListener {
         try {
             FileWriter fw = new FileWriter(f.getAbsolutePath());
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(parserPool.serialize(component, ParserService.ParserServiceTypes.XML).get());
+            bw.write(parserPool.serialize(component, ParserService.ParserServiceTypes.XML));
 
             bw.close();
             fw.close();

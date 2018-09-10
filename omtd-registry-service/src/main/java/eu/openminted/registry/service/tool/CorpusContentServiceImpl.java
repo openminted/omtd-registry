@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -46,7 +47,7 @@ public class CorpusContentServiceImpl implements CorpusContentService {
 
     @Autowired
     @Qualifier("corpusService")
-    ResourceCRUDService<Corpus> corpusService;
+    ResourceCRUDService<Corpus, OIDCAuthenticationToken> corpusService;
     private Logger logger = Logger.getLogger(CorpusContentServiceImpl.class);
     @Autowired
     private RedisTemplate<String, CorpusContent> template;

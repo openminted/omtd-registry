@@ -1,0 +1,35 @@
+{
+  "indexFields": [
+    {
+      "name": "personIdentifier",
+      "path": "$.personIdentifier",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "omtdId",
+      "path": "$.omtdId",
+      "type": "java.lang.String",
+      "primaryKey": true
+    },
+    {
+      "name": "archiveId",
+      "path": "$.archiveId",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "size",
+      "path": "$.size",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "sizeOnDisk",
+      "path": "$.sizeOnDisk",
+      "type": "java.lang.Integer"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "filestats",
+  "aliasGroup": null,
+  "payloadType": "json",
+  "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"extends\": {\"$ref\": \"identifiableResource.json\"},\"properties\": {\"archiveId\": {\"type\": \"string\"},\"fileCount\": {\"type\": \"integer\"},\"filename\": {\"type\": \"string\"},\"info\": {\"items\": {\"properties\": {\"count\": {\"type\": \"integer\"},\"fileType\": {\"type\": \"string\"}},\"type\": \"object\"},\"type\": \"array\"},\"size\": {\"type\": \"integer\"},\"sizeOnDisk\": {\"type\": \"integer\"}},\"type\": \"object\"}"
+}

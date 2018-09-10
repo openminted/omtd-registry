@@ -79,4 +79,8 @@ public class OMTDUtils {
         logger.debug(workflowIdentifier.get().getValue());
         return workflowIdentifier.get().getValue();
     }
+
+    public static String resolveUser(BaseMetadataRecord resource) {
+        return resource.getMetadataHeaderInfo().getMetadataCreators().get(0).getPersonIdentifiers().get(0).getValue();
+    }
 }

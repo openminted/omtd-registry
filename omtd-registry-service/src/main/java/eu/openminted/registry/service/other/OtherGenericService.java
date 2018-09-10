@@ -8,6 +8,7 @@ import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
 import eu.openminted.registry.core.service.AbstractGenericService;
+import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.base.ResourceIdentifier;
@@ -20,7 +21,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
-abstract class OtherGenericService<T extends ResourceIdentifier> extends AbstractGenericService<T> {
+abstract class OtherGenericService<T extends ResourceIdentifier> extends AbstractGenericService<T>
+        implements ResourceCRUDService<T, OIDCAuthenticationToken> {
 
     OtherGenericService(Class<T> typeParameterClass) {
         super(typeParameterClass);
@@ -40,8 +42,11 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
         logger.debug("Getting operation with id " + id);
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(getResourceId(), id);
-            operation = parserPool.deserialize(searchService.searchId(getResourceType(), kv), typeParameterClass).get();
-        } catch (UnknownHostException | ExecutionException | InterruptedException e) {
+            Resource resource = searchService.searchId(getResourceType(), kv);
+            if(resource == null)
+                return null;
+            operation = parserPool.deserialize(resource, typeParameterClass);
+        } catch (UnknownHostException e) {
             logger.fatal("operation get fatal error", e);
             throw new ServiceException(e);
         }
@@ -49,19 +54,19 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
     }
 
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Browsing<T> getAll(FacetFilter filter) {
+    public Browsing<T> getAll(FacetFilter filter, OIDCAuthenticationToken auth) {
         filter.setBrowseBy(getBrowseBy());
         return  getResults(filter);
     }
 
-    public Browsing<T> getMy(FacetFilter filter) {
+    public Browsing<T> getMy(FacetFilter filter, OIDCAuthenticationToken auth) {
         OIDCAuthenticationToken authentication = (OIDCAuthenticationToken) SecurityContextHolder.getContext()
                 .getAuthentication();
         filter.addFilter("personIdentifier", authentication.getSub());
         return getResults(filter);
     }
 
-    public T add(T operation) {
+    public T add(T operation, OIDCAuthenticationToken auth) {
 
         Resource resourceDb = new Resource();
         try {
@@ -79,7 +84,7 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
         }
     }
 
-    public T update(T operation) {
+    public T update(T operation, OIDCAuthenticationToken auth) {
 
         Resource resourceDb;
         SearchService.KeyValue kv = new SearchService.KeyValue(

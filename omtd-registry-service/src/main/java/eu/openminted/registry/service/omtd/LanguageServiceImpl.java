@@ -36,7 +36,7 @@ public class LanguageServiceImpl extends OmtdGenericService<LanguageDescription>
         identifier.setValue(archiveId);
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OMTD);
         ancillary.getLanguageDescriptionInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
-        super.add(ancillary);
+        super.add(ancillary,null);
         return ancillary;
     }
 }

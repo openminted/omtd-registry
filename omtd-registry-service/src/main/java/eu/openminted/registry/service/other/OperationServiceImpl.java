@@ -59,11 +59,11 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
 
     @Autowired
     @Qualifier("applicationService")
-    private ResourceCRUDService<Component> applicationResolver;
+    private ResourceCRUDService<Component, OIDCAuthenticationToken> applicationResolver;
 
     @Autowired
     @Qualifier("corpusService")
-    private ResourceCRUDService<Corpus> corpusResolver;
+    private ResourceCRUDService<Corpus, OIDCAuthenticationToken> corpusResolver;
 
     public OperationServiceImpl() {
         super(Operation.class);
@@ -81,13 +81,13 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Browsing getAll(FacetFilter filter) {
-        return applicationJoinForOperations(super.getAll(filter));
+    public Browsing getAll(FacetFilter filter, OIDCAuthenticationToken auth) {
+        return applicationJoinForOperations(super.getAll(filter,auth));
     }
 
     @Override
-    public Browsing getMy(FacetFilter filter) {
-        return applicationJoinForOperations(super.getMy(filter));
+    public Browsing getMy(FacetFilter filter, OIDCAuthenticationToken auth) {
+        return applicationJoinForOperations(super.getMy(filter,auth));
     }
 
 
@@ -100,8 +100,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             fatOperation.setResources(resolveOperationResources(operation));
             operations.add(fatOperation);
         }
-        return new Browsing<>(browsing.getTotal(), browsing.getFrom(), browsing.getTo(), operations, browsing
-                .getFacets());
+        return new Browsing<>(browsing,operations,browsing.getFacets());
     }
 
     private Map<String, BaseMetadataRecord> resolveOperationResources(Operation operation) {
@@ -138,7 +137,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
         try {
             SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, resourceId);
             Resource resource = this.searchService.searchId(resourceName, kv);
-            output = parserPool.deserialize(resource, resourceType).get();
+            output = parserPool.deserialize(resource, resourceType);
         } catch (Exception e) {
             logger.error("the resourceType of the operation " + resourceId + " was not found");
         }
@@ -194,7 +193,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             HttpEntity<Component> entity = new HttpEntity<>(application, headers);
             executionId = workflowRestTemplate.postForEntity(url.toString(), entity, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
-            add(operation);
+            add(operation,null);
             logger.info("Added operation with execution id " + executionId.getBody());
         }
         try {

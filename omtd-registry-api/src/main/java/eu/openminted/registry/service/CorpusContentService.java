@@ -2,7 +2,6 @@ package eu.openminted.registry.service;
 
 
 import eu.openminted.registry.core.domain.Browsing;
-import eu.openminted.registry.domain.CorpusContent;
 import eu.openminted.registry.domain.PublicationInfo;
 
 /**

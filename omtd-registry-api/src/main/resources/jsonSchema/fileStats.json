@@ -1,17 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/fileStats.json",
   "type": "object",
   "extends": {
     "$ref": "identifiableResource.json"
   },
+  "allOf": [
+    {
+      "$ref": "identifiableResource.json"
+    }
+  ],
   "properties": {
     "archiveId": {
       "type": "string"
     },
-    "compressedFileSize": {
+    "sizeOnDisk": {
       "type": "integer"
     },
-    "fileSize": {
+    "size": {
       "type": "integer"
     },
     "fileCount": {

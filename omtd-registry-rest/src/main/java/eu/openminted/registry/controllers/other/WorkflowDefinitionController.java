@@ -5,6 +5,8 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.workflow.WorkflowDefinition;
 import eu.openminted.registry.service.WorkflowService;
 import io.swagger.annotations.Api;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
+import org.mitre.openid.connect.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -29,7 +31,7 @@ public class WorkflowDefinitionController extends OtherRestController<WorkflowDe
     WorkflowService workflowService;
 
     @Autowired
-    WorkflowDefinitionController(ResourceCRUDService<WorkflowDefinition> service) {
+    WorkflowDefinitionController(ResourceCRUDService<WorkflowDefinition,OIDCAuthenticationToken> service) {
         super(service);
         this.workflowService = (WorkflowService) service;
     }

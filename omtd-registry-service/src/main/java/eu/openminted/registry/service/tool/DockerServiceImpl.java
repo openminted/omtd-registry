@@ -23,6 +23,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.Closeable;
@@ -110,7 +111,7 @@ public class DockerServiceImpl implements DockerService {
         pushImageCmd.exec(new PushImageResultCallback(){
             @Override
             public void onStart(Closeable stream) {
-                logger.info("Sending name out to "+OPENMINTED_REPO);
+                logger.info("Sending " + image + "out to "+OPENMINTED_REPO);
                 super.onStart(stream);
             }
 
@@ -122,19 +123,8 @@ public class DockerServiceImpl implements DockerService {
 
             @Override
             public void onComplete() {
-                logger.info("Image transfer completed!");
+                logger.info("Image " + image + " transfer complete");
                 super.onComplete();
-            }
-
-            @Override
-            public void close() throws IOException {
-                super.close();
-            }
-
-            @Override
-            public void onNext(PushResponseItem item) {
-                logger.info("Sending out:"+item.getProgressDetail());
-                super.onNext(item);
             }
         }).awaitSuccess();
 
@@ -179,11 +169,9 @@ public class DockerServiceImpl implements DockerService {
     }
 
     private void privateRegistryDownload(String url){
-        DockerImage image = parseLocation(url);
+        final DockerImage image = parseLocation(url);
 
-        logger.info(image.domain);
-        logger.info(image.name);
-        logger.info(image.version);
+        logger.info("Pulling Docker Image " + image);
 
         PullImageCmd pullImageCmd = dockerClient.pullImageCmd(image.name);
         pullImageCmd.withTag(image.version);
@@ -194,7 +182,7 @@ public class DockerServiceImpl implements DockerService {
 
             @Override
             public void onStart(Closeable stream) {
-                logger.info("Starting the transfer");
+                logger.info("Starting the transfer for image " + image);
                 super.onStart(stream);
             }
 
@@ -206,20 +194,9 @@ public class DockerServiceImpl implements DockerService {
             }
 
             @Override
-            public void onNext(PullResponseItem item) {
-                logger.info("Next:"+item.getProgressDetail());
-                super.onNext(item);
-            }
-
-            @Override
             public void onComplete() {
-                logger.info("Image is here!");
+                logger.info("Pulled image " + image);
                 super.onComplete();
-            }
-
-            @Override
-            public void close() throws IOException {
-                super.close();
             }
         }).awaitSuccess();
 
@@ -233,6 +210,11 @@ public class DockerServiceImpl implements DockerService {
         public String domain;
         public String name;
         public String version;
+
+        @Override
+        public String toString() {
+            return String.format("%s/%s:%s",domain, name,version);
+        }
     }
 
     @Override

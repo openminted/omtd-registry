@@ -6,6 +6,7 @@ import eu.openminted.registry.domain.*;
 import eu.openminted.registry.controllers.GenericRestController;
 import eu.openminted.registry.service.ValidateInterface;
 import org.apache.commons.io.IOUtils;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -34,11 +35,10 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#component) and isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
-    public ResponseEntity<T> update(@RequestBody T component) throws ResourceNotFoundException {
-        return super.update(component);
+    public ResponseEntity<T> update(@RequestBody T component, OIDCAuthenticationToken auth) throws ResourceNotFoundException {
+        return super.update(component,auth);
     }
-
-    @Override
+    
     @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#component) and isAuthenticated() and @omtdPolicyService.isOwn(#component,principal['sub']))")
     public ResponseEntity<String> delete(@RequestBody T component) throws ResourceNotFoundException {
         return super.delete(component);
@@ -46,16 +46,16 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
 
     @RequestMapping(path = "public/{id}", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<T> makePublic(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public ResponseEntity<T> makePublic(@PathVariable("id") String id, OIDCAuthenticationToken auth) throws ResourceNotFoundException {
         T resource = service.get(id);
         if(resource == null) {
             throw new ResourceNotFoundException(id,service.getClass().getTypeName());
         }
-        return ResponseEntity.ok(makePublicInternal(resource));
+        return ResponseEntity.ok(makePublicInternal(resource,auth));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or (not @omtdPolicyService.isPublic(#resource) and @omtdPolicyService.isOwn(#resource,principal['sub']))")
-    private T makePublicInternal(T resource) throws ResourceNotFoundException {
+    private T makePublicInternal(T resource, OIDCAuthenticationToken auth) throws ResourceNotFoundException {
         if (resource instanceof Component) {
             ((Component) resource).getComponentInfo().getIdentificationInfo().setPublic(true);
         } else if (resource instanceof Corpus) {
@@ -67,13 +67,13 @@ public class OmtdRestController<T extends BaseMetadataRecord> extends GenericRes
         } else {
             throw new ServiceException("ResourceType not supported");
         }
-        return service.update(resource);
+        return service.update(resource,auth);
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<T> add(@RequestBody T component) {
-        return super.add(component);
+    public ResponseEntity<T> add(@RequestBody T component, OIDCAuthenticationToken auth) {
+        return super.add(component, auth);
     }
 
     @PreAuthorize("isAuthenticated()")

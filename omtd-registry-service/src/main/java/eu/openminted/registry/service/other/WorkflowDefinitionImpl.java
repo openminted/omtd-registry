@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -63,8 +64,8 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
             if (workflowRes == null) {
                 return null;
             }
-            workflow = parserPool.deserialize(workflowRes, typeParameterClass).get();
-        } catch (UnknownHostException | ExecutionException | InterruptedException e) {
+            workflow = parserPool.deserialize(workflowRes, typeParameterClass);
+        } catch (UnknownHostException e) {
             logger.fatal("Workflow get fatal error", e);
             throw new ServiceException(e);
         }
@@ -92,12 +93,12 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
                 "\"\"}");
         internalWorkflow.setOmtdId(UUID.randomUUID().toString());
         internalWorkflow.setPersonIdentifier(authentication.getSub());
-        add(internalWorkflow);
+        add(internalWorkflow,null);
         return internalWorkflow;
     }
 
     @Override
-    public WorkflowDefinition updateWorkflow(String omtdId) throws ResourceNotFoundException {
+    public WorkflowDefinition updateWorkflow(String omtdId) {
         WorkflowDefinition workflowDefinition = get(omtdId);
         //EXPORT WORKFLOW FROM EDITOR
         String definition = galaxyEditorInstance.getWorkflowsClient().exportWorkflow(workflowDefinition.getWorkflowId
@@ -114,12 +115,12 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
         workflowDefinition.setExecutorId(executorWorkflow.getId());
         workflowDefinition.setWorkflowDefinition(definition);
         //UPDATE WORKFLOW DEFINITION
-        update(workflowDefinition);
+        update(workflowDefinition,null);
         return workflowDefinition;
     }
 
     @Override
-    public String deleteWorkflow(String omtdId) throws ResourceNotFoundException {
+    public String deleteWorkflow(String omtdId) {
         WorkflowDefinition workflow = get(omtdId);
         logger.info("Delete workflow from workflow with id " + workflow.getWorkflowId());
         if (workflow.getWorkflowId() == null) {
@@ -129,7 +130,7 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
         if (workflow.getWorkflowId() != null) {
             galaxyEditorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
             workflow.setWorkflowId(null);
-            update(workflow);
+            update(workflow,null);
             logger.info("Editor workflow with id " + workflowId + " was deleted.");
         } else {
             logger.info("No workflow to delete in workflow definition " + omtdId);
@@ -138,14 +139,14 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
     }
 
     @Override
-    public WorkflowDefinition restoreWorkflow(String omtdId) throws ResourceNotFoundException {
+    public WorkflowDefinition restoreWorkflow(String omtdId) {
         WorkflowDefinition workflow = get(omtdId);
         logger.info("Restore workflow from workflow with id " + workflow.getOmtdId());
         if (workflow.getWorkflowId() == null) {
             Workflow galaxyWorkflow = galaxyEditorInstance.getWorkflowsClient().importWorkflow(workflow
                     .getWorkflowDefinition());
             workflow.setWorkflowId(galaxyWorkflow.getId());
-            update(workflow);
+            update(workflow,null);
             logger.debug("Workflow with ID" + omtdId + " already exists in galaxy editor");
         }
         return workflow;
@@ -156,9 +157,8 @@ public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefiniti
         return workflowId;
     }
 
-    private String deleteExecutorWorkflow(String workflowId) {
+    private void deleteExecutorWorkflow(String workflowId) {
         galaxyExecutorInstance.getWorkflowsClient().deleteWorkflow(workflowId);
-        return workflowId;
     }
 
     @Override

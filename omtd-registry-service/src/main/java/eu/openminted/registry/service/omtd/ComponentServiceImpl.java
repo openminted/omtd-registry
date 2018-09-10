@@ -3,6 +3,7 @@ package eu.openminted.registry.service.omtd;
 import eu.openminted.registry.core.exception.ResourceNotFoundException;
 import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.Component;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +21,19 @@ public class ComponentServiceImpl extends OmtdGenericService<Component> {
     }
 
     @Override
-    public Component add(Component resource) {
+    public Component add(Component resource, OIDCAuthenticationToken auth) {
         if (resource.getComponentInfo().isApplication()) {
             throw new ServiceException("Expected a component not an application");
         }
-        return super.add(resource);
+        return super.add(resource,auth);
     }
 
     @Override
-    public Component update(Component newResource) throws ResourceNotFoundException {
+    public Component update(Component newResource, OIDCAuthenticationToken auth) throws ResourceNotFoundException {
         if (newResource.getComponentInfo().isApplication()) {
             throw new ServiceException("Cannot update a component to an application");
         }
-        return super.update(newResource);
+        return super.update(newResource,auth);
     }
 
     @Override

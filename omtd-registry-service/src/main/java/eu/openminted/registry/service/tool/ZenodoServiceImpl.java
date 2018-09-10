@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -40,7 +41,7 @@ public class ZenodoServiceImpl implements ZenodoService {
     ParserService parserPool;
     @Autowired
     @Qualifier("corpusService")
-    ResourceCRUDService<Corpus> corpusService;
+    ResourceCRUDService<Corpus, OIDCAuthenticationToken> corpusService;
     private Logger logger = LogManager.getLogger(ZenodoServiceImpl.class);
     private RestTemplate restTemplate = new RestTemplate();
     @Value("${zenodo.host}")
@@ -377,13 +378,7 @@ public class ZenodoServiceImpl implements ZenodoService {
     private String createZenodoMetadata(String corpusId) throws IOException {
         String corpusXML = "";
         Corpus corpus = corpusService.get(corpusId);
-        try {
-            corpusXML = parserPool.serialize(corpus, ParserService.ParserServiceTypes.XML).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        corpusXML = parserPool.serialize(corpus, ParserService.ParserServiceTypes.XML);
         logger.info("corpus metadata: " + corpusXML);
 
         Processor processor = new Processor(false);
@@ -432,7 +427,7 @@ public class ZenodoServiceImpl implements ZenodoService {
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(r);
 
         try {
-            corpusService.update(corpus);
+            corpusService.update(corpus,null);
             logger.info("Updated corpus metadata with DOI");
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();

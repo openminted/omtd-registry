@@ -1,8 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/operation.json",
   "extends": {
     "$ref": "identifiableResource.json"
   },
+  "allOf": [
+    {
+      "$ref": "identifiableResource.json"
+    }
+  ],
   "properties": {
     "component": {
       "description": "The id of the application component that was executed.",
@@ -82,12 +88,37 @@
       "description": "The status of the operation",
       "title": "Operation status",
       "type": "string"
+    },
+    "monitoring" : {
+      "description": "The total runtime of a process",
+      "title": "Monitoring Information",
+      "type": "object",
+      "properties": {
+        "cpu_milliseconds": {
+          "description": "The total runtime in milliseconds time * (cpu_cores)",
+          "title": "CPU Milliseconds",
+          "type": "integer"
+        },
+        "cpu_count": {
+          "description": "The total number of CPU cores",
+          "title": "CPU Cores",
+          "type": "integer"
+        },
+        "vm_count": {
+          "description": "The number of VMs used for the process",
+          "title": "VM Count",
+          "type": "integer"
+        },
+        "ram_usage": {
+          "description": "RAM Usage",
+          "title": "RAM Usage",
+          "type": "integer"
+        }
+      }
     }
   },
   "required": [
-    "id",
     "component",
-    "person",
     "date",
     "corpus",
     "status"

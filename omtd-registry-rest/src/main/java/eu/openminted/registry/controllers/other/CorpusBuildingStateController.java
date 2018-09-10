@@ -6,6 +6,7 @@ import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.domain.connector.CorpusBuildingState;
 import eu.openminted.registry.service.CorpusBuildingStatusService;
 import io.swagger.annotations.Api;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,9 @@ import java.util.List;
 public class CorpusBuildingStateController extends OtherRestController<CorpusBuildingState> {
 
     @Autowired
-    CorpusBuildingStateController(@Qualifier("corpusBuildingStateService") ResourceCRUDService<CorpusBuildingState> service) {
+    CorpusBuildingStateController(
+            @Qualifier("corpusBuildingStateService")
+                    ResourceCRUDService<CorpusBuildingState,OIDCAuthenticationToken> service) {
         super(service);
     }
 

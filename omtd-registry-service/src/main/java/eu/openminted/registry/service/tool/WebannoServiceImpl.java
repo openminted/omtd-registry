@@ -126,7 +126,7 @@ public class WebannoServiceImpl implements WebannoService {
                         storeClient.moveFile(newCorpusId, "annotations", "fulltext");
                         deleteFiles(newCorpusId, "annotations");
                         corpus.getMetadataHeaderInfo().setRevision("output");
-                        incompleteCorpusService.add(corpus);
+                        incompleteCorpusService.add(corpus,null);
                         save_dir.delete();
                     } catch (IOException e) {
                         deleteProject(projectId);
@@ -260,27 +260,21 @@ public class WebannoServiceImpl implements WebannoService {
     }
 
     private Corpus findIdentifier(int projectId, String identifierName) {
-        try {
-            Paging paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", "ASC");
-            if(paging==null) {
-                return null;
-            }
-
-            for (Resource res : (List<Resource>) paging.getResults()) {
-                Corpus corpus = parserPool.deserialize(res, Corpus.class).get();
-                for (ResourceIdentifier resourceIdentifier : corpus.getCorpusInfo().getIdentificationInfo()
-                        .getResourceIdentifiers()) {
-                    if (resourceIdentifier.getSchemeURI() != null && resourceIdentifier.getSchemeURI().equals
-                            (identifierName) && Integer.parseInt(resourceIdentifier.getValue()) == projectId) {
-                        return corpus;
-                    }
-                }
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            logger.fatal("get omtd generic", e);
-            throw new ServiceException(e);
+        Paging<Resource> paging= searchService.cqlQuery("payload=*"+identifierName+"*","incompletecorpus",10, 0, "", "ASC");
+        if(paging==null) {
+            return null;
         }
 
+        for (Resource res : paging.getResults()) {
+            Corpus corpus = parserPool.deserialize(res, Corpus.class);
+            for (ResourceIdentifier resourceIdentifier : corpus.getCorpusInfo().getIdentificationInfo()
+                    .getResourceIdentifiers()) {
+                if (resourceIdentifier.getSchemeURI() != null && resourceIdentifier.getSchemeURI().equals
+                        (identifierName) && Integer.parseInt(resourceIdentifier.getValue()) == projectId) {
+                    return corpus;
+                }
+            }
+        }
         return null;
     }
 

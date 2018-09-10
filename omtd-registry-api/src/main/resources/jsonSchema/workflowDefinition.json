@@ -1,8 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/workflowDefinition.json",
   "extends": {
     "$ref": "identifiableResource.json"
   },
+  "allOf": [
+    {
+      "$ref": "identifiableResource.json"
+    }
+  ],
   "properties": {
     "workflow_id": {
       "description": "Workflow Identifier in the galaxy editor",

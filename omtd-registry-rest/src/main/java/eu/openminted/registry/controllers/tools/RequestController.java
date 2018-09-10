@@ -3,6 +3,7 @@ package eu.openminted.registry.controllers.tools;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.service.ResourceService;
+import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.service.RequestService;
 import io.swagger.annotations.Api;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
@@ -25,11 +26,7 @@ import java.util.Map;
 public class RequestController {
 
     @Autowired
-    ResourceService resourceService;
-
-    @Autowired
-    RequestService requestService;
-
+    private RequestService requestService;
 
     @RequestMapping(value = "/request", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity<Browsing> getResourceTypeByFilters(@RequestParam(required = false) Map<String,Object> allRequestParams) {
@@ -60,7 +57,7 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/request/grouped", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<Map<String,List<?>>> getResourceTypeByFiltersGrouped(@RequestParam Map<String,Object> allRequestParams) {
+    public ResponseEntity<Map<String,List<BaseMetadataRecord>>> getResourceTypeByFiltersGrouped(@RequestParam Map<String,Object> allRequestParams) {
 
         FacetFilter facetFilter = new FacetFilter();
         facetFilter.setKeyword(allRequestParams.get("keyword") != null ? (String)allRequestParams.remove("keyword") : "");
@@ -68,7 +65,7 @@ public class RequestController {
         facetFilter.setQuantity(allRequestParams.get("quantity") != null ? Integer.parseInt((String)allRequestParams.remove("quantity")) : 10);
         String groupBy = allRequestParams.get("group") != null ? (String)allRequestParams.remove("group") : "";
         facetFilter.setFilter(allRequestParams);
-        Map<String,List<?>> browsing = requestService.getResourceGroupedElastic(facetFilter,groupBy);
+        Map<String,List<BaseMetadataRecord>> browsing = requestService.getResourceGroupedElastic(facetFilter,groupBy);
         return new ResponseEntity<>(browsing, HttpStatus.OK);
 
     }

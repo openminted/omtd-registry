@@ -70,8 +70,8 @@ public class LabelGenerate {
         return label.length() != 0 ? label.toString() : language;
     }
 
-    public void createLabels(Browsing<BaseMetadataRecord> browsing) {
-        for (Facet facet : browsing.getFacets()) {
+    public void createLabels(List<Facet> facets) {
+        for (Facet facet : facets) {
             for (Value value : facet.getValues()) {
                 switch (facet.getField()) {
                     case "language":

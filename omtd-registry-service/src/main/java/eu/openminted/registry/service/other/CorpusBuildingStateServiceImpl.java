@@ -11,6 +11,7 @@ import eu.openminted.registry.service.CorpusBuildingStatusService;
 import eu.openminted.registry.service.omtd.OmtdGenericService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 @Service("corpusBuildingStateService")
 @Primary
 public class CorpusBuildingStateServiceImpl extends OtherGenericService<CorpusBuildingState> implements
-        ResourceCRUDService<CorpusBuildingState>, CorpusBuildingStatusService {
+        ResourceCRUDService<CorpusBuildingState, OIDCAuthenticationToken>, CorpusBuildingStatusService {
 
     private static final String CORPUS_ID = "corpus_id";
     private static final String[] CONNECTORS = {"CORE", "OpenAIRE"};
@@ -59,9 +60,9 @@ public class CorpusBuildingStateServiceImpl extends OtherGenericService<CorpusBu
                 Resource state = searchService.searchId(getResourceType(), kv);
 
                 if (state != null)
-                    resource.add(parserPool.deserialize(state, typeParameterClass).get());
+                    resource.add(parserPool.deserialize(state, typeParameterClass));
 
-            } catch (UnknownHostException | ExecutionException | InterruptedException e) {
+            } catch (UnknownHostException e) {
                 logger.fatal("corpusBuildingState get fatal error", e);
                 throw new ServiceException(e);
             }
