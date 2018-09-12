@@ -32,6 +32,7 @@ public class JMSConsumer {
     @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state" +
             ".topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws UnknownHostException {
+        logger.info("Received new state..");
         try {
             logger.info("State of corpus building: " + corpusBuildingState);
             SearchService.KeyValue kv = new SearchService.KeyValue("corpus_id", corpusBuildingState.getOmtdId());
