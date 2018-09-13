@@ -379,6 +379,7 @@ public class ZenodoServiceImpl implements ZenodoService {
         String corpusXML = "";
         Corpus corpus = corpusService.get(corpusId);
         corpusXML = parserPool.serialize(corpus, ParserService.ParserServiceTypes.XML);
+        corpusXML = corpusXML.replaceAll("&quot;","\\\\&quot;");
         logger.info("corpus metadata: " + corpusXML);
 
         Processor processor = new Processor(false);
@@ -405,7 +406,6 @@ public class ZenodoServiceImpl implements ZenodoService {
             xsltTransformer.setInitialContextNode(source);
             xsltTransformer.setDestination(out);
             xsltTransformer.transform();
-
             result = sw.toString();
 
         } catch (SaxonApiException e) {
