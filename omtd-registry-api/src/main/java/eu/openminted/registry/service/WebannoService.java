@@ -10,7 +10,7 @@ public interface WebannoService {
      * annotation viewer, as a project.
      * @param corpusId
      */
-    boolean createProject(String corpusId);
+    int moveToWebanno(String corpusId);
 
     void triggerRetrieval(long projectId, String projectName);
 }

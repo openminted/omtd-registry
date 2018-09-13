@@ -29,8 +29,7 @@ public class JMSConsumer {
     @Autowired
     private IncompleteCorpusService incompleteCorpusService;
 
-    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state" +
-            ".topic:corpus.state}")
+    @JmsListener(containerFactory = "jmsQueueListenerContainerFactory", destination = "${jms.corpus.state.topic:corpus.state}")
     public void receiveState(CorpusBuildingState corpusBuildingState) throws UnknownHostException {
         logger.info("Received new state..");
         try {
