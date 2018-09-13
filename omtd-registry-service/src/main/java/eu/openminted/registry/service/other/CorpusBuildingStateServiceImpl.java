@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 public class CorpusBuildingStateServiceImpl extends OtherGenericService<CorpusBuildingState> implements
         ResourceCRUDService<CorpusBuildingState, OIDCAuthenticationToken>, CorpusBuildingStatusService {
 
-    private static final String CORPUS_ID = "corpus_id";
+    private static final String CORPUS_ID = "omtdId";
     private static final String[] CONNECTORS = {"CORE", "OpenAIRE"};
     @Autowired
     ResourceTypeService resourceTypeService;
