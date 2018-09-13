@@ -23,7 +23,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/request/language")
 @Api(value = "/request/language", description = "Operations about OMTD Models and Grammars.",tags="Models and Grammars")
-public class LanguageController extends GenericRestController<LanguageDescription> {
+public class LanguageController extends OmtdRestController<LanguageDescription> {
 
     @Autowired
     LanguageController(ValidateInterface<LanguageDescription> service) {
