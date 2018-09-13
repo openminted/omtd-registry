@@ -25,18 +25,6 @@
       "title": "name",
       "type": "string"
     },
-    "creationDate": {
-      "description": "When the workflow was created.",
-      "title": "Creation Date",
-      "type": "string",
-      "format": "date-time"
-    },
-    "modificationDate": {
-      "description": "When the workflow was edited.",
-      "title": "Modification Date",
-      "type": "string",
-      "format": "date-time"
-    },
     "workflowDefinition": {
       "description": "The definition of the workflow.",
       "title": "workflow Definition",
@@ -44,8 +32,9 @@
     }
   },
   "required": [
-    "creationDate",
-    "modificationDate"
+    "workflow_id",
+    "workflowName",
+    "workflowDefinition"
   ],
   "type": "object"
 }

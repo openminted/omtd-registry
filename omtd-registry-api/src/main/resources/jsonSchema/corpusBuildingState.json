@@ -59,7 +59,6 @@
     }
   },
   "required": [
-    "id",
     "connector"
   ],
   "type": "object"
