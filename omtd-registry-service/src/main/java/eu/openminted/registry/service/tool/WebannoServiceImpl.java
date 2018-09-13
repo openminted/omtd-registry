@@ -26,9 +26,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -38,7 +40,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 
 @Service("webannoService")
@@ -55,7 +56,9 @@ public class WebannoServiceImpl implements WebannoService {
     @Autowired
     StoreRESTClient storeClient;
     private Logger logger = LogManager.getLogger(WebannoServiceImpl.class);
-    private RestTemplate restTemplate = new RestTemplateBuilder().customizers(new LoggingCustomizer()).build();
+
+    private RestTemplate restTemplate = new RestTemplateBuilder().customizers(new LoggingCustomizer()).errorHandler(new MyErrorHandling()).build();
+
     @Value("${webanno.host:https://webanno.openminted.eu/api/v2}")
     private String webannoHost;
     @Value("${webanno.username}")
@@ -64,17 +67,17 @@ public class WebannoServiceImpl implements WebannoService {
     private String webannoPassword;
 
     @Override
-    public boolean createProject(String corpusId) {
+    public int moveToWebanno(String corpusId) {
 
 
         Corpus corpus = corpusService.get(corpusId);
         if (corpus == null)
-            return false;
+            throw new ServiceException("Corpus " + corpusId + " not found");
 
         ResourceIdentifier tempIdentifier = find(corpus, "archiveID");
         if (tempIdentifier == null) {
             logger.info("ArchiveID not found in corpus with id:" + corpusId);
-            return false;
+            throw new ServiceException("Corpus " + corpusId + " doesn't have any archive ID");
         }
         String newCorpusId = tempIdentifier.getValue();
         String oldCorpusId = newCorpusId;
@@ -83,7 +86,7 @@ public class WebannoServiceImpl implements WebannoService {
 
         if (newCorpusId == null) {
             logger.info("Failed to clone archive with id: " + oldCorpusId);
-            return false;
+            throw new ServiceException("Failed to clone archive with id " + oldCorpusId);
         }
 
         ResourceIdentifier resourceIdentifier = new ResourceIdentifier();
@@ -95,68 +98,54 @@ public class WebannoServiceImpl implements WebannoService {
 
         String projectName = corpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        map.add("name", projectName);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth());
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        int projectId = createProject(projectName,0);
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
-        if (response.getStatusCode() == HttpStatus.CREATED) {
+        resourceIdentifier = new ResourceIdentifier();
+        resourceIdentifier.setSchemeURI("projectID");
+        resourceIdentifier.setValue(projectId + "");
+        resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
+        corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
 
-            int projectId = new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
-
-            resourceIdentifier = new ResourceIdentifier();
-            resourceIdentifier.setSchemeURI("projectID");
-            resourceIdentifier.setValue(projectId + "");
-            resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
-            corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
-
-            File metadata_zip = new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId
-                    + ".zip");
-            File metadata_dir = new File(FilenameUtils.removeExtension(metadata_zip.toString()) + "/annotations");
-            if (!metadata_dir.exists()) {
-                metadata_zip.getParentFile().mkdirs();
-                logger.info("Searching @ " + storeClient.getEndpoint() + "    with arguments id:" + newCorpusId + "  " +
-                        " path:" + metadata_zip.toString());
-                StoreResponse responseStore = storeClient.fetchAnnotations(newCorpusId, metadata_zip.toString());
-                if (responseStore.getResponse().equals("true")) {
+        File metadata_zip = new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId
+                + ".zip");
+        File metadata_dir = new File(FilenameUtils.removeExtension(metadata_zip.toString()) + "/annotations");
+        if (!metadata_dir.exists()) {
+            metadata_zip.getParentFile().mkdirs();
+            logger.info("Searching @ " + storeClient.getEndpoint() + "    with arguments id:" + newCorpusId + "  " +
+                    " path:" + metadata_zip.toString());
+            StoreResponse responseStore = storeClient.fetchAnnotations(newCorpusId, metadata_zip.toString());
+            if (responseStore.getResponse().equals("true")) {
+                try {
+                    deleteFiles(newCorpusId, "fulltext");
+                    File save_dir = new File(metadata_zip.getParent());
+                    ZipToDir.unpackToWorkDir(metadata_zip, save_dir);
+                    Optional<File[]> files = Optional.ofNullable(metadata_dir.listFiles());
+                    for (File file : files.orElse(new File[]{})) {
+                        if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
+                            uploadDocument(projectId, file);
+                        }
+                    }
+                    storeClient.moveFile(newCorpusId, "annotations", "fulltext");
+                    deleteFiles(newCorpusId, "annotations");
+                    corpus.getMetadataHeaderInfo().setRevision("output");
+                    incompleteCorpusService.add(corpus,null);
+                    save_dir.delete();
+                } catch (IOException e) {
+                    deleteProject(projectId);
+                    logger.error("Failed creating files ", e);
+                    throw new ServiceException("Failed at creation of files");
+                } finally { // delete zip file
                     try {
-                        deleteFiles(newCorpusId, "fulltext");
-                        File save_dir = new File(metadata_zip.getParent().toString());
-                        ZipToDir.unpackToWorkDir(metadata_zip, save_dir);
-                        for (File file : metadata_dir.listFiles()) {
-                            if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
-                                uploadDocument(projectId, file);
-                            }
-                        }
-                        storeClient.moveFile(newCorpusId, "annotations", "fulltext");
-                        deleteFiles(newCorpusId, "annotations");
-                        corpus.getMetadataHeaderInfo().setRevision("output");
-                        incompleteCorpusService.add(corpus,null);
-                        save_dir.delete();
-                    } catch (IOException e) {
-                        deleteProject(projectId);
-                        logger.error("Failed creating files ", e);
-                        return false;
-                    } finally { // delete zip file
-                        try {
-                            new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId)
-                                    .delete();
-                        } catch (Exception e) {
-                            logger.error("Failed deleting .zip", e);
-                        }
+                        new File(System.getProperty("java.io.tmpdir") + "/corpus_annotations/" + newCorpusId)
+                                .delete();
+                    } catch (Exception e) {
+                        logger.error("Failed deleting .zip", e);
                     }
                 }
             }
-
-            return true;
-        } else {
-            logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
-            logger.error(response.getBody().toString());
-            return false;
         }
+
+        return projectId;
     }
 
     @Override
@@ -212,10 +201,53 @@ public class WebannoServiceImpl implements WebannoService {
            }
         } else {
             logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
-            logger.error(response.getBody().toString());
+            logger.error(response.getBody());
         }
 
 
+    }
+
+
+    private int createProject(String projectName, int noTry){
+
+//        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?:\\s(?<number>[0-9]+))?");
+//
+//
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+//        params.add("Authorization", "Basic " + basicAuth());
+//
+//        ResponseEntity response = restTemplate.getForEntity(webannoHost+"/projects",String.class, params);
+//
+//
+//        Matcher matcher = pattern.matcher(response.getBody().toString());
+//        matcher.find();
+//        logger.info(projectName);
+//        logger.info(response.getBody().toString());
+//        if(matcher.group("project")!=null)
+//            if(matcher.group("number")!=null){
+//                projectName = projectName.concat(" " + (Integer.parseInt(matcher.group("number"))+1));
+//            }else{
+//                projectName = projectName.concat(" 1");
+//            }
+
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        if(noTry!=0)
+            map.add("name", projectName + " " + noTry);
+        else
+            map.add("name", projectName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth());
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            return new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
+        }else{
+            return createProject(projectName, ++noTry);
+        }
     }
 
     private void deleteFiles(String corpusId, String folder) {
@@ -227,7 +259,7 @@ public class WebannoServiceImpl implements WebannoService {
     }
 
     private void uploadDocument(int projectId, File file) {
-        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("name", file.getName());
         map.add("format", "xmi");
         map.add("content", new FileSystemResource(file));
@@ -235,15 +267,21 @@ public class WebannoServiceImpl implements WebannoService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + basicAuth());
 
-        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(map, headers);
-        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects/" + String.valueOf(projectId) +
-                "/documents", request, String.class);
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(map, headers);
 
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            logger.info("Could not upload " + file.getName() + " @ Webanno. Moving on to the next one");
-        } else {
-            logger.info("Uploaded " + file.getName());
+        try {
+            ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects/" + String.valueOf(projectId) +
+                    "/documents", request, String.class);
+
+            if (response.getStatusCode() != HttpStatus.CREATED) {
+                logger.info("Could not upload " + file.getName() + " @ Webanno. Moving on to the next one");
+            } else {
+                logger.info("Uploaded " + file.getName());
+            }
+        }catch (Exception e){
+            logger.debug("Falied to upload document " + file.getName());
         }
+
 
     }
 
@@ -354,5 +392,20 @@ public class WebannoServiceImpl implements WebannoService {
 
     private String basicAuth() {
         return new String(Base64.encodeBytes((webannoUsername + ":" + webannoPassword).getBytes()).getBytes());
+    }
+
+
+    class MyErrorHandling implements ResponseErrorHandler {
+
+        @Override
+        public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+            logger.info(clientHttpResponse.getStatusText());
+            return true;
+        }
+
+        @Override
+        public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+            logger.info(clientHttpResponse.getStatusText());
+        }
     }
 }

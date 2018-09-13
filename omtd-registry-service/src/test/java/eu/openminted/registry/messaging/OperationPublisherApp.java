@@ -3,12 +3,12 @@ package eu.openminted.registry.messaging;
 
 import eu.openminted.workflow.api.ExecutionStatus;
 import eu.openminted.workflow.api.WorkflowExecutionStatusMessage;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -38,7 +38,7 @@ public class OperationPublisherApp {
     		//"tcp://83.212.98.33:61616"; // beta 
 
 
-    //@Value("${jms.prefix}")
+    @Value("${jms.prefix:omtd-content-connector-service}")
     private String jmsPrefix = "registry";
 
     @Bean
