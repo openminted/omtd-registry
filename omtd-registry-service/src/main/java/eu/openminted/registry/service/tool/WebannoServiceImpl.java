@@ -13,6 +13,7 @@ import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.IncompleteCorpusService;
 import eu.openminted.registry.service.WebannoService;
 import eu.openminted.registry.service.generate.MetadataHeaderInfoGenerate;
+import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
@@ -76,13 +77,8 @@ public class WebannoServiceImpl implements WebannoService {
         Corpus corpus = corpusService.get(corpusId);
         if (corpus == null)
             throw new ServiceException("Corpus " + corpusId + " not found");
-
-        ResourceIdentifier tempIdentifier = find(corpus, "archiveID");
-        if (tempIdentifier == null) {
-            logger.info("ArchiveID not found in corpus with id:" + corpusId);
-            throw new ServiceException("Corpus " + corpusId + " doesn't have any archive ID");
-        }
-        String newCorpusId = tempIdentifier.getValue();
+        String tempIdentifier = OMTDUtils.resolveCorpusArchive(corpus);
+        String newCorpusId = tempIdentifier;
         String oldCorpusId = newCorpusId;
 
         newCorpusId = storeClient.cloneArchive(newCorpusId).getResponse();
@@ -96,7 +92,7 @@ public class WebannoServiceImpl implements WebannoService {
         resourceIdentifier.setSchemeURI("archiveID");
         resourceIdentifier.setValue(newCorpusId);
         resourceIdentifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
-        corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().remove(tempIdentifier);
+        corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().removeIf(x -> x.getValue().equals(tempIdentifier));
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(resourceIdentifier);
 
         String projectName = corpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
@@ -303,16 +299,6 @@ public class WebannoServiceImpl implements WebannoService {
         } else {
             return identifier.get().getValue();
         }
-    }
-
-    private ResourceIdentifier find(Corpus corpus, String idType) {
-        Optional<ResourceIdentifier> identifier = corpus.getCorpusInfo().getIdentificationInfo()
-                .getResourceIdentifiers()
-                .stream()
-                .filter(p -> p.getResourceIdentifierSchemeName().equals(ResourceIdentifierSchemeNameEnum.OTHER) &&
-                        idType.equals(p.getSchemeURI()))
-                .findFirst();
-        return identifier.orElse(null);
     }
 
     private Corpus findIdentifier(int projectId, String identifierName) {
