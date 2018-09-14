@@ -112,9 +112,9 @@ public class WebannoServiceImpl implements WebannoService {
         if(matcher.find())
             if(matcher.group("project")!=null)
                 if(matcher.group("number")!=null){
-                    projectName = matcher.group("project").concat(" " + (Integer.parseInt(matcher.group("number"))+1));
+                    projectName = (Integer.parseInt(matcher.group("number"))+1)+ " " + matcher.group("project");
                 }else{
-                    projectName = matcher.group("project").concat(" 1");
+                    projectName = "1 " + matcher.group("project");
                 }
 
 
@@ -159,6 +159,7 @@ public class WebannoServiceImpl implements WebannoService {
                     }
                     storeClient.moveFile(newCorpusId, "annotations", "fulltext");
                     deleteFiles(newCorpusId, "annotations");
+                    corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier().setValue(newCorpusId);
                     MetadataHeaderInfoGenerate.generate(corpus.getMetadataHeaderInfo(),null);
                     incompleteCorpusService.add(corpus,null);
                     save_dir.delete();
