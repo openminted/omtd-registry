@@ -70,7 +70,7 @@ public class WebannoServiceImpl implements WebannoService {
     private String webannoPassword;
 
     @Override
-    public int moveToWebanno(String corpusId) {
+    public String moveToWebanno(String corpusId) {
 
 
         Corpus corpus = corpusService.get(corpusId);
@@ -101,7 +101,40 @@ public class WebannoServiceImpl implements WebannoService {
 
         String projectName = corpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
 
-        int projectId = createProject(projectName);
+        int projectId = 0;
+
+        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?!.*\\b\\1\\b)(?:\\s(?<number>[0-9]+))?");
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth());
+
+        ResponseEntity response = restTemplate.exchange(webannoHost+"/projects", HttpMethod.GET , new HttpEntity<String>(headers) , String.class);
+
+
+        Matcher matcher = pattern.matcher(response.getBody().toString());
+        if(matcher.find())
+            if(matcher.group("project")!=null)
+                if(matcher.group("number")!=null){
+                    projectName = matcher.group("project").concat(" " + (Integer.parseInt(matcher.group("number"))+1));
+                }else{
+                    projectName = matcher.group("project").concat(" 1");
+                }
+
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("name", projectName);
+        headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth());
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            projectId = new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
+        }else{
+            throw new ServiceException("Could not create project: HTTP_STATUS="+response.getStatusCode() + "");
+        }
 
         resourceIdentifier = new ResourceIdentifier();
         resourceIdentifier.setSchemeURI("projectID");
@@ -148,7 +181,7 @@ public class WebannoServiceImpl implements WebannoService {
             }
         }
 
-        return projectId;
+        return projectName;
     }
 
     @Override
@@ -211,41 +244,6 @@ public class WebannoServiceImpl implements WebannoService {
     }
 
 
-    private int createProject(String projectName){
-
-        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?!.*\\b\\1\\b)(?:\\s(?<number>[0-9]+))?");
-
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth());
-
-        ResponseEntity response = restTemplate.exchange(webannoHost+"/projects", HttpMethod.GET , new HttpEntity<String>(headers) , String.class);
-
-
-        Matcher matcher = pattern.matcher(response.getBody().toString());
-        if(matcher.find())
-            if(matcher.group("project")!=null)
-                if(matcher.group("number")!=null){
-                    projectName = matcher.group("project").concat(" " + (Integer.parseInt(matcher.group("number"))+1));
-                }else{
-                    projectName = matcher.group("project").concat(" 1");
-                }
-
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("name", projectName);
-        headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth());
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            return new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
-        }else{
-            throw new ServiceException("Could not create project: HTTP_STATUS="+response.getStatusCode() + "");
-        }
-    }
 
     private void deleteFiles(String corpusId, String folder) {
         List<String> listFiles = storeClient.listFiles(corpusId + "/" + folder, false, false, true);

@@ -34,6 +34,6 @@ public class WebannoController {
 
     @RequestMapping(value = "/webanno/create/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create (@PathVariable("id") String id) {
-        return new ResponseEntity("{\"project\":"+webannoService.moveToWebanno(id)+"}",HttpStatus.OK);
+        return new ResponseEntity("{\"project\":\""+webannoService.moveToWebanno(id)+"\"}",HttpStatus.OK);
     }
 }
