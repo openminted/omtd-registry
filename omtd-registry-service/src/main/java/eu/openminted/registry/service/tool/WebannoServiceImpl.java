@@ -12,6 +12,7 @@ import eu.openminted.registry.domain.ResourceIdentifierSchemeNameEnum;
 import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.IncompleteCorpusService;
 import eu.openminted.registry.service.WebannoService;
+import eu.openminted.registry.service.generate.MetadataHeaderInfoGenerate;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.utils.files.ZipToDir;
@@ -40,6 +41,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service("webannoService")
@@ -98,7 +101,7 @@ public class WebannoServiceImpl implements WebannoService {
 
         String projectName = corpus.getCorpusInfo().getIdentificationInfo().getResourceNames().get(0).getValue();
 
-        int projectId = createProject(projectName,0);
+        int projectId = createProject(projectName);
 
         resourceIdentifier = new ResourceIdentifier();
         resourceIdentifier.setSchemeURI("projectID");
@@ -127,7 +130,7 @@ public class WebannoServiceImpl implements WebannoService {
                     }
                     storeClient.moveFile(newCorpusId, "annotations", "fulltext");
                     deleteFiles(newCorpusId, "annotations");
-                    corpus.getMetadataHeaderInfo().setRevision("output");
+                    MetadataHeaderInfoGenerate.generate(corpus.getMetadataHeaderInfo(),null);
                     incompleteCorpusService.add(corpus,null);
                     save_dir.delete();
                 } catch (IOException e) {
@@ -208,45 +211,39 @@ public class WebannoServiceImpl implements WebannoService {
     }
 
 
-    private int createProject(String projectName, int noTry){
+    private int createProject(String projectName){
 
-//        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?:\\s(?<number>[0-9]+))?");
-//
-//
-//        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-//        params.add("Authorization", "Basic " + basicAuth());
-//
-//        ResponseEntity response = restTemplate.getForEntity(webannoHost+"/projects",String.class, params);
-//
-//
-//        Matcher matcher = pattern.matcher(response.getBody().toString());
-//        matcher.find();
-//        logger.info(projectName);
-//        logger.info(response.getBody().toString());
-//        if(matcher.group("project")!=null)
-//            if(matcher.group("number")!=null){
-//                projectName = projectName.concat(" " + (Integer.parseInt(matcher.group("number"))+1));
-//            }else{
-//                projectName = projectName.concat(" 1");
-//            }
+        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?!.*\\b\\1\\b)(?:\\s(?<number>[0-9]+))?");
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth());
+
+        ResponseEntity response = restTemplate.exchange(webannoHost+"/projects", HttpMethod.GET , new HttpEntity<String>(headers) , String.class);
+
+
+        Matcher matcher = pattern.matcher(response.getBody().toString());
+        if(matcher.find())
+            if(matcher.group("project")!=null)
+                if(matcher.group("number")!=null){
+                    projectName = matcher.group("project").concat(" " + (Integer.parseInt(matcher.group("number"))+1));
+                }else{
+                    projectName = matcher.group("project").concat(" 1");
+                }
 
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        if(noTry!=0)
-            map.add("name", projectName + " " + noTry);
-        else
-            map.add("name", projectName);
-        HttpHeaders headers = new HttpHeaders();
+        map.add("name", projectName);
+        headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + basicAuth());
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-
-        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
+        response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
         if (response.getStatusCode() == HttpStatus.CREATED) {
             return new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
         }else{
-            return createProject(projectName, ++noTry);
+            throw new ServiceException("Could not create project: HTTP_STATUS="+response.getStatusCode() + "");
         }
     }
 
