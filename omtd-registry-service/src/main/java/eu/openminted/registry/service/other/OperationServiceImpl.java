@@ -45,7 +45,6 @@ import java.util.*;
 @Primary
 public class OperationServiceImpl extends OtherGenericService<Operation> implements OperationService {
 
-    private static final String OPERATION_ID = "operation_id";
     private static final String OMTD_ID = "omtdid";
 
     private Logger logger = LogManager.getLogger(OperationServiceImpl.class);
@@ -71,7 +70,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
 
     @Override
     String getResourceId() {
-        return OPERATION_ID;
+        return OMTD_ID;
     }
 
     @Override

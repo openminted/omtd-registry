@@ -6,7 +6,7 @@
       "type": "java.lang.String"
     },
     {
-      "name": "corpus_id",
+      "name": "omtdId",
       "path": "$.omtdId",
       "type": "java.lang.String",
       "primaryKey" : true
