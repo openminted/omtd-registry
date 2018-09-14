@@ -338,51 +338,6 @@ public class WebannoServiceImpl implements WebannoService {
         return null;
     }
 
-    /*
-     * OLD METHOD
-     *  HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth());
-
-        HttpEntity request = new HttpEntity<>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(webannoHost + "/projects/" + Math.toIntExact
-                (projectId) + "/export.zip", HttpMethod.GET, request, byte[].class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            try {
-                File temp = new File(System.getProperty("java.io.tmpdir") + "/" + projectName + ".zip");
-                Files.write(temp.toPath(), response.getBody());
-                Corpus corpus = findIdentifier(Math.toIntExact(projectId), "projectID");
-                if (corpus != null) {
-                    String archiveId = findId(corpus, "archiveID");
-                    File save_dir = new File(temp.getParent());
-                    ZipToDir.unpackToWorkDir(temp, save_dir);
-                    File annotations_dir = new File(save_dir.getAbsolutePath() + "/source");
-                    for (File file : annotations_dir.listFiles()) {
-                        if (FilenameUtils.getExtension(file.getName()).equals("xmi")) {
-                            storeClient.storeFile(file, archiveId, "annotations/" + file.getName());
-                        }
-                    }
-                    storeClient.finalizeArchive(archiveId);
-                    String omtdId = findId(corpus, "OMTD");
-                    if (omtdId != null)
-                        incompleteCorpusService.move(omtdId);
-                    else
-                        logger.debug("Could not find identifier OMTD of corpus");
-                } else
-                    logger.debug("Could not find identifier archiveID of corpus");
-
-                deleteProject(Math.toIntExact(projectId));
-            } catch (IOException e) {
-                logger.error(e);
-            }
-        } else {
-            logger.debug(webannoHost + " returned " + response.getStatusCode() + " | Logger level ERROR for more info");
-            logger.error(response.getBody().toString());
-        }
-
-     */
-
-
-
 
 
     private String basicAuth() {

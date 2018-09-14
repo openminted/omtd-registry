@@ -1,6 +1,7 @@
 package eu.openminted.registry.controllers.tools;
 
 import eu.openminted.registry.controllers.requests.ProjectStateChangeMessage;
+import eu.openminted.registry.domain.WebannoProject;
 import eu.openminted.registry.service.WebannoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +35,6 @@ public class WebannoController {
 
     @RequestMapping(value = "/webanno/create/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create (@PathVariable("id") String id) {
-        return new ResponseEntity("{\"project\":\""+webannoService.moveToWebanno(id)+"\"}",HttpStatus.OK);
+        return new ResponseEntity(new WebannoProject(webannoService.moveToWebanno(id)),HttpStatus.OK);
     }
 }
