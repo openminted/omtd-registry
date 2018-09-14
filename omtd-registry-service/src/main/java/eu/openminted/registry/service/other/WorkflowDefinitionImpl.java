@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 @Primary
 public class WorkflowDefinitionImpl extends OtherGenericService<WorkflowDefinition> implements WorkflowService {
 
-    private static final String WORKFLOW_ID = "openminted_id";
+    private static final String WORKFLOW_ID = "omtdId";
 
     private Logger logger = LogManager.getLogger(WorkflowDefinitionImpl.class);
 
