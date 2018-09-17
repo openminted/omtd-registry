@@ -32,7 +32,6 @@
     }
   },
   "required": [
-    "workflow_id",
     "workflowName",
     "workflowDefinition"
   ],

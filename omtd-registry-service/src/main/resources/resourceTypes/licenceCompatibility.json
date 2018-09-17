@@ -1,0 +1,30 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdId",
+      "path": "$.id",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "compatible",
+      "path": "$.compatible",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "licence",
+      "path": "$.licence",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "compare",
+      "path": "$.compare",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "licencecompatibility",
+  "aliasGroup" : null,
+  "payloadType": "json",
+  "schema": "{\r\n  \"$schema\": \"http:\/\/json-schema.org\/draft-04\/schema#\",\r\n  \"id\": \"https:\/\/raw.githubusercontent.com\/openminted\/omtd-registry\/develop\/omtd-registry-api\/src\/main\/resources\/jsonSchema\/licenceCompatibility.json\",\r\n  \"properties\": {\r\n    \"compatible\": {\r\n      \"type\": \"string\"\r\n    },\r\n    \"text\": {\r\n      \"type\": \"string\"\r\n    },\r\n    \"url\": {\r\n      \"type\": \"string\"\r\n    },\r\n    \"licence\": {\r\n      \"description\": \"Licence to compare\",\r\n      \"title\": \"Licence to compare\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"compare\": {\r\n      \"description\": \"Licence to be compared\",\r\n      \"title\": \"Licence to be compared\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"id\": {\r\n      \"description\": \"Comparison id\",\r\n      \"title\": \"Comparison id\",\r\n      \"type\": \"string\"\r\n    }\r\n  },\r\n  \"required\": [\r\n \r\n    \"licence\",\r\n    \"compare\",\r\n    \"compatible\",\r\n    \"id\"\r\n  ],\r\n  \"type\": \"object\"\r\n}"
+}

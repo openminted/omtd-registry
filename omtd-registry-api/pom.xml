@@ -147,6 +147,22 @@
                             <goal>generate</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>licence</id>
+                        <configuration>
+                            <sourcePaths>
+                                <path>${basedir}/src/main/resources/jsonSchema/licence.json</path>
+                                <path>${basedir}/src/main/resources/jsonSchema/licenceCompatibility.json</path>
+                            </sourcePaths>
+                            <!--<sourceDirectory>${basedir}/src/main/resources/jsonSchema/licence*.json</sourceDirectory>-->
+                            <targetPackage>${project.groupId}.registry.domain.licence</targetPackage>
+                            <outputDirectory>target/generated-sources/jsonSchema</outputDirectory>
+                            <useLongIntegers>true</useLongIntegers>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -168,6 +184,7 @@
                                 <pattern>eu.openminted.registry.domain.operation.*</pattern>
                                 <pattern>eu.openminted.registry.domain.workflow.*</pattern>
                                 <pattern>eu.openminted.registry.domain.file.*</pattern>
+                                <pattern>eu.openminted.registry.domain.licence.*</pattern>
                                 <pattern>eu.openminted.registry.domain.PublicationInfo</pattern>
                                 <pattern>eu.openminted.registry.domain.base.ResourceIdentifier</pattern>
                                 <pattern>eu.openminted.registry.domain.connector.CorpusBuildingState</pattern>

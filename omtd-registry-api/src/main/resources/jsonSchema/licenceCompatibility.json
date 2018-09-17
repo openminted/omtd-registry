@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/licenceCompatibility.json",
+  "properties": {
+    "compatible": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "licence": {
+      "description": "Licence to compare",
+      "title": "Licence to compare",
+      "type": "string"
+    },
+    "compare": {
+      "description": "Licence to be compared",
+      "title": "Licence to be compared",
+      "type": "string"
+    },
+    "id": {
+      "description": "Comparison id",
+      "title": "Comparison id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "licence",
+    "compare",
+    "compatible",
+    "id"
+  ],
+  "type": "object"
+}
