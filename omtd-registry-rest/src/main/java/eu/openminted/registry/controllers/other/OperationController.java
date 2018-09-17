@@ -31,8 +31,9 @@ public class OperationController extends OtherRestController<Operation> {
     @PreAuthorize("isAuthenticated()")
     ResponseEntity<String> executeJob(
             @RequestParam(value = "corpusId") String corpusId,
-            @RequestParam(value="applicationId") String applicationId) {
-        String executionId = ((OperationService) service).executeJob(corpusId,applicationId);
+            @RequestParam(value="applicationId") String applicationId,
+            @RequestParam(value="subArchive") String subArchive) {
+        String executionId = ((OperationService) service).executeJob(corpusId,applicationId,subArchive);
         return ResponseEntity.ok(executionId);
     }
 
