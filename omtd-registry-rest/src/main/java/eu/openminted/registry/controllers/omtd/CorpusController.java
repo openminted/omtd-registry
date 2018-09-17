@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.ContentHandler;
@@ -55,16 +56,17 @@ public class CorpusController extends OmtdRestController<Corpus> {
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_UTF8_VALUE
     })
-    public ResponseEntity<Corpus> saveCorpusWithArchiveId(@RequestParam("archiveId") String archiveId, @RequestBody Corpus corpus) {
-        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId);
+    public ResponseEntity<Corpus> saveCorpusWithArchiveId(@RequestParam("archiveId") String archiveId, @RequestBody Corpus corpus, Authentication authentication) {
+        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId,authentication);
         return ResponseEntity.ok(corpusRet);
     }
 
     @RequestMapping(value = "zipUpload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Corpus> uploadCorpus(@RequestPart("file") MultipartFile file,
-                                               @RequestPart("corpus") Corpus corpus) throws IOException {
+                                               @RequestPart("corpus") Corpus corpus,
+                                               Authentication authentication) throws IOException {
         String archiveId = storeService.uploadCorpus(file.getName(), file.getInputStream());
-        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId);
+        Corpus corpusRet = ((CorpusService) service).uploadZip(corpus,archiveId,authentication);
         return ResponseEntity.ok(corpusRet);
     }
 
