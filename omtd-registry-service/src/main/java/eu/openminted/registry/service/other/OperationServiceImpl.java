@@ -6,6 +6,7 @@ import eu.openminted.registry.beans.WorkflowConfig;
 import eu.openminted.registry.core.domain.Browsing;
 import eu.openminted.registry.core.domain.FacetFilter;
 import eu.openminted.registry.core.domain.Resource;
+import eu.openminted.registry.core.service.ParserService;
 import eu.openminted.registry.core.service.ResourceCRUDService;
 import eu.openminted.registry.core.service.SearchService;
 import eu.openminted.registry.core.service.ServiceException;
@@ -26,11 +27,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.MalformedURLException;
@@ -81,12 +83,12 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Browsing getAll(FacetFilter filter, OIDCAuthenticationToken auth) {
-        return applicationJoinForOperations(super.getAll(filter,auth));
+        return applicationJoinForOperations(super.getAll(filter, auth));
     }
 
     @Override
     public Browsing getMy(FacetFilter filter, OIDCAuthenticationToken auth) {
-        return applicationJoinForOperations(super.getMy(filter,auth));
+        return applicationJoinForOperations(super.getMy(filter, auth));
     }
 
 
@@ -99,7 +101,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             fatOperation.setResources(resolveOperationResources(operation));
             operations.add(fatOperation);
         }
-        return new Browsing<>(browsing,operations,browsing.getFacets());
+        return new Browsing<>(browsing, operations, browsing.getFacets());
     }
 
     private Map<String, BaseMetadataRecord> resolveOperationResources(Operation operation) {
@@ -175,8 +177,8 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
         try {
             URIBuilder uriBuilder = new URIBuilder(workflowConfig.getWorkflowServiceHost());
             uriBuilder.setPath("/executeJob");
-            uriBuilder.addParameter("corpusId", archiveId);
-            uriBuilder.addParameter("subArchive", subArchive);
+//            uriBuilder.addParameter("corpusId", archiveId);
+//            uriBuilder.addParameter("subArchive", subArchive);
             url = uriBuilder.build().toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
@@ -189,11 +191,16 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             logger.info(String.format("Starting workflow job archiveId [%s] workflowName [%s]", archiveId,
                     workflowName));
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Component> entity = new HttpEntity<>(application, headers);
+//            headers.setContentType(MediaType.APPLICATION_JSON);
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("workflow", parserPool.serialize(application, ParserService.ParserServiceTypes.JSON));
+            params.add("subArchive", subArchive);
+            params.add("corpusId", corpusId);
+//            HttpEntity<Component> entity = new HttpEntity<>(application, headers);
+            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
             executionId = workflowRestTemplate.postForEntity(url.toString(), entity, String.class);
             operation = createOperation(corpusId, applicationId, executionId.getBody());
-            add(operation,null);
+            add(operation, null);
             logger.info("Added operation with execution id " + executionId.getBody());
         }
         try {
