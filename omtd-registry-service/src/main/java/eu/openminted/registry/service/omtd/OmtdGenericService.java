@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.util.StringUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -34,6 +35,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by stefanos on 30/6/2017.
@@ -110,7 +112,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
                 userInfo = authentication.getSub();
             }
         }
-
+        String searchableArea = "";
         if(userInfo == null) {
             query = "public=true";
         } else if (!userInfo.equals("ROLE_ADMIN")) {
@@ -118,8 +120,32 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         } else {
             query = "*";
         }
+
+        if(!StringUtils.isEmpty(filter.getKeyword())){
+            searchableArea = "(searchableArea ="+ filter.getKeyword()+")";
+        }
+
+        if(!"*".equals(query))
+            query = "("+ query+")";
+        else
+            query = "";
+
+        filter.setResourceType(filter.getFilter().get("resourceType").toString());
+        filter.getFilter().remove("resourceType");
+
+        String filters ="(" + filter.getFilter().entrySet().stream().map((x) -> x.getKey() + "=" + x.getValue()).collect(Collectors.joining(" and ")) + ")";
+
+        String finalQuery = "";
+        if(!searchableArea.isEmpty())
+            finalQuery = searchableArea.concat(" and ");
+
+        finalQuery = finalQuery.concat(query);
+
+        if(!"()".equals(filters))
+            finalQuery = finalQuery.concat(" and " + filters);
+
         filter.setBrowseBy(getBrowseBy());
-        filter.setKeyword(query);
+        filter.setKeyword(finalQuery);
         ret = cqlQuery(filter);
         labelGenerate.createLabels(ret.getFacets());
         return ret;
