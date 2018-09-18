@@ -70,11 +70,11 @@ public class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll()
                 .and()
-                .csrf()
-                .disable()
                 .headers()
-                .frameOptions()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
+                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                .and()
+                .csrf()
+                .disable();
 
         //authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/openid_connect_login"))
     }
