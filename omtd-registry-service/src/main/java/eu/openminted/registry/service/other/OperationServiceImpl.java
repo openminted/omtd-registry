@@ -195,7 +195,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("workflow", parserPool.serialize(application, ParserService.ParserServiceTypes.JSON));
             params.add("subArchive", subArchive);
-            params.add("corpusId", corpusId);
+            params.add("corpusId", archiveId); //teleia
 //            HttpEntity<Component> entity = new HttpEntity<>(application, headers);
             HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
             executionId = workflowRestTemplate.postForEntity(url.toString(), entity, String.class);
