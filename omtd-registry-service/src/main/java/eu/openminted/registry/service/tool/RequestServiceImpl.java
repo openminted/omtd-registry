@@ -46,6 +46,7 @@ public class RequestServiceImpl extends AbstractGenericService<BaseMetadataRecor
     @Override
     public Browsing<BaseMetadataRecord> getResponseByFiltersAndUserElastic(FacetFilter filter, String user) {
         filter = OmtdGenericService.convertFacetFilter(filter,user);
+        filter.setBrowseBy(getBrowseBy());
         Browsing<BaseMetadataRecord> ret = super.cqlQuery(filter); //TODO fix that to return user
         labelGenerate.createLabels(ret.getFacets());
         return ret;
