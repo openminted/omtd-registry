@@ -97,21 +97,8 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         return resource;
     }
 
-    @Override
-    public Browsing<T> getAll(FacetFilter filter, OIDCAuthenticationToken authentication) {
-        filter.getFilter().keySet().retainAll(getBrowseBy());
+    static public FacetFilter convertFacetFilter(FacetFilter filter, String userInfo) {
         String query;
-        Browsing<T> ret;
-        String userInfo = null;
-        if (authentication != null) {
-            boolean hasAdminRole = authentication.getAuthorities().stream()
-                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-            if (hasAdminRole) {
-                userInfo = "ROLE_ADMIN";
-            } else {
-                userInfo = authentication.getSub();
-            }
-        }
         String searchableArea = "";
         if(userInfo == null) {
             query = "public=true";
@@ -127,10 +114,9 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
         if(!"*".equals(query))
             query = "("+ query+")";
-        else
-            query = "";
+//        else
+//            query = "";
 
-        filter.setResourceType(filter.getFilter().get("resourceType").toString());
         filter.getFilter().remove("resourceType");
 
         String filters ="(" + filter.getFilter().entrySet().stream().map((x) -> x.getKey() + "=" + x.getValue()).collect(Collectors.joining(" and ")) + ")";
@@ -144,8 +130,28 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         if(!"()".equals(filters))
             finalQuery = finalQuery.concat(" and " + filters);
 
-        filter.setBrowseBy(getBrowseBy());
         filter.setKeyword(finalQuery);
+        return filter;
+    }
+
+    @Override
+    public Browsing<T> getAll(FacetFilter filter, OIDCAuthenticationToken authentication) {
+        filter.getFilter().keySet().retainAll(getBrowseBy());
+        String query;
+        Browsing<T> ret;
+        String userInfo = null;
+        if (authentication != null) {
+            boolean hasAdminRole = authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+            if (hasAdminRole) {
+                userInfo = "ROLE_ADMIN";
+            } else {
+                userInfo = authentication.getSub();
+            }
+        }
+        filter = convertFacetFilter(filter,userInfo);
+        filter.setResourceType(getResourceType());
+        filter.setBrowseBy(getBrowseBy());
         ret = cqlQuery(filter);
         labelGenerate.createLabels(ret.getFacets());
         return ret;
@@ -316,3 +322,4 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         return writer.toString();
     }
 }
+

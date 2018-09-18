@@ -7,6 +7,7 @@ import eu.openminted.registry.core.service.ServiceException;
 import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.service.RequestService;
 import eu.openminted.registry.service.generate.LabelGenerate;
+import eu.openminted.registry.service.omtd.OmtdGenericService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class RequestServiceImpl extends AbstractGenericService<BaseMetadataRecor
 
     @Override
     public Browsing<BaseMetadataRecord> getResponseByFiltersAndUserElastic(FacetFilter filter, String user) {
+        filter = OmtdGenericService.convertFacetFilter(filter,user);
         Browsing<BaseMetadataRecord> ret = super.cqlQuery(filter); //TODO fix that to return user
         labelGenerate.createLabels(ret.getFacets());
         return ret;

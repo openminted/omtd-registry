@@ -48,7 +48,18 @@ public class RequestController {
         Browsing browsing;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof OIDCAuthenticationToken) {
-            browsing = requestService.getResponseByFiltersAndUserElastic(facetFilter,((OIDCAuthenticationToken) authentication).getSub());
+
+            String userInfo;
+            boolean hasAdminRole = authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+            if (hasAdminRole) {
+                userInfo = "ROLE_ADMIN";
+            } else {
+
+                userInfo = ((OIDCAuthenticationToken) authentication).getSub();
+            }
+
+            browsing = requestService.getResponseByFiltersAndUserElastic(facetFilter,userInfo);
         } else {
             browsing = requestService.getResponseByFiltersElastic(facetFilter);
         }
