@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://raw.githubusercontent.com/openminted/omtd-registry/develop/omtd-registry-api/src/main/resources/jsonSchema/licence.json",
+  "properties": {
+    "category": {
+      "description": "Category of licence.",
+      "title": "Licence category",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name of the licence",
+      "title": "Licence Name",
+      "type": "string"
+    },
+    "url": {
+      "description": "URL of the Licence",
+      "title": "Licence URL",
+      "type": "string"
+    },
+    "id": {
+      "description": "ID of the licence",
+      "title": "Licence ID",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "id",
+    "category"
+  ],
+  "type": "object"
+}

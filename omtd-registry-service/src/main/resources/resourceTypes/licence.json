@@ -1,0 +1,20 @@
+{
+  "indexFields": [
+    {
+      "name": "omtdId",
+      "path": "$.id",
+      "type": "java.lang.String",
+      "primaryKey" : true
+    },
+    {
+      "name": "category",
+      "path": "$.category",
+      "type": "java.lang.String"
+    }
+  ],
+  "indexMapperClass": "eu.openminted.registry.core.index.DefaultIndexMapper",
+  "name": "licence",
+  "aliasGroup" : null,
+  "payloadType": "json",
+  "schema": "{\r\n  \"$schema\": \"http:\/\/json-schema.org\/draft-04\/schema#\",\r\n  \"id\": \"https:\/\/raw.githubusercontent.com\/openminted\/omtd-registry\/develop\/omtd-registry-api\/src\/main\/resources\/jsonSchema\/licence.json\",\r\n  \"properties\": {\r\n    \"category\": {\r\n      \"description\": \"Category of licence.\",\r\n      \"title\": \"Licence category\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"name\": {\r\n      \"description\": \"The name of the licence\",\r\n      \"title\": \"Licence Name\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"url\": {\r\n      \"description\": \"URL of the Licence\",\r\n      \"title\": \"Licence URL\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"id\": {\r\n      \"description\": \"ID of the licence\",\r\n      \"title\": \"Licence ID\",\r\n      \"type\": \"string\"\r\n    }\r\n  },\r\n  \"required\": [\r\n    \"name\",\r\n    \"id\",\r\n    \"category\"\r\n  ],\r\n  \"type\": \"object\"\r\n}"
+}

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.mitre.openid.connect.model.OIDCAuthenticationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +34,7 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
     }
 
     @Override
-    public Corpus uploadZip(Corpus corpus, String archiveId) {
+    public Corpus uploadZip(Corpus corpus, String archiveId, Authentication authentication) {
         //Set the distributionLocation to the base path in order to pass the validation
         String distributionLocation = hostUrl;
         corpus.getCorpusInfo().getDatasetDistributionInfo().setDistributionLocation(distributionLocation);
@@ -43,7 +44,7 @@ public class CorpusServiceImpl extends OmtdGenericService<Corpus> implements Cor
         identifier.setResourceIdentifierSchemeName(ResourceIdentifierSchemeNameEnum.OTHER);
         identifier.setSchemeURI("archiveID");
         corpus.getCorpusInfo().getIdentificationInfo().getResourceIdentifiers().add(identifier);
-        super.add(corpus,null);
+        corpus = super.add(corpus, (OIDCAuthenticationToken) authentication);
         corpus.getCorpusInfo().getDatasetDistributionInfo().
                 setDistributionLocation(hostUrl + corpus.getMetadataHeaderInfo().getMetadataRecordIdentifier()
                         .getValue());

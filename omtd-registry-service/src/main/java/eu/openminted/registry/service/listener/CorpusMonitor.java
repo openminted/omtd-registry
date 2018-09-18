@@ -35,7 +35,7 @@ public class CorpusMonitor {
         this.sizeCorpusProcessor = new SizeCorpusProcessor(storeService, this.fileStatsService);
     }
 
-    @After("execution (* eu.openminted.registry.service.omtd.CorpusServiceImpl.add(*,*)) && args(corpus,*)")
+    @After("execution (* eu.openminted.registry.service.omtd.CorpusServiceImpl.uploadZip(*,*,*)) && args(corpus,*)")
     public Corpus addCorpus(Corpus corpus) throws JsonProcessingException {
         FileStats fileStats = sizeCorpusProcessor.process(corpus);
         ObjectMapper mapper = new ObjectMapper();

@@ -1,21 +1,24 @@
 package eu.openminted.registry.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class WebannoProject {
 
-    private String project_name;
+    @JsonProperty("project_name")
+    private String projectName;
 
     public WebannoProject() {
     }
 
-    public WebannoProject(String project_name) {
-        this.project_name = project_name;
+    public WebannoProject(String projectName) {
+        this.projectName = projectName;
     }
 
-    public String getProject_name() {
-        return project_name;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProject_name(String project_name) {
-        this.project_name = project_name;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

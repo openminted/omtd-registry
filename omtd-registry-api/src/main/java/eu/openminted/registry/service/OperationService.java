@@ -7,6 +7,6 @@ import org.mitre.openid.connect.model.UserInfo;
 
 public interface OperationService extends ResourceCRUDService<Operation,OIDCAuthenticationToken> {
 
-    String executeJob(String corpusId,String applicationId);
+    String executeJob(String corpusId,String applicationId, String subArchive);
 
 }

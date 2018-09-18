@@ -166,7 +166,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
     }
 
     @Override
-    public String executeJob(String corpusId, String applicationId) {
+    public String executeJob(String corpusId, String applicationId, String subArchive) {
 
         Component application = applicationResolver.get(applicationId);
         String workflowName = OMTDUtils.resolveApplicationWorkflow(application);
@@ -176,6 +176,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
             URIBuilder uriBuilder = new URIBuilder(workflowConfig.getWorkflowServiceHost());
             uriBuilder.setPath("/executeJob");
             uriBuilder.addParameter("corpusId", archiveId);
+            uriBuilder.addParameter("subArchive", subArchive);
             url = uriBuilder.build().toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
