@@ -136,7 +136,7 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
     private <T> T resolveIndividualResource(String resourceId, String resourceName, Class<T> resourceType) {
         T output = null;
         try {
-            SearchService.KeyValue kv = new SearchService.KeyValue(OMTD_ID, resourceId);
+            SearchService.KeyValue kv = new SearchService.KeyValue("omtdid", resourceId);
             Resource resource = this.searchService.searchId(resourceName, kv);
             output = parserPool.deserialize(resource, resourceType);
         } catch (Exception e) {

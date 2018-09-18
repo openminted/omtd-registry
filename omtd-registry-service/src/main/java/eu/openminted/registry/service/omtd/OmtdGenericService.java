@@ -109,7 +109,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
         }
 
         if(!StringUtils.isEmpty(filter.getKeyword())){
-            searchableArea = "(searchableArea ="+ filter.getKeyword()+")";
+            searchableArea = "(searchableArea =\""+ filter.getKeyword()+"\")";
         }
 
         if(!"*".equals(query))
@@ -119,7 +119,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
 
         filter.getFilter().remove("resourceType");
 
-        String filters ="(" + filter.getFilter().entrySet().stream().map((x) -> x.getKey() + "=" + x.getValue()).collect(Collectors.joining(" and ")) + ")";
+        String filters ="(" + filter.getFilter().entrySet().stream().map((x) -> x.getKey() + "=\"" + x.getValue()+"\"").collect(Collectors.joining(" and ")) + ")";
 
         String finalQuery = "";
         if(!searchableArea.isEmpty())
