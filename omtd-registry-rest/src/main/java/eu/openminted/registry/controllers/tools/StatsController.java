@@ -22,8 +22,7 @@ public class StatsController {
     @RequestMapping(value = "/stats/totals", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity stats() {
         try{
-            return new ResponseEntity<>(new Totals(13637231, 69 , 39, 30, 15 ), HttpStatus.OK);
-//            return new ResponseEntity<>(statsService.totals(),HttpStatus.OK);
+            return new ResponseEntity<>(statsService.totals(),HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
