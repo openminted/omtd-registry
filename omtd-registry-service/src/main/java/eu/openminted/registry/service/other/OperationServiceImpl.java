@@ -47,7 +47,7 @@ import java.util.*;
 @Primary
 public class OperationServiceImpl extends OtherGenericService<Operation> implements OperationService {
 
-    private static final String OMTD_ID = "omtdid";
+    private static final String OMTD_ID = "omtdId";
 
     private Logger logger = LogManager.getLogger(OperationServiceImpl.class);
 
