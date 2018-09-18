@@ -52,7 +52,7 @@ public class StatsServiceImpl implements StatsService {
         int components_private = 0;
         int applications_private = 0;
 
-        FacetFilter filter = new FacetFilter("", "application", 0, 10000, new HashMap<>(), Arrays.asList(""), null);
+        FacetFilter filter = new FacetFilter("", "application", 0, 1, new HashMap<>(), Arrays.asList(""), null);
         filter.addFilter("public",true);
 
         applications_public = searchService.search(filter).getTotal();
