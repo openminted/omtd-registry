@@ -14,6 +14,7 @@ import eu.openminted.registry.domain.BaseMetadataRecord;
 import eu.openminted.registry.domain.Component;
 import eu.openminted.registry.domain.Corpus;
 import eu.openminted.registry.domain.FatOperations;
+import eu.openminted.registry.domain.operation.Monitoring;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.service.OperationService;
 import eu.openminted.registry.utils.OMTDUtils;
@@ -39,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.BinaryOperator;
 
 /**
  * Created by stefanos on 30/6/2017.
@@ -210,4 +212,39 @@ public class OperationServiceImpl extends OtherGenericService<Operation> impleme
         }
         return executionId.getBody();
     }
+
+    @Override
+    public Monitoring aggregate(OIDCAuthenticationToken auth) {
+        FacetFilter filter = new FacetFilter();
+        filter.setQuantity(1000);
+        Browsing<Operation> result = super.getMy(filter,auth);
+        Monitoring monitoring = new Monitoring();
+        monitoring.setRamUsage(0);
+        monitoring.setVmCount(0);
+        monitoring.setCpuCount(0);
+        monitoring.setCpuMilliseconds(0);
+        return result.getResults().stream()
+                .map(Operation::getMonitoring)
+                .filter(Objects::nonNull)
+                .reduce(monitoring,new MergeMonitoring());
+    }
+
+    private static class MergeMonitoring implements BinaryOperator<Monitoring>
+
+    {
+        @Override
+        public Monitoring apply(Monitoring m1, Monitoring m2) {
+            Integer cpuMills = m1.getCpuMilliseconds() + m2.getCpuMilliseconds();
+            Integer maxRam = Math.max(m1.getRamUsage(),m2.getRamUsage());
+            Integer maxVm = Math.max(m1.getVmCount(),m2.getVmCount());
+            Integer maxCpu = Math.max(m1.getCpuCount(),m2.getCpuCount());
+            Monitoring m = new Monitoring();
+            m.setCpuMilliseconds(cpuMills);
+            m.setVmCount(maxVm);
+            m.setCpuCount(maxCpu);
+            m.setRamUsage(maxRam);
+            return m;
+        }
+    }
+
 }

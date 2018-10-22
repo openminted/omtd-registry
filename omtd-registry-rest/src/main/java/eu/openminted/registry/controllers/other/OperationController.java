@@ -1,6 +1,7 @@
 package eu.openminted.registry.controllers.other;
 
 import eu.openminted.registry.core.service.ResourceCRUDService;
+import eu.openminted.registry.domain.operation.Monitoring;
 import eu.openminted.registry.domain.operation.Operation;
 import eu.openminted.registry.service.OperationService;
 import io.swagger.annotations.Api;
@@ -35,6 +36,13 @@ public class OperationController extends OtherRestController<Operation> {
             @RequestParam(value="subArchive") String subArchive) {
         String executionId = ((OperationService) service).executeJob(corpusId,applicationId,subArchive);
         return ResponseEntity.ok(executionId);
+    }
+
+    @RequestMapping(value = "aggregate", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<Monitoring> aggregate(OIDCAuthenticationToken auth) {
+        Monitoring monitoring = ((OperationService) service).aggregate(auth);
+        return ResponseEntity.ok(monitoring);
     }
 
 }
