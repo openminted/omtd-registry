@@ -2,7 +2,9 @@ package eu.openminted.registry.service.tool;
 
 import eu.openminted.registry.domain.file.FileStats;
 import eu.openminted.registry.domain.file.Info;
+import eu.openminted.registry.service.CorpusService;
 import eu.openminted.registry.service.StoreService;
+import eu.openminted.registry.utils.OMTDUtils;
 import eu.openminted.store.restclient.StoreRESTClient;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,9 @@ public class StoreServiceImpl implements StoreService {
     static private final Logger logger = LogManager.getLogger(StoreServiceImpl.class);
 
     static private final int BUFFER_SIZE = 4096;
+
+    @Autowired
+    private CorpusService corpusService;
 
     @Autowired
     StoreRESTClient storeClient;
@@ -179,6 +184,18 @@ public class StoreServiceImpl implements StoreService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<String> archiveContent(String corpusId, String path, boolean onlyDirectories) {
+        String archiveId = OMTDUtils.resolveCorpusArchive(corpusService.get(corpusId));
+        List<String> archiveContent = storeClient.listFiles(String.format("%s/%s", archiveId, path), true, false, false);
+        // TODO: replace code below with a dedicated method
+        if (onlyDirectories) {
+            List<String> files = storeClient.listFiles(String.format("%s/%s", archiveId, path), false, false, false);
+            files.forEach(archiveContent::remove);
+        }
+        return archiveContent;
     }
 
     private Path extractDirectory(InputStream inputStream) throws IOException {

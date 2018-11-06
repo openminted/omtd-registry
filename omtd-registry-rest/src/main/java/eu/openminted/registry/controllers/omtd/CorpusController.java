@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -77,6 +78,14 @@ public class CorpusController extends OmtdRestController<Corpus> {
         if(size < 0) throw new ServiceException("Size is negative");
         if(from < 0) throw new ServiceException("From is negative");
         return corpusContentService.getCorpusContent(corpusId, from, size);
+    }
+
+    @RequestMapping(path = {"archiveContent/{corpusId}", "archiveContent/{corpusId}/{path}"},
+            method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public List<String> getSubarchives(@PathVariable(value="corpusId") String corpusId,
+                                       @PathVariable(value = "path") String path,
+                                       @RequestParam(value = "onlyDirectories", defaultValue = "true") boolean onlyDirectories) {
+        return storeService.archiveContent(corpusId, path, onlyDirectories);
     }
 
     @RequestMapping(value = "upload", method = RequestMethod.POST)

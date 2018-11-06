@@ -3,6 +3,7 @@ package eu.openminted.registry.service;
 import eu.openminted.registry.domain.file.FileStats;
 
 import java.io.InputStream;
+import java.util.List;
 
 public interface StoreService {
 
@@ -32,5 +33,8 @@ public interface StoreService {
      * @return
      */
     InputStream downloadFile(String path);
+
+
+    List<String> archiveContent(String corpusId, String path, boolean onlyDirectories);
 
 }
