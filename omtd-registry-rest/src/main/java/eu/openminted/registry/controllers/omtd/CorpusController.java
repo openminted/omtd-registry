@@ -82,7 +82,7 @@ public class CorpusController extends OmtdRestController<Corpus> {
 
     @RequestMapping(path = {"archiveContent/{corpusId}", "archiveContent/{corpusId}/{path}"},
             method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<String> getSubarchives(@PathVariable(value="corpusId") String corpusId,
+    public List<String> getArchiveContent(@PathVariable(value="corpusId") String corpusId,
                                        @PathVariable(value = "path") String path,
                                        @RequestParam(value = "onlyDirectories", defaultValue = "true") boolean onlyDirectories) {
         return storeService.archiveContent(corpusId, path, onlyDirectories);
