@@ -26,7 +26,7 @@ public class StoreController {
 
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<FileStats> uploadCorpus(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity uploadCorpus(@RequestParam("file") MultipartFile file) throws IOException {
         return new ResponseEntity<>(storeService.uploadAuxiliary(file.getName(), file.getInputStream()), HttpStatus.OK);
     }
 
