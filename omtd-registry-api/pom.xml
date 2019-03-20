@@ -27,7 +27,7 @@
         <rename.exec.skip>true</rename.exec.skip>
         <description.exec.skip>true</description.exec.skip>
         <typescript.exec.skip>true</typescript.exec.skip>
-        <registry.core.version>2.1.2-SNAPSHOT</registry.core.version>
+        <registry.core.version>2.0.2-SNAPSHOT</registry.core.version>
         <omtd.model.version>3.0.2-SNAPSHOT</omtd.model.version>
     </properties>
     <dependencies>

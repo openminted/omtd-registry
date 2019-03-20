@@ -23,7 +23,7 @@
 	</scm>
 
 	<properties>
-		<registry.core.version>2.1.2-SNAPSHOT</registry.core.version>
+		<registry.core.version>2.0.2-SNAPSHOT</registry.core.version>
 		<netty.version>4.1.12.Final</netty.version>
 		<corpus.api.version>1.0.1-SNAPSHOT</corpus.api.version>
 		<omtd.model.version>3.0.2-SNAPSHOT</omtd.model.version>
