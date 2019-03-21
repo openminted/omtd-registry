@@ -53,22 +53,25 @@ public class ComponentListener {
     @Qualifier("applicationService")
     private ResourceCRUDService<Component, OIDCAuthenticationToken> applicationService;
 
-//    @Before("(execution (* eu.openminted.registry.service.omtd.*.add(eu.openminted.registry.domain" +
-//            ".Component)) || " +
-//            "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
-//            ".domain.Component))) && args(component)")
-//    public Component adddComponentListener(Component component) throws ServiceException{
-//        ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
-//        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
-//            try{
-//                dockerService.getSizeOfImage(distributionInfo.getDistributionLocation());
-//            }catch (ServiceException e){
-//                throw new ServiceException("Docker not found or not authorized to view");
-//            }
-//
-//        }
-//        return component;
-//    }
+    @Before("(execution (* eu.openminted.registry.service.omtd.*.add(eu.openminted.registry.domain" +
+            ".Component)) || " +
+            "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
+            ".domain.Component))) && args(component)")
+    public Component adddComponentListener(Component component) throws ServiceException{
+
+
+        logger.info("Added component - Before");
+        ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
+        if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
+            try{
+                dockerService.getSizeOfImage(distributionInfo.getDistributionLocation());
+            }catch (ServiceException e){
+                throw new ServiceException("Docker not found or not authorized to view");
+            }
+
+        }
+        return component;
+    }
 
     @Around("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
             ".Component)) || " +
@@ -76,8 +79,9 @@ public class ComponentListener {
             ".domain.Component))) && args(component)")
     public Component addComponentListener(ProceedingJoinPoint pjp, Component component) throws Throwable {
         // Register it to workflow engine.
-        pjp.proceed();
         logger.info("Added component");
+        pjp.proceed();
+
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
         exportDirectory(component);
         return component;
