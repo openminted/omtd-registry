@@ -77,6 +77,7 @@ public class ComponentListener {
     public Component addComponentListener(ProceedingJoinPoint pjp, Component component) throws Throwable {
         // Register it to workflow engine.
         pjp.proceed();
+        logger.info("Added component");
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
         exportDirectory(component);
         return component;
