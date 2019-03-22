@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 
-@Configuration
+//@Configuration
 @EnableSwagger2
 @PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class SwaggerConfig {

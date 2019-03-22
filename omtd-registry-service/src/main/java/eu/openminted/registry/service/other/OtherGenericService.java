@@ -67,7 +67,7 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
     }
 
     public T add(T operation, OIDCAuthenticationToken auth) {
-
+        logger.info("Creating resource for resourceType: " + resourceType.getName());
         Resource resourceDb = new Resource();
         try {
             String serialized = mapper.writeValueAsString(operation);
@@ -91,6 +91,7 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
                 getResourceId(),
                 operation.getOmtdId()
         );
+        logger.info("Updating resource for resourceType: " + resourceType.getName());
         try {
             resourceDb = searchService.searchId(getResourceType(), kv);
             if (resourceDb == null) {
@@ -100,6 +101,7 @@ abstract class OtherGenericService<T extends ResourceIdentifier> extends Abstrac
                 resourceDb.setPayload(serialized);
                 resourceDb.setPayloadFormat("json");
                 resourceDb.setPayload(serialized);
+                resourceDb.setResourceType(resourceType);
                 resourceService.updateResource(resourceDb);
                 return operation;
             }

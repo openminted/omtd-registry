@@ -1,6 +1,7 @@
 FROM tomcat:8.5-jre8-alpine
 MAINTAINER "stevengatsios@gmail.com"
 
+RUN ["mkdir", "-p" ,"/media/maven-data"]
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 COPY ./target/omtd-registry.war /usr/local/tomcat/webapps/omtd-registry.war
 #COPY ./src/main/resources/eu/openminted/registry/domain/application.properties /usr/local/tomcat/lib/application.properties
