@@ -58,6 +58,9 @@ public class ComponentListener {
             "execution (* eu.openminted.registry.service.omtd.*.update(eu.openminted.registry" +
             ".domain.Component))) && args(component)")
     public Component adddComponentListener(Component component) throws ServiceException{
+
+
+        logger.info("Added component - Before");
         ComponentDistributionInfo distributionInfo = component.getComponentInfo().getDistributionInfos().get(0);
         if(distributionInfo.getComponentDistributionForm() == ComponentDistributionFormEnum.DOCKER_IMAGE){
             try{
@@ -70,13 +73,19 @@ public class ComponentListener {
         return component;
     }
 
-    @Around("(execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(eu.openminted.registry.domain" +
-            ".Component)) || " +
-            "execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(eu.openminted.registry" +
-            ".domain.Component))) && args(component)")
-    public Component addComponentListener(ProceedingJoinPoint pjp, Component component) throws Throwable {
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.add(..)) && args(component,..)")
+    public Component addComponentListener(Component component) {
         // Register it to workflow engine.
-        pjp.proceed();
+        logger.info("Added component");
+        workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
+        exportDirectory(component);
+        return component;
+    }
+
+    @After("execution (* eu.openminted.registry.service.omtd.ComponentServiceImpl.update(..)) && args(component,..)")
+    public Component updateComponentListener(Component component) {
+        // Register it to workflow engine.
+        logger.info("Updated component");
         workflowEngineComponentReg.registerTDMComponentToWorkflowEngine(component);
         exportDirectory(component);
         return component;

@@ -7,8 +7,9 @@
   
   </Appenders>
   <Loggers>
-    <Root level="info">
+    <Root level="INFO">
       <AppenderRef ref="Console"/>
     </Root>
+    <Logger level="INFO" name="eu.openminted"/>
   </Loggers>
 </Configuration>
