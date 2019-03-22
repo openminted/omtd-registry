@@ -249,6 +249,7 @@ public abstract class OmtdGenericService<T extends BaseMetadataRecord> extends A
                 resource = oldResource;
                 resource.setPayloadFormat("xml");
                 resource.setPayload(serialized);
+                resource.setResourceType(resourceType);
                 resourceService.updateResource(resource);
                 return insert;
             }
