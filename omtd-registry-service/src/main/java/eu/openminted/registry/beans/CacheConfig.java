@@ -1,5 +1,8 @@
 package eu.openminted.registry.beans;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -9,8 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * Created by stefanos on 14/6/2017.
@@ -20,7 +25,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
-    @Value("${redis.host}")
+    @Value("${redis.url}")
     private String host;
 
     @Value("${redis.port}")
@@ -30,41 +35,47 @@ public class CacheConfig extends CachingConfigurerSupport {
     private String password;
 
     @Bean
-    JedisConnectionFactory connectionFactory() {
+    public JedisConnectionFactory jedisConnectionFactory() {
+
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(host);
         jedisConnectionFactory.setPort(Integer.parseInt(port));
-        if (password != null) jedisConnectionFactory.setPassword(password);
+        if(password!=null)
+            jedisConnectionFactory.setPassword(password);
+
+        jedisConnectionFactory.setUsePool(true);
+
         return jedisConnectionFactory;
     }
 
     @Bean
-    public JdkSerializationRedisSerializer jdkSerializationRedisSerializer() {
-        return new JdkSerializationRedisSerializer();
+    public RedisTemplate<Object, Object> redisTemplate() {
+        RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
+
+        RedisSerializer<String> redisSerializer = new StringRedisSerializer();
+
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        redisTemplate.setKeySerializer(redisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+
+        return redisTemplate;
     }
 
     @Bean
-    public RedisTemplate redisTemplate() {
-        RedisTemplate template = new RedisTemplate();
-        template.setConnectionFactory(connectionFactory());
-        template.setKeySerializer(jdkSerializationRedisSerializer());
-        template.setValueSerializer(genericJackson2JsonRedisJsonSerializer());
-        return template;
+    public CacheManager cacheManager() {
+        return new RedisCacheManager(redisTemplate());
     }
 
     @Bean
-    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer() {
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisJsonSerializer =
-                new GenericJackson2JsonRedisSerializer();
-        return genericJackson2JsonRedisJsonSerializer;
-    }
-
-    @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(60 * 60 * 24);
-        return cacheManager;
+    public RedisTokenStore redisTokenStore() {
+        return new RedisTokenStore(jedisConnectionFactory());
     }
 
 }
