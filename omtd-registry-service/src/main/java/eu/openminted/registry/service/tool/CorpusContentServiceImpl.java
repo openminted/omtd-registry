@@ -49,8 +49,10 @@ public class CorpusContentServiceImpl implements CorpusContentService {
     @Qualifier("corpusService")
     ResourceCRUDService<Corpus, OIDCAuthenticationToken> corpusService;
     private Logger logger = Logger.getLogger(CorpusContentServiceImpl.class);
+
     @Autowired
-    private RedisTemplate<String, CorpusContent> template;
+    @Qualifier("redisTemplate")
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public Browsing<PublicationInfo> getCorpusContent(String corpusId, int from, int size) {
@@ -87,9 +89,9 @@ public class CorpusContentServiceImpl implements CorpusContentService {
      */
     private void addContent(String corpusId, CorpusContent content) {
         String key = redis_prefix + corpusId;
-        if (!template.hasKey(key)) {
-            template.opsForList().leftPush(key, content);
-            template.expire(key, 5, TimeUnit.MINUTES);
+        if (!redisTemplate.hasKey(key)) {
+            redisTemplate.opsForList().leftPush(key, content);
+            redisTemplate.expire(key, 5, TimeUnit.MINUTES);
         }
 
     }
@@ -103,8 +105,8 @@ public class CorpusContentServiceImpl implements CorpusContentService {
      */
     private CorpusContent getContent(String corpusId) {
         String key = redis_prefix + corpusId;
-        if (template.hasKey(key)) {
-            return template.opsForList().rightPopAndLeftPush(key, key);
+        if (redisTemplate.hasKey(key)) {
+            return (CorpusContent) redisTemplate.opsForList().rightPopAndLeftPush(key, key);
         } else {
             return null;
         }

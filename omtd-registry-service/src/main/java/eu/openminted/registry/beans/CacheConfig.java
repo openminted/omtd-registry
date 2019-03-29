@@ -16,6 +16,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
  * Created by stefanos on 14/6/2017.
@@ -23,6 +24,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 @Configuration
 @EnableCaching
+@EnableRedisHttpSession
 public class CacheConfig extends CachingConfigurerSupport {
 
     @Value("${redis.host}")
@@ -48,7 +50,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         return jedisConnectionFactory;
     }
 
-    @Bean
+    @Bean(name = "redisTemplate")
     public RedisTemplate<Object, Object> redisTemplate() {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
 

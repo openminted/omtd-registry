@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
@@ -37,7 +38,8 @@ public class StatsServiceImpl implements StatsService {
     private String contentHost;
 
     @Autowired
-    private RedisTemplate<String, Totals> template;
+    @Qualifier("redisTemplate")
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public Totals totals() throws IOException {
@@ -105,9 +107,9 @@ public class StatsServiceImpl implements StatsService {
 
     private void addContent(Totals totals) {
         String key = redis_prefix + "stats";
-        if (!template.hasKey(key)) {
-            template.opsForList().leftPush(key, totals);
-            template.expire(key, 10, TimeUnit.MINUTES);
+        if (!redisTemplate.hasKey(key)) {
+            redisTemplate.opsForList().leftPush(key, totals);
+            redisTemplate.expire(key, 10, TimeUnit.MINUTES);
         }
 
     }
@@ -115,9 +117,9 @@ public class StatsServiceImpl implements StatsService {
 
     private Totals getContent() {
         String key = redis_prefix + "stats";
-        if (template.hasKey(key)) {
-            Totals totals = template.opsForList().rightPop(key);
-            template.opsForList().leftPush(key, totals);
+        if (redisTemplate.hasKey(key)) {
+            Totals totals = (Totals) redisTemplate.opsForList().rightPop(key);
+            redisTemplate.opsForList().leftPush(key, totals);
             return totals;
         } else {
             return null;
