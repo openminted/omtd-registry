@@ -64,7 +64,7 @@ public class WebannoServiceImpl implements WebannoService {
 
     private RestTemplate restTemplate = new RestTemplateBuilder().customizers(new LoggingCustomizer()).errorHandler(new MyErrorHandling()).build();
 
-    @Value("${webanno.host:https://webanno.openminted.eu/api/v2}")
+    @Value("${webanno.host:https://webanno.openminted.eu/api/aero/v1}")
     private String webannoHost;
     @Value("${webanno.username}")
     private String webannoUsername;
