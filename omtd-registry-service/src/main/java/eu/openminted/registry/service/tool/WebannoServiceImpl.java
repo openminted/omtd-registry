@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -99,33 +100,16 @@ public class WebannoServiceImpl implements WebannoService {
 
         int projectId = 0;
 
-        final Pattern pattern = Pattern.compile("(?<project>("+projectName+"))(?!.*\\b\\1\\b)(?:\\s(?<number>[0-9]+))?");
-
-
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth());
-
-        ResponseEntity response = restTemplate.exchange(webannoHost+"/projects", HttpMethod.GET , new HttpEntity<String>(headers) , String.class);
-
-
-        Matcher matcher = pattern.matcher(response.getBody().toString());
-        if(matcher.find())
-            if(matcher.group("project")!=null)
-                if(matcher.group("number")!=null){
-                    projectName = (Integer.parseInt(matcher.group("number"))+1)+ " " + matcher.group("project");
-                }else{
-                    projectName = "1 " + matcher.group("project");
-                }
-
-
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        projectName = projectName +"-"+ new Date().toInstant().toEpochMilli();
+        logger.info("Creating webanno project @ " + webannoHost + " with name: " + projectName);
         map.add("name", projectName);
-        headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + basicAuth());
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
+        ResponseEntity response = restTemplate.postForEntity(webannoHost + "/projects", request, String.class);
         if (response.getStatusCode() == HttpStatus.CREATED) {
             projectId = new JSONObject(response.getBody().toString()).getJSONObject("body").getInt("id");
         }else{
