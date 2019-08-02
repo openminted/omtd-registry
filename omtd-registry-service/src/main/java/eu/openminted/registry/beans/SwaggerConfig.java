@@ -62,7 +62,7 @@ public class SwaggerConfig {
                 .pathProvider(pathProvider())
                 .apiInfo(apiInfo())
                 .directModelSubstitute(XMLGregorianCalendar.class,String.class)
-                .host(isLocalhost ? null : hostURL.getHost() + hostURL.getPath())
+                .host(isLocalhost ? null : hostURL.getHost())
                 .securitySchemes(Collections.singletonList(
                         new ApiKey("Format: Bearer <token>", "Authorization", "header"))
                 )
