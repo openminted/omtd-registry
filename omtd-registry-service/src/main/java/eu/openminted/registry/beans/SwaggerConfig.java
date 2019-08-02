@@ -19,7 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 
-//@Configuration
+@Configuration
 @EnableSwagger2
 @PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class SwaggerConfig {
@@ -62,7 +62,7 @@ public class SwaggerConfig {
                 .pathProvider(pathProvider())
                 .apiInfo(apiInfo())
                 .directModelSubstitute(XMLGregorianCalendar.class,String.class)
-                .host(isLocalhost ? null : hostURL.getHost())
+                .host(isLocalhost ? null : hostURL.getHost() + hostURL.getPath())
                 .securitySchemes(Collections.singletonList(
                         new ApiKey("Format: Bearer <token>", "Authorization", "header"))
                 )
