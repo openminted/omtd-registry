@@ -1,6 +1,10 @@
 package eu.openminted.registry.beans;
 
 
+import eu.openminted.registry.beans.security.SessionSecurityConfig;
+import io.swagger.models.Swagger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -24,6 +28,7 @@ import java.util.Collections;
 @PropertySource(value = {"classpath:application.properties", "classpath:registry.properties"})
 public class SwaggerConfig {
 
+    static final private Logger logger = LogManager.getLogger(SwaggerConfig.class);
 
     @Value("${openminted.debug:#{false}}")
     public Boolean isLocalhost;
@@ -57,12 +62,13 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() throws MalformedURLException {
+        logger.info("Initializing Swagger @ " + host);
         URL hostURL = new URL(host);
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .pathProvider(pathProvider())
                 .apiInfo(apiInfo())
-                .directModelSubstitute(XMLGregorianCalendar.class,String.class)
-                .host(isLocalhost ? null : hostURL.getHost() + hostURL.getPath())
+                    .directModelSubstitute(XMLGregorianCalendar.class,String.class)
+                .host(isLocalhost ? null : hostURL.getHost())
                 .securitySchemes(Collections.singletonList(
                         new ApiKey("Format: Bearer <token>", "Authorization", "header"))
                 )
