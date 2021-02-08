@@ -24,7 +24,7 @@
 
 	<properties>
 		<registry.core.version>1.4.6-SNAPSHOT</registry.core.version>
-		<netty.version>4.1.12.Final</netty.version>
+		<netty.version>4.1.59.Final</netty.version>
 		<corpus.api.version>1.0.1-SNAPSHOT</corpus.api.version>
 		<omtd.model.version>3.0.2-SNAPSHOT</omtd.model.version>
 		<guava.version>19.0</guava.version>
